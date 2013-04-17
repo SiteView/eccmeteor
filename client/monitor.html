@@ -1,0 +1,165 @@
+﻿<Template name="moitorContent">
+	<div class="tab-pane active" id="1">
+		<div class="container">
+			<div class="row">
+				<div class="span3">
+					<div id="svse_tree"></div>
+				</div>
+				<div class="span7">
+					<div class="row">
+					{{> body}}
+					</div>
+				</div>
+				<div class="span2">
+					{{> operateNode}}
+				</div>
+			</div>
+		</div>
+	</div>
+</Template>
+
+<Template name="body"><!-- 视图选择 -->
+	{{#if equal viewstatus "GroupAndEntity"}}
+		{{> showGroupAndEntity}}
+	{{/if}}
+	{{#if equal viewstatus "Monitor"}}
+		{{> showMonitor}}
+		<br /> ===========================================<br />
+		{{> svg}}
+	{{/if}}
+	{{#if equal viewstatus "EntityGroup"}}
+		{{> showEntityGroup}}
+	{{/if}}
+	{{#if equal viewstatus "EntityItem"}}
+		{{> showEntity}}
+	{{/if}}
+	{{#if equal viewstatus "EntityEdit"}}
+		{{> showEditEntity}}
+	{{/if}}
+	{{#if equal viewstatus "GroupAdd"}}
+		{{> showGroupAdd}}
+	{{/if}}
+	{{#if equal viewstatus "GroupEdit"}}
+		{{> showGroupEdit}}
+	{{/if}}
+	{{#if equal viewstatus "MonityTemplates"}}
+		{{> showMonityTemplate}}
+	{{/if}}
+	{{#if equal viewstatus "MonityAdd"}}
+		{{> showMonityInfo}}
+	{{/if}}
+</Template>
+
+<Template name="showMonitor"><!--展示监视器信息 -->
+	<table>
+		<tr>
+			<td class="span1">状态</td><td class="span1">SV_ID</td><td class="span2">名称</td><td class="span5">描述</td><td class="span3">最后更新时间</td>
+		</tr>
+		<tbody>
+		{{#each getChildrenNodesByIdAndType entityid "submonitor"}}
+			<tr id="{{sv_id}}" title="{{status}}">
+				<td>{{status}}</td>
+				<td>{{sv_id}}</td>
+				<td>{{sv_name}}</td>
+				<td>{{dstr}}</td>
+				<td>{{creat_time}}</td>
+			</tr>
+		{{/each}}
+		</tbody>
+	</table>
+</Template>
+
+<Template name="showGroupAndEntity"> <!--展示设备和组信息 -->
+	<p>子组</p>
+	<table>
+		<tr>
+			<td class="span1">状态</td><td class="span1">SV_ID</td><td class="span2">名称</td><td class="span2">设备数</td><td class="span2">监控器数</td><td class="span2">禁止数</td><td class="span1">错误</td><td class="span1">危险</td><td class="span3">描述信息</td><td class="span1">依靠</td>
+		</tr>
+		{{#each getChildrenNodesByIdAndType svid "subgroup"}}
+			<tr>
+				<td>{{status}}</td>
+				<td>{{sv_id}}</td>
+				<td>{{sv_name}}</td>
+				<td>{{sub_entity_sum}}</td>
+				<td>{{sub_monitor_sum}}</td>
+				<td>{{sub_monitor_disable_sum}}</td>
+				<td>{{sub_monitor_error_sum}}</td>
+				<td>{{sub_monitor_warning_sum}}</td>
+				<td>{{sv_description}}</td>
+				<td>{{sv_dependson}}</td>
+			</tr>
+		{{/each}}
+	</table>
+		
+	<br /> ===========================<br/>
+
+	<p>设备</p>
+	<table>
+		<tr>
+			<td class="span1">状态</td><td class="span1">SV_ID</td><td class="span2">名称</td><td class="span2">监控器数</td><td class="span1">禁止数</td><td class="span1">错误</td><td class="span1">危险</td><td class="span1">IP地址</td><td class="span1">设备类型</td>
+		</tr>
+		{{#each getChildrenNodesByIdAndType svid "subentity"}}
+			<tr>
+				<td>{{status}}</td>
+				<td>{{sv_id}}</td>
+				<td>{{sv_name}}</td>
+				<td>{{sub_monitor_sum}}</td>
+				<td>{{sub_monitor_disable_sum}}</td>
+				<td>{{sub_monitor_error_sum}}</td>
+				<td>{{sub_monitor_warning_sum}}</td>
+				<td>{{_MachineName}}</td>
+				<td>{{sv_devicetype}}</td>
+			</tr>
+		{{/each}}
+	</table>
+</Template>
+
+<Template name="svg"><!-- svg 图像展示-->
+	<svg id="line"></svg>
+	<br /> ===========================================<br />
+	<div class="row">
+		<table>
+			<thead>
+				<tr><td class="span4">返回值</td><td class="span2">最大值</td><td class="span2">平均值</td><td class="span2">最新值</td></tr>
+			</thead>
+			<tbody id="tableData">
+				
+			</tbody>
+		</table>
+		<br /> ===========================================<br />
+		{{>recordsData}}
+	</div>
+</Template>
+
+<Template name="recordsData"> <!-- 记录统计 -->
+<div class="row">
+		<table>
+		<tbody>
+			{{#with recordsData}}
+			<tr><td>正常</td><td>{{ok}}</td><td>危险</td><td>{{warning}}</td></tr>
+			<tr><td>错误</td><td>{{error}}</td><td>禁止</td><td>{{disable}}</td></tr>
+			<tr><td>阀值</td><td colspan=3>测试条件</td></tr>
+			<tr><td>时间段</td><td colspan=3></td></tr>
+			<tr><td>从</td><td colspan=3>{{starttime}}</td></tr>
+			<tr><td>到</td><td colspan=3>{{endtime}}</td></tr>
+			{{/with}}
+		</tbody>
+	</table>
+</div>
+</Template>
+
+<Template name="operateNode"><!--增删改操作 -->
+	{{#if sv_name}}
+	<p>{{sv_name}}</p>
+	<ul>
+		<li><a href="#" id="addGroup">增加子组</a></li>
+		<li><a href="#" id="editGroup">编辑组</a></li>
+		<li><a href="#"id="addEntity">增加设备</a></li>
+		<li><a href="#"id="editEntity">编辑设备</a></li>
+		<li><a href="#"id="addMonitor">添加监视器</a></li>
+		<li><a href="#"id="editMonitor">编辑监视器</a></li>
+		<li><a href="#"id="removeNodes">删除节点</a></li>
+	</ul>
+	{{/if}}
+</Template>
+

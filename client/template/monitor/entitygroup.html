@@ -1,0 +1,68 @@
+﻿<Template name="showEntityGroup">
+	<table>
+	{{#each entityGroup}}
+		{{#unless sv_hidden}}
+			<tr>
+				<td colspan="2" class="span10">{{sv_name}}</td>
+			</tr>
+			{{#each entityTemplateId}}
+			<tr id="{{this}}">
+				{{#with getEntityPropertyById this}}
+				<td class="span5">{{sv_name}}</td><td class="span5">{{sv_description}}</td>
+				{{/with}}
+			</tr>
+			{{/each}}
+			<tr><td colspan="2" class="span10">===================</td><tr>
+		{{/unless}}
+	{{/each}}
+	</table>
+</Template>
+
+<Template name="showEntity">
+	<form id="entityInfo">
+		{{#each getEntityItemsById showEntityId}}
+		<label>
+			{{#unless sv_allownull}}*{{/unless}}{{sv_label}}:
+		</label>{{createDomeByTypeAndName sv_type sv_name sv_value selects}}<br />
+		{{/each}}
+		<label>*标题:</label><input type="input" name="sv_name"/>
+		<br />=================<br />
+		<label>描述:</label>
+		<textarea name="sv_description"></textarea>
+		<label>依赖:</label>
+		<input type="text" readOnly="readOnly" name="sv_dependson"/><input type="button" value="...">
+		<label>依靠条件:</label>
+		<input type="radio" name="sv_dependscondition" value="1"><span>正常</span>
+		<input type="radio" name="sv_dependscondition" value="2"><span>危险</span>
+		<input type="radio" name="sv_dependscondition" value="3" checked="checked"><span>错误</span>
+		<br />
+		<input type="button" value="保存" id="addEntity">
+		<input type="button" value="取消" id="cancel">
+	</form>
+</Template>
+
+<Template name="showEditEntity">
+	<form id="entityEditInfo">
+		{{#each getItemsAndDefaultValueBySvIdAndDevicetype entityId}}
+		<label>
+			{{#unless sv_allownull}}*{{/unless}}{{sv_label}}:
+		</label>{{createDomeByTypeAndName sv_type sv_name sv_value selects}}<br />
+		{{/each}}
+		{{#with property entityId}}
+		<label>*标题:</label><input type="input" name="sv_name" value="{{sv_name}}"/>
+		<br />=================<br />
+		<label>描述:</label>
+		<textarea name="sv_description">{{sv_description}}</textarea>
+		<label>依赖:</label>
+		<input type="text" readOnly="readOnly" name="sv_dependson" value="{{sv_dependson}}"/><input type="button" value="...">
+		<label>依靠条件:</label>
+		<input type="radio" name="sv_dependscondition" value="1" {{#if equal sv_dependscondition "1"}}checked="checked"{{/if}}><span>正常</span>
+		<input type="radio" name="sv_dependscondition" value="2" {{#if equal sv_dependscondition "2"}}checked="checked"{{/if}}><span>危险</span>
+		<input type="radio" name="sv_dependscondition" value="3" {{#if equal sv_dependscondition "3"}}checked="checked"{{/if}}><span>错误</span>
+		<br />
+		<input type="button" value="保存" id="saveEntity">
+		<input type="button" value="取消" id="cancel">
+		{{/with}}
+	</form>
+</Template>
+

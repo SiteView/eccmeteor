@@ -1,0 +1,34 @@
+<Template name="showGroupAdd">
+<form id="showGroupAdd">
+	<label>*组名称</label>
+	<input name="sv_name"/>
+	<br>======================</br>
+	<label>描述</label>
+	<textarea name="sv_description"></textarea>
+	<label>依赖</label>
+	<input type="text" readonly="readonly" name="sv_dependson"/><input type="button" value="..."/>
+	<label>依靠条件:</label>
+	<input type="radio" name="sv_dependscondition" value="1"><span>正常</span>
+	<input type="radio" name="sv_dependscondition" value="2"><span>危险</span>
+	<input type="radio" name="sv_dependscondition" value="3" checked="checked"><span>错误</span>
+	<input type="button" value="保存" id="saveBtn"/>
+</form>
+</Template>
+<Template name="showGroupEdit">
+<form id="showGroupEdit">
+	{{#with getGroup}}
+	<label>*组名称</label>
+	<input name="sv_name" value="{{sv_name}}"/>
+	<br>======================</br>
+	<label>描述</label>
+	<textarea name="sv_description">{{sv_description}}</textarea>
+	<label>依赖</label>
+	<input type="text" readonly="readonly" name="sv_dependson" value="{{sv_dependson}}"/><input type="button" value="..."/>
+	<label>依靠条件:</label>
+	<input type="radio" name="sv_dependscondition" value="1" {{#if equal sv_dependscondition "1"}}checked="checked"{{/if}}><span>正常</span>
+	<input type="radio" name="sv_dependscondition" value="2" {{#if equal sv_dependscondition "2"}}checked="checked"{{/if}}><span>危险</span>
+	<input type="radio" name="sv_dependscondition" value="3" {{#if equal sv_dependscondition "3"}}checked="checked"{{/if}}><span>错误</span>
+	<input type="button" value="保存" id="saveBtn"/>
+	{{/with}}
+</form>
+</Template>
