@@ -47,7 +47,7 @@ function drawImage(id,count){
 	var monitor = SvseTreeDao.getNodeById(id);//找到该监视器所依赖的监视器模板
 	if(!monitor)return; //如果该监视器不存在，不划线
 	var monitorTypeId = monitor.sv_monitortype+""; //获取监视器模板ID
-	SystemLogger("Monitor ID is: "+id+"  and its monitor template d is  "+ monitorTypeId);
+	SystemLogger("Monitor ID is: "+id+"  and its monitor template ID is  "+ monitorTypeId);
 	//获取监视器模板	
 	//var monitorTemplate = SvseMonitorTemplate.findOne({"return.id" : monitorTypeId});
 	var monitorTemplate = SvseMonitorTemplateDao.getTemplateById(monitorTypeId);
