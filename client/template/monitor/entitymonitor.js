@@ -10,6 +10,13 @@ Template.showMonityTemplate.events = {
 	} 
 }
 
-Template.showMonityInfo.getMonityTemplateParameters = function(id){
-	return SvseMonitorTemplateDao.getMonityTemplateParametersById(id);
+Template.showMonityInfo.getMonityTemplateParameters = function(){
+	return SvseMonitorTemplateDao.getMonityTemplateParametersById(Session.get("monityTemplateId"));
+}
+
+Template.showMonityInfo.getMonityTemplateAdvanceParameters = function(){
+	return SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(Session.get("monityTemplateId"));
+}
+Template.showMonityInfo.getMonityTemplateStates = function(){
+	return SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"));
 }
