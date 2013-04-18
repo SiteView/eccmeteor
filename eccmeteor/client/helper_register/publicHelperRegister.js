@@ -28,6 +28,65 @@ Handlebars.registerHelper('createDomeByTypeAndName', function(type,name,value,se
 			}
 			result = result + options+"</select>";
 			break;
+		case "textarea":
+			result = '<textarea name="'+name+'">'+value+'</textarea>';
+			break;
+		default:
+			result = '<input type="input" name="'+name+'" value="'+value+'"/>';
+			break;
+	}
+ 
+  return new Handlebars.SafeString(result);
+});
+
+Handlebars.registerHelper('createDomeByProperty', function(obj) {
+    var type = obj["sv_type"] ||obj["type"]|| "";
+	var name = obj["sv_name"] ||obj["name"]|| "";
+	var value = obj["sv_value"] ||obj["value"]||"";
+	var selects = obj["selects"] ||obj["select"]|| [];
+	var readOnly = (obj["sv_isreadonly"] === 'true')||obj["readonly"] || false;
+	var result;
+	switch(type){
+		case "textbox":
+			result = '<input type="input" name="'+name+'" value="'+value+'" ';
+			if(readOnly){
+				result	= result + 'readonly='+readOnly;
+			}
+			result =  result + '>'
+			break;
+		case "password":
+			result = '<input type="password" name="'+name+'" value="'+value+'" ';
+			if(readOnly){
+				result	= result + 'readonly='+readOnly;
+			}
+			result =  result + '>'
+			break;
+		case "combobox":
+			result = '<select name="'+name+'">';
+			options = "";
+			for(index in selects){
+				if(value === selects[index]["value"]){
+					options = options + "<option selected='selected' value='"+selects[index]["value"]+"'>"+selects[index]["key"]+"</option>";
+					continue;
+				}
+				options = options + "<option value='"+selects[index]["value"]+"'>"+selects[index]["key"]+"</option>";
+			}
+			result = result + options+"</select>";
+			break;
+		case "textarea":
+			result = '<textarea name="'+name+'" ';
+			if(readOnly){
+				result	= result + 'readonly='+readOnly;
+			}
+			result = result +'>'+value+'</textarea>';
+			break;
+		default:
+			result = '<input type="input" name="'+name+'" value="'+value+'" ';
+			if(readOnly){
+				result	= result + 'readonly='+readOnly;
+			}
+			result =  result + '>'
+			break;
 	}
  
   return new Handlebars.SafeString(result);

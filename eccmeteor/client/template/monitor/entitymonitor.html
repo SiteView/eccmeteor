@@ -12,43 +12,45 @@
 	</table>
 </Template>
 <Template name="showMonityInfo">
-	<form>
 		<table>
 			<tr><td colspan="3" class="span10">基本信息</td></tr>
 			<tr>
 				<td>设备名称</td>
 				<td>{{devicename}}</td>
 			</tr>
-			{{#each getMonityTemplateParameters monityTemplateId}}
+			{{#each getMonityTemplateParameters}}
+				<tr>
+					<td>
+						{{#unless sv_allownull}}*{{/unless}}{{sv_label}}:
+					</td>
+					<td>{{createDomeByProperty this}}</td>
+				</tr>
 			{{/each}}
-			<tr><td colspan="3" class="span10">报警条件</td></tr>
-			<tr>
-				<td>错误</td>
-				<td>
-					<textarea name="_errorParameter"></textarea>
-				</td>
-				<td>
-					<input type="button" value="..." id="editErrorParameter"/>
-				</td>
-			</tr>
-			<tr>
-				<td>危险</td>
-				<td>
-					<textarea name="_warningParameter"></textarea>
-				</td>
-				<td>
-					<input type="button" value="..." id="editWarningParameter"/>
-				</td>
-			</tr>
-			<tr>
-				<td>正常</td>
-				<td>
-					<textarea name="_errorParameter"></textarea>
-				</td>
-				<td>
-					<input type="button" value="..." id="EditGoodParameter"/>
-				</td>
-			</tr>
 		</table>
-	</form>
+		<table>
+			<tr><td colspan="3" class="span10">报警条件</td></tr>
+			{{#each getMonityTemplateStates}}
+				<tr>
+					<td>
+					{{sv_label}}:
+					</td>
+					<td>
+					{{createDomeByProperty this}}
+					</td>
+				</tr>
+			{{/each}}
+		</table>
+		<table>
+			<tr><td colspan="3" class="span10">高级选项</td></tr>
+			{{#each getMonityTemplateAdvanceParameters}}
+				<tr>
+					<td>
+					{{sv_label}}:
+					</td>
+					<td>
+					{{createDomeByProperty this}}
+					</td>
+				</tr>
+			{{/each}}
+		</table>
 </Template>

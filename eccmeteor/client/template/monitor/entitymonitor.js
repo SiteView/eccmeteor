@@ -20,3 +20,6 @@ Template.showMonityInfo.getMonityTemplateAdvanceParameters = function(){
 Template.showMonityInfo.getMonityTemplateStates = function(){
 	return SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"));
 }
+Template.showMonityInfo.devicename = function(){
+	 return Session.get("checkedTreeNode").name;
+}

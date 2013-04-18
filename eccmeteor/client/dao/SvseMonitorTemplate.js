@@ -7,7 +7,7 @@ var SvseMonitorTemplateDao ={
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});
 		var parameters = [];
 		for(item in template){
-			if(item.indexOf("ParameterItem") == -1)continue;
+			if(item.indexOf("ParameterItem") == -1 || item.indexOf("AdvanceParameterItem") != -1)continue;
 			var temp = template[item];
 			temp["sv_allownull"] = (temp["sv_allownull"] === 'false' ? false:true);
 			if(temp["sv_type"] !== "combobox"){//非下拉列表类型
