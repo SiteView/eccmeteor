@@ -4,7 +4,7 @@ SvseMonitorTemplate = new Meteor.Collection("svse_monitor_template");//监视器
 SvseEntityTemplet = new Meteor.Collection("svse_entity_template");//设备模板集
 SvseEntityTempletGroup = new Meteor.Collection("svse_entity_template_group");//设备模板组集
 SvseEntityTemplateInfo = new Meteor.Collection("svse_entity_info");//设备详细信息
-
+SvseTask = new Meteor.Collection("svse_task"); //计划任务
 Svse.allow({
 	insert: function (userId, doc) {
     // the user must be logged in, and the document must be owned by the user
@@ -56,7 +56,8 @@ SvseEntityTemplet.allow({
 	}
 });
 
-SvseEntityTemplet.allow({
+
+SvseEntityTemplateInfo.allow({
 	insert: function (userId, doc) {
 		return true;
 	},
@@ -68,7 +69,7 @@ SvseEntityTemplet.allow({
 	}
 });
 
-SvseEntityTemplateInfo.allow({
+SvseTask.allow({
 	insert: function (userId, doc) {
 		return true;
 	},

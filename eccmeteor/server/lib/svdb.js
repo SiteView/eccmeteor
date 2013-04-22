@@ -18,7 +18,7 @@ var meteorSvForest = function(dowhat){
 var svForest = function(dowhat){
     var robj = process.sv_forest(dowhat, 0);
 	if(!robj.isok(0)){
-		SystemLogger(robj.estr(0));
+		SystemLogger(robj.estr(0),0);
 		return false;
 	}
 	var fmap = robj.fmap(0);
@@ -58,7 +58,7 @@ var svSubmitGroup = function(group,parentid){
 		var robj= process.sv_submit(group,{'dowhat':'SubmitGroup'},0); //修改
 	}	
 	if(!robj.isok(0)){
-		SystemLogger("Errors:svSubmitGroup 52  "+robj);//传入给sv的参数不对等低级错误时，直接返回错误字符串
+		SystemLogger(robj.estr(0),0);//传入给sv的参数不对等低级错误时，直接返回错误字符串
 		throw new Meteor.Error(500,robj);
 	}
 	var fmap= robj.fmap(0);
@@ -81,7 +81,7 @@ var GetAllEntityGroups = function(){
 	var robj= process.sv_univ(dowhat, 0);
 	if(!robj.isok(0)){
 		SystemLogger("Errors: svdb's GetAllEntityGroups wrong!")
-		SystemLogger(robj.estr(0));
+		SystemLogger(robj.estr(0),0);
 		return false;
 	}
 	var fmap = robj.fmap(0);
@@ -93,7 +93,7 @@ var GetEntityTemplet = function(id){
 	var robj= process.sv_univ(dowhat, 0);
 	if(!robj.isok(0)){
 		SystemLogger("Errors: svdb's GetEntityTemplet wrong!")
-		SystemLogger(robj.estr(0));
+		SystemLogger(robj.estr(0),0);
 		return false;
 	}
 	var fmap = robj.fmap(0);
@@ -107,7 +107,7 @@ var svSubmitEntity = function(entity,parentid){
 		var robj= process.sv_submit(entity,{'dowhat':'SubmitEntity'},0); //修改
 	}	
 	if(!robj.isok(0)){
-		console.log("Errors: \n"+robj.estr(0));
+		SystemLogger(robj.estr(0),0);
 		throw new Meteor.Error(500,robj);
 	}
 	var fmap= robj.fmap(0);
@@ -118,9 +118,37 @@ var svGetEntity =  function(id){
 		var dowhat ={'dowhat':'GetEntity','id':id,'sv_depends':true};
 		var robj= process.sv_univ(dowhat, 0);
 		if(!robj.isok(0)){
-			console.log("Errors: \n"+robj.estr(0));
+			SystemLogger(robj.estr(0),0);
 			return false;
 		}
 		var fmap = robj.fmap(0);
 		return fmap;
+}
+
+//获取计划任务
+var svGetAllTask = function(){
+	var dowhat ={'dowhat':'GetAllTask'};
+	var robj= process.sv_univ(dowhat, 0);
+	//var robj = process.sv_forest(dowhat, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),0);
+		return false;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+}
+
+//添加编辑监视器
+var svSubmitMonitor = function(monitor,parentid){
+	if(parentid){
+		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor','parentid':parentid},0); //修改
+	}else{
+		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor'},0); //修改
+	}
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),0);
+		return false;
+	}
+	var fmap= robj.fmap(0);
+	return fmap;
 }

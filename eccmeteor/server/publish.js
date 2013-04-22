@@ -24,3 +24,8 @@ Meteor.publish("svse_entity_template_group",function(){
 Meteor.publish("svse_entity_info",function(){
 	return SvseEntityTemplateInfo.find();
 });
+
+//计划任务
+Meteor.publish("svse_task",function(){
+	return SvseTask.find();
+});

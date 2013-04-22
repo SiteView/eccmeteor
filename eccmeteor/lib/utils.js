@@ -6,6 +6,14 @@
 			property[arr[index]["name"]] = arr[index]["value"];
 		}
 		return property;
+	},
+	"objectCoalescence":function(obj1,obj2){
+		if(!obj2) return obj1||{};
+		if(!obj1) return obj2||{};
+		for(property in  obj1){
+			obj2[property] = obj1[property];
+		}
+		return obj2;
 	}
 }
 var ServerUtils ={}

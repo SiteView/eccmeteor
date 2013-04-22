@@ -12,6 +12,7 @@
 	</table>
 </Template>
 <Template name="showMonityInfo">
+		<form id="monityTemplateParameter">
 		<table>
 			<tr><td colspan="3" class="span10">基本信息</td></tr>
 			<tr>
@@ -27,6 +28,8 @@
 				</tr>
 			{{/each}}
 		</table>
+		</form>
+		<form id="monityTemplateStates">
 		<table>
 			<tr><td colspan="3" class="span10">报警条件</td></tr>
 			{{#each getMonityTemplateStates}}
@@ -40,6 +43,8 @@
 				</tr>
 			{{/each}}
 		</table>
+		</form>
+		<form id="monityTemplateAdvanceParameters">
 		<table>
 			<tr><td colspan="3" class="span10">高级选项</td></tr>
 			{{#each getMonityTemplateAdvanceParameters}}
@@ -53,4 +58,60 @@
 				</tr>
 			{{/each}}
 		</table>
+		</form>
+		<form id="monityTemplateCommonParameters">
+			<table>
+				<tr>
+					<td>
+						校验错误:
+					</td>
+					<td>
+						<input type="checkbox" value="true" name="sv_checkerr" checked="checked">监测器错误检验
+					</td>
+				</tr>
+				<tr>
+					<td>
+						错误时监测频率:
+					</td>
+					<td>
+						<input type="text" name="errfreqsave">
+						<select name="sv_errfrequint">
+							<option value="1">分钟</option>
+							<option value="2">小时</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						计划任务
+					</td>
+					<td>
+						<select name="sv_plan">
+							{{#each getAllTaskNames}}
+								<option value="{{this}}">{{this}}</option>
+							{{/each}}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						监测描述
+					</td>
+					<td>
+						<textarea name="sv_description"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						报告描述
+					</td>
+					<td>
+						<textarea name="sv_reportdesc"></textarea>
+					</td>
+				</tr>
+		</table>
+		</form>
+		</form>
+		
+		<div><input type="button" value="保存" id="addMonitor"></div>
 </Template>

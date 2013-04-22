@@ -7,7 +7,8 @@
   "svSubmitGroup":svSubmitGroup,
   "svDelChildren":svDelChildren,
   "getNodeByParentIdAndId":SvseTreeDaoOnServer.getNodeByParentIdAndId,
-  "svSubmitEntity":svSubmitEntity
+  "svSubmitEntity":svSubmitEntity,
+  "entityAddMonitor":SvseTreeDaoOnServer.addMonitor
 });//给客户端调用的
 
 //给服务端调用的。
@@ -17,5 +18,7 @@ var SvseMethodsOnServer = {
 	"meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
 	"meteorSvForest":meteorSvForest,//调用 /lib/svdb.js中定义的方法
 	"svForest":svForest,
-	"svGetEntity":svGetEntity
+	"svGetEntity":svGetEntity,
+	"svGetAllTask":svGetAllTask,
+	"svSubmitMonitor":svSubmitMonitor
 }
