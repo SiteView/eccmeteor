@@ -44,6 +44,17 @@
 			{{/each}}
 		</table>
 		</form>
+		<div id="errorsStatusDiv">
+			错误:<br />
+			{{> monitorTemplateStatus}}
+			<input type="button" id="errorsStatusBtn" value="添加">
+			<table id="errorsStatusTable">
+				
+			</table>
+		</div>
+		<form id="monityTemplateErrorStates">
+			
+		</form>
 		<form id="monityTemplateAdvanceParameters">
 		<table>
 			<tr><td colspan="3" class="span10">高级选项</td></tr>
@@ -114,4 +125,27 @@
 		</form>
 		
 		<div><input type="button" value="保存" id="addMonitor"></div>
+</Template>
+
+<Template name="monitorTemplateStatus">
+	<span>条件</span>
+	<select name="sv_paramname">
+		<option value="">包成功率</option>
+		<option>数据往返时间(ms)</option>
+		<option>状态值(200表示成功 300表示出错)</option>
+	</select>
+	<select name="sv_operate">
+		<option value="==">==</option>
+		<option value="!=">!=</option>
+		<option value=">=">>=</option>
+		<option value=">">></option>
+		<option value="<="><=</option>
+		<option value="<"><</option>
+		<option value="!contains">!contains</option>
+		<option value="contains">contains</option>
+	</select>
+	<input type="text" name="sv_paramvalue">
+	<span>关系</span>
+	<input type="radio" name="sv_relation" value="or" checked> 或  
+	<input type="radio" name="sv_relation" value="and"> 与  
 </Template>

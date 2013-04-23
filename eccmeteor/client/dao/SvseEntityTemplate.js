@@ -35,9 +35,10 @@ var SvseEntityTemplateDao = {
 		return items;
 	},
 	addEntity:function(entity,parentid,fn){//根据提交的信息和父节点添加设备
+		Utils.checkReCallFunction(fn);
 		Meteor.call("svSubmitEntity",entity,parentid,function(err,r_entity){
 			if(err){
-				if(typeof fn === "function")fn(err);
+				fn(err);
 				return;
 			}
 			SystemLogger("后台添加成功,返回值是：");

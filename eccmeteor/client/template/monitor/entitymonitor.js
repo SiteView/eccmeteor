@@ -72,14 +72,31 @@ Template.showMonityInfo.events = {
 			 sv_starttime: '' 
 		}
 		//临时数据 ===============================
+		//组装数据
 		var monitor = {};
 		monitor["advance_parameter"] = monityTemplateAdvanceParameters;
 		monitor["error"] = error;
 		monitor["warning"] = warning;
 		monitor["good"] = good;
 		monitor["parameter"] = ClientUtils.objectCoalescence(monityTemplateParameter,monityCommonParameters);
-		monitor["property"] = property ;
+		monitor["property"] = property;
+		//获取父节点id
+		var parentid = Session.get("checkedTreeNode")["id"];
+		SvseMonitorTemplateDao.addMonitor(monitor,parentid,function(err){
+			if(err){
+				SystemLogger(err,-1);
+			}
+			Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
+		});
+	},
+	"click #errorsStatusBtn":function(){
+		var inputs = $("#errorsStatusDiv").find("input");
+		for(index in inputs){
+			var input = inputs[index]
+			console.log(input.name+":"+input.value);
+		}
 	}
+	
 }
 
 Template.showMonityInfo.getAllTaskNames = function(){

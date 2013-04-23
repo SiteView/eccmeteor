@@ -1,25 +1,25 @@
 ﻿//定义视图状态
-var MONITORVIEW  = {
-	GROUPANDENTITY:"GroupAndEntity", //组与设备视图 表格
-	MONTIOTR:"Monitor",   //监视器视图  表格，统计图，数据状态统计
-	ENTITYGROUP:"EntityGroup",//设备模板展示视图
-	ENTITYITEM:"EntityItem",//设备模板信息添加视图
-	ENTITYEDIT:"EntityEdit",
-	GROUPADD:"GroupAdd", //添加组信息视图
-	GROUPEDIT:"GroupEdit", //修改组信息
-	MONITYTEMPLATES:"MonityTemplates", //设备的监视器列表
-    MONITYADD:"MonityAdd"
-}
+var MONITORVIEW = {
+	GROUPANDENTITY : "GroupAndEntity", //组与设备视图 表格
+	MONTIOTR : "Monitor", //监视器视图  表格，统计图，数据状态统计
+	ENTITYGROUP : "EntityGroup", //设备模板展示视图
+	ENTITYITEM : "EntityItem", //设备模板信息添加视图
+	ENTITYEDIT : "EntityEdit",
+	GROUPADD : "GroupAdd", //添加组信息视图
+	GROUPEDIT : "GroupEdit", //修改组信息
+	MONITYTEMPLATES : "MonityTemplates", //设备的监视器列表
+	MONITYADD : "MonityAdd"
+};
 
-Template.body.viewstatus = function(){  //视图控制
+Template.body.viewstatus = function () { //视图控制
 	return Session.get("viewstatus");
 }
 
-Template.showGroupAndEntity.svid = function (){
+Template.showGroupAndEntity.svid = function () {
 	return Session.get("svid");
 }
 
-Template.showMonitor.entityid = function (){
+Template.showMonitor.entityid = function () {
 	return Session.get("entityid");
 }
 
@@ -121,7 +121,7 @@ Deps.autorun(function(c){
 					var checkedTreeNode = {};
 					checkedTreeNode.id = id;
 					checkedTreeNode.type=type;
-					checkedTreeNode.name = node.name;SystemLogger("checkedTreeNode is ");SystemLogger(checkedTreeNode);
+					checkedTreeNode.name = node.name;
 					Session.set("checkedTreeNode",checkedTreeNode);//记录点击的节点。根据该节点获取 编辑增加设备时的基本信息;
 					if(type !== "entity"){
 						Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY); //设置视图状态
@@ -171,19 +171,24 @@ Template.operateNode.events ={
 		var id = Session.get("checkedTreeNode")["id"];
 		SvseDao.removeNodesById(id);
 		var fatherId = id.substring(0,id.lastIndexOf("\."));//获取删除节点的父节点Id
-		var $tree = $('#svse_tree');
-		var node = $tree.tree('getNodeById', fatherId);
-		$tree.tree('selectNode', node);
-		var checkedTreeNode = {};
-		checkedTreeNode.id = node.id;
-		checkedTreeNode.type = node.type;
-		checkedTreeNode.name = node.name;
-		Session.set("checkedTreeNode",checkedTreeNode);
+		ConstructorNavigateTree.checkedNodeByTreeId(fatherId);//根据id选中节点设置到Session中
 		Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY); //设置视图状态
 		Session.set("svid",node.id);
 	},
 	"click a#addMonitor":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
 		Session.set("viewstatus",MONITORVIEW.MONITYTEMPLATES);//设置视图状态
+	}
+}
+var ConstructorNavigateTree =  {
+	checkedNodeByTreeId:function(id){
+		var $tree = $('#svse_tree');
+		var node = $tree.tree('getNodeById', id);
+		$tree.tree('selectNode', node);
+		var checkedTreeNode = {};
+		checkedTreeNode.id = node.id;
+		checkedTreeNode.type = node.type;
+		checkedTreeNode.name = node.name;
+		Session.set("checkedTreeNode",checkedTreeNode);
 	}
 }
