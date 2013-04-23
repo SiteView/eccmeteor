@@ -16,3 +16,9 @@ eccmeteor
   * 第一次启动 找到文件eccmeteor/server/startup.js 将函数的参数-1改成0  (第二次启动时可以改回来。以减少启动时间)
 
 
+* 关于svlog.js：
+  * \Meteor\eccmeteor\server\lib\svlog.js 的功能是：自动增量导入log到mongodb
+  * 该功能默认是关闭的，若要打开请到 svlog.js 的第3行设置 can_run 为 true
+  * 因为ecc的log数据量巨大，首次启动该功能时请耐心等待数据迁移完成，后续的运行是增量的，比较快；数据全部在 mongodb 的 meteor 数据库的 svlog 表中
+  * 如果因为该功能的数据对 meteor 其他功能产生了影响，请先设置 can_run 为 false 关闭该功能，然后运行 meteor reset 清空所有数据
+  
