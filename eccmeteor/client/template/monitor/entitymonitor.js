@@ -17,9 +17,19 @@ Template.showMonityInfo.getMonityTemplateParameters = function(){
 Template.showMonityInfo.getMonityTemplateAdvanceParameters = function(){
 	return SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(Session.get("monityTemplateId"));
 }
+
+Template.monitorTemplateStatus.getMonityTemplateReturnItemsById = function(){
+	return SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("monityTemplateId"));
+}
+
 Template.showMonityInfo.getMonityTemplateStates = function(){
 	return SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"));
 }
+
+Template.showMonityInfo.getMonityTemplateStatesByStatus = function(status){
+	return SvseMonitorTemplateDao.getMonityTemplateStatesByIdAndStatus(Session.get("monityTemplateId"),status);
+}
+
 Template.showMonityInfo.devicename = function(){
 	 return Session.get("checkedTreeNode").name;
 }
@@ -82,7 +92,7 @@ Template.showMonityInfo.events = {
 		monitor["property"] = property;
 		//获取父节点id
 		var parentid = Session.get("checkedTreeNode")["id"];
-		SvseMonitorTemplateDao.addMonitor(monitor,parentid,function(err){
+		SvseMonitorDao.addMonitor(monitor,parentid,function(err){
 			if(err){
 				SystemLogger(err,-1);
 			}
@@ -90,11 +100,31 @@ Template.showMonityInfo.events = {
 		});
 	},
 	"click #errorsStatusBtn":function(){
-		var inputs = $("#errorsStatusDiv").find("input");
+		var inputs = $("#errorsStatusDiv > form:first").serializeArray();
 		for(index in inputs){
-			var input = inputs[index]
-			console.log(input.name+":"+input.value);
+			var input = ClientUtils.createInputHiddenDom(inputs[index].name,inputs[index].value);
+			$("#errorsStatusForm").append(input);
 		}
+		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
+		$("#errorsStatusTable").append(tr);
+	},
+	"click #warnigStatusBtn":function(){
+		var inputs = $("#warningStatusDiv > form:first").serializeArray();
+		for(index in inputs){
+			var input = ClientUtils.createInputHiddenDom(inputs[index].name,inputs[index].value);
+			$("#warningStatusForm").append(input);
+		}
+		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
+		$("#warnigStatusTable").append(tr);
+	},
+	"click #goodStatusBtn":function(){
+		var inputs = $("#goodStatusDiv > form:first").serializeArray();
+		for(index in inputs){
+			var input = ClientUtils.createInputHiddenDom(inputs[index].name,inputs[index].value);
+			$("#goodStatusForm").append(input);
+		}
+		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
+		$("#goodStatusTable").append(tr);
 	}
 	
 }
