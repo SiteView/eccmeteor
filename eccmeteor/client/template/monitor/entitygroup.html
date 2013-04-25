@@ -23,7 +23,7 @@
 		{{#each getEntityItemsById showEntityId}}
 		<label>
 			{{#unless sv_allownull}}*{{/unless}}{{sv_label}}:
-		</label>{{createDomeByProperty this}}<br />
+		</label>{{createDomeByPropertyHelper this}}<br />
 		{{/each}}
 		<label>*标题:</label><input type="input" name="sv_name"/>
 		<br />=================<br />
@@ -46,7 +46,7 @@
 		{{#each getItemsAndDefaultValueBySvIdAndDevicetype entityId}}
 		<label>
 			{{#unless sv_allownull}}*{{/unless}}{{sv_label}}:
-		</label>{{createDomeByProperty this}}<br />
+		</label>{{createDomeByPropertyHelper this}}<br />
 		{{/each}}
 		{{#with property entityId}}
 		<label>*标题:</label><input type="input" name="sv_name" value="{{sv_name}}"/>

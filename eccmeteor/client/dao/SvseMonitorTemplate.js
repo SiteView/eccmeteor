@@ -71,10 +71,18 @@ var SvseMonitorTemplateDao ={
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});
 		var returnItems = [];
 		for(item in template){
-			if(item.indexOf("ReturnItem") == -1)continue;
+			if(item.indexOf("ReturnItem") == -1) continue;
 			returnItems.push(template[item]);
 		}
-		SystemLogger(returnItems);
+		//SystemLogger(returnItems);
 		return returnItems;
+	},
+	getMonityTemplateReturnItemLabelByIdAndName:function(id,name){
+		var template = SvseMonitorTemplate.findOne({"return.id" : id});
+		for(item in template){
+			if(item.indexOf("ReturnItem") == -1) continue;
+			if(template[item]["sv_name"] === name)
+				return template[item]["sv_label"];
+		}
 	}
 }

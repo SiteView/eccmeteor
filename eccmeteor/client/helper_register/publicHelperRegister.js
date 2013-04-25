@@ -39,7 +39,7 @@ Handlebars.registerHelper('createDomeByTypeAndName', function(type,name,value,se
   return new Handlebars.SafeString(result);
 });
 
-Handlebars.registerHelper('createDomeByProperty', function(obj) {
+Handlebars.registerHelper('createDomeByPropertyHelper', function(obj) {
     var type = obj["sv_type"] ||obj["type"]|| "";
 	var name = obj["sv_name"] ||obj["name"]|| "";
 	var value = obj["sv_value"] ||obj["value"]||"";

@@ -7,6 +7,8 @@ Template.showMonityTemplate.events = {
 	"click tr a":function(e){
 		Session.set("viewstatus",MONITORVIEW.MONITYADD);//设置视图状态
 		Session.set("monityTemplateId",e.target.id);
+		var  checkedMonityTemolate = SvseMonitorTemplateDao.getTemplateById(e.target.id);
+		Session.set("checkedMonityTemolate",checkedMonityTemolate);
 	} 
 }
 
@@ -37,61 +39,49 @@ Template.showMonityInfo.devicename = function(){
 Template.showMonityInfo.events = {
 	"click #addMonitor":function(){
 		var monityTemplateParameter = ClientUtils.formArrayToObject($("#monityTemplateParameter").serializeArray());
-		var monityTemplateStates = ClientUtils.formArrayToObject($("#monityTemplateStates").serializeArray());
+	//	var monityTemplateStates = ClientUtils.formArrayToObject($("#monityTemplateStates").serializeArray());
 		var monityTemplateAdvanceParameters = ClientUtils.formArrayToObject($("#monityTemplateAdvanceParameters").serializeArray());
 		var monityCommonParameters = ClientUtils.formArrayToObject($("#monityTemplateCommonParameters").serializeArray());
 		monityCommonParameters["sv_checkerr"] = monityCommonParameters["sv_checkerr"] || "false";
-		SystemLogger("基本属性");
-		SystemLogger(monityTemplateParameter);
-		SystemLogger("状态");
-		SystemLogger(monityTemplateStates);
-		SystemLogger("高级选项");
-		SystemLogger(monityTemplateAdvanceParameters);
-		SystemLogger("常规选项");
-		SystemLogger(monityCommonParameters);
-		//临时数据 ==============================
-		var error =  { 
-			sv_conditioncount: '1',
-			sv_expression: '1',
-			sv_operate1: '==',
-			sv_paramname1: 'packetsGoodPercent',
-			sv_paramvalue1: '0' };
-		
-		var good =  { 
-			sv_conditioncount: '1',
-			sv_expression: '1',
-			sv_operate1: '>',
-			sv_paramname1: 'packetsGoodPercent',
-			sv_paramvalue1: '75' 
-			}
-		
-		var warning = { 
-			sv_conditioncount: '1',
-			sv_expression: '1',
-			sv_operate1: '<=',
-			sv_paramname1: 'packetsGoodPercent',
-			sv_paramvalue1: '75' 
+		var checkedMonityTemolateProperty = Session.get("checkedMonityTemolate")["property"];
+		var monityParameter = ClientUtils.objectCoalescence(monityTemplateParameter,monityCommonParameters);
+		//拼接基本参数属性
+		if(monityParameter["sv_errfreqsave"] || monityParameter["sv_errfreqsave"] === ""){
+			monityParameter["sv_errfreqsave"] = 0;
 		}
-		 var property = { 
-			 sv_dependson: '',
-			 sv_disable: 'false',
-			 sv_endtime: '',
-			 sv_intpos: '1',
-			 sv_monitortype: '5',
-			 sv_name: 'Ping',
-			 sv_starttime: '' 
-		}
-		//临时数据 ===============================
+		monityParameter["sv_errfreqsave"] = +monityParameter["sv_errfreqsave"];
+		monityParameter["sv_errfreq"] = monityParameter["sv_errfreqsave"];
+		
+		monityParameter["_frequency"] = +monityParameter["_frequency"];
+		monityParameter["_frequency1"] = monityParameter["_frequency"]
+		monityParameter["creat_timeb"] = new Date().format("yyyy-MM-dd hh:mm:ss");
+		error =  ClientUtils.formArrayToObject($("#errorsStatusForm").serializeArray());
+		error["sv_expression"] = 1;
+		good =  ClientUtils.formArrayToObject($("#goodStatusForm").serializeArray());
+		good["sv_expression"] = 1;
+		warning =  ClientUtils.formArrayToObject($("#warningStatusForm").serializeArray());
+		warning["sv_expression"] = 1;
+		var property = {
+			sv_disable : "",
+			sv_endtime : "",
+			sv_monitortype : checkedMonityTemolateProperty.sv_id,
+			sv_name : checkedMonityTemolateProperty.sv_name,
+			sv_starttime : ""
+		};
 		//组装数据
-		var monitor = {};
-		monitor["advance_parameter"] = monityTemplateAdvanceParameters;
-		monitor["error"] = error;
-		monitor["warning"] = warning;
-		monitor["good"] = good;
-		monitor["parameter"] = ClientUtils.objectCoalescence(monityTemplateParameter,monityCommonParameters);
-		monitor["property"] = property;
+		var monitor = {
+			advance_parameter : monityTemplateAdvanceParameters,
+			error : error,
+			warning : warning,
+			good : good,
+			parameter : monityParameter,
+			property : property
+		};
+
 		//获取父节点id
 		var parentid = Session.get("checkedTreeNode")["id"];
+		SystemLogger("获取到的结果是:");
+		SystemLogger(monitor);
 		SvseMonitorDao.addMonitor(monitor,parentid,function(err){
 			if(err){
 				SystemLogger(err,-1);
@@ -101,8 +91,13 @@ Template.showMonityInfo.events = {
 	},
 	"click #errorsStatusBtn":function(){
 		var inputs = $("#errorsStatusDiv > form:first").serializeArray();
+		var sv_conditioncount = $("#errorsStatusForm > .sv_conditioncount:first");
+		var count = sv_conditioncount.val();
+		count = +count;
+		count = count+1;
+		sv_conditioncount.val(count);
 		for(index in inputs){
-			var input = ClientUtils.createInputHiddenDom(inputs[index].name,inputs[index].value);
+			var input = ClientUtils.createInputHiddenDom(inputs[index].name+count,inputs[index].value);
 			$("#errorsStatusForm").append(input);
 		}
 		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
@@ -110,8 +105,13 @@ Template.showMonityInfo.events = {
 	},
 	"click #warnigStatusBtn":function(){
 		var inputs = $("#warningStatusDiv > form:first").serializeArray();
+		var sv_conditioncount = $("#warningStatusForm > .sv_conditioncount:first");
+		var count = sv_conditioncount.val();
+		count = +count;
+		count = count+1;
+		sv_conditioncount.val(count);
 		for(index in inputs){
-			var input = ClientUtils.createInputHiddenDom(inputs[index].name,inputs[index].value);
+			var input = ClientUtils.createInputHiddenDom(inputs[index].name+count,inputs[index].value);
 			$("#warningStatusForm").append(input);
 		}
 		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
@@ -119,8 +119,13 @@ Template.showMonityInfo.events = {
 	},
 	"click #goodStatusBtn":function(){
 		var inputs = $("#goodStatusDiv > form:first").serializeArray();
+		var sv_conditioncount = $("#goodStatusForm > .sv_conditioncount:first");
+		var count = sv_conditioncount.val();
+		count = +count;
+		count = count+1;
+		sv_conditioncount.val(count);
 		for(index in inputs){
-			var input = ClientUtils.createInputHiddenDom(inputs[index].name,inputs[index].value);
+			var input = ClientUtils.createInputHiddenDom(inputs[index].name+count,inputs[index].value);
 			$("#goodStatusForm").append(input);
 		}
 		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});

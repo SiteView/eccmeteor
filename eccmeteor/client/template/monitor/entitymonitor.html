@@ -24,7 +24,7 @@
 					<td>
 						{{#unless sv_allownull}}*{{/unless}}{{sv_label}}:
 					</td>
-					<td>{{createDomeByProperty this}}</td>
+					<td>{{createDomeByPropertyHelper this}}</td>
 				</tr>
 			{{/each}}
 		</table>
@@ -48,8 +48,8 @@
 				{{/with}}
 				</tbody>
 			</table>
-			<input type="hidden" class="sv_parametecount" value="1">
 			<form id="errorsStatusForm">
+			<input type="hidden" class="sv_conditioncount" name="sv_conditioncount" value="1">
 				{{#with getMonityTemplateStatesByStatus "error"}}
 					{{> monitorTemplateInitStatusInputHidden}}
 				{{/with}}
@@ -73,8 +73,8 @@
 				{{/with}}
 				</tbody>
 			</table>
-			<input type="hidden" class="sv_parametecount" value="1">
 			<form id="warningStatusForm">
+				<input type="hidden" class="sv_conditioncount" name="sv_conditioncount" value="1">
 				{{#with getMonityTemplateStatesByStatus "warning"}}
 					{{> monitorTemplateInitStatusInputHidden}}
 				{{/with}}
@@ -98,8 +98,8 @@
 					{{/with}}
 				</tbody>
 			</table>
-			<input type="hidden" class="sv_parametecount" value="1">
 			<form id="goodStatusForm">
+				<input type="hidden" class="sv_conditioncount" name="sv_conditioncount" value="1">
 				{{#with getMonityTemplateStatesByStatus "good"}}
 					{{> monitorTemplateInitStatusInputHidden}}
 				{{/with}}
@@ -115,7 +115,7 @@
 					{{sv_label}}:
 					</td>
 					<td>
-					{{createDomeByProperty this}}
+					{{createDomeByPropertyHelper this}}
 					</td>
 				</tr>
 			{{/each}}
@@ -136,7 +136,7 @@
 						错误时监测频率:
 					</td>
 					<td>
-						<input type="text" name="errfreqsave">
+						<input type="text" name="sv_errfreqsave">
 						<select name="sv_errfrequint">
 							<option value="1">分钟</option>
 							<option value="2">小时</option>
