@@ -17,9 +17,19 @@ Template.showMonityInfo.getMonityTemplateParameters = function(){
 Template.showMonityInfo.getMonityTemplateAdvanceParameters = function(){
 	return SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(Session.get("monityTemplateId"));
 }
+
+Template.monitorTemplateStatus.getMonityTemplateReturnItemsById = function(){
+	return SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("monityTemplateId"));
+}
+
 Template.showMonityInfo.getMonityTemplateStates = function(){
 	return SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"));
 }
+
+Template.showMonityInfo.getMonityTemplateStatesByStatus = function(status){
+	return SvseMonitorTemplateDao.getMonityTemplateStatesByIdAndStatus(Session.get("monityTemplateId"),status);
+}
+
 Template.showMonityInfo.devicename = function(){
 	 return Session.get("checkedTreeNode").name;
 }
@@ -72,14 +82,51 @@ Template.showMonityInfo.events = {
 			 sv_starttime: '' 
 		}
 		//临时数据 ===============================
+		//组装数据
 		var monitor = {};
 		monitor["advance_parameter"] = monityTemplateAdvanceParameters;
 		monitor["error"] = error;
 		monitor["warning"] = warning;
 		monitor["good"] = good;
 		monitor["parameter"] = ClientUtils.objectCoalescence(monityTemplateParameter,monityCommonParameters);
-		monitor["property"] = property ;
+		monitor["property"] = property;
+		//获取父节点id
+		var parentid = Session.get("checkedTreeNode")["id"];
+		SvseMonitorDao.addMonitor(monitor,parentid,function(err){
+			if(err){
+				SystemLogger(err,-1);
+			}
+			Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
+		});
+	},
+	"click #errorsStatusBtn":function(){
+		var inputs = $("#errorsStatusDiv > form:first").serializeArray();
+		for(index in inputs){
+			var input = ClientUtils.createInputHiddenDom(inputs[index].name,inputs[index].value);
+			$("#errorsStatusForm").append(input);
+		}
+		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
+		$("#errorsStatusTable").append(tr);
+	},
+	"click #warnigStatusBtn":function(){
+		var inputs = $("#warningStatusDiv > form:first").serializeArray();
+		for(index in inputs){
+			var input = ClientUtils.createInputHiddenDom(inputs[index].name,inputs[index].value);
+			$("#warningStatusForm").append(input);
+		}
+		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
+		$("#warnigStatusTable").append(tr);
+	},
+	"click #goodStatusBtn":function(){
+		var inputs = $("#goodStatusDiv > form:first").serializeArray();
+		for(index in inputs){
+			var input = ClientUtils.createInputHiddenDom(inputs[index].name,inputs[index].value);
+			$("#goodStatusForm").append(input);
+		}
+		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
+		$("#goodStatusTable").append(tr);
 	}
+	
 }
 
 Template.showMonityInfo.getAllTaskNames = function(){

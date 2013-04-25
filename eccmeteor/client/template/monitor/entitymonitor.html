@@ -29,21 +29,83 @@
 			{{/each}}
 		</table>
 		</form>
-		<form id="monityTemplateStates">
-		<table>
-			<tr><td colspan="3" class="span10">报警条件</td></tr>
-			{{#each getMonityTemplateStates}}
-				<tr>
-					<td>
-					{{sv_label}}:
-					</td>
-					<td>
-					{{createDomeByProperty this}}
-					</td>
-				</tr>
-			{{/each}}
-		</table>
-		</form>
+		<hr />
+		<p>报警条件</p>
+		<div id="errorsStatusDiv">
+			错误:<br />
+			{{> monitorTemplateStatus}}
+			<input type="button" id="errorsStatusBtn" value="添加">
+			<table>
+				<thead>
+					<td class="span2">项目</td>
+					<td class="span2">操作符</td>
+					<td class="span2">值</td>
+					<td class="span2">关系</td>
+				</thead>
+				<tbody id="errorsStatusTable">
+				{{#with getMonityTemplateStatesByStatus "error"}}
+					{{> monitorTemplateInitStatusTableTr}}
+				{{/with}}
+				</tbody>
+			</table>
+			<input type="hidden" class="sv_parametecount" value="1">
+			<form id="errorsStatusForm">
+				{{#with getMonityTemplateStatesByStatus "error"}}
+					{{> monitorTemplateInitStatusInputHidden}}
+				{{/with}}
+			</form>
+		</div>
+		<br />==========================================
+		<div id="warningStatusDiv">
+			危险:<br />
+			{{> monitorTemplateStatus}}
+			<input type="button" id="warnigStatusBtn" value="添加">
+			<table>
+				<thead>
+					<td class="span2">项目</td>
+					<td class="span2">操作符</td>
+					<td class="span2">值</td>
+					<td class="span2">关系</td>
+				</thead>
+				<tbody id="warnigStatusTable">
+				{{#with getMonityTemplateStatesByStatus "warning"}}
+					{{> monitorTemplateInitStatusTableTr}}
+				{{/with}}
+				</tbody>
+			</table>
+			<input type="hidden" class="sv_parametecount" value="1">
+			<form id="warningStatusForm">
+				{{#with getMonityTemplateStatesByStatus "warning"}}
+					{{> monitorTemplateInitStatusInputHidden}}
+				{{/with}}
+			</form>
+		</div>
+		<br />==========================================
+		<div id="goodStatusDiv">
+			正常:<br />
+			{{> monitorTemplateStatus}}
+			<input type="button" id="goodStatusBtn" value="添加">
+			<table>
+				<thead>
+					<td class="span2">项目</td>
+					<td class="span2">操作符</td>
+					<td class="span2">值</td>
+					<td class="span2">关系</td>
+				</thead>
+				<tbody id="goodStatusTable">
+					{{#with getMonityTemplateStatesByStatus "good"}}
+						{{> monitorTemplateInitStatusTableTr}}
+					{{/with}}
+				</tbody>
+			</table>
+			<input type="hidden" class="sv_parametecount" value="1">
+			<form id="goodStatusForm">
+				{{#with getMonityTemplateStatesByStatus "good"}}
+					{{> monitorTemplateInitStatusInputHidden}}
+				{{/with}}
+			</form>
+		</div>
+		<hr />
 		<form id="monityTemplateAdvanceParameters">
 		<table>
 			<tr><td colspan="3" class="span10">高级选项</td></tr>
@@ -114,4 +176,43 @@
 		</form>
 		
 		<div><input type="button" value="保存" id="addMonitor"></div>
+</Template>
+
+<Template name="monitorTemplateStatus">
+	<span>条件</span>
+	<form>
+	<select name="sv_paramname">
+		{{#each getMonityTemplateReturnItemsById}}
+		<option value="{{sv_name}}">{{sv_label}}</option>
+		{{/each}}
+	</select>
+	<select name="sv_operate">
+		<option value="==">==</option>
+		<option value="!=">!=</option>
+		<option value=">=">>=</option>
+		<option value=">">></option>
+		<option value="<="><=</option>
+		<option value="<"><</option>
+		<option value="!contains">!contains</option>
+		<option value="contains">contains</option>
+	</select>
+	<input type="text" name="sv_paramvalue"><br />
+	<span>关系</span>
+	<input type="radio" name="sv_relation" value="or" checked> 或  
+	<input type="radio" name="sv_relation" value="and"> 与  
+	</form>
+</Template>
+
+<Template name="monitorTemplateInitStatusTableTr">
+	<tr>
+		<td>{{sv_paramname1}}</td>
+		<td>{{sv_operate1}}</td>
+		<td>{{sv_paramvalue1}}</td>
+		<td>{{sv_relation1}}</td>
+	</tr>
+</Template>
+<Template name="monitorTemplateInitStatusInputHidden">
+	<input type="hidden" name="sv_paramname1" value="{{sv_paramname1}}">
+	<input type="hidden" name="sv_operate1" value="{{sv_operate1}}">
+	<input type="hidden" name="sv_paramvalue1" value="{{sv_paramvalue1}}">
 </Template>

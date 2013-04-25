@@ -8,7 +8,7 @@
   "svDelChildren":svDelChildren,
   "getNodeByParentIdAndId":SvseTreeDaoOnServer.getNodeByParentIdAndId,
   "svSubmitEntity":svSubmitEntity,
-  "entityAddMonitor":SvseTreeDaoOnServer.addMonitor
+  "entityAddMonitor":SvseMonitorDaoOnServer.addMonitor
 });//给客户端调用的
 
 //给服务端调用的。
