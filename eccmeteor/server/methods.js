@@ -20,5 +20,8 @@ var SvseMethodsOnServer = {
 	"svForest":svForest,
 	"svGetEntity":svGetEntity,
 	"svGetAllTask":svGetAllTask,
-	"svSubmitMonitor":svSubmitMonitor
+	"svSubmitMonitor":svSubmitMonitor,
+	"svRefreshMonitors":svRefreshMonitors,
+	"svGetLatestRefresh":svGetLatestRefresh,
+	"svGetRefreshed":svGetRefreshed
 }

@@ -152,3 +152,41 @@ var svSubmitMonitor = function(monitor,parentid){
 	var fmap= robj.fmap(0);
 	return fmap;
 }
+
+//刷新监视器
+var svRefreshMonitors = function (id,pid,instantReturn){
+	if(!instantReturn){
+		instantReturn = false;	
+	}
+	var dowhat ={'dowhat':'RefreshMonitors',id:id,parentid:pid,instantReturn:instantReturn};
+	var robj= process.sv_univ(dowhat, 0);
+	//var robj = process.sv_forest(dowhat, 0);
+	if(!robj.isok(0)){
+		console.log("Errors: \n"+robj.estr(0));
+		return;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+}
+
+var svGetLatestRefresh = function (queueName){
+	var dowhat ={'dowhat':'GetLatestRefresh',queueName:queueName};
+	var robj= process.sv_univ(dowhat, 0);
+	//var robj = process.sv_forest(dowhat, 0);
+	if(!robj.isok(0)){
+		console.log("Errors: svGetLatestRefresh \n"+robj.estr(0));
+		return;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+}
+
+function svGetRefreshed(queueName,pid){
+	var dowhat ={'dowhat':'GetRefreshed',queueName:queueName,parentid:pid};
+	var robj= process.sv_univ(dowhat, 0);
+	//var robj = process.sv_forest(dowhat, 0);
+	var fmap = robj.fmap(0);
+	SystemLogger("获取svGetRefreshed");
+	SystemLogger(fmap);
+	return fmap;
+}

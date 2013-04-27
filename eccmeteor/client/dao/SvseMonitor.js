@@ -8,7 +8,11 @@ var SvseMonitorDao = {
 			}
 			SystemLogger("插入到服务端成功,服务端返回是数据是");
 			console.log(r_monitor);
-			var selfId = r_monitor["return"]["id"];
+			//var selfId = r_monitor["return"]["id"];
+			
+			//setTimeout("SvseMonitorDao.updateMonitorInfo()",2000);
+			return;
+			
 			Meteor.call("getNodeByParentIdAndId",parentid,selfId,function(err,n_monitor){
 				if(err){
 					fn(err);
