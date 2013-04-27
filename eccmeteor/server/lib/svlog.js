@@ -38,6 +38,9 @@ var cache_items= Array();
 //可否使用缓存
 var use_cache_items= false;
 
+//监测器模板数据
+var mon_tpls_id= Array();
+
 
 /**
  * 格式化 Date 为时间字符串<br/>
@@ -120,6 +123,29 @@ var callback = function(error, docs) {
 };
 
 /**
+ * 分解 dstr 成字段
+ */
+function split_dstr(mon){
+	if(mon===undefined)
+		return mon;
+	var status= mon['status'];
+	var id= mon['id'];
+	var dstr= mon['dstr'];
+	
+	if(dstr===undefined)
+		return mon;
+	if(id===undefined)
+		return mon;	
+	if(status!=='ok' && status!=='warning' && status!=='error')
+		return mon;	
+	
+//	console.log(' split,  '+id+' , '+status+' , '+dstr);
+	
+	return mon;
+}
+
+
+/**
  * 取得 ecc 中的log，并插入
  */
 function querylog(id, begin_time, collection) {
@@ -185,7 +211,7 @@ function querylog(id, begin_time, collection) {
 					'dstr' : fmap[key]['dstr'],
 					'status' : fmap[key]['record_status'],
 				};				
-				logs.push( one );
+				logs.push( split_dstr(one) );
 			}
 		}while(key!=false);		
 		//插入logs
@@ -235,13 +261,18 @@ function checkUpdate(qtime, qid, collection) {
 	var freq;
 	if(ids[qid] && qtime){
 		freq= ids[qid]['freq'];
-		var diff= dateDiff(creat_time, qtime); 			
-//		console.log(trans['num']+ " ,qid: " + qid + " freq: " + freq);
+		var diff= dateDiff(creat_time, qtime); 		
 		
+//		if(qid==='1.9.14.1')
+//			console.log(qtime+' , ' + creat_time + " ,qid: " + qid + " freq: " + freq);
 		
 		if(freq<=diff){
 			// 有可能缺了若干个监测周期的 log
-			ids[qid]['qtime']= qtime;
+			if(ids[qid]['qtime']===undefined)
+				ids[qid]['qtime']= qtime;
+			else if(dateDiff(qtime, ids[qid]['qtime'])>0)
+				ids[qid]['qtime']= qtime;
+				
 		}else{
 			//刷新缓存数据
 			cache_items[qid] = {
@@ -254,7 +285,7 @@ function checkUpdate(qtime, qid, collection) {
 			
 			if (freq>diff && diff>0) {
 				// GetTreeData得到的新 log 时间比 mongodb 中最新 log 的时间还要新，且小于监测周期，则直接更新log			
-				collection.insert(mon, function(error, docs) {
+				collection.insert( split_dstr(mon), function(error, docs) {
 					if (error) {
 						console.log(error);
 					}
@@ -310,7 +341,7 @@ var update = function(error, client) {
 			if (monitorinfo[sv_id]) {
 				mtype = monitorinfo[sv_id]['MonitorType'];
 				freqency = getFreq( monitorinfo[sv_id]['MonitorFrequency'] );
-//				console.log("sv_id: " + sv_id + " , " + freq + " , "+mtype);
+//				console.log("sv_id: " + sv_id + " , " + freqency + " , "+mtype + ',' + monitorinfo[sv_id]['sv_monitortype']);
 			}
 			ids[sv_id] = {
 				'id' : sv_id,
@@ -444,6 +475,20 @@ var repeatJob = function() {
 			monitorinfo = robj.fmap(0);
 		}
 		
+//		-- 1.23.10.1.1 (NO:1) --
+//	     needtype = monitor
+//	     sv_monitortype = 5		
+		robj = process.sv_univ({
+			'dowhat' : 'QueryInfo',
+			'needkey' : 'sv_monitortype',
+		}, 0); 
+		if (robj.isok() === true) {
+			var qinfo = robj.fmap(0);
+			for(qid in qinfo){
+				monitorinfo[qid]['sv_monitortype']= qinfo[qid]['sv_monitortype'];
+			}
+		}		
+		
 		//连接数据库，检查更新
 		db.open(update);		
 	} else {
@@ -454,9 +499,69 @@ var repeatJob = function() {
 //db.open(update);
 //console.log('dateDiff, ' + dateDiff('2012-05-18 05:37:21','2012-05-18 05:32:21'));
 
+
+/**
+ * 取得监测器模板数据
+ */
+function setMonTpls(){
+//	mon_tpls_id;
+	var robj;
+	for(var i=1; i<1000; i++){
+		robj = process.sv_univ({
+			'dowhat' : 'GetMonitorTemplet',
+			'id' : i,
+		}, 0); 
+		if (robj.isok() === true) {
+			mon_tpls_id[i]= robj.fmap(0);
+		}		
+	}
+
+}
+
+/**
+ * 调试用的方法
+ */
+function dbReIndex(){
+	db.open(function(error, client) {
+		if (error)
+			throw error;	
+		console.log('\n mongodb reindex ... '+ dateFormat(new Date()));
+		var collection = new mongodb.Collection(client, 'svlog');
+		collection.reIndex(function(err, result) {
+			collection.indexInformation(function(err, indexInformation) {
+				console.log(' mongodb reindex is done!  '+ dateFormat(new Date()));
+	            db.close();
+	          });			
+			});
+		});	
+}
+
+/**
+ * 删除log，调试用的方法
+ */
+function removeLine(){
+	db.open(function(error, client) {
+		if (error)
+			throw error;	
+		console.log('\n mongodb remove line, '+ dateFormat(new Date()));
+		var collection = new mongodb.Collection(client, 'svlog');
+		
+//		var line= {'id':'1.9.14.1','creat_time':'2010-02-26 14:11:37'};
+		var line= {'id':'1.9.14.1','creat_time': {$gt:'2010-02-26 10:11:37'} };
+		
+		collection.remove(line, function(err, result) {
+			db.close();
+			});
+		});		
+}
+
 if(can_run){
 	//sv的初始化
 	process.sv_init();	
+	setMonTpls();
+}else{
+	removeLine();
+//	dbReIndex();	
 }
 
 //最初运行一次
