@@ -141,7 +141,7 @@ var svGetAllTask = function(){
 //添加编辑监视器
 var svSubmitMonitor = function(monitor,parentid){
 	if(parentid){
-		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor','parentid':parentid},0); //修改
+		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor','parentid':parentid,autoCreateTable:true},0); //修改
 	}else{
 		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor'},0); //修改
 	}
@@ -158,6 +158,7 @@ var svRefreshMonitors = function (id,pid,instantReturn){
 	if(!instantReturn){
 		instantReturn = false;	
 	}
+	SystemLogger("=============instantReturn is " + instantReturn)
 	var dowhat ={'dowhat':'RefreshMonitors',id:id,parentid:pid,instantReturn:instantReturn};
 	var robj= process.sv_univ(dowhat, 0);
 	//var robj = process.sv_forest(dowhat, 0);

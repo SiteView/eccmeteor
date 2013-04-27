@@ -46,15 +46,18 @@ Template.showMonityInfo.events = {
 		var checkedMonityTemolateProperty = Session.get("checkedMonityTemolate")["property"];
 		var monityParameter = ClientUtils.objectCoalescence(monityTemplateParameter,monityCommonParameters);
 		//拼接基本参数属性
-		if(monityParameter["sv_errfreqsave"] || monityParameter["sv_errfreqsave"] === ""){
-			monityParameter["sv_errfreqsave"] = 0;
+		if(!monityParameter["sv_errfreqsave"]){
+			monityParameter["sv_errfreqsave"] = "";
+			monityParameter["sv_errfreq"] = 0;
 		}
-		monityParameter["sv_errfreqsave"] = +monityParameter["sv_errfreqsave"];
-		monityParameter["sv_errfreq"] = monityParameter["sv_errfreqsave"];
+		if(monityParameter["sv_errfreqsave"] !== ""){
+			monityParameter["sv_errfreq"] = +monityParameter["sv_errfreqsave"];
+		}
+		
 		
 		monityParameter["_frequency"] = +monityParameter["_frequency"];
 		monityParameter["_frequency1"] = monityParameter["_frequency"]
-		monityParameter["creat_timeb"] = new Date().format("yyyy-MM-dd hh:mm:ss");
+		
 		error =  ClientUtils.formArrayToObject($("#errorsStatusForm").serializeArray());
 		error["sv_expression"] = 1;
 		good =  ClientUtils.formArrayToObject($("#goodStatusForm").serializeArray());
@@ -62,13 +65,14 @@ Template.showMonityInfo.events = {
 		warning =  ClientUtils.formArrayToObject($("#warningStatusForm").serializeArray());
 		warning["sv_expression"] = 1;
 		var property = {
-			sv_disable : "",
+			sv_disable : false,
 			sv_endtime : "",
 			sv_monitortype : checkedMonityTemolateProperty.sv_id,
 			sv_name : checkedMonityTemolateProperty.sv_name,
-			sv_starttime : ""
+			sv_starttime : "",
+			creat_timeb : new Date().format("yyyy-MM-dd hh:mm:ss")
 		};
-		//组装数据
+		//组装监视器数据
 		var monitor = {
 			advance_parameter : monityTemplateAdvanceParameters,
 			error : error,
@@ -82,9 +86,12 @@ Template.showMonityInfo.events = {
 		var parentid = Session.get("checkedTreeNode")["id"];
 		SystemLogger("获取到的结果是:");
 		SystemLogger(monitor);
+		SystemLogger("正在刷新监视器....");
 		SvseMonitorDao.addMonitor(monitor,parentid,function(err){
 			if(err){
 				SystemLogger(err,-1);
+			}else{
+				SystemLogger("刷新监视器完成....");
 			}
 			Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
 		});

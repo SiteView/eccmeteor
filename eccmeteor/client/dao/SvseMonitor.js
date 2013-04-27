@@ -8,19 +8,10 @@ var SvseMonitorDao = {
 			}
 			SystemLogger("插入到服务端成功,服务端返回是数据是");
 			console.log(r_monitor);
-			//var selfId = r_monitor["return"]["id"];
+			var selfId = r_monitor["sv_id"];
 			
 			//setTimeout("SvseMonitorDao.updateMonitorInfo()",2000);
-			return;
-			
-			Meteor.call("getNodeByParentIdAndId",parentid,selfId,function(err,n_monitor){
-				if(err){
-					fn(err);
-					return;
-				}
-				SystemLogger("从服务端获取到的SvseTree数据是");
-				console.log(n_monitor);
-				SvseTree.insert(n_monitor,function(err,r_id){
+			SvseTree.insert(r_monitor,function(err,r_id){
 					if(err){
 						fn(err);						
 						return;
@@ -39,7 +30,6 @@ var SvseMonitorDao = {
 						SystemLogger("根据树结构的父节点成功");
 						fn();
 					});
-				});
 			});
 		});
 	}
