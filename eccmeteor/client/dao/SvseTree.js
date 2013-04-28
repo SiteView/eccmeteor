@@ -6,5 +6,9 @@ var SvseTreeDao = {
 	},
 	getNodesByIds:function(ids){
 		return SvseTree.find({sv_id:{$in:ids}}).fetch();
+	},
+	getMonitorTypeById :function(id){
+		var node = SvseTree.findOne({sv_id:id});
+		return  node ? node["sv_monitortype"] : undefined ;
 	}
 }

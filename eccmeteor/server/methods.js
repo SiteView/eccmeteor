@@ -8,7 +8,8 @@
   "svDelChildren":svDelChildren,
   "getNodeByParentIdAndId":SvseTreeDaoOnServer.getNodeByParentIdAndId,
   "svSubmitEntity":svSubmitEntity,
-  "entityAddMonitor":SvseMonitorDaoOnServer.addMonitor
+  "entityAddMonitor":SvseMonitorDaoOnServer.addMonitor,
+  "getMonitorInfoById" :SvseMonitorDaoOnServer.getMonitorInfoById
 });//给客户端调用的
 
 //给服务端调用的。
@@ -22,6 +23,6 @@ var SvseMethodsOnServer = {
 	"svGetAllTask":svGetAllTask,
 	"svSubmitMonitor":svSubmitMonitor,
 	"svRefreshMonitors":svRefreshMonitors,
-	"svGetLatestRefresh":svGetLatestRefresh,
-	"svGetRefreshed":svGetRefreshed
+	"svGetRefreshed":svGetRefreshed,
+	"svGetMonitor":svGetMonitor
 }

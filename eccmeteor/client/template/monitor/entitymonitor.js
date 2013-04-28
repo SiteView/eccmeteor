@@ -1,22 +1,22 @@
-Template.showMonityTemplate.monities = function(){
+Template.showMonitorTemplate.monities = function(){
 	var id = Session.get("checkedTreeNode")["id"];
 	var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);
 	return SvseEntityTemplateDao.getEntityMontityByDevicetype(devicetype);
 }
-Template.showMonityTemplate.events = {
+Template.showMonitorTemplate.events = {
 	"click tr a":function(e){
-		Session.set("viewstatus",MONITORVIEW.MONITYADD);//设置视图状态
+		SwithcView.view(MONITORVIEW.MONITORADD);//设置视图状态 选择监视器模板的视图
 		Session.set("monityTemplateId",e.target.id);
 		var  checkedMonityTemolate = SvseMonitorTemplateDao.getTemplateById(e.target.id);
-		Session.set("checkedMonityTemolate",checkedMonityTemolate);
+		Session.set("checkedMonityTemolate",checkedMonityTemolate);//存储选中的监视器模板信息
 	} 
 }
 
-Template.showMonityInfo.getMonityTemplateParameters = function(){
+Template.showMonitorInfo.getMonityTemplateParameters = function(){
 	return SvseMonitorTemplateDao.getMonityTemplateParametersById(Session.get("monityTemplateId"));
 }
 
-Template.showMonityInfo.getMonityTemplateAdvanceParameters = function(){
+Template.showMonitorInfo.getMonityTemplateAdvanceParameters = function(){
 	return SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(Session.get("monityTemplateId"));
 }
 
@@ -24,19 +24,19 @@ Template.monitorTemplateStatus.getMonityTemplateReturnItemsById = function(){
 	return SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("monityTemplateId"));
 }
 
-Template.showMonityInfo.getMonityTemplateStates = function(){
+Template.showMonitorInfo.getMonityTemplateStates = function(){
 	return SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"));
 }
 
-Template.showMonityInfo.getMonityTemplateStatesByStatus = function(status){
+Template.showMonitorInfo.getMonityTemplateStatesByStatus = function(status){
 	return SvseMonitorTemplateDao.getMonityTemplateStatesByIdAndStatus(Session.get("monityTemplateId"),status);
 }
 
-Template.showMonityInfo.devicename = function(){
+Template.showMonitorInfo.devicename = function(){
 	 return Session.get("checkedTreeNode").name;
 }
 
-Template.showMonityInfo.events = {
+Template.showMonitorInfo.events = {
 	"click #addMonitor":function(){
 		var monityTemplateParameter = ClientUtils.formArrayToObject($("#monityTemplateParameter").serializeArray());
 	//	var monityTemplateStates = ClientUtils.formArrayToObject($("#monityTemplateStates").serializeArray());
@@ -141,6 +141,6 @@ Template.showMonityInfo.events = {
 	
 }
 
-Template.showMonityInfo.getAllTaskNames = function(){
+Template.showMonitorInfo.getAllTaskNames = function(){
 	return SvseTaskDao.getAllTaskNames();
 }

@@ -1,0 +1,1 @@
+Template.showMonitorEditInfo.rendered = function(){		if(!this._rendered) {			this._rendered = true;		}		SvseMonitorDao.getMonitor(Session.get("checkedMonitorId")["id"],function(err,monitor){			if(err){				SystemLogger(err,-1);				return;			}		});}

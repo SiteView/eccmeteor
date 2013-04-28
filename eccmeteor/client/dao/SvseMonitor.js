@@ -32,6 +32,17 @@ var SvseMonitorDao = {
 					});
 			});
 		});
+	},
+	getMonitor : function(id,fn){
+		Utils.checkReCallFunction(fn);
+		Meteor.call("getMonitorInfoById",id,function(err,r_monitor){
+			if(err){
+				fn(err)
+				return;
+			}
+			fn(undefined,r_monitor);
+		});
+	
 	}
 
 }

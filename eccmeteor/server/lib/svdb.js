@@ -169,19 +169,7 @@ var svRefreshMonitors = function (id,pid,instantReturn){
 	var fmap = robj.fmap(0);
 	return fmap;
 }
-
-var svGetLatestRefresh = function (queueName){
-	var dowhat ={'dowhat':'GetLatestRefresh',queueName:queueName};
-	var robj= process.sv_univ(dowhat, 0);
-	//var robj = process.sv_forest(dowhat, 0);
-	if(!robj.isok(0)){
-		console.log("Errors: svGetLatestRefresh \n"+robj.estr(0));
-		return;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
-}
-
+//获取刷新监视器结果
 function svGetRefreshed(queueName,pid){
 	var dowhat ={'dowhat':'GetRefreshed',queueName:queueName,parentid:pid};
 	var robj= process.sv_univ(dowhat, 0);
@@ -189,5 +177,18 @@ function svGetRefreshed(queueName,pid){
 	var fmap = robj.fmap(0);
 	SystemLogger("获取svGetRefreshed");
 	SystemLogger(fmap);
+	return fmap;
+}
+
+//获取监视器
+function svGetMonitor(id){
+	var dowhat ={'dowhat':'GetMonitor','id':id};
+	var robj= process.sv_univ(dowhat, 0);
+	//var robj = process.sv_forest(dowhat, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	var fmap = robj.fmap(0);
 	return fmap;
 }

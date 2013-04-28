@@ -42,11 +42,14 @@
 	{{#if equal viewstatus "GroupEdit"}}
 		{{> showGroupEdit}}
 	{{/if}}
-	{{#if equal viewstatus "MonityTemplates"}}
-		{{> showMonityTemplate}}
+	{{#if equal viewstatus "MonitorTemplates"}}
+		{{> showMonitorTemplate}}
 	{{/if}}
-	{{#if equal viewstatus "MonityAdd"}}
-		{{> showMonityInfo}}
+	{{#if equal viewstatus "MonitorAdd"}}
+		{{> showMonitorInfo}}
+	{{/if}}
+	{{#if equal viewstatus "MonitorEdit"}}
+		{{> showMonitorEditInfo}}
 	{{/if}}
 </Template>
 

@@ -1,17 +1,4 @@
-﻿//定义视图状态
-var MONITORVIEW = {
-	GROUPANDENTITY : "GroupAndEntity", //组与设备视图 表格
-	MONTIOTR : "Monitor", //监视器视图  表格，统计图，数据状态统计
-	ENTITYGROUP : "EntityGroup", //设备模板展示视图
-	ENTITYITEM : "EntityItem", //设备模板信息添加视图
-	ENTITYEDIT : "EntityEdit",
-	GROUPADD : "GroupAdd", //添加组信息视图
-	GROUPEDIT : "GroupEdit", //修改组信息
-	MONITYTEMPLATES : "MonityTemplates", //设备的监视器列表
-	MONITYADD : "MonityAdd"
-};
-
-Template.body.viewstatus = function () { //视图控制
+﻿Template.body.viewstatus = function () { //视图控制
 	return Session.get("viewstatus");
 }
 
@@ -28,6 +15,8 @@ Template.showMonitor.events={
 		var id  = e.currentTarget.id;
 		var status = e.currentTarget.title;
 		if(!id || id=="") return;
+		var ID = {id:id,type:"monitor"}
+		Session.set("checkedMonitorId",ID);//存储选中监视器的id
 		if(status !== "ok"){
 			SystemLogger("Monitor "+id+" status is"+status+",coould no parse the data.");
 			return;
@@ -124,11 +113,11 @@ Deps.autorun(function(c){
 					checkedTreeNode.name = node.name;
 					Session.set("checkedTreeNode",checkedTreeNode);//记录点击的节点。根据该节点获取 编辑增加设备时的基本信息;
 					if(type !== "entity"){
-						Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY); //设置视图状态
+						SwithcView.view(MONITORVIEW.GROUPANDENTITY); //设置视图状态
 						Session.set("svid",id);
 						return;
 					}
-					Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
+					SwithcView.view(MONITORVIEW.MONTIOTR);//设置视图状态
 					Session.set("entityid",id);
 		});
 	}
@@ -147,11 +136,11 @@ Template.operateNode.sv_name = function(){
 Template.operateNode.events ={
 	"click a#addGroup":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
-		Session.set("viewstatus",MONITORVIEW.GROUPADD);//设置视图状态
+		SwithcView.view(MONITORVIEW.GROUPADD);//设置视图状态
 	},
 	"click a#editGroup":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
-		Session.set("viewstatus",MONITORVIEW.GROUPEDIT);//设置视图状态
+		SwithcView.view(MONITORVIEW.GROUPEDIT);//设置视图状态
 		return;
 		var id = Session.get("checkedTreeNode")["id"];
 		var group= {'property':{'sv_name':'测试pc设备组','sv_description':'测试pc设备组'},'return':{'id':id}};
@@ -159,12 +148,12 @@ Template.operateNode.events ={
 	},
 	"click a#addEntity":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
-		Session.set("viewstatus",MONITORVIEW.ENTITYGROUP);//设置视图状态
+		SwithcView.view(MONITORVIEW.ENTITYGROUP);//设置视图状态
 	},
 	"click a#editEntity":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
 		SystemLogger(Session.get("checkedTreeNode"));
-		Session.set("viewstatus",MONITORVIEW.ENTITYEDIT);//设置视图状态
+		SwithcView.view(MONITORVIEW.ENTITYEDIT);//设置视图状态
 	},
 	"click a#removeNodes":function(){ //删除子节点
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode").type === "se") return;
@@ -172,12 +161,18 @@ Template.operateNode.events ={
 		SvseDao.removeNodesById(id);
 		var fatherId = id.substring(0,id.lastIndexOf("\."));//获取删除节点的父节点Id
 		ConstructorNavigateTree.checkedNodeByTreeId(fatherId);//根据id选中节点设置到Session中
-		Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY); //设置视图状态
-		Session.set("svid",node.id);
+		SwithcView.view(MONITORVIEW.GROUPANDENTITY);//设置视图状态
 	},
 	"click a#addMonitor":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
-		Session.set("viewstatus",MONITORVIEW.MONITYTEMPLATES);//设置视图状态
+		SwithcView.view(MONITORVIEW.MONITORTEMPLATES);//设置视图状态 监视器模板选择
+	},
+	"click a#editMonitor" : function(){//编辑监视，应该先获取 监视器添加时的模板，然后填充数据
+		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;
+		var monitorid = Session.get("checkedMonitorId")["id"];
+		var templateMonotoryId = SvseTreeDao.getMonitorTypeById(monitorid); //获取需编辑监视器的模板id
+		Session.set("monityTemplateId",templateMonotoryId);//设置模板id
+		SwithcView.view(MONITORVIEW.MONITOREDIT);
 	}
 }
 var ConstructorNavigateTree =  {
@@ -190,5 +185,6 @@ var ConstructorNavigateTree =  {
 		checkedTreeNode.type = node.type;
 		checkedTreeNode.name = node.name;
 		Session.set("checkedTreeNode",checkedTreeNode);
+		Session.set("svid",node.id);
 	}
 }
