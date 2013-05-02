@@ -9,7 +9,8 @@
   "getNodeByParentIdAndId":SvseTreeDaoOnServer.getNodeByParentIdAndId,
   "svSubmitEntity":svSubmitEntity,
   "entityAddMonitor":SvseMonitorDaoOnServer.addMonitor,
-  "getMonitorInfoById" :SvseMonitorDaoOnServer.getMonitorInfoById
+  "getMonitorInfoById" :SvseMonitorDaoOnServer.getMonitorInfoById,
+  "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor
 });//给客户端调用的
 
 //给服务端调用的。

@@ -43,6 +43,15 @@ var SvseMonitorDao = {
 			fn(undefined,r_monitor);
 		});
 	
+	},
+	editMonitor : function(monitor,fn){
+		Utils.checkReCallFunction(fn);
+		Meteor.call("entityEditMonitor",monitor,function(err,status){
+			if(err){
+				fn(err)
+				return;
+			}
+			fn(undefined,status);
+		});
 	}
-
 }
