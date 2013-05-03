@@ -44,14 +44,27 @@ var SvseMonitorDao = {
 		});
 	
 	},
-	editMonitor : function(monitor,fn){
+	editMonitor : function(monitor,parentid,fn){
 		Utils.checkReCallFunction(fn);
-		Meteor.call("entityEditMonitor",monitor,function(err,status){
+		Meteor.call("entityEditMonitor",monitor,parentid,function(err,r_monitor){
 			if(err){
 				fn(err)
 				return;
 			}
-			fn(undefined,status);
+			var selfId =  r_monitor.sv_id;
+			oldNode = SvseTree.findOne({sv_id:selfId});
+			console.log("原来的SvseTree节点是");
+			console.log(oldNode);
+			SvseTree.update(oldNode._id,{$set:{status:oldNode.status}},function(err){
+				if(err){
+					SystemLogger("更新SvseTree错误是：");
+					fn(err);
+				}else{
+					SystemLogger("更新SvseTree节点成功");
+					fn();
+				}
+			});
+			
 		});
 	}
 }

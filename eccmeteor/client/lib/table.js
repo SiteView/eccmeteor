@@ -12,8 +12,12 @@ function DrawTable(){
 			}
 			return td;
 		});
-		tds.text(String);
-		tds.enter().append("td").text(String);
+		tds.text(function(d){
+			return d ? d : "";
+		});
+		tds.enter().append("td").text(function(d){
+			return d ? d : "";
+		});
 		tds.exit().remove();	
 	}
 }
