@@ -134,11 +134,11 @@ Template.operateNode.sv_name = function(){
 }
 //增删改操作Template
 Template.operateNode.events ={
-	"click a#addGroup":function(){
+	"click .btn#addGroup":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
 		SwithcView.view(MONITORVIEW.GROUPADD);//设置视图状态
 	},
-	"click a#editGroup":function(){
+	"click .btn#editGroup":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
 		SwithcView.view(MONITORVIEW.GROUPEDIT);//设置视图状态
 		return;
@@ -146,16 +146,16 @@ Template.operateNode.events ={
 		var group= {'property':{'sv_name':'测试pc设备组','sv_description':'测试pc设备组'},'return':{'id':id}};
 		SvseDao.editNode(group);
 	},
-	"click a#addEntity":function(){
+	"click .btn#addEntity":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
 		SwithcView.view(MONITORVIEW.ENTITYGROUP);//设置视图状态
 	},
-	"click a#editEntity":function(){
+	"click .btn#editEntity":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
 		SystemLogger(Session.get("checkedTreeNode"));
 		SwithcView.view(MONITORVIEW.ENTITYEDIT);//设置视图状态
 	},
-	"click a#removeNodes":function(){ //删除子节点
+	"click .btn#removeNodes":function(){ //删除子节点
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode").type === "se") return;
 		var id = Session.get("checkedTreeNode")["id"];
 		SvseDao.removeNodesById(id);
@@ -163,11 +163,11 @@ Template.operateNode.events ={
 		ConstructorNavigateTree.checkedNodeByTreeId(fatherId);//根据id选中节点设置到Session中
 		SwithcView.view(MONITORVIEW.GROUPANDENTITY);//设置视图状态
 	},
-	"click a#addMonitor":function(){
+	"click .btn#addMonitor":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
 		SwithcView.view(MONITORVIEW.MONITORTEMPLATES);//设置视图状态 监视器模板选择
 	},
-	"click a#editMonitor" : function(){//编辑监视，应该先获取 监视器添加时的模板，然后填充数据
+	"click .btn#editMonitor" : function(){//编辑监视，应该先获取 监视器添加时的模板，然后填充数据
 		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;
 		var monitorid = Session.get("checkedMonitorId")["id"];
 		var templateMonotoryId = SvseTreeDao.getMonitorTypeById(monitorid); //获取需编辑监视器的模板id
