@@ -91,8 +91,9 @@ Template.showMonitorInfo.events = {
 				}
 				Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
 			});
-		}else{
-			monitor["return"] = {id : Session.get("monityTemplateId"),return : true};
+		}else{//如果编辑监视器
+			monitor["return"] = {id : Session.get("checkedMonitorId").id,return : true};
+			console.log(monitor);
 			SvseMonitorDao.editMonitor(monitor,parentid,function(err){
 				if(err){
 					SystemLogger(err,-1);
