@@ -14,7 +14,7 @@ if (typeof(Meteor) !== 'undefined' && Meteor.isServer){
 var server = new mongodb.Server("127.0.0.1", 3002, {});
 var db= new mongodb.Db('meteor', server, {w:1});
 
-//调试开关，0:任何调试信息不显示，1：一般信息，2：详细信息
+//调试开关，0:任何调试信息不显示，1：一般信息，2：详细信息， 3：极详细用于错误调试
 var debug=2;
 //重复运行的秒间隔
 var repeat_time= 30;
@@ -79,7 +79,7 @@ function dateFormat(date, fstr, utc) {
 }
 
 /**
- * 是否 str1 的时间（距1970年的秒数）更大<br/>
+ * str1 与 str2 的毫秒差（距1970年的毫秒数），前者更大则结果>0 <br/>
  * 2012-05-18 05:37:21
  */
 function dateDiff(str1, str2) {
@@ -139,19 +139,62 @@ function split_dstr(mon){
 	if(status!=='ok' && status!=='warning' && status!=='error')
 		return mon;	
 	
+	var info= monitorinfo[id];
+	if(info===undefined)
+		return mon;
+	var sv_monitortype= info['sv_monitortype'];
+	if(sv_monitortype===undefined)
+		return mon;
+	var tpl= mon_tpls_id[sv_monitortype]; 
+	if(tpl===undefined)
+		return mon;
+
+//	 split,  1.9.14.1 , ok , 包成功率(%)=100.00, 数据往返时间(ms)=0.00, 状态值(200表示成功 300表示出错)=200.00,
+//	 name,  packetsGoodPercent , 包成功率(%) , 1
+//	 name,  roundTripTime , 数据往返时间(ms) , 2
+//	 name,  status , 状态值(200表示成功 300表示出错) , 3
 //	console.log(' split,  '+id+' , '+status+' , '+dstr);
 	
+	var len= dstr.length;
+	if(len>1){
+		if(dstr.charAt(len-1)==='.')
+			dstr= dstr.substring(0, len-1);
+	}
+	var str= dstr;
+	for(var i=1; i<=50; i++){
+		var item= tpl['ReturnItem_'+i];
+		if(item===undefined)
+			break;
+		var name= item['sv_name'];
+		var label= item['sv_label'];
+		if(name===undefined || label===undefined)
+			break;
+		
+		label= label + '=';
+		var end= str.length;
+		var index = str.indexOf(label);
+		if (index < 0)
+			break;
+		var index2 = str.indexOf(',');
+		if(index2<0)
+			index2= end;
+		
+		var value = str.substring(index + label.length, index2);
+		str= str.substring(index2+1);
+		mon[name]= value;
+		
+//		console.log(' name/value:  '+name+'/'+value+'  , '+label+' , '+i);
+	}
 	return mon;
 }
 
 
 /**
- * 取得 ecc 中的log，并插入
+ * 构造查询参数 dowhat
  */
-function querylog(id, begin_time, collection) {
-	var d= new Date();
+function buildWhat(id, begin_date, end_date){
 	var what;
-	if(begin_time === undefined){
+	if(begin_date === undefined){
 		// 数据库中还没有对应 id 的 log，从最早开始查log
 		what = {
 			'dowhat' : 'QueryRecordsByTime',
@@ -162,68 +205,162 @@ function querylog(id, begin_time, collection) {
 			'begin_hour' : '0',
 			'begin_minute' : '0',
 			'begin_second' : '1',
-			'end_year' : d.getFullYear(),
-			'end_month' : d.getMonth()+1,
-			'end_day' : d.getDate(),
-			'end_hour' : d.getHours(),
-			'end_minute' : d.getMinutes(),
-			'end_second' : d.getSeconds(),			
+			'end_year' : end_date.getFullYear(),
+			'end_month' : end_date.getMonth()+1,
+			'end_day' : end_date.getDate(),
+			'end_hour' : end_date.getHours(),
+			'end_minute' : end_date.getMinutes(),
+			'end_second' : end_date.getSeconds(),			
 		};
+	}
+	else{
+		what = {
+			'dowhat' : 'QueryRecordsByTime',
+			'id' : id,
+			'begin_year' : begin_date.getFullYear(),
+			'begin_month' : begin_date.getMonth()+1,
+			'begin_day' : begin_date.getDate(),
+			'begin_hour' : begin_date.getHours(),
+			'begin_minute' : begin_date.getMinutes(),
+			'begin_second' : begin_date.getSeconds(),
+			'end_year' : end_date.getFullYear(),
+			'end_month' : end_date.getMonth()+1,
+			'end_day' : end_date.getDate(),
+			'end_hour' : end_date.getHours(),
+			'end_minute' : end_date.getMinutes(),
+			'end_second' : end_date.getSeconds(),
+		};
+	}
+	return what;
+}
+
+/**
+ * 插入数据到 mongodb
+ */
+function insertlog(id, robj, collection){
+	if (robj.isok() !== true)
+		return 0;
+	var fmap = robj.fmap(0);
+//	if(debug>0)	
+//		console.log(' to transfer log: '+id);		
+	
+	var logcount= 0;
+	var logs= Array();
+	var key= true; //取出第一个 key
+	do{
+		key= robj.nextkey(key,0); //取出下一个 key
+		if(key!==false){
+			logcount++;				
+			var one = {
+				'id' : id,
+				'creat_time' : fmap[key]['creat_time'],
+				'dstr' : fmap[key]['dstr'],
+				'status' : fmap[key]['record_status'],
+			};				
+			logs.push( split_dstr(one) );
+		}
+	}while(key!==false);		
+	//插入logs
+	collection.insert(logs, function(error, docs) {
+		if (error) {
+			console.log(error);
+		}
+	});
+	return logcount;		
+}
+
+/**
+ * 遇到超多log 监测器的特殊处理机制
+ */
+function queryTooBigLog(id, robj, collection){
+	if(debug>1)
+		console.log('svlog queryTooBigLog: '+ id +' ...');	
+	var fmap = robj.fmap(0);
+	if(fmap===undefined)
+		return undefined;
+//	if(debug>0)	
+//		console.log(' to transfer log: '+id);		
+	
+	var latest= undefined;
+	var oldest= undefined;
+	var key= true; //取出第一个 key
+	do{
+		key= robj.nextkey(key,0); //取出下一个 key
+		if(key!==undefined && key!==false && fmap[key]!==undefined){
+			if(latest===undefined)
+				latest= fmap[key]['creat_time'];
+			oldest= fmap[key]['creat_time'];
+		}
+	}while(key!==false);
+	if(debug>1)
+		console.log('svlog queryTooBigLog: '+ id + ' ,oldest/latest: '+ oldest+' / '+latest);
+	
+	//取得合理时间区段
+	var diff= dateDiff(latest, oldest);
+	if(diff===undefined)
+		return undefined;
+	var distance= diff/2;
+	
+	//分时间区段查询数据
+	var logcount= 0;
+	var stop= Date.parse(latest);
+	if(stop===undefined)
+		return undefined;
+	var begin= stop- 2*365*24*3600*1000;	
+	do{
+		var end= begin + distance;
+		
+		//调用后台，取得  ecc 中的log
+		var count;
+		var what= buildWhat(id, new Date(begin), new Date(end));
+		var robj = process.sv_forest(what, 0);
+		if (robj.isok() === true) {
+			count= insertlog(id, robj, collection);
+			logcount += count;			
+		} else if(debug>0){
+			console.log(' !!! failed to QueryRecordsByTime: '+ id + '  ,begin_time:' +begin_time + '  ,estr: ' + robj.estr()+ ' .svlog.');		
+		}
+		if(debug>1)
+			console.log('svlog queryTooBigLog: '+ id + ' , begin/end: '+ dateFormat(new Date(begin))+ ' / '+ dateFormat(new Date(end)) + ' , count:'+count);		
+		
+		//重置查询区段
+		begin= end;
+	}while(begin<stop);
+	
+	return logcount;	
+}
+
+
+/**
+ * 取得 ecc 中的log，并插入
+ */
+function querylog(id, begin_time, collection) {
+	var what;
+	if(begin_time === undefined){
+		// 数据库中还没有对应 id 的 log，从最早开始查log
+		what = buildWhat(id, undefined, new Date());
 	}
 	else{
 		var p = Date.parse(begin_time); 
 		if (p === 'NaN')
 			return undefined;
 		var begin= new Date(p);
-		what = {
-			'dowhat' : 'QueryRecordsByTime',
-			'id' : id,
-			'begin_year' : begin.getFullYear(),
-			'begin_month' : begin.getMonth()+1,
-			'begin_day' : begin.getDate(),
-			'begin_hour' : begin.getHours(),
-			'begin_minute' : begin.getMinutes(),
-			'begin_second' : begin.getSeconds(),
-			'end_year' : d.getFullYear(),
-			'end_month' : d.getMonth()+1,
-			'end_day' : d.getDate(),
-			'end_hour' : d.getHours(),
-			'end_minute' : d.getMinutes(),
-			'end_second' : d.getSeconds(),
-		};
+		what = buildWhat(id, begin, new Date());
 	}
+	//调用后台，取得  ecc 中的log
 	var robj = process.sv_forest(what, 0);
 	if (robj.isok() === true) {
-		var fmap = robj.fmap(0);
-//		if(debug>0)	
-//			console.log(' to transfer log: '+id);		
-		
-		var logcount= 0;
-		var logs= Array();
-		var key= true; //取出第一个 key
-		do{
-			key= robj.nextkey(key,0); //取出下一个 key
-			if(key!=false){
-				logcount++;				
-				var one = {
-					'id' : id,
-					'creat_time' : fmap[key]['creat_time'],
-					'dstr' : fmap[key]['dstr'],
-					'status' : fmap[key]['record_status'],
-				};				
-				logs.push( split_dstr(one) );
-			}
-		}while(key!=false);		
-		//插入logs
-		collection.insert(logs, function(error, docs) {
-			if (error) {
-				console.log(error);
-			}
-		});
-		return logcount;	
+		return insertlog(id, robj, collection);	
 	} else {
+		var estr= robj.estr();
+		if(estr){
+			var index = estr.indexOf("为防止数据过大，强行退出查询");
+			if(index>0){
+				return queryTooBigLog(id, robj, collection);
+			}
+		}
 		if(debug>0)	
-			console.log(' !!! failed to QueryRecordsByTime: '+ id + '  begin_time:' +begin_time);		
+			console.log(' !!! failed to QueryRecordsByTime: '+ id + '  ,begin_time:' +begin_time + '  ,estr: ' + robj.estr()+ ' .svlog.');		
 	}
 	return undefined;
 };
@@ -253,7 +390,7 @@ function checkUpdate(qtime, qid, collection) {
 	var mon= monitors[qid];
 	if(mon===undefined)
 	{
-		console.log('monitors[' + qid + '] undefined');
+		console.log('monitors[' + qid + '] undefined. svlog.');
 		return;
 	}
 	var creat_time = mon['creat_time'];
@@ -283,15 +420,16 @@ function checkUpdate(qtime, qid, collection) {
 			ids[qid]= undefined;
 			trans['num']--;
 			
-			if (freq>diff && diff>0) {
-				// GetTreeData得到的新 log 时间比 mongodb 中最新 log 的时间还要新，且小于监测周期，则直接更新log			
-				collection.insert( split_dstr(mon), function(error, docs) {
+			if (freq>diff && diff>30000) {
+				// GetTreeData得到的新 log 时间比 mongodb 中最新 log 的时间还要新，且小于监测周期，则直接更新log		
+				mon= split_dstr(mon);
+				collection.insert( mon, function(error, docs) {
 					if (error) {
 						console.log(error);
 					}
 				});
 				if(debug>1)
-					console.log('update log id: '+ qid+ "  qtime: " + qtime + "    creat_time: " + creat_time);				
+					console.log('svlog update log id: '+ qid+ "  qtime: " + qtime + "    creat_time: " + creat_time);				
 			}			
 		}
 	}
@@ -356,7 +494,7 @@ var update = function(error, client) {
 //	console.log(allids);
 	
 	if(debug>0)
-		console.log('update ... (' + 'debug: ' + debug + ')');
+		console.log('svlog update ... (' + 'debug: ' + debug + ')');
 	//调试信息，需要导入的监测器数量
 	trans= Array();
 	trans['num']=allids.length;	
@@ -395,6 +533,8 @@ var update = function(error, client) {
 			if (check === undefined)
 				continue; 
 			
+			if(debug>2)	
+				console.log(' svlog transfering '+id+'  ...');
 			//只要 querylog 了新的，就需要刷新缓存数据
 			use_cache_items= false;
 			
@@ -402,7 +542,7 @@ var update = function(error, client) {
 			var checktime= check['qtime'];
 			var logcount= querylog(id, checktime, collection);
 			if(debug>0 && logcount)	
-				console.log(' transferred '+logcount+' logs: '+id+'  from '+ checktime +' , ' + tindex + '/' + trans['num'] + ' at '+ dateFormat(new Date()) );			
+				console.log(' svlog transferred '+logcount+' logs: '+id+'  from '+ checktime +' , ' + tindex + '/' + trans['num'] + ' at '+ dateFormat(new Date()) );			
 //			break; //测试代码，可以每次只导入一个监测器的历史数据
 
 //			// 测试代码，数据库中还没有对应 id 的 log，以下代码只是插入最新的一条log			
@@ -434,7 +574,7 @@ var update = function(error, client) {
 	// 关闭数据库连接		
 	stream.on("close", function() {
 		if(debug>0)		
-			console.log(run_count++ + 'th update is done.');	
+			console.log('svlog '+ run_count++ + 'th update is done.');	
 		db.close();
 		is_updating= false;
 	});
@@ -450,7 +590,7 @@ var repeatJob = function() {
 	is_updating= true;
 	
 	if(debug>0)	
-		console.log('\nrepeatJob(' + repeat_time + 's), '+ dateFormat(new Date()));
+		console.log('\nsvlog repeatJob(' + repeat_time + 's), '+ dateFormat(new Date()));
 	forest= Array();
 	monitors= Array();
 	monitorinfo= Array();
@@ -493,7 +633,7 @@ var repeatJob = function() {
 		db.open(update);		
 	} else {
 		if(debug>0)	
-			console.log(' !!! failed to GetTreeData.');
+			console.log(' !!! failed to GetTreeData. svlog.');
 	}
 };
 //db.open(update);
@@ -515,6 +655,44 @@ function setMonTpls(){
 			mon_tpls_id[i]= robj.fmap(0);
 		}		
 	}
+//	--------
+//	-- AdvanceParameterItem_1 (NO:1) --
+//	-- ParameterItem_1 (NO:4) --
+//	-- ParameterItem_2 (NO:5) --
+//	-- ReturnItem_1 (NO:6) --
+//	     sv_baseline = 1
+//	     sv_drawimage = 1
+//	     sv_drawmeasure = 1
+//	     sv_drawtable = 1
+//	     sv_label = 包成功率(%)
+//	     sv_name = packetsGoodPercent
+//	     sv_primary = 1
+//	     sv_type = Float
+//	     sv_unit = (%)
+//	-- ReturnItem_2 (NO:7) --
+//	     sv_label = 数据往返时间(ms)
+//	     sv_name = roundTripTime
+//	     sv_type = Float
+//	-- ReturnItem_3 (NO:8) --
+//	     sv_label = 状态值(200表示成功 300表示出错)
+//	     sv_name = status
+//	     sv_type = Float
+//	     sv_unit =
+//	-- error (NO:9) --
+//	-- good (NO:10) --
+//	-- property (NO:11) --
+//	     sv_class = Ping
+//	     sv_description = 监测Ping指定服务器状况
+//	     sv_dll = msping.dll
+//	     sv_func = PING
+//	     sv_helplink = javascript:shelp2('monitor_ping.htm')
+//	     sv_id = 5
+//	     sv_label = Ping
+//	     sv_name = Ping
+//	-- return (NO:12) --
+//	     id = 5
+//	     return = true
+//	-- warning (NO:13) --	
 
 }
 
@@ -525,11 +703,11 @@ function dbReIndex(){
 	db.open(function(error, client) {
 		if (error)
 			throw error;	
-		console.log('\n mongodb reindex ... '+ dateFormat(new Date()));
+		console.log('\n svlog mongodb reindex ... '+ dateFormat(new Date()));
 		var collection = new mongodb.Collection(client, 'svlog');
 		collection.reIndex(function(err, result) {
 			collection.indexInformation(function(err, indexInformation) {
-				console.log(' mongodb reindex is done!  '+ dateFormat(new Date()));
+				console.log(' svlog mongodb reindex is done!  '+ dateFormat(new Date()));
 	            db.close();
 	          });			
 			});
@@ -543,9 +721,10 @@ function removeLine(){
 	db.open(function(error, client) {
 		if (error)
 			throw error;	
-		console.log('\n mongodb remove line, '+ dateFormat(new Date()));
+		console.log('\n svlog mongodb remove line, '+ dateFormat(new Date()));
 		var collection = new mongodb.Collection(client, 'svlog');
 		
+//		var line= {'id':'1.9.14.1'};
 //		var line= {'id':'1.9.14.1','creat_time':'2010-02-26 14:11:37'};
 		var line= {'id':'1.9.14.1','creat_time': {$gt:'2010-02-26 10:11:37'} };
 		
@@ -560,7 +739,7 @@ if(can_run){
 	process.sv_init();	
 	setMonTpls();
 }else{
-	removeLine();
+//	removeLine();
 //	dbReIndex();	
 }
 
