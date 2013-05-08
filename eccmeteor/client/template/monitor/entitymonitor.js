@@ -104,7 +104,7 @@ Template.showMonitorInfo.events = {
 			});
 		}
 	},
-	"click #errorsStatusBtn":function(){
+	"click #errorsStatusDiv a.btn":function(){
 		var inputs = $("#errorsStatusDiv > form:first").serializeArray();
 		var sv_conditioncount = $("#errorsStatusForm > .sv_conditioncount:first");
 		var count = sv_conditioncount.val();
@@ -116,9 +116,12 @@ Template.showMonitorInfo.events = {
 			$("#errorsStatusForm").append(input);
 		}
 		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
-		$("#errorsStatusTable").append(tr);
+		tr.attr("id","tr"+count);
+		var td = $("<td></td>").append($("<input type='checkbox'>"));
+		tr.prepend(td);
+		$("#errorsStatusTable").prepend(tr);
 	},
-	"click #warnigStatusBtn":function(){
+	"click #warningStatusDiv a.btn":function(){
 		var inputs = $("#warningStatusDiv > form:first").serializeArray();
 		var sv_conditioncount = $("#warningStatusForm > .sv_conditioncount:first");
 		var count = sv_conditioncount.val();
@@ -130,9 +133,12 @@ Template.showMonitorInfo.events = {
 			$("#warningStatusForm").append(input);
 		}
 		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
-		$("#warnigStatusTable").append(tr);
+		tr.attr("id","tr"+count);
+		var td = $("<td></td>").append($("<input type='checkbox'>"));
+		tr.prepend(td);
+		$("#warnigStatusTable").prepend(tr);
 	},
-	"click #goodStatusBtn":function(){
+	"click #goodStatusDiv a.btn":function(){
 		var inputs = $("#goodStatusDiv > form:first").serializeArray();
 		var sv_conditioncount = $("#goodStatusForm > .sv_conditioncount:first");
 		var count = sv_conditioncount.val();
@@ -144,11 +150,47 @@ Template.showMonitorInfo.events = {
 			$("#goodStatusForm").append(input);
 		}
 		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
-		$("#goodStatusTable").append(tr);
+		tr.attr("id","tr"+count);
+		var td = $("<td></td>").append($("<input type='checkbox'>"));
+		tr.prepend(td);
+		$("#goodStatusTable").prepend(tr);
 	}
-	
 }
-
+Template.showMonitorInfo.rendered = function(){
+	if(!this._rendered) {
+			this._rendered = true;
+	}
+	$(function(){
+		$("thead .span1 :checkbox").each(function(){//全选，全不选
+			$(this).bind("click",function(){
+				var flag = this.checked; 
+				$(this).closest("table").find("tbody :checkbox").each(function(){
+					this.checked = flag//$(this).attr("checked",flag);该写法有bug无法再界面上显示钩
+				});
+			});
+		});
+		//删除条件
+		$("button[name='deleteConditionBtn']").each(function(){
+			$(this).click(function(){
+				$(this).parent("div[id]").find("tbody :checkbox").each(function(){
+					if(this.checked){
+						var tr = $(this).closest("tr");
+					    var id = tr.attr("id").substr(2);
+						tr.closest("div[id]").find("form[id]:first :hidden").each(function(){
+							var name = $(this).attr("name");
+							if(name.indexOf(id) == -1)return;
+							var reg=eval("/"+id+"/");
+							if(!$(this).attr("name").replace(reg,"").match(/\d+/g)){
+								$(this).remove();
+							}
+						});
+						tr.remove();
+					}
+				});
+			});
+		});
+	});
+}
 Template.showMonitorInfo.getAllTaskNames = function(){
 	return SvseTaskDao.getAllTaskNames();
 }

@@ -55,7 +55,7 @@
 				<th>状态</th><th>SV_ID</th><th>名称</th><th>描述</th><th>最后更新时间</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody id="showMonitorList">
 		{{#each getChildrenNodesByIdAndType entityid "submonitor"}}
 			<tr id="{{sv_id}}" title="{{status}}">
 				<td>{{status}}</td>
@@ -122,19 +122,20 @@
 </Template>
 
 <Template name="svg"><!-- svg 图像展示-->
-	<div class="well">
-		<svg id="line"></svg>
+	<div id="showSvg">
+		<div class="well">
+			<svg id="line"></svg>
+		</div>
+		<table class="table table-striped table-bordered table-condensed">
+			<thead>
+				<tr><th>返回值</th><th>最大值</th><th>平均值</th><th>最新值</th></tr>
+			</thead>
+			<tbody id="tableData">
+					
+			</tbody>
+		</table>
+		{{>recordsData}}
 	</div>
-	<table class="table table-striped table-bordered table-condensed">
-		<thead>
-			<tr><th>返回值</th><th>最大值</th><th>平均值</th><th>最新值</th></tr>
-		</thead>
-		<tbody id="tableData">
-				
-		</tbody>
-	</table>
-	{{>recordsData}}
-
 </Template>
 
 <Template name="recordsData"> <!-- 记录统计 -->
@@ -169,6 +170,7 @@
 			<div class="btn-group">
 				<button class="btn" id="addMonitor">添加监视器</button>
 				<button class="btn" id="editMonitor">编辑监视器</button>
+				<button class="btn" id="editMonitor">删除监视器</button>
 			</div>
 			<div class="btn-group">
 				<button class="btn" id="removeNodes">删除节点</button>

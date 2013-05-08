@@ -13,18 +13,38 @@ Template.showMonitor.entityid = function () {
 Template.showMonitor.events={
 	"click tbody tr":function(e){
 		var id  = e.currentTarget.id;
-		var status = e.currentTarget.title;
+		//var status = e.currentTarget.title;
 		if(!id || id=="") return;
 		var ID = {id:id,type:"monitor"}
 		Session.set("checkedMonitorId",ID);//存储选中监视器的id
-		if(status !== "ok"){
+		/*
+		if(status === "ok"){
 			SystemLogger("Monitor "+id+" status is"+status+",coould no parse the data.");
 			return;
-		}
+		}*/
 		drawImage(id);
 	}
 }
 
+Template.showMonitor.rendered = function(){
+	if(!this._rendered) {
+			this._rendered = true;
+	}
+	var tr = $("#showMonitorList tr:first");
+	if(!tr){
+		$("#showSvg").css("display","none");
+		return;//如果没有监视器则不画图
+	}
+	var id = tr.attr("id");
+	if(!id || id=="") {
+		$("#showSvg").css("display","none");
+		return;
+	}
+	$("#showSvg").css("display","block");
+	var ID = {id:id,type:"monitor"}
+	Session.set("checkedMonitorId",ID);//存储选中监视器的id
+	drawImage(id);
+}
 Template.recordsData.recordsData = function(){
 	return Session.get("recordsData");
 }
@@ -68,7 +88,6 @@ function drawImage(id,count){
 		SystemLogger("监视器 "+ id+"不能绘制图形");
 		return;
 	}
-	
 	//获取画图数据
 	Meteor.call("getQueryRecords",id,count, function (err, result) {
 		if(err){
@@ -173,6 +192,10 @@ Template.operateNode.events ={
 		var templateMonotoryId = SvseTreeDao.getMonitorTypeById(monitorid); //获取需编辑监视器的模板id
 		Session.set("monityTemplateId",templateMonotoryId);//设置模板id
 		SwithcView.view(MONITORVIEW.MONITOREDIT);
+	},
+	"click .btn#deleteMonitor" : function(){
+		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;
+		
 	}
 }
 var ConstructorNavigateTree =  {
