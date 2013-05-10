@@ -153,5 +153,16 @@ var SvseDao = {
 		if(!group || !group["property"])
 			return {};
 		return group["property"];
+	},
+	
+	removeMonitor : function(monitorid,parentid,fn){
+		fn = Utils.checkReCallFunction(fn);
+		Meteor.call("deleteMonitor",monitorid,parentid,function (err,result){
+			if(err){
+				fn(err);
+				return ;
+			}
+			fn();
+		});
 	}
 }

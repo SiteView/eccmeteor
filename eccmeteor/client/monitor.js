@@ -195,7 +195,12 @@ Template.operateNode.events ={
 	},
 	"click .btn#deleteMonitor" : function(){
 		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;
-		
+		var monitorid = Session.get("checkedMonitorId")["id"];
+		var parentid  = Session.get("checkedTreeNode")["id"];
+		SystemLogger(monitorid+"::"+parentid);
+		SvseDao.removeMonitor(monitorid,parentid,function(err){
+			if(err) SystemLogger(err);
+		})
 	}
 }
 var ConstructorNavigateTree =  {

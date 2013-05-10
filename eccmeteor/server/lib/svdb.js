@@ -192,3 +192,12 @@ function svGetMonitor(id){
 	var fmap = robj.fmap(0);
 	return fmap;
 }
+//删除监视器
+function svDeleteMonitor(id){
+	var robj = process.sv_univ({'dowhat':'DelChildren','parentid':id}, 0);
+	if(!robj.isok(0)){
+		return false;
+	}
+	var fmap= robj.fmap(0);
+	return fmap;
+}

@@ -10,7 +10,8 @@
   "svSubmitEntity":svSubmitEntity,
   "entityAddMonitor":SvseMonitorDaoOnServer.addMonitor,
   "getMonitorInfoById" :SvseMonitorDaoOnServer.getMonitorInfoById,
-  "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor
+  "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
+  "deleteMonitor":SvseMonitorDaoOnServer.deleteMonitor
 });//给客户端调用的
 
 //给服务端调用的。
@@ -25,5 +26,6 @@ var SvseMethodsOnServer = {
 	"svSubmitMonitor":svSubmitMonitor,
 	"svRefreshMonitors":svRefreshMonitors,
 	"svGetRefreshed":svGetRefreshed,
-	"svGetMonitor":svGetMonitor
+	"svGetMonitor":svGetMonitor,
+	"svDeleteMonitor" : svDeleteMonitor
 }
