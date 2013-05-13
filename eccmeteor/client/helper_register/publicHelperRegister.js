@@ -62,6 +62,10 @@ Handlebars.registerHelper('createDomeByPropertyHelper', function(obj) {
 			result =  result + '>'
 			break;
 		case "combobox":
+			if(obj["sv_dll"]){
+				result = '<select name="'+name+'" class="dll"></select>';
+				break;
+			}
 			result = '<select name="'+name+'">';
 			options = "";
 			for(index in selects){

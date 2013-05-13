@@ -189,7 +189,29 @@ Template.showMonitorInfo.rendered = function(){
 				});
 			});
 		});
+		if($("select.dll:first")){
+			(function(){		
+				var panrentid = Session.get("checkedTreeNode")["id"];
+				var monitorstatus = ($("#monitorstatus").val() === "true" || $("#monitorstatus").val() === true) ;
+				if(monitorstatus){ //编辑状态
+					var monitorid = Session.get("checkedMonitorId")["id"];
+					var templateMonitoryId = SvseTreeDao.getMonitorTypeById(monitorid); //获取需编辑监视器的模板id
+				}else{
+					templateMonitoryId = Session.get("monityTemplateId");
+				}			
+				console.log(panrentid+" : "+templateMonitoryId);
+				Meteor.call("svGetDynamicData",panrentid,templateMonitoryId,function(err,result){
+					var optionObj = result["DynamicData"];
+					for(name in optionObj){
+						var option = $("<option value='"+optionObj[name]+"'>"+name+"</option>");
+						$("select.dll:first").append(option);
+					}
+				});
+			})();
+		}
 	});
+	
+		
 }
 Template.showMonitorInfo.getAllTaskNames = function(){
 	return SvseTaskDao.getAllTaskNames();

@@ -201,3 +201,15 @@ function svDeleteMonitor(id){
 	var fmap= robj.fmap(0);
 	return fmap;
 }
+
+//获取动态数据
+
+function svGetDynamicData(entityId,monitorTplId){
+	var robj = process.sv_univ({'dowhat':'GetDynamicData','entityId':entityId,'monitorTplId':monitorTplId}, 0);
+	if(!robj.isok(0)){
+		throw new Meteor.Error(500,robj.estr(0));
+	}
+	var fmap= robj.fmap(0);
+	console.log(fmap);
+	return fmap;	
+}
