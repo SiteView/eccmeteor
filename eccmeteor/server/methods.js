@@ -30,3 +30,10 @@ var SvseMethodsOnServer = {
 	"svGetMonitor":svGetMonitor,
 	"svDeleteMonitor" : svDeleteMonitor
 }
+
+var SvseSyncData = {
+	"svGetDefaultTreeData" : svGetDefaultTreeData,
+	"svGetSVSE" : svGetSVSE,
+	"svGetGroup" : svGetGroup,
+	"svGetEntity" : svGetEntity
+}

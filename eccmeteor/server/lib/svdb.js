@@ -25,6 +25,58 @@ var svForest = function(dowhat){
 	return fmap;
 }
 
+var svGetDefaultTreeData = function(parentid,onlySon){
+	if(onlySon === undefined) onlySon = true;
+	var dowhat = {
+		'dowhat' : 'GetTreeData',
+		'parentid' : parentid,
+		'onlySon'  : onlySon
+	}
+	var robj = process.sv_forest(dowhat, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	return robj.fmap(0);
+}
+
+var svGetSVSE = function (id){
+	var dowhat = {
+		'dowhat' : 'GetSVSE',
+		'id':id
+	}
+	var robj = process.sv_univ(dowhat, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	return robj.fmap(0);
+}
+
+var svGetGroup = function (id){
+	var dowhat = {
+		'dowhat' : 'GetGroup',
+		'id':id
+	}
+	var robj = process.sv_univ(dowhat, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	return robj.fmap(0);
+}
+var svGetEntity = function (id){
+	var dowhat = {
+		'dowhat' : 'GetEntity',
+		'id':id
+	}
+	var robj = process.sv_univ(dowhat, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	return robj.fmap(0);
+}
 //获取监视器一段时间内的状态记录
 var getQueryRecords = function(id,count){
 	var dowhat ={'dowhat':'QueryRecordsByCount','id':id,'count':count};

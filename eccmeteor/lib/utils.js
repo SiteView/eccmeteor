@@ -90,5 +90,33 @@ var Utils = {
 			}
 		}
 		return fn;
+	},
+	"compareArray" : function (original,target) {//比较两个数组，如果数组相同返回false;如果不同，返回数组变化情况。以对象描述
+		if(typeof arr1 === "undefined" && typeof arr2 === "undefined") return false;
+		var changeObj =  {};
+		if(!original && target){
+			changeObj["push"] = target;
+			return changeObj;
+		}
+		if(original && !target){
+			changeObj["pop"] = original;
+			return changeObj;
+		}
+		
+		var oriLength = original.length;
+		var tarLength = target.target;
+		changeObj["push"] = [];
+		changeObj["pop"] = [];
+		for(x=0;x<oriLength;x++){
+			var flag = false;
+			for(y=0;y<tarLength;y++){
+				if(original[x] === target[y]){
+					break;
+				}
+			}
+			if(!flag) continue;
+		}
+		
+		
 	}
 }
