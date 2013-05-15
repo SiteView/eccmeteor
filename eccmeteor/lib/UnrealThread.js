@@ -25,10 +25,10 @@ function UnrealThread(fn,time){
             };
         },
         $fn : function(arg){
-            stop = setTimeout(thread.__fn(arg),time);
+            stop = Meteor.setTimeout(thread.__fn(arg),time);
         },
 		close : function(){
-			clearTimeout(stop);
+			Meteor.clearTimeout(stop);
 		}
     };
     this.start = function(arg){
@@ -39,7 +39,7 @@ function UnrealThread(fn,time){
 		if(!closetime || typeof closetime !== "number" || closetime < 0){
 			thread.close();
 		}else{
-			setTimeout(thread.close,closetime);
+			Meteor.setTimeout(thread.close,closetime);
 		}
 	};
 }

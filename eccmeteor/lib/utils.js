@@ -92,7 +92,7 @@ var Utils = {
 		return fn;
 	},
 	"compareArray" : function (original,target) {//比较两个数组，如果数组相同返回false;如果不同，返回数组变化情况。以对象描述
-		if(typeof arr1 === "undefined" && typeof arr2 === "undefined") return false;
+		if(typeof original === "undefined" && typeof target === "undefined") return false;
 		var changeObj =  {};
 		if(!original && target){
 			changeObj["push"] = target;
@@ -104,19 +104,43 @@ var Utils = {
 		}
 		
 		var oriLength = original.length;
-		var tarLength = target.target;
+		var tarLength = target.length;
 		changeObj["push"] = [];
 		changeObj["pop"] = [];
 		for(x=0;x<oriLength;x++){
 			var flag = false;
 			for(y=0;y<tarLength;y++){
 				if(original[x] === target[y]){
+					flag = true;
 					break;
 				}
 			}
-			if(!flag) continue;
+			if(flag) continue;
+			changeObj["pop"].push(original[x]);		
+		}
+		for(i=0;i<tarLength;i++){
+			var flag = false;
+			for(j=0;j<oriLength;j++){
+				if(original[j] === target[i]){
+					flag = true;
+					break;
+				}
+			}
+			if(flag) continue;
+			changeObj["push"].push(target[i]);		
 		}
 		
-		
+		if(changeObj["push"].length === 0 && changeObj["pop"].length === 0){
+			return false;
+		}
+		return changeObj;
+	},
+	compareObject : function(original,target,exception){
+		for (property in original){
+			if(exception[property]) continue;
+			if(original[property] !== target[property])
+				return false;
+		}
+		return true;
 	}
 }
