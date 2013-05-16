@@ -3,7 +3,9 @@
 	参数1  fn：需要循环调用的函数above
 	参数2  time: 调用的间隔时间 ，单位为毫秒
 	
-	方法 start 接受一个数组参数 该数组依次为fn的参数
+	方法 start 
+			参数1  arg  数组 该数组依次为fn的参数，
+			参数2  runNow 布尔值  是否立刻执行调用方法。true为立刻调用。false为延迟调用，延迟时间为构造函数中time.默认为false
 	方法 close 接收一个参数 time 单位为毫秒，表示time后 结束该方法的调用
 	使用方法 eg
 	function test(i){
@@ -31,8 +33,9 @@ function UnrealThread(fn,time){
 			Meteor.clearTimeout(stop);
 		}
     };
-    this.start = function(arg){
-		fn.apply(undefined,arg);
+    this.start = function(arg,runNow){
+		if(runNow)
+			fn.apply(undefined,arg);
         thread.$fn(arg);
     };
 	this.close = function(closetime){

@@ -3,7 +3,7 @@ function initSvseEntityInfoAtStartUp(debug){
 	SystemLogger("设备详细信息初始化开始...");
 	if(debug == -1)return;
 	if(debug == 0){
-		SvseEntityTemplateInfo.remove({});
+		SvseEntityInfo.remove({});
 		SystemLogger("设备详细信息清除完成...");
 	}
 	ids = SvseTree.find({"type":"entity"},{fields: {"sv_id": 1}}).fetch();
@@ -16,12 +16,12 @@ function initSvseEntityInfoAtStartUp(debug){
 			continue;
 		}
 		entityinfo.submonitor = undefined;
-		SvseEntityTemplateInfo.insert(entityinfo,function(err,_id){
+		SvseEntityInfo.insert(entityinfo,function(err,_id){
 			if(err){
-				SystemLogger("SvseEntityTemplateInfo insert errors:"+err);
+				SystemLogger("SvseEntityInfo insert errors:"+err);
 			}
 		});
 	}
-	SystemLogger("实际插入设备信息"+SvseEntityTemplateInfo.find().count()+"条");
+	SystemLogger("实际插入设备信息"+SvseEntityInfo.find().count()+"条");
 	SystemLogger("设备详细信息初始化完成");
 }

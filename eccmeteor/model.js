@@ -3,7 +3,7 @@ Svse = new Meteor.Collection("svse");//Svse的数据集
 SvseMonitorTemplate = new Meteor.Collection("svse_monitor_template");//监视器模板
 SvseEntityTemplet = new Meteor.Collection("svse_entity_template");//设备模板集
 SvseEntityTempletGroup = new Meteor.Collection("svse_entity_template_group");//设备模板组集
-SvseEntityTemplateInfo = new Meteor.Collection("svse_entity_info");//设备详细信息
+SvseEntityInfo = new Meteor.Collection("svse_entity_info");//设备详细信息
 SvseTask = new Meteor.Collection("svse_task"); //计划任务
 Svse.allow({
 	insert: function (userId, doc) {
@@ -57,7 +57,7 @@ SvseEntityTemplet.allow({
 });
 
 
-SvseEntityTemplateInfo.allow({
+SvseEntityInfo.allow({
 	insert: function (userId, doc) {
 		return true;
 	},

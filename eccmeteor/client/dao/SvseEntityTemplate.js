@@ -43,7 +43,7 @@ var SvseEntityTemplateDao = {
 			}
 			SystemLogger("后台添加成功,返回值是：");
 			SystemLogger(r_entity);
-			SvseEntityTemplateInfo.insert(r_entity,function(err,e_id){
+			SvseEntityInfo.insert(r_entity,function(err,e_id){
 				if(!err){
 					SystemLogger("添加设备到Info"+e_id);
 				}
@@ -105,7 +105,7 @@ var SvseEntityTemplateDao = {
 		SystemLogger("SvseEntityTemplate.js 的方法getItemsAndDefaultValueBySvIdAndDevicetype打印：")
 		SystemLogger("获取设备的id是: "+id+"  设备的类型是："+type);
 		//获取node数据
-		var node = SvseEntityTemplateInfo.findOne({"return.id":id});
+		var node = SvseEntityInfo.findOne({"return.id":id});
 		SystemLogger("获取设备的数据是：");
 		SystemLogger(node);
 		var template = SvseEntityTemplet.findOne({"return.id":type});
@@ -141,7 +141,7 @@ var SvseEntityTemplateDao = {
 		return items;
 	},
 	getItemsAndDefaultValueBySvId:function(id){//获取一般属性
-		return SvseEntityTemplateInfo.findOne({"return.id":id})["property"];
+		return SvseEntityInfo.findOne({"return.id":id})["property"];
 	},
 	editEntity:function(entity,fn){
 		fn = Utils.checkReCallFunction(fn);
@@ -165,12 +165,12 @@ var SvseEntityTemplateDao = {
 					SystemLogger(err);
 					return;
 				}
-				var r_info = SvseEntityTemplateInfo.findOne({"return.id":r_id}); //获取SvseEntityTemplateInfo原来节点数据
-				SystemLogger("SvseEntityTemplateInfo.findOne找到的是：");
+				var r_info = SvseEntityInfo.findOne({"return.id":r_id}); //获取SvseEntityInfo原来节点数据
+				SystemLogger("SvseEntityInfo.findOne找到的是：");
 				SystemLogger(r_info);
-				SvseEntityTemplateInfo.update(r_info._id,{$set:{property:entity["property"],return:entity["return"]}},function(err){ //更新SvseEntityTemplateInfo
+				SvseEntityInfo.update(r_info._id,{$set:{property:entity["property"],return:entity["return"]}},function(err){ //更新SvseEntityInfo
 					if(err){
-						SystemLogger("editEntity 时SvseEntityTemplateInfo.update出现错误");
+						SystemLogger("editEntity 时SvseEntityInfo.update出现错误");
 						SystemLogger(err);
 						return;
 					}

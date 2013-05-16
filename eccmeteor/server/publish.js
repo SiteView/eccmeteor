@@ -22,7 +22,7 @@ Meteor.publish("svse_entity_template_group",function(){
 
 //设备信息
 Meteor.publish("svse_entity_info",function(){
-	return SvseEntityTemplateInfo.find();
+	return SvseEntityInfo.find();
 });
 
 //计划任务
