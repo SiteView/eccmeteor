@@ -21,7 +21,7 @@ function initTreeDataAtStartup(debug){
 			var treeNode = result[son];
 			var sv_id = treeNode["sv_id"];
 			
-			if(treeNode["type"] === "monitor"){ //判断是否为设备属性
+			if(treeNode["type"] === "monitor"){ //判断是否为设备属性，因为一次性找到的monitor信息 有很多属性没有包括，需要单独通过直接父节点获取TreeData来更新。
 			//	SystemLogger(sv_id + "is monitor");
 				continue;
 			}

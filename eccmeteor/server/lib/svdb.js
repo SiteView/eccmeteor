@@ -26,7 +26,7 @@ var svForest = function(dowhat){
 }
 
 var svGetDefaultTreeData = function(parentid,onlySon){
-	if(onlySon === undefined) onlySon = true;
+	if(typeof onlySon === "undefined") onlySon = true;
 	var dowhat = {
 		'dowhat' : 'GetTreeData',
 		'parentid' : parentid,
