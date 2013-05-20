@@ -165,6 +165,12 @@ Template.operateNode.events ={
 		var group= {'property':{'sv_name':'测试pc设备组','sv_description':'测试pc设备组'},'return':{'id':id}};
 		SvseDao.editNode(group);
 	},
+	"click a#forbidGroup" : function(){
+		console.log("forbidGroup");
+	},
+	"click a#refreshGroup" : function(){
+		console.log("refreshGroup");
+	},
 	"click .btn#addEntity":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
 		SwithcView.view(MONITORVIEW.ENTITYGROUP);//设置视图状态
@@ -173,6 +179,12 @@ Template.operateNode.events ={
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
 		SystemLogger(Session.get("checkedTreeNode"));
 		SwithcView.view(MONITORVIEW.ENTITYEDIT);//设置视图状态
+	},
+	"click a#fobidEntity" : function(){
+		console.log("fobidEntity");
+	},
+	"click a#refreshEntiry" : function(){
+		console.log("refreshEntiry");
 	},
 	"click .btn#removeNodes":function(){ //删除子节点
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode").type === "se") return;
@@ -201,7 +213,13 @@ Template.operateNode.events ={
 		SvseDao.removeMonitor(monitorid,parentid,function(err){
 			if(err) SystemLogger(err);
 		})
-	}
+	},
+	"click a#forbidMonitor" : function(){
+		console.log("forbidMonitor");
+	},
+	"click a#refreshMonitor" : function(){
+		console.log("refreshMonitor");
+	},
 }
 var ConstructorNavigateTree =  {
 	checkedNodeByTreeId:function(id){

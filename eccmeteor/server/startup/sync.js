@@ -33,14 +33,13 @@ var SyncFunction = {
 		}
 		//添加不存在的分支
 		if(!SysncDb.isExistBranch(id)){//如果该设备分支没有存储过，则插入到数据库中。
-			SystemLogger("SyncFunction findTreeNodes 插入节点");
+			SystemLogger("SyncFunction findTreeNodes 插入分支");
 			var obj = {};
 			obj["type"] = type;
 			obj["parentid"] = parentid;
 			obj["sv_id"] = id;
-			if(type === "entity"){
-				if(submonitor)
-					obj["submonitor"] = submonitor;
+			if(type === "entity" && submonitor){
+				obj["submonitor"] = submonitor;
 			}else{
 				if(subgroup) 
 					obj["subgroup"]= subgroup;
@@ -52,6 +51,7 @@ var SyncFunction = {
 					obj["property"] = fmap["property"]
 				}
 			}
+			SystemLogger(obj);
 			SysncDb.addBranchOnTree(obj);
 		}else{ //更新分支
 			if(subgroup && subgroup.length){
@@ -88,12 +88,13 @@ var SyncFunction = {
 				if(!originalMonitor) return;
 				var changeMonitorObj = Utils.compareArray(originalMonitor,submonitor);
 				if(changeMonitorObj){//如果监视器个数变化
-					SystemLogger("changeEntityObj:");
+					SystemLogger("更新分支的监视器:");
+					SystemLogger("changeMonitorObj:");
 					SystemLogger(changeMonitorObj);
 					if(changeMonitorObj["push"] && changeMonitorObj["push"].length > 0)
-						SysncDb.addSubEntityByIds(id,changeMonitorObj["push"]);
+						SysncDb.addMoniorByIds(id,changeMonitorObj["push"]);
 					if(changeMonitorObj["pop"] && changeMonitorObj["pop"].length > 0)
-						SysncDb.removeSubEntityByIds(id,changeMonitorObj["pop"]);
+						SysncDb.removeMonitorByIds(id,changeMonitorObj["pop"]);
 				}
 			}
 		
@@ -112,28 +113,17 @@ var SyncFunction = {
 		
 	},
 	'SyncTreeStructure' : function () { //更新树结构
-		SystemLogger("检查SyncTreeStructure变动开始。。")
+		SystemLogger("检查SyncTreeStructure变动开始。。");
 		var fmap = SvseSyncData.svGetDefaultTreeData('default',true);
 		if(!fmap){
 			SystemLogger("SyncTreeStructure fmap不存在");
 			return;
 		};
-		for(son in fmap){	
+		for(son in fmap){
 			var parentid = "0";
 			var sv_id = fmap[son]["sv_id"];
 			var type = fmap[son]["type"];
 			SyncFunction.findTreeNodes(sv_id,parentid,type);
-		}
-		SystemLogger("检查SyncTreeStructure变动结束。。")
-	},
-	'SyncTreeNodeData' : function(){ 
-		//更新树节点。监视器节点除外
-		var fmap = SvseSyncData.svGetDefaultTreeData('default',false);
-		for(son in fmap){
-			var node = fmap[son];
-			if(node["type"] === "monitor")
-				continue;
-			SysncDb.updateNode(node);
 		}
 		//更新监视器节点
 		var  entities = SysncDb.getEntityBranchs();
@@ -143,11 +133,24 @@ var SyncFunction = {
 				SysncDb.updateNode(entityFmap[son2]);
 			}
 		}
+		SystemLogger("检查SyncTreeStructure变动结束。。");
+	},
+	'SyncTreeNodeData' : function(){ 
+		SystemLogger("扫描 SyncTreeNodeData 变动开始。。");
+		//更新树节点。监视器节点除外，监视器节点更新应在树节点更新后进行
+		var fmap = SvseSyncData.svGetDefaultTreeData('default',false);
+		for(son in fmap){
+			var node = fmap[son];
+			if(node["type"] === "monitor")
+				continue;
+			SysncDb.updateNode(node);
+		}
+		SystemLogger("扫描 SyncTreeNodeData 变动结束。。");
 	},
 	'sync' : function(){
-		SystemLogger("检查变动开始。。");
+		SystemLogger("扫描变动开始。。");
 		SyncFunction.SyncTreeNodeData();
 		SyncFunction.SyncTreeStructure();
-		SystemLogger("检查变动结束。。");
+		SystemLogger("扫描变动结束。。");
 	}
 }

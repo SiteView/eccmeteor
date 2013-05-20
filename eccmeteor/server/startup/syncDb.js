@@ -90,7 +90,7 @@ var SysncDb =  {
 	},
 	addMoniorByIds : function (id,arr){
 		Svse.update(
-				{ sv_id: id},
+				{ sv_id: id },
 				{ $pushAll: { submonitor: arr } },
 				function(err){
 					if(!err) return;
@@ -117,6 +117,7 @@ var SysncDb =  {
 		var id = node["sv_id"];
 		var target = SvseTree.findOne({sv_id:id});
 		if(!target){
+			SystemLogger("插入节点"+id);
 			SvseTree.insert(node,function(err){
 				if(!err) return;
 				SystemLogger("自动更新，updateGroupAndEntity  SvseTree.insert 错误！\n syncDb.js 81 line");
@@ -124,8 +125,9 @@ var SysncDb =  {
 			});
 			return;
 		}
-		if(Utils.compareObject(node,target))
+		if(node["type"] !== "monitor" && Utils.compareObject(node,target)){
 			return;
+		}
 		SvseTree.update({sv_id:id},node,function(err){
 			if(!err) return;
 			SystemLogger("自动更新，updateGroupAndEntity  SvseTree.update 错误！\n syncDb.js 88 line");

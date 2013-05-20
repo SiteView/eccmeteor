@@ -138,8 +138,9 @@ var Utils = {
 	compareObject : function(original,target,exception){
 		for (property in original){
 			if(exception && exception[property]) continue;
-			if(original[property] !== target[property])
+			if(original[property] !== target[property]){
 				return false;
+			}			
 		}
 		return true;
 	}
