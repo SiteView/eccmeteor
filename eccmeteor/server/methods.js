@@ -12,7 +12,8 @@
   "getMonitorInfoById" :SvseMonitorDaoOnServer.getMonitorInfoById,
   "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
   "deleteMonitor":SvseMonitorDaoOnServer.deleteMonitor,
-  "svGetDynamicData":svGetDynamicData
+  "svGetDynamicData":svGetDynamicData,
+  "svDisableForever":svDisableForever
 });//给客户端调用的
 
 //给服务端调用的。

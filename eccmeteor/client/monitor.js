@@ -13,15 +13,10 @@ Template.showMonitor.entityid = function () {
 Template.showMonitor.events={
 	"click tbody tr":function(e){
 		var id  = e.currentTarget.id;
-		//var status = e.currentTarget.title;
+		var status = e.currentTarget.title;
 		if(!id || id=="") return;
 		var ID = {id:id,type:"monitor"}
 		Session.set("checkedMonitorId",ID);//存储选中监视器的id
-		/*
-		if(status === "ok"){
-			SystemLogger("Monitor "+id+" status is"+status+",coould no parse the data.");
-			return;
-		}*/
 		drawImage(id);
 	}
 }
@@ -205,7 +200,7 @@ Template.operateNode.events ={
 		Session.set("monityTemplateId",templateMonitoryId);//设置模板id
 		SwithcView.view(MONITORVIEW.MONITOREDIT);
 	},
-	"click .btn#deleteMonitor" : function(){
+	"click a#deleteMonitor" : function(){
 		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;
 		var monitorid = Session.get("checkedMonitorId")["id"];
 		var parentid  = Session.get("checkedTreeNode")["id"];
@@ -215,11 +210,15 @@ Template.operateNode.events ={
 		})
 	},
 	"click a#forbidMonitor" : function(){
-		console.log("forbidMonitor");
+		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;
+		/*
+			1.判断当前选中的树节点是否为 设备，不是则不做任何事情
+			2.根据存在Sesion中的监视器id来禁用启用监视器
+		*/
 	},
 	"click a#refreshMonitor" : function(){
 		console.log("refreshMonitor");
-	},
+	}
 }
 var ConstructorNavigateTree =  {
 	checkedNodeByTreeId:function(id){
@@ -234,3 +233,20 @@ var ConstructorNavigateTree =  {
 		Session.set("svid",node.id);
 	}
 }
+
+Deps.autorun(function(c){
+		//自动改变 禁用按钮的文字，为禁用或者启用。根据session中存的id的状态来决定。
+		//状态为disable则为启用，其他状态全为禁用。
+		var monitor = Session.get("checkedMonitorId");//存储选中监视器的id
+		if(!monitor) return;
+		var id = monitor["id"];
+		var node = SvseTreeDao.getNodeById(id);
+		var status = node ? node["status"] : false;
+		console.log("checkedMonitorId 变化");
+		//控制监视器禁止按钮的文本显示		
+		if(status === "disable"){
+			$("a#forbidMonitor").html("启用");
+		}else{
+			$("a#forbidMonitor").html("禁用");
+		}
+});

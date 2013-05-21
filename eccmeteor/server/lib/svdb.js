@@ -222,7 +222,7 @@ var svRefreshMonitors = function (id,pid,instantReturn){
 	return fmap;
 }
 //获取刷新监视器结果
-function svGetRefreshed(queueName,pid){
+var svGetRefreshed = function (queueName,pid){
 	var dowhat ={'dowhat':'GetRefreshed',queueName:queueName,parentid:pid};
 	var robj= process.sv_univ(dowhat, 0);
 	//var robj = process.sv_forest(dowhat, 0);
@@ -233,7 +233,7 @@ function svGetRefreshed(queueName,pid){
 }
 
 //获取监视器
-function svGetMonitor(id){
+var svGetMonitor = function(id){
 	var dowhat ={'dowhat':'GetMonitor','id':id};
 	var robj= process.sv_univ(dowhat, 0);
 	//var robj = process.sv_forest(dowhat, 0);
@@ -245,7 +245,7 @@ function svGetMonitor(id){
 	return fmap;
 }
 //删除监视器
-function svDeleteMonitor(id){
+var svDeleteMonitor = function (id){
 	var robj = process.sv_univ({'dowhat':'DelChildren','parentid':id}, 0);
 	if(!robj.isok(0)){
 		return false;
@@ -256,7 +256,7 @@ function svDeleteMonitor(id){
 
 //获取动态数据
 
-function svGetDynamicData(entityId,monitorTplId){
+var svGetDynamicData = function(entityId,monitorTplId){
 	var robj = process.sv_univ({'dowhat':'GetDynamicData','entityId':entityId,'monitorTplId':monitorTplId}, 0);
 	if(!robj.isok(0)){
 		throw new Meteor.Error(500,robj.estr(0));
@@ -264,4 +264,23 @@ function svGetDynamicData(entityId,monitorTplId){
 	var fmap= robj.fmap(0);
 	console.log(fmap);
 	return fmap;	
+}
+
+//永久禁用
+var svDisableForever = function (ids){
+	if(!ids || ids.length) return true;
+	var dowhat = {'dowhat':'DisableForever'};
+	for(index in ids){
+		dowhat[ids[index]] = "";
+	}
+	SystemLogger(dowhat);
+	return;
+	var robj = process.sv_univ(dowhat, 0);
+		if(!robj.isok(0)){
+			throw new Meteor.Error(500,robj.estr(0));
+		}
+		var fmap= robj.fmap(0);
+		console.log(fmap);
+		return fmap;	
+	
 }
