@@ -13,7 +13,9 @@
   "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
   "deleteMonitor":SvseMonitorDaoOnServer.deleteMonitor,
   "svGetDynamicData":svGetDynamicData,
-  "svDisableForever":svDisableForever
+  "svDisableForever":svDisableForever,
+  "svEnable":svEnable,
+  "syncTreeData":SyncFunction.sync //同步数据
 });//给客户端调用的
 
 //给服务端调用的。

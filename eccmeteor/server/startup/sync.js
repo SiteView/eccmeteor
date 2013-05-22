@@ -1,4 +1,4 @@
-var SyncFunction = {
+SyncFunction = {
 	'findTreeNodes' : function (id,parentid,type) {
 		var fmap;
 		if(type === "group"){

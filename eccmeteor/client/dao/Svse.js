@@ -158,11 +158,23 @@ var SvseDao = {
 	removeMonitor : function(monitorid,parentid,fn){
 		fn = Utils.checkReCallFunction(fn);
 		Meteor.call("deleteMonitor",monitorid,parentid,function (err,result){
-			if(err){
-				fn(err);
-				return ;
-			}
-			fn();
+			err ? fn(err) : fn();
+		});
+	},
+	forbidNode : function(ids,fn){
+		console.log("forbiNode ids is ");
+		console.log(ids);
+		fn = Utils.checkReCallFunction(fn);
+		Meteor.call("svDisableForever",ids,function(err,result){
+			err ? fn(err) : fn();
+			Meteor.call("syncTreeData");//数据更新
+		});
+	},
+	enableNode : function(ids,fn){
+		fn = Utils.checkReCallFunction(fn);
+		Meteor.call("svEnable",ids,function(err,result){
+			err ? fn(err) : fn();
+			Meteor.call("syncTreeData");//数据更新
 		});
 	}
 }

@@ -268,19 +268,42 @@ var svGetDynamicData = function(entityId,monitorTplId){
 
 //永久禁用
 var svDisableForever = function (ids){
-	if(!ids || ids.length) return true;
+	console.log("svDisableForever  ids is ");
+	console.log(ids);
+	if(!ids || !ids.length) return true;
+	console.log("执行 svDisableForever");
 	var dowhat = {'dowhat':'DisableForever'};
 	for(index in ids){
 		dowhat[ids[index]] = "";
 	}
+	SystemLogger("执行禁止：");
 	SystemLogger(dowhat);
-	return;
 	var robj = process.sv_univ(dowhat, 0);
-		if(!robj.isok(0)){
-			throw new Meteor.Error(500,robj.estr(0));
-		}
-		var fmap= robj.fmap(0);
-		console.log(fmap);
-		return fmap;	
-	
+	if(!robj.isok(0)){
+		throw new Meteor.Error(500,robj.estr(0));
+	}
+	var fmap= robj.fmap(0);
+	console.log(fmap);
+	return fmap;	
+}
+
+//启用
+var svEnable = function (ids) {
+	console.log("svEnable  ids is ");
+	console.log(ids);
+	if(!ids || !ids.length ) return true;
+	console.log("执行 svEnable");
+	var dowhat = {'dowhat':'Enable'} 
+	for(index in ids){
+		dowhat[ids[index]] = "";
+	}
+	SystemLogger("执行启用：");
+	SystemLogger(dowhat);
+	var robj = process.sv_univ(dowhat, 0);
+	if(!robj.isok(0)){
+		throw new Meteor.Error(500,robj.estr(0));
+	}
+	var fmap= robj.fmap(0);
+	console.log(fmap);
+	return fmap;
 }

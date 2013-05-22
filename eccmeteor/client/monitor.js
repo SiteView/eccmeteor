@@ -146,6 +146,11 @@ Template.operateNode.sv_name = function(){
 	if(Session.get("checkedTreeNode"))return Session.get("checkedTreeNode").name;
 	return false;
 }
+
+Template.operateNode.type = function(){
+	return Session.get("checkedTreeNode") ? Session.get("checkedTreeNode")["type"] : "";
+}
+
 //增删改操作Template
 Template.operateNode.events ={
 	"click .btn#addGroup":function(){
@@ -160,8 +165,16 @@ Template.operateNode.events ={
 		var group= {'property':{'sv_name':'测试pc设备组','sv_description':'测试pc设备组'},'return':{'id':id}};
 		SvseDao.editNode(group);
 	},
-	"click a#forbidGroup" : function(){
-		console.log("forbidGroup");
+	"click a#forbidGroup" : function(e){
+		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "group") return;
+		var id  = Session.get("checkedTreeNode")["id"];
+		var status = e.target.name;
+		if(status === "enable"){
+			SvseDao.enableNode([id],function(err){});
+			return;
+		}
+		SvseDao.forbidNode([id],function(err){});
+		//console.log("forbidGroup");
 	},
 	"click a#refreshGroup" : function(){
 		console.log("refreshGroup");
@@ -175,13 +188,22 @@ Template.operateNode.events ={
 		SystemLogger(Session.get("checkedTreeNode"));
 		SwithcView.view(MONITORVIEW.ENTITYEDIT);//设置视图状态
 	},
-	"click a#fobidEntity" : function(){
-		console.log("fobidEntity");
+	"click a#forbidEntity" : function(e){
+		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
+		var id  = Session.get("checkedTreeNode")["id"];
+		var status = e.target.name;
+		if(status === "enable"){
+			SystemLogger("启用设备"+id)
+			SvseDao.enableNode([id],function(err){});
+			return;
+		}
+		SystemLogger("禁用设备"+id)
+		SvseDao.forbidNode([id],function(err){});
 	},
-	"click a#refreshEntiry" : function(){
-		console.log("refreshEntiry");
+	"click a#refreshEntity" : function(){
+		console.log("refreshEntity");
 	},
-	"click .btn#removeNodes":function(){ //删除子节点
+	"click a#removeNodes":function(){ //删除子节点
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode").type === "se") return;
 		var id = Session.get("checkedTreeNode")["id"];
 		SvseDao.removeNodesById(id);
@@ -209,12 +231,20 @@ Template.operateNode.events ={
 			if(err) SystemLogger(err);
 		})
 	},
-	"click a#forbidMonitor" : function(){
+	"click a#forbidMonitor" : function(e){
 		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;
 		/*
 			1.判断当前选中的树节点是否为 设备，不是则不做任何事情
 			2.根据存在Sesion中的监视器id来禁用启用监视器
 		*/
+		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
+		var id = Session.get("checkedMonitorId")["id"];
+		var status = e.target.name;
+		if(status === "enable"){
+			SvseDao.enableNode([id],function(err){});
+			return;
+		}
+		SvseDao.forbidNode([id],function(err){});
 	},
 	"click a#refreshMonitor" : function(){
 		console.log("refreshMonitor");
@@ -235,18 +265,47 @@ var ConstructorNavigateTree =  {
 }
 
 Deps.autorun(function(c){
-		//自动改变 禁用按钮的文字，为禁用或者启用。根据session中存的id的状态来决定。
-		//状态为disable则为启用，其他状态全为禁用。
-		var monitor = Session.get("checkedMonitorId");//存储选中监视器的id
-		if(!monitor) return;
-		var id = monitor["id"];
-		var node = SvseTreeDao.getNodeById(id);
-		var status = node ? node["status"] : false;
-		console.log("checkedMonitorId 变化");
-		//控制监视器禁止按钮的文本显示		
-		if(status === "disable"){
-			$("a#forbidMonitor").html("启用");
-		}else{
-			$("a#forbidMonitor").html("禁用");
-		}
+	//自动改变 禁用按钮的文字，为禁用或者启用。根据session中存的id的状态来决定。
+	//状态为disable则为启用，其他状态全为禁用。
+	var monitor = Session.get("checkedMonitorId");//存储选中监视器的id
+	if(!monitor) return;
+	var id = monitor["id"];
+	var node = SvseTreeDao.getNodeById(id);
+	var status = node ? node["status"] : false;
+	console.log("checkedMonitorId 变化");
+	//控制监视器禁止按钮的文本显示
+	var statusContext = "";
+	var name = "";
+	if( status === "disable"){
+		statusContext = "启用";
+		name = "enable"
+	}else{
+		statusContext = "禁用";
+		name = "disable"
+	}
+	$("a#forbidMonitor").html(statusContext).attr("name",name);
 });
+
+Template.operateNode.rendered = function () {
+	var node = Session.get("checkedTreeNode");
+	if(!node) return;
+	var id = node["id"];
+	var type = node["type"];
+	var n = SvseTreeDao.getNodeById(id);
+	console.log(status+":"+n["status"]);
+	var status = n ? n["status"] : false;
+	console.log("checkedTreeNode 变化");
+	//控制设备和组上禁止按钮的文本显示
+	type = type === "entity" ? "Entity" : "Group"; 
+	var statusContext = "";
+	var name = "";
+	if( status === "disable"){
+		statusContext = "启用";
+		name = "enable"
+	}else{
+		statusContext = "禁用";
+		name = "disable";
+	}
+	console.log(type+":"+name);
+	$("a#forbid"+type).html(statusContext).attr("name",name);
+}
