@@ -15,6 +15,7 @@
   "svGetDynamicData":svGetDynamicData,
   "svDisableForever":svDisableForever,
   "svEnable":svEnable,
+  "svDisableTemp":svDisableTemp,
   "syncTreeData":SyncFunction.sync //同步数据
 });//给客户端调用的
 

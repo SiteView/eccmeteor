@@ -198,7 +198,7 @@ var svSubmitMonitor = function(monitor,parentid){
 		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor',del_supplement:false},0); //修改
 	}
 	if(!robj.isok(0)){
-		SystemLogger(robj.estr(0),0);
+		SystemLogger(robj.estr(0),-1);
 		return false;
 	}
 	var fmap= robj.fmap(0);
@@ -305,5 +305,24 @@ var svEnable = function (ids) {
 	}
 	var fmap= robj.fmap(0);
 	console.log(fmap);
+	return fmap;
+}
+//临时禁用
+var svDisableTemp = function(ids,starttime,endtime){
+	if(!ids || !ids.length) return true;
+	var dowhat = {'dowhat':'DisableTemp'};
+	for(index in ids){
+		dowhat[ids[index]] = "";
+	}
+	dowhat['sv_starttime'] = starttime;
+	dowhat['sv_endtime'] = endtime;
+	
+	SystemLogger("执行临时禁止：");
+	SystemLogger(dowhat);
+	var robj = process.sv_univ(dowhat, 0);
+	if(!robj.isok(0)){
+		throw new Meteor.Error(500,robj.estr(0));
+	}
+	var fmap= robj.fmap(0);
 	return fmap;
 }

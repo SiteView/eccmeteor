@@ -201,6 +201,7 @@ Template.showMonitorInfo.rendered = function(){
 				}			
 				console.log(panrentid+" : "+templateMonitoryId);
 				Meteor.call("svGetDynamicData",panrentid,templateMonitoryId,function(err,result){
+					if(!result) return;
 					var optionObj = result["DynamicData"];
 					for(name in optionObj){
 						var option = $("<option value='"+optionObj[name]+"'>"+name+"</option>");

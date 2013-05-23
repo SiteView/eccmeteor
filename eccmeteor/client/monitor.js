@@ -176,9 +176,6 @@ Template.operateNode.events ={
 		SvseDao.forbidNode([id],function(err){});
 		//console.log("forbidGroup");
 	},
-	"click a#refreshGroup" : function(){
-		console.log("refreshGroup");
-	},
 	"click .btn#addEntity":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
 		SwithcView.view(MONITORVIEW.ENTITYGROUP);//设置视图状态
@@ -199,9 +196,6 @@ Template.operateNode.events ={
 		}
 		SystemLogger("禁用设备"+id)
 		SvseDao.forbidNode([id],function(err){});
-	},
-	"click a#refreshEntity" : function(){
-		console.log("refreshEntity");
 	},
 	"click a#removeNodes":function(){ //删除子节点
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode").type === "se") return;
@@ -246,8 +240,8 @@ Template.operateNode.events ={
 		}
 		SvseDao.forbidNode([id],function(err){});
 	},
-	"click a#refreshMonitor" : function(){
-		console.log("refreshMonitor");
+	"click .btn#refresh" : function(){
+		SvseDao.refreshTreeData();
 	}
 }
 var ConstructorNavigateTree =  {

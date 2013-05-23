@@ -167,6 +167,7 @@ var SvseDao = {
 		fn = Utils.checkReCallFunction(fn);
 		Meteor.call("svDisableForever",ids,function(err,result){
 			err ? fn(err) : fn();
+			console.log(result);
 			Meteor.call("syncTreeData");//数据更新
 		});
 	},
@@ -174,6 +175,20 @@ var SvseDao = {
 		fn = Utils.checkReCallFunction(fn);
 		Meteor.call("svEnable",ids,function(err,result){
 			err ? fn(err) : fn();
+			console.log(result);
+			Meteor.call("syncTreeData");//数据更新
+		});
+	},
+	refreshTreeData : function(){
+		Meteor.call("syncTreeData");//数据更新
+	},
+	forbidTemp : function(ids,starttime,endtime,fn){
+		console.log("forbiNode ids is ");
+		console.log(ids);
+		fn = Utils.checkReCallFunction(fn);
+		Meteor.call("svDisableTemp",ids,starttime,endtime,function(err,result){
+			err ? fn(err) : fn();
+			console.log(result);
 			Meteor.call("syncTreeData");//数据更新
 		});
 	}
