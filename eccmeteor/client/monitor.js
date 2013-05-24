@@ -43,6 +43,12 @@ Template.showMonitor.rendered = function(){
 Template.recordsData.recordsData = function(){
 	return Session.get("recordsData");
 }
+Template.recordsData.events = {
+	"click .btn#monitorDetail" :  function(){
+	
+	
+	}
+}
 
 //画图前 获取相关数据
 function drawImage(id,count){

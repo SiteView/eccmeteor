@@ -95,3 +95,14 @@ Handlebars.registerHelper('createDomeByPropertyHelper', function(obj) {
  
   return new Handlebars.SafeString(result);
 });
+
+/**
+	国际化助手
+*/
+Handlebars.registerHelper('language',function(arg){
+	var lang = Language.findOne();
+	var defaultLang = lang["default"];
+	//console.log("default language is "+ defaultLang);
+	var language = lang["language"][defaultLang];
+	return language[arg] ? language[arg] : arg;
+});
