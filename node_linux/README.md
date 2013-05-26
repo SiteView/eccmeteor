@@ -1,13 +1,13 @@
 
 * 编译未全部搞好，链接了下载的 .a 
-  * 但目前的 node 已经能够运行（大小10MB左右，官方原版的8M左右），可用于linux平台下进行测试
+		但目前的 node 已经能够运行（大小10MB左右，官方原版的8M左右），可用于linux平台下进行测试
 
 
 * node.js 基本功能测试
   1.	下载后面的目录到你的linux中，https://github.com/SiteView/eccmeteor/tree/master/node_linux/meteor_runtime
   2.	设置该目录的权限：隶属于什么组、什么用户、node 是否有可运行权限
   3.	设置该目录中 svapi.ini 的 svdb 地址
-  4.	运行 ./node sv.js
+  4.	运行 ./node sv.js ，即可看到从 ecc 系统返回的数据
 
 
 * meteor linux 的安装事项
