@@ -409,7 +409,6 @@ function checkUpdate(qtime, qid, collection) {
 				ids[qid]['qtime']= qtime;
 			else if(dateDiff(qtime, ids[qid]['qtime'])>0)
 				ids[qid]['qtime']= qtime;
-				
 		}else{
 			//刷新缓存数据
 			cache_items[qid] = {
@@ -430,7 +429,7 @@ function checkUpdate(qtime, qid, collection) {
 				});
 				if(debug>1)
 					console.log('svlog update log id: '+ qid+ "  qtime: " + qtime + "    creat_time: " + creat_time);				
-			}			
+			}
 		}
 	}
 }
@@ -447,6 +446,8 @@ var update = function(error, client) {
 	collection.ensureIndex({"id":1}, {background:true, w:1}, callback);
 	collection.ensureIndex({"id":1,"creat_time":1}, {unique:true, background:true, dropDups:true, w:1}, callback);
 	
+	//调试信息，需要导入的监测器数量
+	trans['num']= 0;		
 	ids= Array();
 	var allids= Array();
 	for (index in forest) {
@@ -456,13 +457,16 @@ var update = function(error, client) {
 			var sv_id= mon.sv_id;
 			var creat_time= mon['creat_time'];
 			var dstr= mon.dstr;
+			var status= mon.status;
 //			creat_time= creat_time.replace("2010", "2012");  //测试代码，用于模拟产生新的监测数据
+//			if(sv_id==='1.26.20.172')
+//				console.log("sv_id/creat_time/dstr/status: " + sv_id + " , " + creat_time + " , "+dstr + ',' + status);
 			
 			//非法格式返回NaN
 			var date= Date.parse(creat_time);
 			if(date==='NaN')
 				continue;
-			if(dstr===undefined)
+			if(dstr===undefined || dstr==='' || status===undefined || status==='null')
 				continue;
 //			var t=  dateFormat(new Date(date));	
 			
@@ -474,11 +478,17 @@ var update = function(error, client) {
 //					'status_disable' : mon.status_disable,
 				};
 			monitors[sv_id] = one;
+			trans['num']++;
 		
 			var mtype, freqency;
 			if (monitorinfo[sv_id]) {
 				mtype = monitorinfo[sv_id]['MonitorType'];
 				freqency = getFreq( monitorinfo[sv_id]['MonitorFrequency'] );
+				if(freqency<=300000){
+					freqency+=60000;
+				}else{
+					freqency*=1.2;
+				}
 //				console.log("sv_id: " + sv_id + " , " + freqency + " , "+mtype + ',' + monitorinfo[sv_id]['sv_monitortype']);
 			}
 			ids[sv_id] = {
@@ -487,7 +497,10 @@ var update = function(error, client) {
 				'freq' : freqency,
 				'qtime' : undefined,
 			};
-			allids.push(sv_id);
+			var ci = cache_items[sv_id];
+			if(ci===undefined || ci['qtime']===undefined){
+				allids.push(sv_id);
+			}
 //			console.log("one: " + one + " ids: " + ids[sv_id]['freq']);
 		}
 	}
@@ -495,9 +508,6 @@ var update = function(error, client) {
 	
 	if(debug>0)
 		console.log('svlog update ... (' + 'debug: ' + debug + ')');
-	//调试信息，需要导入的监测器数量
-	trans= Array();
-	trans['num']=allids.length;	
 	
 //	var stream = collection.find({'id':'1.9.14.1'}).sort({ "creat_time":-1 }).stream();
 	var stream;
@@ -520,10 +530,12 @@ var update = function(error, client) {
 		if(use_cache_items===true){
 			//已经有缓存数据，使用并刷新			
 			for( citem in cache_items ){
+				if(cache_items[citem]===undefined)
+					continue;
 				var qtime = cache_items[citem]['qtime'];
 				var qid = cache_items[citem]['qid'];	
 				checkUpdate(qtime, qid, collection);				
-			}		
+			}
 		}
 		
 		var tindex= 0;
@@ -531,7 +543,9 @@ var update = function(error, client) {
 			var check = ids[id];
 			//已经更新过了，就continue
 			if (check === undefined)
-				continue; 
+				continue;
+			//清除该监测器的缓存
+			cache_items[id]= undefined;
 			
 			if(debug>2)	
 				console.log(' svlog transfering '+id+'  ...');
@@ -541,7 +555,7 @@ var update = function(error, client) {
 			tindex++;
 			var checktime= check['qtime'];
 			var logcount= querylog(id, checktime, collection);
-			if(debug>0 && logcount)	
+			if(debug>0)	
 				console.log(' svlog transferred '+logcount+' logs: '+id+'  from '+ checktime +' , ' + tindex + '/' + trans['num'] + ' at '+ dateFormat(new Date()) );			
 //			break; //测试代码，可以每次只导入一个监测器的历史数据
 
