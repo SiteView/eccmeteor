@@ -1,22 +1,25 @@
 Language = new Meteor.Collection();
 Deps.autorun(function (c) {
-	Language.remove({});
-	console.log("初始化本地语言环境");
-	console.log(navigator.language);
-	Language.insert(
+	var language = [
 		{
-			language:{
-				cn : {
-					hello: "你好",
-					language: "Language"
-				},
-				en : {
-					hello: "Hello",
-					language: "语言"
-				}
-			},
-			default:"cn"
+			name : "EN_US",
+			value:{
+				username:"username",
+				password:"password"
+			}
+		},
+		{
+			name : "ZH_CN",
+			value : {
+				username:"用户名",
+				password:"密码"
+			}
 		}
-	);
+	];
+	if(Language.find().fetch().length)
+		Language.remove({});
+	for(index in language){
+		Language.insert(language[index]);
+	}
 	c.stop();
 });
