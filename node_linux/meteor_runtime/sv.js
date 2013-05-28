@@ -1,4 +1,4 @@
-var http = require('http');
+﻿var http = require('http');
 process.sv_init(); //sv的初始化
 var hello = process.sv_hello();   //调用了 sv 中的 hello 方法
 // var obj= addon.createObject(); //直接创建一个默认 c++对象
