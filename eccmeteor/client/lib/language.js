@@ -1,18 +1,29 @@
 Language = new Meteor.Collection();
+Session.setDefault("language",navigator.language.toLocaleUpperCase())
 Deps.autorun(function (c) {
 	var language = [
 		{
-			name : "EN_US",
+			name : "EN-US",
 			value:{
+				_language : "English",
+				save : "Save",
+				cancel : "Cancel",
 				username:"username",
-				password:"password"
+				password:"password",
+				home : "HOME",
+				link : "LINK"
 			}
 		},
 		{
-			name : "ZH_CN",
+			name : "ZH-CN",
 			value : {
+				_language:"中文",
+				save : "保存",
+				cancel : "取消",
 				username:"用户名",
-				password:"密码"
+				password:"密码",
+				home : "首页",
+				link : "链接"
 			}
 		}
 	];

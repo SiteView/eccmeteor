@@ -9,7 +9,8 @@ var MONITORVIEW = {
 	GROUPEDIT : "GroupEdit", //修改组信息
 	MONITORTEMPLATES : "MonitorTemplates", //设备的监视器列表
 	MONITORADD : "MonitorAdd",
-	MONITOREDIT:"MonitorEdit"
+	MONITOREDIT:"MonitorEdit",
+	QUICKLYADDMONITY:"QuicklyAddMonity"
 };
 //视图切换
 var SwithcView = {
