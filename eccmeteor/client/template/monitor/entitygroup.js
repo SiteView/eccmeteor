@@ -44,7 +44,7 @@ Template.showEntity.events = {
 				SystemLogger(err);
 				return;
 			}
-			Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);			
+			Session.set("viewstatus",MONITORVIEW.QUICKLYADDMONITY);	//跳到快速添加页面		
 		});
 	},
 	"click #cancel":function(){
