@@ -27,8 +27,8 @@ export NODE_PATH=/usr/local/lib/node_modules
   1.	关闭防火墙，然后启动xmpp服务：node ~/node_modules/node-xmpp/examples/c2s.js		
   2.	发送消息：node ./node_modules/node-xmpp/examples/send_message.js		
   3.	或下载xmpp客户端  http://pandion.im/，连接到你的 xmpp服务器，看到如下提示说明 xmpp 服务器正常工作了		
-AUTHsiteview@192.168.0.51 -> siteview
-ONLINE
-STANZA<iq type="get" id="sd3" to="192.168.0.51" xmlns:stream="http://etherx.jabber.org/streams" from="siteview@192.168.0.51/潘迪安"><query xmlns="http://jabber.org/protocol/disco#items"/>
+AUTHsiteview@192.168.0.51 -> siteview	
+ONLINE	
+STANZA<iq type="get" id="sd3" to="192.168.0.51" xmlns:stream="http://etherx.jabber.org/streams" from="siteview@192.168.0.51/潘迪安"><query xmlns="http://jabber.org/protocol/disco#items"/>	
   
 
