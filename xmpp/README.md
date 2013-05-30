@@ -15,8 +15,10 @@ node-xmpp 的地址： https://github.com/astro/node-xmpp
 		npm install ltx		
 		npm install node-xmpp	
   4.	npm安装 node-stringprep （会自动下载源代码并编译，这一步最容易出错误）			
-		执行下面3行，设置 g++ 的环境变量：			
-CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:~/node_linux/node-v0.8.22/deps/v8/include/:~/node_linux/node-v0.8.22/deps/uv/include/:~/node_linux/node-v0.8.22/src/				
+		执行下面5行，设置 g++ 的环境变量：			
+CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:~/node_linux/node-v0.8.22/deps/v8/include/
+CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH::~/node_linux/node-v0.8.22/deps/uv/include/
+CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH::~/node_linux/node-v0.8.22/src/				
 export CPLUS_INCLUDE_PATH		
 export NODE_PATH=/usr/local/lib/node_modules		
 		
