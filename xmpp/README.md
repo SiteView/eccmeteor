@@ -26,7 +26,7 @@ export NODE_PATH=/usr/local/lib/node_modules
 	
 * 运行 node-xmpp	
   1.	关闭防火墙，然后启动xmpp服务：node ~/node_modules/node-xmpp/examples/c2s.js		
-  2.	发送消息：node ./node_modules/node-xmpp/examples/send_message.js		
+  2.	发送消息：node ~/node_modules/node-xmpp/examples/send_message.js		
   3.	或下载xmpp客户端  http://pandion.im/，连接到你的 xmpp服务器，看到如下提示说明 xmpp 服务器正常工作了		
 AUTHsiteview@192.168.0.51 -> siteview	
 ONLINE	
