@@ -1,4 +1,4 @@
-﻿var ClientUtils = {
+﻿ClientUtils = {
 	"formArrayToObject":function(arr){
 		if(!arr ||arr.length == 0)return{};
 		var property ={};
@@ -78,11 +78,44 @@
 				tr.append(td);
 		}
 		return tr;
+	},
+	/**
+	参数 obj 需要进行属性删除的对象
+	参数 attributes 参数数组  Array[string]
+	参数flag      为true则表示保留obj中的attributes属性删除其他，否则是删除obj中的attributes属性，保留其他，默认为true*/
+	"deleteAttributeFromObject" : function(obj,attributes,flag){
+		if(typeof flag === "undefined")
+			flag == false;
+		if(flag){
+			for(attr in obj){
+				status = false;
+				for(index in attributes){
+					if(attr.indexOf(attributes[index]) != -1){
+						status = true; //保留该属性
+						break;
+					}
+				}
+				if(!status){//如果为非保留属性
+					delete(obj[atrr]);
+				}
+			}
+		}else{
+			for(attr in obj){
+				for(index in attributes){
+					if(attr.indexOf(attributes[index]) != -1){
+						//该属性存在，则删除
+						delete(obj[attr]);
+						break;
+					}
+				}
+			}
+		}
+		return obj
 	}
 }
-var ServerUtils ={}
+ServerUtils ={}
 
-var Utils = {
+Utils = {
 	"checkReCallFunction":function(fn){
 		if(!fn || typeof fn !== "function"){
 			fn = function(obj){

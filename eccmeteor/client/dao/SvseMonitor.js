@@ -1,6 +1,6 @@
-var SvseMonitorDao = {
+SvseMonitorDao = {
 	addMonitor:function(monitor,parentid,fn){ //添加监视器
-		Utils.checkReCallFunction(fn);
+		fn = Utils.checkReCallFunction(fn);
 		Meteor.call("entityAddMonitor",monitor,parentid,function(err,r_monitor){
 			if(err){
 				fn(err);
@@ -66,5 +66,10 @@ var SvseMonitorDao = {
 			});
 			
 		});
+	},
+	addMultiMonitor : function(monitors,parentid){
+		for(index in monitors){
+			SvseMonitorDao.addMonitor(monitors[index],parentid)
+		}
 	}
 }

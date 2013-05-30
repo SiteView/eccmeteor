@@ -3,6 +3,54 @@ Template.showQuickMonityTemplate.monities = function(){
 	SystemLogger("快速添加的设备类型是："+entityDevicetype);
 	return SvseEntityTemplateDao.getEntityMontityByDevicetype(entityDevicetype,true);
 }
+var getQuicklyMonitorsParams = function(id){
+	console.log("getQuicklyMonitorsParams cc" + id);
+	var template =  SvseMonitorTemplateDao.getTemplateById(id);
+	var error  = template["error"];
+	var saveAttr = ["conditioncount","expression","paramname","paramvalue","operate"];
+	error = ClientUtils.deleteAttributeFromObject(error,saveAttr);
+	var good  = template["good"];
+	good = ClientUtils.deleteAttributeFromObject(good,saveAttr);
+	var warning  = template["warning"];
+	warning = ClientUtils.deleteAttributeFromObject(warning,saveAttr);
+	var advance = {};
+	var parameter = {};
+	for(attr in template){
+		if(attr.indexOf("AdvanceParameterItem") != -1){
+			advance[template[attr]["sv_name"]] = template[attr]["sv_value"];
+			continue;
+		}
+		if(attr.indexOf("ParameterItem") != -1){
+			parameter[template[attr]["sv_name"]] = template[attr]["sv_value"];
+		}
+	}
+	parameter["sv_errfreqsave"] = "";
+	parameter["sv_description"] = "";
+	parameter["sv_checkerr"] =  true;	
+	parameter["sv_errfreq"] = 0;
+	parameter["sv_errfrequint"] = 1;
+	parameter["sv_reportdesc"] = "";
+	parameter["sv_plan"] = "7x24";
+	var property = {
+			sv_disable : false,
+			sv_endtime : "",
+			sv_monitortype : id,
+			sv_name : template.property.sv_name,
+			sv_starttime : "",
+			creat_timeb : new Date().format("yyyy-MM-dd hh:mm:ss")
+	};
+	var monitor = {
+			advance_parameter : advance,
+			error : error,
+			warning : warning,
+			good : good,
+			parameter : parameter,
+			property : property
+	};
+	SystemLogger("getQuicklyMonitorsParams id ："+id);
+	SystemLogger(monitor);
+	return monitor;
+}
 
 Template.showQuickMonityTemplate.events = {
 	"click #chooseallqucikmonitor" : function () {
@@ -16,12 +64,18 @@ Template.showQuickMonityTemplate.events = {
 		});
 	},
 	"click #savequickmonitorlist" : function () {
-		$("#quickMonitorList :checkbox").each(function(){
-			if(!this.checked) 
-				return;
-		});
+		var checkeds = $("#quickMonitorList :checkbox[checked='checked']");
+		if(!checkeds.length)
+			return;
+		var templates = [];
+		for (index = 0; index < checkeds.lenght ; index++){
+			if(index === "length") continue;
+			console.log("checkeds index " + index)
+			templates.push(getQuicklyMonitorsParams(checkeds[index].id));
+		}
+		//SvseMonitorDao.addMultiMonitor(templates,Session.get("checkedTreeNode").id);
 	},
 	"click #cancequickmonitorlist" : function() {
-		
+		Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
 	}
 }
