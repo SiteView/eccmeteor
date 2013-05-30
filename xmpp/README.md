@@ -1,4 +1,3 @@
-
 node-xmpp 的地址： https://github.com/astro/node-xmpp
 
 * 安装 node-xmpp
@@ -22,7 +21,7 @@ CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH::~/node_linux/node-v0.8.22/src/
 export CPLUS_INCLUDE_PATH		
 export NODE_PATH=/usr/local/lib/node_modules		
 		
-		npm install node-stringprep@0.1.0
+		npm install node-stringprep@0.1.0	
 		cp ~/node_modules/node-stringprep/build/Release/node-stringprep.node   ~/node_modules/node-stringprep		
 	
 * 运行 node-xmpp	
@@ -31,6 +30,6 @@ export NODE_PATH=/usr/local/lib/node_modules
   3.	或下载xmpp客户端  http://pandion.im/，连接到你的 xmpp服务器，看到如下提示说明 xmpp 服务器正常工作了		
 AUTHsiteview@192.168.0.51 -> siteview	
 ONLINE	
-STANZA<iq type="get" id="sd3" to="192.168.0.51" xmlns:stream="http://etherx.jabber.org/streams" from="siteview@192.168.0.51/潘迪安"><query xmlns="http://jabber.org/protocol/disco#items"/>	
+STANZA\<iq type="get" id="sd3" to="192.168.0.51" from="siteview@192.168.0.51/潘迪安"><query xmlns="http://jabber.org/protocol/disco#items"/>	
   
 
