@@ -4,8 +4,9 @@ Template.showQuickMonityTemplate.monities = function(){
 	return SvseEntityTemplateDao.getEntityMontityByDevicetype(entityDevicetype,true);
 }
 var getQuicklyMonitorsParams = function(id){
-	console.log("getQuicklyMonitorsParams cc" + id);
+	console.log("getQuicklyMonitorsParams " + id);
 	var template =  SvseMonitorTemplateDao.getTemplateById(id);
+	//return template;
 	var error  = template["error"];
 	var saveAttr = ["conditioncount","expression","paramname","paramvalue","operate"];
 	error = ClientUtils.deleteAttributeFromObject(error,saveAttr);
@@ -47,8 +48,7 @@ var getQuicklyMonitorsParams = function(id){
 			parameter : parameter,
 			property : property
 	};
-	SystemLogger("getQuicklyMonitorsParams id ："+id);
-	SystemLogger(monitor);
+	console.log(monitor);
 	return monitor;
 }
 
@@ -68,12 +68,22 @@ Template.showQuickMonityTemplate.events = {
 		if(!checkeds.length)
 			return;
 		var templates = [];
-		for (index = 0; index < checkeds.lenght ; index++){
-			if(index === "length") continue;
+		for (var index = 0; index < checkeds.length ; index++){
 			console.log("checkeds index " + index)
 			templates.push(getQuicklyMonitorsParams(checkeds[index].id));
+		//	templates.push(checkeds[index].id);
 		}
-		//SvseMonitorDao.addMultiMonitor(templates,Session.get("checkedTreeNode").id);
+		console.log("father id is "+SessionManage.getAddedEntityId());
+		console.log(templates);
+		SystemLogger("正在刷新多个监视器...");
+		SvseMonitorDao.addMultiMonitor(templates,SessionManage.getAddedEntityId(),function(err,nid){
+			if(err){
+				SystemLogger(err,-1);
+				SystemLogger("添加监视器" + nid+"失败");
+			}else{
+				SystemLogger("添加监视器" + nid+"成功");
+			}
+		});
 	},
 	"click #cancequickmonitorlist" : function() {
 		Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面

@@ -34,3 +34,13 @@ Deps.autorun(function (c) {
 	}
 	c.stop();
 });
+
+/**
+使用
+LanguageModel.getLanguage().link
+*/
+LanguageModel = {
+	getLanaguage : function(){
+		return Language.findOne({name:Session.get("language")})["value"];
+	}
+}

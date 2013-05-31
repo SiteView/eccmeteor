@@ -38,12 +38,14 @@ Template.showEntity.events = {
 		var parentid =checkedTreeNode.id;
 		var entity ={"property":property};
 		SystemLogger(entity);
-		SvseEntityTemplateDao.addEntity(entity,parentid,function(err){
+		SvseEntityTemplateDao.addEntity(entity,parentid,function(err,entityid){
 			if(err){
 				SystemLogger("SvseEntityTemplateDao.addEntity 捕捉到错误");
 				SystemLogger(err);
 				return;
 			}
+			console.log("添加的设备ID是 "+entityid);
+			SessionManage.setAddedEntityId(entityid);//临时数据管理
 			Session.set("viewstatus",MONITORVIEW.QUICKLYADDMONITY);	//跳到快速添加页面		
 		});
 	},
