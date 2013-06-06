@@ -1,8 +1,29 @@
 Template.detailSvg.events = {
 	"click #queryDetailLineData" : function(){
-			var startdate   =   new  Date(Date.parse($("#startdate").val().replace(/-/g,"/")));   
-			var enddate   =   new  Date(Date.parse($("#enddate").val().replace(/-/g,"/")));   
-			drawDetailLine(ClientUtils.dateToObject(startdate),ClientUtils.dateToObject(enddate));
+		var startdate   =  $('#datetimepickerStartDate').data('datetimepicker').getDate();
+		var enddate   =  $('#datetimepickerEndDate').data('datetimepicker').getDate();
+		drawDetailLine(ClientUtils.dateToObject(startdate),ClientUtils.dateToObject(enddate));
+	},
+	"click ul li a":function(e){
+		var str = e.target.name;
+		var startdate;
+		var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+		var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+		var today = endPicker.getDate();	
+		if(str.indexOf(":") === -1){
+			switch(str){
+				case "today": startdate = Date.today();break;
+				case "week" : startdate = today.add({days:1-today.getDay()});break;
+				default		: startdate = today;
+			}
+		}else{
+			startdate = today.add(JSON.parse(str));
+		}
+		startPicker.setDate(startdate);
+		console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+		console.log(startdate);
+		console.log(endPicker.getDate());
+		console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCccc");
 	}
 }
 Template.detailSvg.rendered = function(){
@@ -21,6 +42,16 @@ Template.detailSvg.rendered = function(){
 			endDate : endDate,
 			maskInput: false,
 		});
+		var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+		var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+		startPicker.setDate(startdate);
+		endPicker.setDate(endDate);
+//		$('#datetimepickerStartDate').on('changeDate', function(e) {
+//			endPicker.setStartDate(e.date);
+//		});
+//		$('#datetimepickerEndDate').on('changeDate', function(e) {
+//			startPicker.setEndDate(e.date);
+//		});
 		drawDetailLine(ClientUtils.dateToObject(startdate),ClientUtils.dateToObject(endDate));
 	});
 }

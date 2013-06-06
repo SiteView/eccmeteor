@@ -1,15 +1,29 @@
 <Template name = "detailSvg">
-<div>
+<div class="well">
+	<ul class="breadcrumb">
+	  <li><a href="###" name='{"hours":-2}'>2小时</a><span class="divider"></span></li>
+	  <li><a href="###" name='{"hours":-4}'>4小时</a><span class="divider"></span></li>
+	  <li><a href="###" name='{"hours":-8}'>8小时</a></li>
+	  <li><a href="###" name='{"days":-1}'>1天</a></li>
+	  <li><a href="###" name='{"days":-2}'>2天</a></li>
+	  <li><a href="###" name='{"days":-3}'>3天</a></li>
+	  <li><a href="###" name='week'>本周</a></li>
+	  <li><a href="###" name='{"days":-7}'>一周</a></li>
+	  <li><a href="###" name='{"months":-1}'>1个月</a></li>
+	  <li><a href="###" name='{"months":-2}'>2个月</a></li>
+	  <li><a href="###" name='{"months":-6}'>6个月</a></li>
+	  <li><a href="###" name='today'>当天</a></li>
+	</ul>
 	{{language.startTime}}:
 	<div id="datetimepickerStartDate" class="input-append date">
-      <input type="text" id="startdate" readOnly="readonly"></input>
+      <input type="text" readOnly="readonly"></input>
       <span class="add-on">
         <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
       </span>
     </div>
 	{{language.endTime}}:
 	<div id="datetimepickerEndDate" class="input-append date">
-      <input type="text" id="enddate" readOnly="readonly"></input>
+      <input type="text" readOnly="readonly"></input>
       <span class="add-on">
         <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
       </span>
