@@ -111,6 +111,19 @@
 			}
 		}
 		return obj
+	},
+	/**
+		将日期转对象格式，如 2013-06-05 12:30:00转成{year:2013,month:06,day:04,hour:12,minute:30,second:0}对象形式
+	*/
+	'dateToObject':function(date){
+		return {
+			year:date.getFullYear(),
+			month:date.getMonth() + 1,
+			day:date.getDate(),
+			hour:date.getHours(),
+			minute:date.getMinutes(),
+			second:date.getSeconds()
+		}
 	}
 }
 ServerUtils ={}

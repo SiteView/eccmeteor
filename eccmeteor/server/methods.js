@@ -16,6 +16,7 @@
   "svDisableForever":svDisableForever,
   "svEnable":svEnable,
   "svDisableTemp":svDisableTemp,
+  "svQueryRecordsByTime":svQueryRecordsByTime,
   "syncTreeData":SyncFunction.sync //同步数据
 });//给客户端调用的
 

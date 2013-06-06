@@ -1,0 +1,24 @@
+<Template name = "detailSvg">
+<div>
+	{{language.startTime}}:
+	<div id="datetimepickerStartDate" class="input-append date">
+      <input type="text" id="startdate" readOnly="readonly"></input>
+      <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+      </span>
+    </div>
+	{{language.endTime}}:
+	<div id="datetimepickerEndDate" class="input-append date">
+      <input type="text" id="enddate" readOnly="readonly"></input>
+      <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+      </span>
+    </div>
+	<button id="queryDetailLineData" class="btn">查询</button>
+</div>
+<div id="showDetailSvg">
+	<div class="well">
+		<svg id="detailLine"></svg>
+	</div>
+</div>
+</Template>

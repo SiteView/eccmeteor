@@ -17,11 +17,13 @@ Template.showMonitor.events={
 		if(!id || id=="") return;
 		var ID = {id:id,type:"monitor"}
 		Session.set("checkedMonitorId",ID);//存储选中监视器的id
+		//用此方法代替上面的存储方式
+		SessionManage.setCheckedMonitroId(id);
 		drawImage(id);
 	}
 }
 
-Template.showMonitor.rendered = function(){
+Template.showMonitor.rendered = function(){ //默认选中第一个监视进行绘图
 	if(!this._rendered) {
 			this._rendered = true;
 	}
@@ -38,6 +40,8 @@ Template.showMonitor.rendered = function(){
 	$("#showSvg").css("display","block");
 	var ID = {id:id,type:"monitor"}
 	Session.set("checkedMonitorId",ID);//存储选中监视器的id
+	//用此方法代替上面的存储方式
+	SessionManage.setCheckedMonitroId(id);
 	drawImage(id);
 }
 Template.recordsData.recordsData = function(){
@@ -45,14 +49,35 @@ Template.recordsData.recordsData = function(){
 }
 Template.recordsData.events = {
 	"click .btn#monitorDetail" :  function(){
-	
-	
+		SwithcView.view(MONITORVIEW.MONITORDETAIL);//设置视图状态为监视器详细信息
 	}
 }
 
 //画图前 获取相关数据
 function drawImage(id,count){
 	if(!count) var count = 200;
+	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
+	if(!foreigkeys){
+		SystemLogger("监视器"+id+"不能获取画图数据");
+		return;
+	}
+	//获取画图数据
+	Meteor.call("getQueryRecords",id,count, function (err, result) {
+		if(err){
+			SystemLogger(err);
+			return;
+		}	
+		var dataProcess = new DataProcess(result,foreigkeys["monitorForeignKeys"]);
+		var resultData = dataProcess.getData();
+		var recordsData = dataProcess.getRecordsDate();
+		var keys = dataProcess.getDataKey();
+		var table = new DrawTable();//调用 client/lib 下的table.js 中的drawLine函数画图
+		table.drawTable(keys,"#tableData");
+		var line = new DrawLine(resultData,foreigkeys["monitorPrimary"],foreigkeys["monitorDescript"]);
+		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图
+		Session.set("recordsData",recordsData);
+	});
+	/*
 	//var monitor = SvseTree.findOne({sv_id:id});//找到该监视器所依赖的监视器模板
 	var monitor = SvseTreeDao.getNodeById(id);//找到该监视器所依赖的监视器模板
 	if(!monitor)return; //如果该监视器不存在，不划线
@@ -105,6 +130,7 @@ function drawImage(id,count){
 		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图
 		Session.set("recordsData",recordsData);
 	});
+	*/
 }
 
 //初始化导航树

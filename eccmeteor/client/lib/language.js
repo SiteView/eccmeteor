@@ -11,7 +11,9 @@ Deps.autorun(function (c) {
 				username:"username",
 				password:"password",
 				home : "HOME",
-				link : "LINK"
+				link : "LINK",
+				startTime : 'Start Time',
+				endTime : 'End Time'
 			}
 		},
 		{
@@ -23,7 +25,9 @@ Deps.autorun(function (c) {
 				username:"用户名",
 				password:"密码",
 				home : "首页",
-				link : "链接"
+				link : "链接",
+				startTime : '开始时间',
+				endTime : '结束时间'
 			}
 		}
 	];

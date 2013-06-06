@@ -326,3 +326,18 @@ var svDisableTemp = function(ids,starttime,endtime){
 	var fmap= robj.fmap(0);
 	return fmap;
 }
+
+svQueryRecordsByTime = function(id,beginDate,endDate){
+		var robj = process.sv_forest({
+			'dowhat':'QueryRecordsByTime',
+			id:id, 
+			begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
+			end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
+		}, 0);
+		var fmap = robj.fmap(0);
+		var runtiomeRecords = [];
+		for(r in fmap){
+			runtiomeRecords.push(fmap[r]);
+		}
+		return runtiomeRecords;
+}
