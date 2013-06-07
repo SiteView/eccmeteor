@@ -20,10 +20,11 @@ Template.detailSvg.events = {
 			startdate = today.add(JSON.parse(str));
 		}
 		startPicker.setDate(startdate);
-		console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+		console.log("#############################");
 		console.log(startdate);
 		console.log(endPicker.getDate());
-		console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCccc");
+		console.log("#######################");
+		drawDetailLine(ClientUtils.dateToObject(startdate),ClientUtils.dateToObject(endPicker.getDate()));
 	}
 }
 Template.detailSvg.rendered = function(){

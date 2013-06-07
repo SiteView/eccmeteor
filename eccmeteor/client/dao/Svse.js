@@ -10,19 +10,24 @@ var SvseDao = {
 	getNodesByRootId:function(rootId){
 		return Svse.find({parentid:rootId}).fetch();
 	},
-	getTree:function(parentid,branch){
-		if(!branch) branch =[];
+	getTree:function(parentid){
+		var branch =[];
 		var root = Svse.find({parentid:parentid}).fetch();
 		for(index in root){
 			var node ={}
 			//node["parentid"] = parentid;
 			node["id"] = root[index]["sv_id"];
-			node["label"]= SvseTree.findOne({sv_id:root[index]["sv_id"]})["sv_name"];
+		//	node["label"]= SvseTree.findOne({sv_id:root[index]["sv_id"]})["sv_name"];
+			node["name"]= SvseTree.findOne({sv_id:root[index]["sv_id"]})["sv_name"];
 			//node["label"]=  root[index]["sv_id"];
 			node["type"] = root[index]["type"];
 			if(root[index]["type"] !== "entity" && root[index]["has_son"]){
 				node["children"]= this.getTree(node["id"]);
 			}
+			if(root[index] && root[index]["type"] !== "entity"){
+				node["isParent"] = true;
+			}
+			if(parentid === "0") node["open"] = true;
 			branch.push(node);
 		}
 		return branch;

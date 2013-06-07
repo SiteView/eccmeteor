@@ -134,6 +134,7 @@ function drawImage(id,count){
 }
 
 //初始化导航树
+/*
 Deps.autorun(function(c){
 	if(Session.get("SvseCollectionComplete")&&Session.get("moitorContentRendered")){
 		var data = SvseDao.getTree("0");
@@ -168,10 +169,55 @@ Deps.autorun(function(c){
 		});
 	}
 });
+*/
+
+Deps.autorun(function(c){
+	if(Session.get("SvseCollectionComplete")&&Session.get("moitorContentRendered")){
+		console.log("cookie  "+$.cookie("expandnode"));
+		var expandnodes = $.cookie("expandnode") ?　$.cookie("expandnode").split(",")　: [];
+		var data = SvseDao.getTree("0");
+		var setting = {
+			callback:{
+				onClick:function(event, treeId, treeNode){
+					var id= treeNode.id;
+					var type = treeNode.type;
+					var checkedTreeNode = {};
+					checkedTreeNode.id = id;
+					checkedTreeNode.type=type;
+					checkedTreeNode.name = treeNode.name;
+					Session.set("checkedTreeNode",checkedTreeNode);//记录点击的节点。根据该节点获取 编辑增加设备时的基本信息;
+					if(type !== "entity"){
+						SwithcView.view(MONITORVIEW.GROUPANDENTITY); //设置视图状态
+						Session.set("svid",id);
+						return;
+					}
+					SwithcView.view(MONITORVIEW.MONTIOTR);//设置视图状态
+					Session.set("entityid",id);
+				}
+			}
+		};	
+		$.fn.zTree.init($("#treeDemo"), setting, [ClientUtils.expandTreeNode(data[0],expandnodes)]);
+	}
+});
 
 Template.moitorContent.rendered = function(){
 	if(!Session.get("moitorContentRendered"))
-	Session.set("moitorContentRendered",true); //渲染完毕
+		Session.set("moitorContentRendered",true); //渲染完毕
+	$(document).ready(function(){
+		$(window).unload(function() {
+			var treeDemo= $.fn.zTree.getZTreeObj("treeDemo");
+			var arr =  treeDemo.getNodesByFilter(function(node){
+				return node.open;
+			});
+			var ids  = "";
+			for(index in arr){
+				console.log(arr[index].id);
+				ids = ids +","+arr[index].id;
+			}
+			console.log(ids);
+			$.cookie("expandnode",ids.substr(1,ids.length));
+		});
+	});
 }
 
 Template.operateNode.sv_name = function(){
@@ -234,7 +280,7 @@ Template.operateNode.events ={
 		var id = Session.get("checkedTreeNode")["id"];
 		SvseDao.removeNodesById(id);
 		var fatherId = id.substring(0,id.lastIndexOf("\."));//获取删除节点的父节点Id
-		ConstructorNavigateTree.checkedNodeByTreeId(fatherId);//根据id选中节点设置到Session中
+	//	ConstructorNavigateTree.checkedNodeByTreeId(fatherId);//根据id选中节点设置到Session中
 		SwithcView.view(MONITORVIEW.GROUPANDENTITY);//设置视图状态
 	},
 	"click .btn#addMonitor":function(){
@@ -276,6 +322,7 @@ Template.operateNode.events ={
 		SvseDao.refreshTreeData();
 	}
 }
+/*
 var ConstructorNavigateTree =  {
 	checkedNodeByTreeId:function(id){
 		var $tree = $('#svse_tree');
@@ -289,6 +336,7 @@ var ConstructorNavigateTree =  {
 		Session.set("svid",node.id);
 	}
 }
+*/
 
 Deps.autorun(function(c){
 	//自动改变 禁用按钮的文字，为禁用或者启用。根据session中存的id的状态来决定。

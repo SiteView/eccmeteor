@@ -124,6 +124,24 @@
 			minute:date.getMinutes(),
 			second:date.getSeconds()
 		}
+	},
+	'expandTreeNode' : function(zNode,expandnodeids){ //处理导航树的节点 展开的数据
+		var branch = [];
+			if(!expandnodeids.length) return zNode;
+			for(index in expandnodeids){
+				if(expandnodeids[index] == zNode.id){
+					zNode.open = true;
+					expandnodeids.splice(index,1);
+					break;
+				}
+			}
+			if(!zNode["children"]) return zNode;
+			
+			for(childindex in zNode["children"]){
+				branch.push(ClientUtils.expandTreeNode(zNode["children"][childindex],expandnodeids));
+			}
+			zNode["children"] = branch;
+			return zNode;
 	}
 }
 ServerUtils ={}
