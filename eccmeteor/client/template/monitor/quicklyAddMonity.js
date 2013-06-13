@@ -65,8 +65,10 @@ Template.showQuickMonityTemplate.events = {
 	},
 	"click #savequickmonitorlist" : function () {
 		var checkeds = $("#quickMonitorList :checkbox[checked='checked']");
-		if(!checkeds.length)
+		if(!checkeds.length){
+			Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
 			return;
+		}
 		var templates = [];
 		for (var index = 0; index < checkeds.length ; index++){
 			console.log("checkeds index " + index)

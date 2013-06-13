@@ -29,3 +29,8 @@ Meteor.publish("svse_entity_info",function(){
 Meteor.publish("svse_task",function(){
 	return SvseTask.find();
 });
+
+//邮件
+Meteor.publish("svse_emaillist",function(){
+	return SvseEmailList.find();
+});

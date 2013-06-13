@@ -1,5 +1,5 @@
 //定义视图状态
-var MONITORVIEW = {
+MONITORVIEW = {
 	GROUPANDENTITY : "GroupAndEntity", //组与设备视图 表格
 	MONTIOTR : "Monitor", //监视器视图  表格，统计图，数据状态统计
 	ENTITYGROUP : "EntityGroup", //设备模板展示视图
@@ -12,9 +12,10 @@ var MONITORVIEW = {
 	MONITOREDIT:"MonitorEdit", //监视器的修改
 	QUICKLYADDMONITY:"QuicklyAddMonity",//快速添加监视器
 	MONITORDETAIL:"MonitorDetail",//监视器的详细信息
+	EMAILSETTING:"emailsetting" //邮箱设置
 };
 //视图切换
-var SwithcView = {
+SwithcView = {
 	view:function(viewName){
 		Session.set("viewstatus",viewName);
 	}

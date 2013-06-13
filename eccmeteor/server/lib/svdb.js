@@ -326,7 +326,7 @@ var svDisableTemp = function(ids,starttime,endtime){
 	var fmap= robj.fmap(0);
 	return fmap;
 }
-
+//通过时间段获取记录数据
 svQueryRecordsByTime = function(id,beginDate,endDate){
 		var robj = process.sv_forest({
 			'dowhat':'QueryRecordsByTime',
@@ -341,3 +341,46 @@ svQueryRecordsByTime = function(id,beginDate,endDate){
 		}
 		return runtiomeRecords;
 }
+
+//获取邮件列表
+svGetEmailList = function(){
+		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"emailAdress.ini",
+			"user":"default","sections":"default"}, 0);
+		if(!robj.isok(0)){
+		}
+		var fmap= robj.fmap(0);
+		return fmap;
+}
+
+//获取发送邮件的设置
+svGetSendEmailSetting = function(){
+		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",
+			"user":"default","sections":"default"}, 0);
+		if(!robj.isok(0)){
+		}
+		var fmap= robj.fmap(0);
+		fmap["email_config"]["password"] = svDecryptOne(fmap["email_config"]["password"]);
+		return fmap["email_config"];
+}
+//解密
+svDecryptOne =  function (password){
+	var dowhat = {
+		'dowhat':'decrypt'
+	}
+	dowhat[password]="";
+	var robj = process.sv_univ(dowhat,0);
+	var fmap= robj.fmap(0);
+	return fmap.return[password];
+}
+
+//加密
+svEncryptOne = function(password){
+	var dowhat = {
+		'dowhat':'encrypt'
+	}
+	dowhat[password]="";
+	var robj = process.sv_univ(dowhat,0);
+	var fmap= robj.fmap(0);
+	return fmap.return[password];
+}
+

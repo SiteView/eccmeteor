@@ -8,3 +8,4 @@ Meteor.subscribe("svse_entity_template_group");
 Meteor.subscribe("svse_entity_template");
 Meteor.subscribe("svse_entity_info");
 Meteor.subscribe("svse_task");
+Meteor.subscribe("svse_emaillist");

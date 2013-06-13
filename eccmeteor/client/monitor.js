@@ -196,7 +196,7 @@ Deps.autorun(function(c){
 				}
 			}
 		};	
-		$.fn.zTree.init($("#treeDemo"), setting, [ClientUtils.expandTreeNode(data[0],expandnodes)]);
+		$.fn.zTree.init($("#svse_tree"), setting, [ClientUtils.expandTreeNode(data[0],expandnodes)]);
 	}
 });
 
@@ -204,9 +204,11 @@ Template.moitorContent.rendered = function(){
 	if(!Session.get("moitorContentRendered"))
 		Session.set("moitorContentRendered",true); //渲染完毕
 	$(document).ready(function(){
+		console.log("12333333333");
 		$(window).unload(function() {
-			var treeDemo= $.fn.zTree.getZTreeObj("treeDemo");
-			var arr =  treeDemo.getNodesByFilter(function(node){
+			console.log("123");
+			var svse_tree= $.fn.zTree.getZTreeObj("svse_tree");
+			var arr =  svse_tree.getNodesByFilter(function(node){
 				return node.open;
 			});
 			var ids  = "";
@@ -217,6 +219,22 @@ Template.moitorContent.rendered = function(){
 			console.log(ids);
 			$.cookie("expandnode",ids.substr(1,ids.length));
 		});
+		//初始化设置等导航节点
+		(function(){
+			var setting = {
+				data: {
+					simpleData: {
+						enable: true
+					}
+				},
+				callback:{
+					onClick:function(event, treeId, treeNode){
+						NavigationSettionTree.execute(treeNode.action);
+					}
+				}
+			};
+			$.fn.zTree.init($("#setting_tree"), setting, NavigationSettionTree.getTreeData());
+		})();
 	});
 }
 

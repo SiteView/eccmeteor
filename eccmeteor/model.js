@@ -5,6 +5,7 @@ SvseEntityTemplet = new Meteor.Collection("svse_entity_template");//设备模板
 SvseEntityTempletGroup = new Meteor.Collection("svse_entity_template_group");//设备模板组集
 SvseEntityInfo = new Meteor.Collection("svse_entity_info");//设备详细信息
 SvseTask = new Meteor.Collection("svse_task"); //计划任务
+SvseEmailList = new Meteor.Collection("svse_emaillist");
 Svse.allow({
 	insert: function (userId, doc) {
     // the user must be logged in, and the document must be owned by the user
@@ -70,6 +71,18 @@ SvseEntityInfo.allow({
 });
 
 SvseTask.allow({
+	insert: function (userId, doc) {
+		return true;
+	},
+	update: function (userId, doc, fields, modifier) {
+		return true;
+	},
+	remove: function (userId, doc) {
+		return true;
+	}
+});
+
+SvseEmailList.allow({
 	insert: function (userId, doc) {
 		return true;
 	},

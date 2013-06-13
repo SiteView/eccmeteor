@@ -17,6 +17,7 @@
   "svEnable":svEnable,
   "svDisableTemp":svDisableTemp,
   "svQueryRecordsByTime":svQueryRecordsByTime,
+  "svGetSendEmailSetting":svGetSendEmailSetting,
   "syncTreeData":SyncFunction.sync //同步数据
 });//给客户端调用的
 
@@ -33,7 +34,8 @@ var SvseMethodsOnServer = {
 	"svRefreshMonitors":svRefreshMonitors,
 	"svGetRefreshed":svGetRefreshed,
 	"svGetMonitor":svGetMonitor,
-	"svDeleteMonitor" : svDeleteMonitor
+	"svDeleteMonitor" : svDeleteMonitor,
+	"svGetEmailList" : svGetEmailList
 }
 
 var SvseSyncData = {
