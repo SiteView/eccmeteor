@@ -32,3 +32,7 @@ Template.emailsetting.rendered = function(){
 		$("#emailbasicsettion :password[name=password]").val(setting["password"]);
 	});
 }
+
+Template.emailsetting.emaillist = function(){
+	return SvseEmailDao.getEmailList();
+}

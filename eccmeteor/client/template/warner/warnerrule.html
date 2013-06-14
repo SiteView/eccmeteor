@@ -1,0 +1,28 @@
+<Template name="warnerrule">
+<div class="form-horizontal">
+	<div class="btn-group">
+		
+		<ul class="nav pull-right">
+		<li class="dropdown">
+			<button class="btn dropdown-toggle" id="addwarnerrule" data-toggle="dropdown">{{language.addbtn}}<b class="caret"></b></button>
+			<!--<a class="dropdown-toggle" data-toggle="dropdown" href="#">操作<b class="caret"></b></a>-->
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+				<li><a tabindex="-1" href="#"><i class="icon-envelope"></i> {{language.warnerrulemodel.emailwarner}}</a></li>
+				<li><a tabindex="-1" href="#"><i class="icon-signal"></i> {{language.warnerrulemodel.messagewarner}}</a></li>
+				<li><a tabindex="-1" href="#"><i class="icon-list-alt"></i> {{language.warnerrulemodel.scriptwarner}}</a></li>
+				<li><a tabindex="-1" href="#"><i class="icon-volume-up"></i> {{language.warnerrulemodel.soundwarner}}</a></li>
+			</ul>
+		</li>
+	</ul>
+		<button class="btn" id="delwarnerrule">{{language.delbtn}}</button>
+	</div>
+	<div class="btn-group">
+		<button class="btn" id="allowewarnerrule">{{language.allowbtn}}</button>
+		<button class="btn" id="forbidwarnerrule">{{language.forbidbtn}}</button>
+		<button class="btn" id="refreshwarnerrule">{{language.refreshbtn}}</button>
+	</div>
+	<div class="btn-group">
+		<button class="btn" id="warnerrulehelpmessage">{{language.helpmessagebtn}}</button>
+	</div>
+</div>
+</Template>

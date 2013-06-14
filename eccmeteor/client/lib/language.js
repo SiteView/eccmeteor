@@ -32,16 +32,23 @@ Deps.autorun(function (c) {
 				nameTh:"Name",
 				statusTh : 'Status',
 				emailTh:'Email',
-				editTh:'Edit',
+				optionTh:'Option',
 				basicsettiontilte:"Basic Setting",
-				emailsettingmodol:{
+				emailsettingmodel:{
 					sendserverSMTPlab:"Server SMTP",
 					sendemailAddresslab:"Email",
 					sendbackupserverlab:"Backup Server SMTP",
 					usernamelab:"Username",
 					passwordlab:"Password",
 					applybtn:"Apply",
-					testbtn:"Test"
+					testbtn:"Test",
+					editBtn:"Edit"
+				},
+				warnerrulemodel:{
+					emailwarner :"Emial Warner",
+					messagewarner :"Message Warner",
+					scriptwarner:"Script Warner",
+					soundwarner:"Sound Warner"
 				}
 			}
 		},
@@ -75,17 +82,24 @@ Deps.autorun(function (c) {
 				nameTh:"名称",
 				statusTh : '状态',
 				emailTh:'邮箱',
-				editTh:'编辑',
+				optionTh:'操作',
 				basicsettiontilte:"基础上设置",
-				emailsettingmodol:{
+				emailsettingmodel:{
 					sendserverSMTPlab:"发送服务器SMTP",
 					sendemailAddresslab:"发送方Email地址",
 					sendbackupserverlab:"备份发送服务器",
 					usernamelab:"身份验证用户名",
 					passwordlab:"身份验证密码",
 					applybtn:"应用",
-					testbtn:"测试"
+					testbtn:"测试",
+					editBtn:"编辑"
 				},
+				warnerrulemodel:{
+					emailwarner :"Emial报警",
+					messagewarner :"短信报警",
+					scriptwarner:"脚本报警",
+					soundwarner:"声音报警"
+				}
 				
 			}
 		}

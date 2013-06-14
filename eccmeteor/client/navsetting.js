@@ -2,7 +2,7 @@ var NavigationSettionTreeEvents = {
 	"warner":function(){},
 	"setting":function(){},
 	"warnerrule":function(){
-		console.log("执行了 warnerrule");
+		
 	},
 	"warnerlog":function(){
 		console.log("执行了 warnerlog");
