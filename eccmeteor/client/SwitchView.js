@@ -11,9 +11,15 @@ MONITORVIEW = {
 	MONITORADD : "MonitorAdd", //监视器的增加
 	MONITOREDIT:"MonitorEdit", //监视器的修改
 	QUICKLYADDMONITY:"QuicklyAddMonity",//快速添加监视器
-	MONITORDETAIL:"MonitorDetail",//监视器的详细信息
-	EMAILSETTING:"emailsetting" //邮箱设置
+	MONITORDETAIL:"MonitorDetail"//监视器的详细信息
+	
 };
+//设置视图
+SETTINGVIEW = {
+	EMAILSETTING:"emailsetting", //邮箱设置
+	WARNERRULE :"warnerrule"
+}
+
 //视图切换
 SwithcView = {
 	view:function(viewName){

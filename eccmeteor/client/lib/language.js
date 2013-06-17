@@ -48,7 +48,10 @@ Deps.autorun(function (c) {
 					emailwarner :"Emial Warner",
 					messagewarner :"Message Warner",
 					scriptwarner:"Script Warner",
-					soundwarner:"Sound Warner"
+					soundwarner:"Sound Warner",
+					addemailwarnerruletitle:"Add Email Warner's rule",
+					saveemailwarnerrulesettingbtn:"Save",
+					cancelemailwarnerrulesettingbtn:"Cancel"
 				}
 			}
 		},
@@ -98,7 +101,10 @@ Deps.autorun(function (c) {
 					emailwarner :"Emial报警",
 					messagewarner :"短信报警",
 					scriptwarner:"脚本报警",
-					soundwarner:"声音报警"
+					soundwarner:"声音报警",
+					addemailwarnerruletitle:"添加Email报警",
+					saveemailwarnerrulesettingbtn:"保存",
+					cancelemailwarnerrulesettingbtn:"取消"
 				}
 				
 			}

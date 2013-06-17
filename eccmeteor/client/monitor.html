@@ -2,10 +2,6 @@
 	<div class="tab-pane active" id="1">
 		<div class="row-fluid">
 			<div class="span3">
-				<!-- 
-				<div id="svse_tree" class="well"></div>
-				
-				-->
 				<div class="well" style="overflow:auto">
 					<ul id="svse_tree" class="ztree"></ul>
 					<ul id="setting_tree" class="ztree"></ul>
@@ -60,6 +56,9 @@
 	{{/if}}
 	{{#if equal viewstatus "emailsetting"}}
 		{{> emailsetting}}
+	{{/if}}
+	{{#if equal viewstatus "warnerrule"}}
+		{{> warnerrule}}
 	{{/if}}
 	</div>
 </Template>

@@ -2,7 +2,7 @@ var NavigationSettionTreeEvents = {
 	"warner":function(){},
 	"setting":function(){},
 	"warnerrule":function(){
-		
+		SwithcView.view(SETTINGVIEW.WARNERRULE);
 	},
 	"warnerlog":function(){
 		console.log("执行了 warnerlog");
@@ -14,7 +14,7 @@ var NavigationSettionTreeEvents = {
 		console.log("执行了 basicsetting");
 	},
 	"emailsetting":function(){
-		SwithcView.view(MONITORVIEW.EMAILSETTING);
+		SwithcView.view(SETTINGVIEW.EMAILSETTING);
 	},
 	"messagesetting":function(){
 		console.log("执行了 messagesetting");
