@@ -25,11 +25,11 @@ Template.emailsetting.events  = {
 Template.emailsetting.rendered = function(){
 	Meteor.call("svGetSendEmailSetting",function(err,setting){
 		console.log(setting);
-		$("#emailbasicsettion :text[name=server]").val(setting["server"]);
-		$("#emailbasicsettion :text[name=from]").val(setting["from"]);
-		$("#emailbasicsettion :text[name=backupserver]").val(setting["backupserver"]);
-		$("#emailbasicsettion :text[name=user]").val(setting["user"]);
-		$("#emailbasicsettion :password[name=password]").val(setting["password"]);
+		$("#emailbasicsetting :text[name=server]").val(setting["server"]);
+		$("#emailbasicsetting :text[name=from]").val(setting["from"]);
+		$("#emailbasicsetting :text[name=backupserver]").val(setting["backupserver"]);
+		$("#emailbasicsetting :text[name=user]").val(setting["user"]);
+		$("#emailbasicsetting :password[name=password]").val(setting["password"]);
 	});
 }
 

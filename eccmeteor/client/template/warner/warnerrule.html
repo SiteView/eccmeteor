@@ -34,15 +34,7 @@
 					<ul id="svse_tree_check" class="ztree"></ul>
 				</div>
 				<div class="span8">
-					<form>
-						<input type="text" /><br/>
-						<input type="text" /><br/>
-						<input type="text" /><br/>
-						<input type="text" /><br/>
-						<input type="text" /><br/>
-						<input type="text" /><br/>
-						<input type="text" /><br/>
-					</form>
+					{{> warnerruleofemailform}}
 				</div>
 			</div>
 		</div>
@@ -51,4 +43,70 @@
 			<button class="btn btn-primary btn-large" id="warnerruleofemailsavebtn">{{language.warnerrulemodel.saveemailwarnerrulesettingbtn}}</button>
 		</div>
 	</div>
+</Template>
+
+<Template name="warnerruleofemailform">
+	<form id="warnerruleofemailform" class="well form-horizontal">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">报警名称:</label>
+				<div class="controls">
+					<input type="text" class="span6" name="server">
+				 </div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">邮件接收地址:</label>
+				<div class="controls">
+					<select class="emailmultiselect" multiple="multiple">
+						{{#each emaillist}}
+							 <option value="{{Name}}">{{Name}}</option>
+						{{/each}}
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">其他邮件地址:</label>
+				<div class="controls">
+					<input type="text" class="span6" name="backupserver">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Email模板:</label>
+				<div class="controls">
+					<select id="emailtemplatelist">
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >升级次数:</label>
+				<div class="controls">
+					<input type="password" class="span6" name="password">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >升级接收人地址:</label>
+				<div class="controls">
+					<input type="password" class="span6" name="password">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >停止次数:</label>
+				<div class="controls">
+					<input type="password" class="span6" name="password">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >值班报警列表:</label>
+				<div class="controls">
+					<input type="password" class="span6" name="password">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >报警次数:</label>
+				<div class="controls">
+					<input type="password" class="span6" name="password">
+				</div>
+			</div>
+		</fieldset>
+	</form>
 </Template>

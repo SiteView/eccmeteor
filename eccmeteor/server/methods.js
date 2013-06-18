@@ -1,6 +1,6 @@
 ﻿Meteor.methods({
   "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
-  "meteorSvForest":meteorSvForest, //调用 /lib/svdb.js中定义的方法
+  "meteorSvForest":meteorSvForest,
   "getQueryRecords":getQueryRecords,
   "GetMonitorTemplet":GetMonitorTemplet,
   "removeNodesById":SvseDaoOnServer.removeNodesById,
@@ -18,6 +18,7 @@
   "svDisableTemp":svDisableTemp,
   "svQueryRecordsByTime":svQueryRecordsByTime,
   "svGetSendEmailSetting":svGetSendEmailSetting,
+  "svGetEmailTemplates":svGetEmailTemplates,
   "syncTreeData":SyncFunction.sync //同步数据
 });//给客户端调用的
 

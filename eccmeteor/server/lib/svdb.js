@@ -384,3 +384,11 @@ svEncryptOne = function(password){
 	return fmap.return[password];
 }
 
+//获取发送邮件模板
+svGetEmailTemplates = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"TXTtemplate.ini",
+			"user":"default","sections":"Email"}, 0);
+	var fmap= robj.fmap(0);
+	return fmap["Email"];
+}
+
