@@ -32,3 +32,8 @@ use meteor
 db.svse_tree.findOne("type":"monitor")
 db.svse_tree.findOne({"type":"monitor"})
 db.svse_tree.findOne({"sv_id":"1.9.15.1"})
+db.SvseWarnerRule.findOne()
+show dbs
+use meteor
+show collections
+db.svse_warnerrule.find({});

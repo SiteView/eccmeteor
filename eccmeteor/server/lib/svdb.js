@@ -392,3 +392,15 @@ svGetEmailTemplates = function(){
 	return fmap["Email"];
 }
 
+//获取报警规则列表
+svGetWarnerRule = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"alert.ini",
+			"user":"default","sections":"default"}, 0);
+	return robj.fmap(0);;
+}
+
+//ini文件写入
+svWriteIniFileSectionString = function(filename,user,sectionname,section){
+	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':filename,'user':user,'sectionname':sectionname},0); //添加
+	return robj.fmap(0);;
+}

@@ -5,6 +5,36 @@ Template.warnerrule.events = {
 
 }
 
+Template.warnerruleofemail.events = {
+	"click #warnerruleofemailcancelbtn" : function(){
+		$('#emailwarnerdiv').modal('toggle');
+	},
+	"click #warnerruleofemailsavebtn":function(){
+		var warnerruleofemailform = ClientUtils.formArrayToObject($("#warnerruleofemailform").serializeArray());
+		var warnerruleofemailformsendconditions = ClientUtils.formArrayToObject($("#warnerruleofemailformsendconditions").serializeArray());
+		for(param in warnerruleofemailformsendconditions){
+			warnerruleofemailform[param] = warnerruleofemailformsendconditions[param];
+		}
+		warnerruleofemailform["AlertCond"] = 3;
+		warnerruleofemailform["SelTime1"] = 2;
+		warnerruleofemailform["SelTime2"] = 3;
+		warnerruleofemailform["AlertState"] = "Enable";
+		warnerruleofemailform["AlertType"] = "EmailAlert";
+		warnerruleofemailform["AlwaysTimes"] = 1;
+	//	warnerruleofemailform["AlertTarget"] = 1;
+		warnerruleofemailform["OnlyTimes"] = 1;
+		
+		var targets = [];
+		var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
+		for(index in arr){
+			targets.push(arr[index].id)
+		}
+		
+		warnerruleofemailform["AlertTarget"] = targets.join()
+		console.log(warnerruleofemailform);
+	}
+}
+
 Template.warnerruleofemail.rendered = function(){
 	//监视器选择树
 	$(function(){
@@ -75,4 +105,8 @@ Template.warnerruleofemailform.rendered = function(){
 
 Template.warnerruleofemailform.emaillist = function(){
 	return SvseEmailDao.getEmailList();
+}
+
+Template.warnerrulelist.rulelist = function(){
+	return SvseWarnerRuleDao.getWarnerRuleList();
 }

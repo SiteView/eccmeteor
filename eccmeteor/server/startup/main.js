@@ -6,5 +6,6 @@ initDateAtStartUp = {
 	"initSvseEntityTempletGroupAtStartUp":initSvseEntityTempletGroupAtStartUp, //初始化设备模板信息
 	"initSvseEntityInfoAtStartUp":initSvseEntityInfoAtStartUp, //初始化设备详细信息
 	"initTaskAtStartUp":initTaskAtStartUp,
-	"initEmailListAtStartUp":initEmailListAtStartUp
+	"initEmailListAtStartUp":initEmailListAtStartUp,
+	"initEmailListAtStartUp":initWarnerRuleAtStartUp
 };

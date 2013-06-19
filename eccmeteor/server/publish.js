@@ -34,3 +34,8 @@ Meteor.publish("svse_task",function(){
 Meteor.publish("svse_emaillist",function(){
 	return SvseEmailList.find();
 });
+
+//报警规则
+Meteor.publish("svse_warnerrule",function(){
+	return SvseWarnerRule.find();
+});

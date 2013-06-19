@@ -36,7 +36,8 @@ var SvseMethodsOnServer = {
 	"svGetRefreshed":svGetRefreshed,
 	"svGetMonitor":svGetMonitor,
 	"svDeleteMonitor" : svDeleteMonitor,
-	"svGetEmailList" : svGetEmailList
+	"svGetEmailList" : svGetEmailList,
+	"svGetWarnerRule" :svGetWarnerRule
 }
 
 var SvseSyncData = {
