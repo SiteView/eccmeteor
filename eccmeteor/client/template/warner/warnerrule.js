@@ -21,17 +21,24 @@ Template.warnerruleofemail.events = {
 		warnerruleofemailform["AlertState"] = "Enable";
 		warnerruleofemailform["AlertType"] = "EmailAlert";
 		warnerruleofemailform["AlwaysTimes"] = 1;
-	//	warnerruleofemailform["AlertTarget"] = 1;
 		warnerruleofemailform["OnlyTimes"] = 1;
+		
+		var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
 		
 		var targets = [];
 		var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
 		for(index in arr){
-			targets.push(arr[index].id)
+			targets.push(arr[index].id);
 		}
-		
-		warnerruleofemailform["AlertTarget"] = targets.join()
+		warnerruleofemailform["AlertTarget"] = targets.join();
+		warnerruleofemailform["nIndex"] = nIndex;
 		console.log(warnerruleofemailform);
+		var section = {};
+		section[nIndex] = warnerruleofemailform;
+		console.log(section);
+		SvseWarnerRuleDao.setWarnerRuleOfEmail(nIndex,section,function(){
+			$('#emailwarnerdiv').modal('toggle');
+		});
 	}
 }
 

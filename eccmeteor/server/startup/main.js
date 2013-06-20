@@ -7,5 +7,5 @@ initDateAtStartUp = {
 	"initSvseEntityInfoAtStartUp":initSvseEntityInfoAtStartUp, //初始化设备详细信息
 	"initTaskAtStartUp":initTaskAtStartUp,
 	"initEmailListAtStartUp":initEmailListAtStartUp,
-	"initEmailListAtStartUp":initWarnerRuleAtStartUp
+	"initWarnerRuleAtStartUp":initWarnerRuleAtStartUp
 };

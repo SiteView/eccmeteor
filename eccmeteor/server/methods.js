@@ -19,6 +19,8 @@
   "svQueryRecordsByTime":svQueryRecordsByTime,
   "svGetSendEmailSetting":svGetSendEmailSetting,
   "svGetEmailTemplates":svGetEmailTemplates,
+  "svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
+  "svWriteEmailIniFileSectionString":svWriteEmailIniFileSectionString,
   "syncTreeData":SyncFunction.sync //同步数据
 });//给客户端调用的
 

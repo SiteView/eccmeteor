@@ -86,7 +86,7 @@ Deps.autorun(function (c) {
 				statusTh : '状态',
 				emailTh:'邮箱',
 				optionTh:'操作',
-				basicsettiontilte:"基础上设置",
+				basicsettiontilte:"基本设置",
 				emailsettingmodel:{
 					sendserverSMTPlab:"发送服务器SMTP",
 					sendemailAddresslab:"发送方Email地址",
@@ -95,7 +95,7 @@ Deps.autorun(function (c) {
 					passwordlab:"身份验证密码",
 					applybtn:"应用",
 					testbtn:"测试",
-					editBtn:"编辑"
+					editbtn:"编辑"
 				},
 				warnerrulemodel:{
 					emailwarner :"Emial报警",

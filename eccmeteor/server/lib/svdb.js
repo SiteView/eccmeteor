@@ -399,8 +399,16 @@ svGetWarnerRule = function(){
 	return robj.fmap(0);;
 }
 
-//ini文件写入
-svWriteIniFileSectionString = function(filename,user,sectionname,section){
-	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':filename,'user':user,'sectionname':sectionname},0); //添加
-	return robj.fmap(0);;
+//Alert.ini文件写入
+svWriteAlertIniFileSectionString = function(sectionname,section){
+	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"alert.ini",'user':"default",'section':sectionname},0); 
+	console.log(robj.fmap(0));
+	return robj.fmap(0);
+}
+
+//emailAdress.ini写入
+svWriteEmailIniFileSectionString = function(addressname,address){
+	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"emailAdress.ini",'user':"default",'section':addressname},0); 
+	console.log(robj.fmap(0));
+	return robj.fmap(0);
 }

@@ -1,6 +1,6 @@
 Template.emailsetting.events  = {
 	"click #addemailsetting" : function(){
-	 
+		$('#emailaddresssettingdiv').modal('toggle');
 	},
 	"click #delemailsetting" : function(){
  
@@ -31,6 +31,47 @@ Template.emailsetting.rendered = function(){
 		$("#emailbasicsetting :text[name=user]").val(setting["user"]);
 		$("#emailbasicsetting :password[name=password]").val(setting["password"]);
 	});
+	
+	$(function(){
+		$('#emailaddresssettingdiv').modal({
+			backdrop:true,
+			keyboard:true,
+			show:false
+		}).css({
+			width: '800',
+			'margin-left': function () {
+				return -($(this).width() / 2);
+			},
+		});
+	});
+}
+
+Template.emailbasicsettingofaddress.rendered = function(){
+		//邮件模板下拉列表
+		Meteor.call("svGetEmailTemplates",function(err,result){
+			for(name in result){
+				console.log(name);
+				var option = $("<option value="+name+"></option>").html(name)
+				$("#emailbasicsettingofaddressemailtemplatelist").append(option);
+			}
+		});
+}
+
+Template.emailbasicsettingofaddress.events = {
+	"click #emailbasicsettingofaddresscancelbtn":function(){
+		$('#emailaddresssettingdiv').modal('toggle');
+	},
+	"click #emailbasicsettingofaddresssavebtn":function(){
+		var emailbasicsettingofaddressbasciinfo = ClientUtils.formArrayToObject($("#emailbasicsettingofaddressbasciinfo").serializeArray());
+		var nIndex = Utils.getUUID();
+		emailbasicsettingofaddressbasciinfo["nIndex"] = nIndex
+		console.log(emailbasicsettingofaddressbasciinfo);
+		var address = {};
+		address[nIndex] = emailbasicsettingofaddressbasciinfo;
+		SvseEmailDao.addEmailAddress(nIndex,address,function(){
+			$('#emailaddresssettingdiv').modal('toggle');
+		});
+	}
 }
 
 Template.emailsetting.emaillist = function(){

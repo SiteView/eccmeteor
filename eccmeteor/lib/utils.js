@@ -144,7 +144,8 @@
 			return zNode;
 	}
 }
-ServerUtils ={}
+ServerUtils ={
+}
 
 Utils = {
 	"checkReCallFunction":function(fn){
@@ -199,7 +200,7 @@ Utils = {
 		}
 		return changeObj;
 	},
-	compareObject : function(original,target,exception){
+	compareObject : function(original,target,exception){ //比较两个对象
 		for (property in original){
 			if(exception && exception[property]) continue;
 			if(original[property] !== target[property]){
@@ -207,5 +208,34 @@ Utils = {
 			}			
 		}
 		return true;
+	},
+	getUUID : function(){ //获取惟一标识符
+		var  _rnds = new Array(16);
+		var rnds = (function() {
+			for (var i = 0, r; i < 16; i++) {
+				if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
+				_rnds[i] = r >>> ((i & 0x03) << 3) & 0xff;
+			}
+			return _rnds;
+		})();
+		rnds[6] = (rnds[6] & 0x0f) | 0x40;
+		rnds[8] = (rnds[8] & 0x3f) | 0x80;
+		var _byteToHex = [];
+		for (var i = 0; i < 256; i++) {
+			_byteToHex[i] = (i + 0x100).toString(16).substr(1);
+		}
+		var d = (function(buf) {
+			var i = 0;
+			var bth = _byteToHex;
+			return  bth[buf[i++]] + bth[buf[i++]] +
+					bth[buf[i++]] + bth[buf[i++]] + '-' +
+					bth[buf[i++]] + bth[buf[i++]] + '-' +
+					bth[buf[i++]] + bth[buf[i++]] + '-' +
+					bth[buf[i++]] + bth[buf[i++]] + '-' +
+					bth[buf[i++]] + bth[buf[i++]] +
+					bth[buf[i++]] + bth[buf[i++]] +
+					bth[buf[i++]] + bth[buf[i++]];
+		})(rnds);
+		return d;
 	}
 }
