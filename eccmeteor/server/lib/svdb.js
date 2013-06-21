@@ -357,11 +357,24 @@ svGetSendEmailSetting = function(){
 		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",
 			"user":"default","sections":"default"}, 0);
 		if(!robj.isok(0)){
+			return;
 		}
 		var fmap= robj.fmap(0);
+		if(!fmap || !fmap["email_config"]) return ;
 		fmap["email_config"]["password"] = svDecryptOne(fmap["email_config"]["password"]);
 		return fmap["email_config"];
 }
+//email.ini写入
+svWriteEmailIniFileSectionString = function(section){
+	console.log(section);
+	section["password"] = svEncryptOne(section["password"]);
+	var ini = {"email_config":section};
+	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"email.ini",'user':"default",'section':"email_config"},0); 
+	console.log(robj.fmap(0));
+	return robj.fmap(0);
+}
+
+
 //解密
 svDecryptOne =  function (password){
 	var dowhat = {
@@ -370,6 +383,7 @@ svDecryptOne =  function (password){
 	dowhat[password]="";
 	var robj = process.sv_univ(dowhat,0);
 	var fmap= robj.fmap(0);
+	console.log(fmap)
 	return fmap.return[password];
 }
 
@@ -381,6 +395,7 @@ svEncryptOne = function(password){
 	dowhat[password]="";
 	var robj = process.sv_univ(dowhat,0);
 	var fmap= robj.fmap(0);
+	console.log(fmap)
 	return fmap.return[password];
 }
 
@@ -402,13 +417,13 @@ svGetWarnerRule = function(){
 //Alert.ini文件写入
 svWriteAlertIniFileSectionString = function(sectionname,section){
 	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"alert.ini",'user':"default",'section':sectionname},0); 
-	console.log(robj.fmap(0));
+//	console.log(robj.fmap(0));
 	return robj.fmap(0);
 }
 
 //emailAdress.ini写入
-svWriteEmailIniFileSectionString = function(addressname,address){
+svWriteEmailAddressIniFileSectionString = function(addressname,address){
 	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"emailAdress.ini",'user':"default",'section':addressname},0); 
-	console.log(robj.fmap(0));
+//	console.log(robj.fmap(0));
 	return robj.fmap(0);
 }

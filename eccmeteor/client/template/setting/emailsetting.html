@@ -29,7 +29,7 @@
 			{{/each}}
 		</tbody>
 </table>
-<form id="emailbasicsetting" class="well form-horizontal">
+<form id="emailbasicsetting" class="well form-horizontal" onsubmit="return false;">
  <fieldset>
     <legend>{{language.basicsettiontilte}}</legend>
     <div class="control-group">
@@ -63,8 +63,8 @@
       </div>
     </div>
 	<div class="form-actions">
-		<button class="btn btn-primary">{{language.emailsettingmodel.applybtn}}</button>
-		<button class="btn">{{language.emailsettingmodel.testbtn}}</button>
+		<button class="btn btn-primary" id="emailbasicsettingapplybtn">{{language.emailsettingmodel.applybtn}}</button>
+		<button class="btn" id="emailbasicsettingtestbtn">{{language.emailsettingmodel.testbtn}}</button>
 	</div>
   </fieldset>
 </form>

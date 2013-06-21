@@ -20,6 +20,7 @@
   "svGetSendEmailSetting":svGetSendEmailSetting,
   "svGetEmailTemplates":svGetEmailTemplates,
   "svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
+  "svWriteEmailAddressIniFileSectionString":svWriteEmailAddressIniFileSectionString,
   "svWriteEmailIniFileSectionString":svWriteEmailIniFileSectionString,
   "syncTreeData":SyncFunction.sync //同步数据
 });//给客户端调用的

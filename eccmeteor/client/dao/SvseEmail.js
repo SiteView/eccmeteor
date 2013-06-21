@@ -3,7 +3,7 @@ SvseEmailDao = {
 		return SvseEmailList.find({}).fetch();
 	},
 	"addEmailAddress":function(addressname,address,fn){
-		Meteor.call("svWriteEmailIniFileSectionString",addressname,address,function(err,result){
+		Meteor.call("svWriteEmailAddressIniFileSectionString",addressname,address,function(err,result){
 			var addressresult = result[addressname];
 			SvseEmailList.insert(addressresult,function(err,r_id){
 				if(err){
@@ -12,6 +12,11 @@ SvseEmailDao = {
 					fn();
 				}
 			})
+		});
+	},
+	"setEmailBasicSetting":function(setting,fn){
+		Meteor.call("svWriteEmailIniFileSectionString",setting,function(err,result){
+			if(!err) fn();
 		});
 	}
 }

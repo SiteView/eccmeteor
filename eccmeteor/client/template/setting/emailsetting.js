@@ -19,12 +19,23 @@ Template.emailsetting.events  = {
 	},
 	"click #emailhelpmessage" : function(){
  
+	},
+	"click #emailbasicsettingapplybtn" : function(){
+		var emailbasicsetting = ClientUtils.formArrayToObject($("#emailbasicsetting").serializeArray());
+		console.log(emailbasicsetting);
+		SvseEmailDao.setEmailBasicSetting(emailbasicsetting,function(){
+			console.log("成功！")
+		});
+	},
+	"click #emailbasicsettingtestbtn" : function(){
+	
 	}
 }
 
 Template.emailsetting.rendered = function(){
 	Meteor.call("svGetSendEmailSetting",function(err,setting){
 		console.log(setting);
+		if(!setting) return;
 		$("#emailbasicsetting :text[name=server]").val(setting["server"]);
 		$("#emailbasicsetting :text[name=from]").val(setting["from"]);
 		$("#emailbasicsetting :text[name=backupserver]").val(setting["backupserver"]);
