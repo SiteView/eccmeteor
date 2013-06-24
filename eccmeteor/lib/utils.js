@@ -142,6 +142,11 @@
 			}
 			zNode["children"] = branch;
 			return zNode;
+	},
+	"formFillValue" : function(formid,obj){
+		for(pro in obj){
+			$("#"+formid).find("input[name="+pro+"]:first").val(obj[pro]);
+		}
 	}
 }
 ServerUtils ={

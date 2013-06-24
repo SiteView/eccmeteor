@@ -204,7 +204,7 @@ Template.moitorContent.rendered = function(){
 	if(!Session.get("moitorContentRendered"))
 		Session.set("moitorContentRendered",true); //渲染完毕
 	$(document).ready(function(){
-		console.log("12333333333");
+		//console.log("12333333333");
 		$(window).unload(function() {
 			console.log("123");
 			var svse_tree= $.fn.zTree.getZTreeObj("svse_tree");

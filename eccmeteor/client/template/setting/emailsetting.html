@@ -18,13 +18,13 @@
 <table class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>{{language.nameTh}}</th><th>{{language.statusTh}}</th><th>{{language.emailTh}}</th><th>{{language.optionTh}}</th>
+				<th><input type="checkbox" id="emailsettingtableselectall">   {{language.nameTh}}</th><th>{{language.statusTh}}</th><th>{{language.emailTh}}</th><th>{{language.optionTh}}</th>
 			</tr>
 		</thead>
 		<tbody id="emailSettingList">
 			{{#each emaillist}}
 			<tr>
-				<td>{{Name}}</td><td>{{bCheck}}</td><td>{{MailList}}</td><td><button id="{{nIndex}}" class="btn"><i class="icon-edit"></i> {{language.emailsettingmodel.editBtn}}</button></td>
+				<td><input type="checkbox" id="{{nIndex}}">  {{Name}}</td><td>{{bCheck}}</td><td>{{MailList}}</td><td><button id="{{nIndex}}" class="btn"><i class="icon-edit"></i> {{language.emailsettingmodel.editbtn}}</button></td>
 			</tr>
 			{{/each}}
 		</tbody>
@@ -69,13 +69,13 @@
   </fieldset>
 </form>
 {{> emailbasicsettingofaddress}}
+{{> emailbasicsettingofaddressedit}}
 </Template>
 
 <Template name="emailbasicsettingofaddress">
 	<div id="emailaddresssettingdiv" class="modal hide fade">
 		<div class="modal-header">邮件地址设置</div>
 		<div class="modal-body">
-			<span class="label label-info">基本选项</span><br /><br />
 			<form class="well form-horizontal form-inline" id="emailbasicsettingofaddressbasciinfo">
 				<fieldset>
 					<span class="label label-info">基本选项</span><br /><br />
@@ -138,6 +138,80 @@
 		<div class="modal-footer" align="right">
 			<button class="btn btn-large" id="emailbasicsettingofaddresscancelbtn">取消</button>
 			<button class="btn btn-primary btn-large" id="emailbasicsettingofaddresssavebtn">保存</button>
+		</div>
+	</div>
+</Template>
+
+
+<Template name="emailbasicsettingofaddressedit">
+	<div id="emailaddresssettingdivedit" class="modal hide fade">
+		<div class="modal-header">邮件地址设置</div>
+		<div class="modal-body">
+			{{#with emailbasicsettingofaddressbasciinfoeditform}}
+			<form class="well form-horizontal form-inline" id="emailbasicsettingofaddressbasciinfoedit">
+				<input type="hidden" name="nIndex" value="{{nIndex}}">
+				<fieldset>
+					<span class="label label-info">基本选项</span><br /><br />
+					<div class="control-group">
+					  <label class="control-label">*名称:</label>
+					  <div class="controls">
+						<input type="text"  name="Name" value="{{Name}}">
+					  </div>
+					</div>
+					<div class="control-group">
+					  <label class="control-label">*接收Email地址:</label>
+					  <div class="controls">
+						<input type="text"  name="MailList" value="{{MailList}}">
+					  </div>
+					</div>
+					<div class="control-group">
+					  <label class="control-label">状态:</label>
+					  <div class="controls">
+						<label class="radio">
+							<input type="radio"  name="bCheck" value="0"> 允许
+						</label>
+						<label class="radio">
+							<input type="radio"  name="bCheck" value="1"> 禁止
+						</label>
+					  </div>
+					</div>
+					<span class="label label-info">高级选项</span><br /><br />
+					<div class="control-group">
+						<label class="control-label">Email模板:</label>
+						<div class="controls">
+							<select id="emailbasicsettingofaddressemailtemplatelistedit" name="Template">
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">任务计划类型:</label>
+						<div class="controls">
+							<select name="TaskType">
+								<option value="1" checked>时间段计划</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">任务计划:</label>
+						<div class="controls">
+							<select name="Schedule">
+								<option value="5x8" checked>5x8</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">描述:</label>
+						<div class="controls">
+							<textarea class="input-xlarge" name="Des" rows="3">{{Des}}</textarea>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+			{{/with}}
+		</div>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-large" id="emailbasicsettingofaddresscancelbtnedit">取消</button>
+			<button class="btn btn-primary btn-large" id="emailbasicsettingofaddresssavebtnedit">保存</button>
 		</div>
 	</div>
 </Template>

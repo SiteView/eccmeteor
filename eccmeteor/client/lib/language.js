@@ -42,7 +42,7 @@ Deps.autorun(function (c) {
 					passwordlab:"Password",
 					applybtn:"Apply",
 					testbtn:"Test",
-					editBtn:"Edit"
+					editbtn:"Edit"
 				},
 				warnerrulemodel:{
 					emailwarner :"Emial Warner",

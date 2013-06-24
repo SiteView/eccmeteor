@@ -383,7 +383,7 @@ svDecryptOne =  function (password){
 	dowhat[password]="";
 	var robj = process.sv_univ(dowhat,0);
 	var fmap= robj.fmap(0);
-	console.log(fmap)
+//	console.log(fmap)
 	return fmap.return[password];
 }
 
@@ -395,7 +395,7 @@ svEncryptOne = function(password){
 	dowhat[password]="";
 	var robj = process.sv_univ(dowhat,0);
 	var fmap= robj.fmap(0);
-	console.log(fmap)
+//	console.log(fmap)
 	return fmap.return[password];
 }
 
@@ -426,4 +426,23 @@ svWriteEmailAddressIniFileSectionString = function(addressname,address){
 	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"emailAdress.ini",'user':"default",'section':addressname},0); 
 //	console.log(robj.fmap(0));
 	return robj.fmap(0);
+}
+
+//删除emailAddress.ini的section
+svDeleteEmailAddressIniFileSection = function(ids){
+	var dowhat = {
+		'dowhat' : 'DeleteIniFileSection',
+		'filename' : "emailAdress.ini",
+		'user' : "default",
+		"sections" : ids
+	};
+	var robj = process.sv_univ(dowhat,0);
+	return robj.fmap(0);
+}
+
+
+//邮件测试
+svEmailTest = function(emailSetting){
+	emailSetting["dowhat"]="EmailTest";
+	 process.sv_univ(emailSetting,0);
 }
