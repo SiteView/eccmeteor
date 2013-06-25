@@ -3,26 +3,35 @@ Template.emailsetting.events  = {
 		$('#emailaddresssettingdiv').modal('toggle');
 	},
 	"click #delemailsetting" : function(){
-	/*
-		$("#emailSettingList :checkbox[checked]").each(function(){
-			console.log($(this).attr("id"));
-		});
-	*/
 		var checks = $("#emailSettingList :checkbox[checked]");
-		var ids = "";
+		var ids = [];
 		for(var i = 0 ; i < checks.length; i++){
-			ids = ids + $(checks[i]).attr("id")+",";
+			ids.push($(checks[i]).attr("id"));
 		}
-		console.log(ids);
+		if(ids.length)
+			SvseEmailDao.deleteEmailAddressByIds(ids);
 	},
-	"click #allowemailsetting" : function(){
- 
+	"click #allowemailsetting" : function(){  //启用邮件地址
+		var checks = $("#emailSettingList :checkbox[checked]");
+		var ids = [];
+		for(var i = 0 ; i < checks.length; i++){
+			ids.push($(checks[i]).attr("id"));
+		}
+		if(ids.length)
+			SvseEmailDao.updateEmailAddressStatus(ids,"0");
 	},
-	"click #forbidemailsetting" : function(){
- 
+	"click #forbidemailsetting" : function(){ //禁用邮件地址
+		var checks = $("#emailSettingList :checkbox[checked]");
+		var ids = [];
+		for(var i = 0 ; i < checks.length; i++){
+			ids.push($(checks[i]).attr("id"));
+		}
+		if(ids.length)
+			SvseEmailDao.updateEmailAddressStatus(ids,"1");
 	},
 	"click #refreshemailsetting" : function(){
- 
+		//邮件同步
+		SvseEmailDao.sync();
 	},
 	"click #emailtemplatesetting" : function(){
  

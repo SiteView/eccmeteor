@@ -24,7 +24,9 @@
   "svWriteEmailIniFileSectionString":svWriteEmailIniFileSectionString,
   "svDeleteEmailAddressIniFileSection":svDeleteEmailAddressIniFileSection,
   "svEmailTest":svEmailTest,
-  "syncTreeData":SyncFunction.sync //同步数据
+  "svWriteEmailAddressStatusInitFilesection":svWriteEmailAddressStatusInitFilesection,
+  "syncTreeData":SyncFunction.sync, //同步数据
+  "syncEmailList" : SyncFunction.SysncEmailList
 });//给客户端调用的
 
 //给服务端调用的。

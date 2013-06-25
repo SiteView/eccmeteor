@@ -35,12 +35,28 @@ SvseEmailDao = {
 			})
 		});
 	},
-	"deleteEmailAddressByIds":function(ids){
-		Meteor.call("svDeleteEmailAddressIniFileSection",ids,function(err,result){
+	//批量删除邮件地址
+	"deleteEmailAddressByIds":function(ids){ 
+		var address = ids.join();
+		Meteor.call("svDeleteEmailAddressIniFileSection",address,function(err,result){
 			if(result){
-				var idArr = ids.split(",");
-				
+				for(index in ids){
+					SvseEmailList.remove(SvseEmailList.findOne({nIndex:ids[index]})._id);
+				}
 			}
 		});
+	},
+	//批量更新邮件地址状态
+	"updateEmailAddressStatus" : function(ids,status){
+		console.log(ids);
+		for(index in ids){
+			var id = ids[index];
+			Meteor.call("svWriteEmailAddressStatusInitFilesection",id,status,function(err,result){});
+			SvseEmailList.update(SvseEmailList.findOne({nIndex:id})._id,{$set:{"bCheck":status}});	
+		}
+	},
+	"sync" : function(){
+		Meteor.call("syncEmailList");
+	
 	}
 }

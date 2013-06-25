@@ -205,7 +205,13 @@ Utils = {
 		}
 		return changeObj;
 	},
-	compareObject : function(original,target,exception){ //比较两个对象
+	
+	/**
+		比较两个对象
+		exception代表例外的属性 格式是 {name:true,age:true} 
+		表示忽略两个对象的name和age属性比较
+	*/
+	compareObject : function(original,target,exception){ 
 		for (property in original){
 			if(exception && exception[property]) continue;
 			if(original[property] !== target[property]){
@@ -214,7 +220,8 @@ Utils = {
 		}
 		return true;
 	},
-	getUUID : function(){ //获取惟一标识符
+	//获取惟一标识符
+	getUUID : function(){
 		var  _rnds = new Array(16);
 		var rnds = (function() {
 			for (var i = 0, r; i < 16; i++) {

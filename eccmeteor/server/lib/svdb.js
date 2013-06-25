@@ -440,6 +440,18 @@ svDeleteEmailAddressIniFileSection = function(ids){
 	return robj.fmap(0);
 }
 
+//更改邮件状态
+svWriteEmailAddressStatusInitFilesection = function(sectionName,status){
+	var robj = process.sv_univ({
+			'dowhat' : 'WriteIniFileString',
+			'filename' : "emailAdress.ini",
+			'user' : "default",
+			'section' : sectionName,
+			"key" : "bCheck",
+			"value" : status
+		}, 0);
+	return robj.fmap(0);
+}
 
 //邮件测试
 svEmailTest = function(emailSetting){
