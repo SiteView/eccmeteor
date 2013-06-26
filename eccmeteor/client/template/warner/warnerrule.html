@@ -30,13 +30,13 @@
 	<table class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>名称</th><th>报警类型</th><th>报警状态</th><th>启动/禁止</th><th>操作</th>
+				<th><input type="checkbox" id="warnerrulelistselectall"/>名称</th><th>报警类型</th><th>报警状态</th><th>启动/禁止</th><th>操作</th>
 			</tr>
 		</thead>
-		<tbody id="emailSettingList">
+		<tbody id="warnerrulelist">
 			{{#each rulelist}}
 			<tr>
-				<td>{{AlertName}}</td>
+				<td><input type="checkbox" id="{{nIndex}}"/>{{AlertName}}</td>
 				<td>{{AlertType}}</td>
 				<td>{{AlertCategory}}</td>
 				<td>{{AlertState}}</td>
@@ -147,3 +147,101 @@
 	</div>
 </Template>
 
+
+
+<Template name="warnerruleofemailedit">
+	<div id="emailwarnerdivedit" class="modal hide fade">
+		<div class="modal-header">修改Email报警</div>
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="span4" style="overflow:auto">
+					<ul id="svse_tree_check_edit" class="ztree"></ul>
+				</div>
+				<div class="span8">
+					{{#with warnerruleofemaileditform}}
+					<form id="warnerruleofemailformedit" class="well form-horizontal form-inline">
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">报警名称:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="AlertName" value="{{AlertName}}">
+								 </div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">邮件接收地址:</label>
+								<div class="controls">
+									<select class="emailmultiselect" multiple="multiple" name="EmailAdress">
+										{{#each emaillist}}
+											<option value="{{Name}}">{{Name}}</option>
+										{{/each}}
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">其他邮件地址:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="OtherAdress" value="{{OtherAdress}}">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">Email模板:</label>
+								<div class="controls">
+									<select id="emailtemplatelistedit" name="EmailTemplate">
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" >升级次数:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="Upgrade" value="{{Upgrade}}">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" >升级接收人地址:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="UpgradeTo" value="{{UpgradeTo}}">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" >停止次数:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="Stop" value="{{Stop}}">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" >值班报警列表:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="WatchSheet" value="{{WatchSheet}}">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" >报警策略:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="Strategy" value="{{Strategy}}">
+								</div>
+							</div>
+						</fieldset>
+					</form>
+					{{/with}}
+					<div>
+						<form class="well form-horizontal form-inline" id="warnerruleofemailformsendconditions">
+							<fieldset>
+								<div class="control-group">
+								<label class="control-label" >报警事件:</label>
+								<div class="controls">
+									<input type="radio" name="AlertCategory" value="危险">危险</td>
+									<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
+								</div>
+							</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-large" id="warnerruleofemailcancelbtnedit">{{language.warnerrulemodel.cancelemailwarnerrulesettingbtn}}</button>
+			<button class="btn btn-primary btn-large" id="warnerruleofemailsavebtnedit">{{language.warnerrulemodel.saveemailwarnerrulesettingbtn}}</button>
+		</div>
+	</div>
+</Template>

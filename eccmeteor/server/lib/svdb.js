@@ -421,6 +421,32 @@ svWriteAlertIniFileSectionString = function(sectionname,section){
 	return robj.fmap(0);
 }
 
+//Alert.ini 删除
+svDeleteAlertInitFileSection = function(ids){
+	var dowhat = {
+		'dowhat' : 'DeleteIniFileSection',
+		'filename' : "alert.ini",
+		'user' : "default",
+		"sections" : ids
+	};
+	var robj = process.sv_univ(dowhat,0);
+	return robj.fmap(0);
+	
+}
+
+//改变报警规则状态
+svWriteAlertStatusInitFileSection = function(sectionName,status){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "alert.ini",
+		'user' : "default",
+		'section' : sectionName,
+		"key" : "AlertState",
+		"value" : status
+	}, 0);
+	return robj.fmap(0);
+}
+
 //emailAdress.ini写入
 svWriteEmailAddressIniFileSectionString = function(addressname,address){
 	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"emailAdress.ini",'user':"default",'section':addressname},0); 
@@ -443,13 +469,13 @@ svDeleteEmailAddressIniFileSection = function(ids){
 //更改邮件状态
 svWriteEmailAddressStatusInitFilesection = function(sectionName,status){
 	var robj = process.sv_univ({
-			'dowhat' : 'WriteIniFileString',
-			'filename' : "emailAdress.ini",
-			'user' : "default",
-			'section' : sectionName,
-			"key" : "bCheck",
-			"value" : status
-		}, 0);
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "emailAdress.ini",
+		'user' : "default",
+		'section' : sectionName,
+		"key" : "bCheck",
+		"value" : status
+	}, 0);
 	return robj.fmap(0);
 }
 
