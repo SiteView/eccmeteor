@@ -24,6 +24,7 @@
 </div>
 {{> warnerrulelist}}
 {{> warnerruleofemail}}
+{{> warnerruleofemailedit}}
 </Template>
 
 <Template name="warnerrulelist">
@@ -158,29 +159,26 @@
 					<ul id="svse_tree_check_edit" class="ztree"></ul>
 				</div>
 				<div class="span8">
-					{{#with warnerruleofemaileditform}}
 					<form id="warnerruleofemailformedit" class="well form-horizontal form-inline">
+						<input type="hidden" name="nIndex" >
 						<fieldset>
 							<div class="control-group">
 								<label class="control-label">报警名称:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="AlertName" value="{{AlertName}}">
+									<input type="text" class="span6" name="AlertName">
 								 </div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">邮件接收地址:</label>
 								<div class="controls">
-									<select class="emailmultiselect" multiple="multiple" name="EmailAdress">
-										{{#each emaillist}}
-											<option value="{{Name}}">{{Name}}</option>
-										{{/each}}
+									<select class="emailmultiselectedit" multiple="multiple" name="EmailAdress">
 									</select>
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">其他邮件地址:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="OtherAdress" value="{{OtherAdress}}">
+									<input type="text" class="span6" name="OtherAdress">
 								</div>
 							</div>
 							<div class="control-group">
@@ -193,44 +191,43 @@
 							<div class="control-group">
 								<label class="control-label" >升级次数:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="Upgrade" value="{{Upgrade}}">
+									<input type="text" class="span6" name="Upgrade">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >升级接收人地址:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="UpgradeTo" value="{{UpgradeTo}}">
+									<input type="text" class="span6" name="UpgradeTo">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >停止次数:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="Stop" value="{{Stop}}">
+									<input type="text" class="span6" name="Stop">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >值班报警列表:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="WatchSheet" value="{{WatchSheet}}">
+									<input type="text" class="span6" name="WatchSheet">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >报警策略:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="Strategy" value="{{Strategy}}">
+									<input type="text" class="span6" name="Strategy">
 								</div>
 							</div>
 						</fieldset>
 					</form>
-					{{/with}}
 					<div>
-						<form class="well form-horizontal form-inline" id="warnerruleofemailformsendconditions">
+						<form class="well form-horizontal form-inline" id="warnerruleofemailformsendconditionsedit">
 							<fieldset>
 								<div class="control-group">
 								<label class="control-label" >报警事件:</label>
 								<div class="controls">
 									<input type="radio" name="AlertCategory" value="危险">危险</td>
-									<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
+									<input type="radio" name="AlertCategory" value="错误">错误</td>
 								</div>
 							</div>
 							</fieldset>

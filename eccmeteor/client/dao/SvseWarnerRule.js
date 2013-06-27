@@ -43,5 +43,18 @@ SvseWarnerRuleDao = {
 		Meteor.call("SyncWarnerRules",function(err){
 			if(!err) fn();
 		});
+	},
+	//更新报警规则
+	"updateWarnerRule" : function(nIndex,section,fn){
+		Meteor.call("svWriteAlertIniFileSectionString",nIndex,section,function(err,result){
+			var rule = result[nIndex];
+			SvseWarnerRule.update(SvseWarnerRule.findOne({nIndex:nIndex})._id,{$set:rule},function(err){
+				if(err){
+					SystemLogger(err,-1);
+				}else{
+					fn();
+				}	
+			});
+		});
 	}
 }
