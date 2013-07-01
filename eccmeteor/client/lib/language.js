@@ -19,9 +19,6 @@ Deps.autorun(function (c) {
 				warnerlog : 'Warner Log',
 				warnerplan : 'Warner Plan',
 				setting : 'Setting',
-				basicsetting : 'Basic Setting',
-				emailsetting : 'Email Setting',
-				messagesetting : 'Message Setting',
 				addbtn:"Add",
 				delbtn:"Delete",
 				allowbtn:"Allow",
@@ -52,6 +49,12 @@ Deps.autorun(function (c) {
 					addemailwarnerruletitle:"Add Email Warner's rule",
 					saveemailwarnerrulesettingbtn:"Save",
 					cancelemailwarnerrulesettingbtn:"Cancel"
+				},
+				othersetting:{
+					basicsetting : 'Basic Setting',
+					emailsetting : 'Email Setting',
+					messagesetting : 'Message Setting',
+					usersetting:'User Setting'
 				}
 			}
 		},
@@ -72,9 +75,6 @@ Deps.autorun(function (c) {
 				warnerlog : '报警日志',
 				warnerplan : '报警策略',
 				setting : '设置',
-				basicsetting : '基础设置',
-				emailsetting : '邮件设置',
-				messagesetting : '短信设置',
 				addbtn:"添加",
 				delbtn:"删除",
 				allowbtn:"允许",
@@ -105,6 +105,12 @@ Deps.autorun(function (c) {
 					addemailwarnerruletitle:"添加Email报警",
 					saveemailwarnerrulesettingbtn:"保存",
 					cancelemailwarnerrulesettingbtn:"取消"
+				},
+				othersetting:{
+					basicsetting : '基础设置',
+					emailsetting : '邮件设置',
+					messagesetting : '短信设置',
+					usersetting:'用户设置'
 				}
 				
 			}

@@ -17,7 +17,8 @@ MONITORVIEW = {
 //设置视图
 SETTINGVIEW = {
 	EMAILSETTING:"emailsetting", //邮箱设置
-	WARNERRULE :"warnerrule"
+	WARNERRULE :"warnerrule", // 报警
+	USERSETTING:"usersetting" //用户设置
 }
 
 //视图切换

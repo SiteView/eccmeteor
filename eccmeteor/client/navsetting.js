@@ -18,6 +18,9 @@ var NavigationSettionTreeEvents = {
 	},
 	"messagesetting":function(){
 		console.log("执行了 messagesetting");
+	},
+	"usersetting":function(){
+		SwithcView.view(SETTINGVIEW.USERSETTING);
 	}
 }
 NavigationSettionTree = {
@@ -28,9 +31,10 @@ NavigationSettionTree = {
 			{id:11,pId:1,name:LanguageModel.getLanaguage().warnerrule,action:"warnerrule"},
 			{id:12,pId:1,name:LanguageModel.getLanaguage().warnerlog,action:"warnerlog"},
 			{id:13,pId:1,name:LanguageModel.getLanaguage().warnerplan,action:"warnerplan"},
-			{id:21,pId:2,name:LanguageModel.getLanaguage().basicsetting,action:"basicsetting"},
-			{id:22,pId:2,name:LanguageModel.getLanaguage().emailsetting,action:"emailsetting"},
-			{id:23,pId:2,name:LanguageModel.getLanaguage().messagesetting,action:"messagesetting"},
+			{id:21,pId:2,name:LanguageModel.getLanaguage().othersetting.basicsetting,action:"basicsetting"},
+			{id:22,pId:2,name:LanguageModel.getLanaguage().othersetting.emailsetting,action:"emailsetting"},
+			{id:23,pId:2,name:LanguageModel.getLanaguage().othersetting.messagesetting,action:"messagesetting"},
+			{id:24,pId:2,name:LanguageModel.getLanaguage().othersetting.usersetting,action:"usersetting"},
 		];
 	},
 	execute:function(action){

@@ -39,3 +39,9 @@ Meteor.publish("svse_emaillist",function(){
 Meteor.publish("svse_warnerrule",function(){
 	return SvseWarnerRule.find();
 });
+
+//用户信息
+Meteor.publish("userData",function(){
+	return Meteor.users.find(	{},
+								{fields: {'profile': 1,username:1}});
+});

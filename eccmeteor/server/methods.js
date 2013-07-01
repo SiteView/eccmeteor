@@ -29,7 +29,9 @@
   "svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
   "syncTreeData":SyncFunction.sync, //同步数据
   "syncEmailList" : SyncFunction.SyncEmailList,
-  "SyncWarnerRules" : SyncFunction.SyncWarnerRules
+  "SyncWarnerRules" : SyncFunction.SyncWarnerRules,
+  "register":UserDaoOnServer.register,
+  "deleteUser":UserDaoOnServer.deleteUser
 });//给客户端调用的
 
 //给服务端调用的。
