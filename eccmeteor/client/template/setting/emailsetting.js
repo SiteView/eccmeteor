@@ -91,7 +91,6 @@ Template.emailsetting.rendered = function(){
 	//初始化 checkbox事件
 	$(function(){
 		$("#emailsettingtableselectall").click(function(){
-		//	console.log("running")
 			var flag = this.checked; 
 			$(this).closest("table").find("tbody :checkbox").each(function(){
 				this.checked = flag;

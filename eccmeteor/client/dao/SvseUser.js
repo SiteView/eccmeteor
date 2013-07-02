@@ -8,5 +8,23 @@ SvseUserDao = {
 		Meteor.call("deleteUser",username,function(err,result){
 			fn(result);
 		});
+	},
+	"getUserByUsername":function(username){
+		return Meteor.users.findOne({username:username});
+	},
+	"setPassword":function(user,fn){
+		Meteor.call("modifyPassword",user,function(err,result){
+			fn(result);
+		});
+	},
+	"forbid":function(ids,status,fn){
+		Meteor.call("forbidUser",ids,status,function(err,result){
+			fn(result);
+		});
+	},
+	"deleteUser":function(ids,fn){
+		Meteor.call("deleteUser",ids,function(err,result){
+			fn(result);
+		});
 	}
 }

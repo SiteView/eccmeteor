@@ -18,17 +18,17 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" id="usersettingtableselectall"> 登录名</th>
-				<th><input type="checkbox" id="usersettingtableselectall"> 用户名</th>
+				<th>用户名</th>
 				<th>用户状态</th>
 				<th>用户类型</th>
 				<th>操作</th>
 				<th>授权</th>
 			</tr>
 		</thead>
-		<tbody id="emailSettingList">
+		<tbody id="userSettingList">
 			{{#each userlist}}
 			<tr>
-				<td><input type="checkbox" id="{{username}}">  {{username}}</td>
+				<td><input type="checkbox" id="{{_id}}">  {{username}}</td>
 				<td>{{profile.aliasname}}</td>
 				<td>{{profile.accountstatus}}</td>
 				<td>{{profile.accounttype}}</td>
@@ -92,7 +92,7 @@
 				<div class="control-group">
 				  <label class="control-label">登录名:</label>
 				  <div class="controls">
-					<input type="text" class="span4" name="username" readOnly>
+					<input type="text" class="input-big" name="username" readOnly>
 				  </div>
 				</div>
 				<div class="control-group">
@@ -104,13 +104,13 @@
 				<div class="control-group">
 				  <label class="control-label">密码:</label>
 				  <div class="controls">
-					<input type="password" class="span4" name="password">
+					<input type="password" class="input-big" name="password">
 				  </div>
 				</div>
 				<div class="control-group">
 				  <label class="control-label">确认密码:</label>
 				  <div class="controls">
-					<input type="password2" class="span4" name="backupserver">
+					<input type="password" class="input-big" name="password2">
 				  </div>
 				</div>
 			</fieldset>

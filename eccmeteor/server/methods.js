@@ -31,7 +31,9 @@
   "syncEmailList" : SyncFunction.SyncEmailList,
   "SyncWarnerRules" : SyncFunction.SyncWarnerRules,
   "register":UserDaoOnServer.register,
-  "deleteUser":UserDaoOnServer.deleteUser
+  "deleteUser":UserDaoOnServer.deleteUser,
+  "modifyPassword":UserDaoOnServer.resetPassword,
+  "forbidUser":UserDaoOnServer.forbid
 });//给客户端调用的
 
 //给服务端调用的。

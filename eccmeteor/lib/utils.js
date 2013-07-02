@@ -144,9 +144,14 @@
 			return zNode;
 	},
 	"formFillValue" : function(formid,obj){
+		/*
 		for(pro in obj){
-			$("#"+formid).find("input[name="+pro+"]:first").val(obj[pro]);
+			$("#"+formid+" :text[name="+pro+"]").val(obj[pro]);
 		}
+		*/
+		$(formid).find("input:text").each(function(){
+			$(this).val(obj[this.name]);
+		});
 	}
 }
 ServerUtils ={
