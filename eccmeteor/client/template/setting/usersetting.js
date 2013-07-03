@@ -52,14 +52,14 @@ Template.usersetting.events({
 	"click #helpmessage":function(){
 		
 	},
-	"click #emailSettingList button[name='edit']":function(e){
+	"click #userSettingList button[name='edit']":function(e){
 		var user = SvseUserDao.getUserByUsername(e.target.id);
 		$('#usersettingeditdiv :text[name="username"]').val(user.username);
 		$('#usersettingeditdiv :text[name="aliasname"]').val(user.profile.aliasname);
 		$('#usersettingeditdiv').modal('toggle');
 	},
-	"click #emailSettingList button[name='promission']":function(e){
-	
+	"click #userSettingList button[name='promission']":function(e){
+		$('#userPromissionSettingDiv').modal('toggle');
 	}
 });
 
@@ -80,17 +80,7 @@ Template.usersettingadd.events({
 	"click #usersettingaddformsavebtn":function(){
 		var user = ClientUtils.formArrayToObject($("#usersettingaddform").serializeArray());
 		if(!user.password.length || user.password !== user.password2) return;
-		var registeruser = {
-			username:user.username,
-			password:user.password,
-			profile:{
-				aliasname:user.aliasname,
-				accountstatus:true,
-				accounttype:"general"
-			}
-		}
-		console.log(registeruser);
-		SvseUserDao.register(registeruser,function(result){
+		SvseUserDao.register(user,function(result){
 			if(result.status){
 				console.log("注册成功");
 				$("#usersettingaddform :text").val("");
@@ -159,5 +149,62 @@ Template.usersettingedit.events({
 			}
 		});
 		
+	}
+});
+
+Template.userPromissionSetting.rendered = function(){
+	$(function(){
+		var data = SvseDao.getTreeSimple();
+		var setting = {
+			check:{
+				enable: true,
+				chkStyle: "checkbox",
+				chkboxType: { "Y": "ps", "N": "ps" }
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "id",
+					pIdKey: "pId",
+					rootPId: "0",
+				}
+			}
+		};
+		$.fn.zTree.init($("#svse_tree_promission_check"), setting, data);
+		
+		var settingdata = NavigationSettionTree.getTreeData();
+		$.fn.zTree.init($("#svse_other_promission_check"), setting, settingdata);
+	});
+	
+	$(function(){
+		$('#userPromissionSettingDiv').modal({
+			backdrop:true,
+			keyboard:true,
+			show:false
+		}).css({
+			height:"545",
+			width:"800"
+		});
+	});
+	
+}
+
+Template.userPromissionSetting.events({
+	"click #userPromissionSettingSetNodesBtn":function(){
+		var svsenodes = [];
+		var svsenodearr = $.fn.zTree.getZTreeObj("svse_tree_promission_check").getNodesByFilter(function(node){return node.checked});
+		for(index in svsenodearr){
+			svsenodes.push(svsenodearr[index].id);
+		}
+		console.log(svsenodes);
+		var settingnodes = [];
+		var svsesettingnodearr = $.fn.zTree.getZTreeObj("svse_other_promission_check").getNodesByFilter(function(node){return node.checked});
+		for(index in svsesettingnodearr){
+			settingnodes.push(svsesettingnodearr[index].action);
+		}
+		console.log(settingnodes);
+	},
+	"click #userPromissionSettingCloseBtn":function(){
+		$("#userPromissionSettingDiv").modal('toggle');
 	}
 });

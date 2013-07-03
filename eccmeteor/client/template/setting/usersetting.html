@@ -40,6 +40,7 @@
 </table>
 {{> usersettingadd}}
 {{> usersettingedit}}
+{{> userPromissionSetting}}
 </Template>
 
 <Template name="usersettingadd">
@@ -118,6 +119,27 @@
 		<div class="modal-footer" align="right">
 			<button class="btn btn-large" id="usersettingeditformcanclebtn">取消</button>
 			<button class="btn btn-primary btn-large" id="usersettingeditformsavebtn">保存</button>
+		</div>
+	</div>
+</Template>
+
+<Template name="userPromissionSetting">
+	<div id="userPromissionSettingDiv" class="modal hide fade">
+		<div class="modal-header">用户授权</div>
+		<div class="modal-body" style="height:400px">
+			<div class="row-fluid">
+				<div class="span6" style="overflow:auto">
+					<ul id="svse_tree_promission_check" class="ztree"></ul>
+					<ul id="svse_other_promission_check" class="ztree"></ul>
+				</div>
+				<div class="span6">
+					
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-large" id="userPromissionSettingSetNodesBtn">授予节点</button>
+			<button class="btn btn-primary btn-large" id="userPromissionSettingCloseBtn">关闭</button>
 		</div>
 	</div>
 </Template>
