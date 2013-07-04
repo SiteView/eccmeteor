@@ -1,7 +1,3 @@
-Template.usersetting.userlist = function(){
-	return Meteor.users.find({}).fetch();
-}
-
 Template.usersetting.events({
 	"click #addusersetting":function(){
 		$('#usersettingadddiv').modal('toggle');
@@ -51,19 +47,13 @@ Template.usersetting.events({
 	},
 	"click #helpmessage":function(){
 		
-	},
-	"click #userSettingList button[name='edit']":function(e){
-		var user = SvseUserDao.getUserByUsername(e.target.id);
-		$('#usersettingeditdiv :text[name="username"]').val(user.username);
-		$('#usersettingeditdiv :text[name="aliasname"]').val(user.profile.aliasname);
-		$('#usersettingeditdiv').modal('toggle');
-	},
-	"click #userSettingList button[name='promission']":function(e){
-		$('#userPromissionSettingDiv').modal('toggle');
 	}
 });
+Template.usersettingListTable.userlist = function(){
+	return Meteor.users.find({}).fetch();
+}
 
-Template.usersetting.rendered = function(){
+Template.usersettingListTable.rendered = function(){
 	//初始化 checkbox事件
 	$(function(){
 		$("#usersettingtableselectall").click(function(){
@@ -75,6 +65,22 @@ Template.usersetting.rendered = function(){
 	
 	});
 }
+Template.usersettingListTable.events({
+	"click #userSettingList button[name='edit']":function(e){
+		var user = SvseUserDao.getUserByUsername(e.target.id);
+		$('#usersettingeditdiv :text[name="username"]').val(user.username);
+		$('#usersettingeditdiv :text[name="aliasname"]').val(user.profile.aliasname);
+		$('#usersettingeditdiv').modal('toggle');
+	},
+	"click #userSettingList button[name='promission']":function(e){
+		console.log(e.target.id);
+		var user = SvseUserDao.getUserByUsername(e.target.id);
+		console.log(user);
+		$("#userPromissionSettingDiv #promissionUsername").html(user.username);
+		$("#userPromissionSettingDiv #promissionUserId").val(user._id);
+		$('#userPromissionSettingDiv').modal('toggle');
+	}
+});
 
 Template.usersettingadd.events({
 	"click #usersettingaddformsavebtn":function(){
@@ -168,6 +174,22 @@ Template.userPromissionSetting.rendered = function(){
 					pIdKey: "pId",
 					rootPId: "0",
 				}
+			},
+			callback:{
+				onClick:function(event, treeId, treeNode){
+					var  data  = Session.set("userPromissionSettingGroupControlData");
+					if(!data)
+						Session.set("userPromissionSettingGroupControlData",{});
+							
+					var id= treeNode.id;
+					var type = treeNode.type;
+					Session.set("userPromissionSettingGroupControlType",type);
+					//第一步  获取上一个操作节点，存储相关信息
+					//第二步  先从内存中读取 点击 的节点的操作权限，
+						//	若不存在，则从数据库中获取该节点的操作权限，反射到操作权限选择框中
+					//点击关闭按钮时 ，清空临时数据
+					
+				}
 			}
 		};
 		$.fn.zTree.init($("#svse_tree_promission_check"), setting, data);
@@ -178,8 +200,8 @@ Template.userPromissionSetting.rendered = function(){
 	
 	$(function(){
 		$('#userPromissionSettingDiv').modal({
-			backdrop:true,
-			keyboard:true,
+			backdrop:false,
+			keyboard:false,
 			show:false
 		}).css({
 			height:"545",
@@ -203,8 +225,17 @@ Template.userPromissionSetting.events({
 			settingnodes.push(svsesettingnodearr[index].action);
 		}
 		console.log(settingnodes);
+		var uid = $("#userPromissionSettingDiv #promissionUserId").val();
+		console.log(uid);
+		SvseUserDao.setDisplayPromission(uid,svsenodes,settingnodes,function(result){
+			console.log(result);
+		});
 	},
 	"click #userPromissionSettingCloseBtn":function(){
 		$("#userPromissionSettingDiv").modal('toggle');
 	}
 });
+
+Template.userPromissionSettingGroupControl.type = function(){
+	return Session.get("userPromissionSettingGroupControlType");
+}

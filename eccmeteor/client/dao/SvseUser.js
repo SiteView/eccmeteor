@@ -26,5 +26,13 @@ SvseUserDao = {
 		Meteor.call("deleteUser",ids,function(err,result){
 			fn(result);
 		});
+	},
+	"setDisplayPromission":function(userid,svseNodes,settingNodes,fn){ //设置节点的可见性
+		Meteor.call("setNodeDisplayPermission",userid,svseNodes,settingNodes,function(err,result){
+			if(err){
+				SystemLogger(err,-1);
+			}
+			fn(result);
+		});
 	}
 }

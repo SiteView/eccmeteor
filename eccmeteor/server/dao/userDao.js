@@ -55,19 +55,20 @@ UserDaoOnServer = {
         var _id = Accounts.createUser(registeruser);
 		return _id ? UserDaoOnServer.getReturn(true) :  UserDaoOnServer.getReturn(false,"Create User has errors");
 	},
-	"setNodeShowPermission" : function(id,permissionValue){  //设置监视节点的可见性
+	"setNodeDisplayPermission" : function(id,nodes,settingNodes){  //设置监视节点的可见性
 		//判断当前用户权限是否可以设置权限
 		if(!UserDaoOnServer.getPermission("settingOperatePermission>usersetting>updatepm"))
 			return UserDaoOnServer.getReturn(false);
-		Meteor.users.update({_id:id},{$set:{"profile.nodeShowPermission":permissionValue}});
+		Meteor.users.update({_id:id},{$set:{"profile.nodeDisplayPermission":nodes,"profile.settingNodeDisplayPermission":settingNodes}});
 		return UserDaoOnServer.getReturn(true);
     },
-	"setSettingNodeShowPermission" :  function(id,permissionValue){ //设置 '设置'节点的可见性
+	/*
+	"setSettingNodeDisplayPermission" :  function(id,permissionValue){ //设置 '设置'节点的可见性
 		if(!UserDaoOnServer.getPermission("settingOperatePermission>usersetting>updatepm"))
 			return UserDaoOnServer.getReturn(false);
-		Meteor.users.update({_id:id},{$set:{"profile.settingNodeShowPermission":permissionValue}});
+		Meteor.users.update({_id:id},{$set:{"profile.settingNodeDisplayPermission":permissionValue}});
 		return UserDaoOnServer.getReturn(true);
-	},
+	},*/
 	"setNodeOpratePermission" : function(id,permissionValue){ //设置 监视节点的操作权限
 		if(!UserDaoOnServer.getPermission("settingOperatePermission>usersetting>updatepm"))
 			return UserDaoOnServer.getReturn(false);

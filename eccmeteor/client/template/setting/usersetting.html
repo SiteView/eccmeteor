@@ -14,6 +14,13 @@
 </div>
 
 <br />
+{{> usersettingListTable}}
+{{> usersettingadd}}
+{{> usersettingedit}}
+{{> userPromissionSetting}}
+</Template>
+
+<Template name="usersettingListTable">
 <table class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
@@ -38,9 +45,6 @@
 			{{/each}}
 		</tbody>
 </table>
-{{> usersettingadd}}
-{{> usersettingedit}}
-{{> userPromissionSetting}}
 </Template>
 
 <Template name="usersettingadd">
@@ -125,15 +129,18 @@
 
 <Template name="userPromissionSetting">
 	<div id="userPromissionSettingDiv" class="modal hide fade">
-		<div class="modal-header">用户授权</div>
+		<div class="modal-header">
+			用户授权<span class="badge badge-info" id="promissionUsername"></span>
+			<input type="hidden" id="promissionUserId">
+		</div>
 		<div class="modal-body" style="height:400px">
 			<div class="row-fluid">
-				<div class="span6" style="overflow:auto">
+				<div class="span6 well" style="overflow:auto">
 					<ul id="svse_tree_promission_check" class="ztree"></ul>
 					<ul id="svse_other_promission_check" class="ztree"></ul>
 				</div>
-				<div class="span6">
-					
+				<div class="span6" style="overflow:auto">
+					{{> userPromissionSettingGroupControl}}
 				</div>
 			</div>
 		</div>
@@ -142,4 +149,68 @@
 			<button class="btn btn-primary btn-large" id="userPromissionSettingCloseBtn">关闭</button>
 		</div>
 	</div>
+</Template>
+
+<Template name="userPromissionSettingGroupControl">
+	<form class="well form-horizontal" submit="return fasle;" id="userPromissionSettingGroupControlForm">
+		{{#if equals type  "group"}}
+		<span class="badge">组权限</span>
+		<ul class="nav nav-list">
+			<li>
+				<input type="checkbox" name="addEntity" value="true">
+				<i class="icon-book"></i> 增加设备
+			</li>
+			<li>
+				<input type="checkbox" name="addGroup" value="true">
+				<i class="icon-book"></i> 增加组
+			</li>
+			<li>
+				<input type="checkbox" name="editGroup" value="true">
+				<i class="icon-book"></i> 编辑组
+			</li>
+			<li>
+				<input type="checkbox" name="delete" value="true">
+				<i class="icon-book"></i> 删除组
+			</li>
+		</ul>
+		<br>
+		{{/if}}
+		{{#if type "entity"}}
+		<span class="badge">设备权限</span>
+		<ul class="nav nav-list">
+			<li>
+				<input type="checkbox" name="addMonitor" value="true">
+				<i class="icon-book"></i> 增加监视器
+			</li>
+			<li>
+				<input type="checkbox" name="editEntity" value="true">
+				<i class="icon-book"></i> 编辑设备
+			</li>
+			<li>
+				<input type="checkbox" name="delete" value="true">
+				<i class="icon-book"></i> 删除设备
+			</li>
+			<li>
+				<input type="checkbox" name="refresh" value="true">
+				<i class="icon-book"></i> 刷新设备
+			</li>
+		</ul>
+		<br>
+		<span class="badge">监视器权限权限</span>
+		<ul class="nav nav-list">
+			<li>
+				<input type="checkbox" name="editMonitor" value="true">
+				<i class="icon-book"></i> 编辑监视器
+			</li>
+			<li>
+				<input type="checkbox" name="deleteMonitor" value="true">
+				<i class="icon-book"></i> 删除监视器
+			</li>
+			<li>
+				<input type="checkbox" name="refreshMonitor" value="true">
+				<i class="icon-book"></i> 刷新监视器
+			</li>
+		</ul>
+		{{/if}}
+	</form>
 </Template>
