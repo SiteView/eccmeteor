@@ -4,11 +4,6 @@ SvseUserDao = {
 			fn(result);
 		});
 	},
-	"delete":function(username,fn){
-		Meteor.call("deleteUser",username,function(err,result){
-			fn(result);
-		});
-	},
 	"getUserByUsername":function(username){
 		return Meteor.users.findOne({username:username});
 	},
@@ -34,5 +29,13 @@ SvseUserDao = {
 			}
 			fn(result);
 		});
+	},
+	'getNodePromissByUserIdAndNodeId':function(userId,nodeId){
+		var user = Meteor.users.findOne(userId);
+		return user.profile.nodeOpratePermission ? user.profile.nodeOpratePermission[nodeId] : undefined;
+	},
+	"getNodeOpratePromissByUserId" : function(userId){
+		var user = Meteor.users.findOne(userId);
+		return user.profile.nodeOpratePermission ? user.profile.nodeOpratePermission : {};
 	}
 }

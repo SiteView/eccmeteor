@@ -220,6 +220,7 @@ Template.moitorContent.rendered = function(){
 			$.cookie("expandnode",ids.substr(1,ids.length));
 		});
 		//初始化设置等导航节点
+		/*
 		(function(){
 			var setting = {
 				data: {
@@ -235,8 +236,29 @@ Template.moitorContent.rendered = function(){
 			};
 			$.fn.zTree.init($("#setting_tree"), setting, NavigationSettionTree.getTreeData());
 		})();
+		*/
 	});
 }
+
+//树的渲染
+Template.moitorContentTree.rendered = function(){
+	(function(){
+		var setting = {
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			callback:{
+				onClick:function(event, treeId, treeNode){
+					NavigationSettionTree.execute(treeNode.action);
+				}
+			}
+		};
+		$.fn.zTree.init($("#setting_tree"), setting, NavigationSettionTree.getTreeData());
+	})();
+}
+
 
 Template.operateNode.sv_name = function(){
 	if(Session.get("checkedTreeNode"))return Session.get("checkedTreeNode").name;

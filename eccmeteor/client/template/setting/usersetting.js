@@ -159,9 +159,94 @@ Template.usersettingedit.events({
 });
 
 Template.userPromissionSetting.rendered = function(){
+	console.log("重复执行");
+	$(function(){
+		$('#userPromissionSettingDiv').modal({
+			backdrop:false,
+			keyboard:false,
+			show:false
+		}).css({
+			height:"545",
+			width:"800"
+		});
+	});
+}
+
+Template.userPromissionSetting.events({
+	"click #userPromissionSettingSetNodesBtn":function(){
+		console.log(Session.set("userPromissionSettingGroupControlData"));
+		return;
+	
+		var svsenodes = [];
+		//获取可见节点授权
+		var svsenodearr = $.fn.zTree.getZTreeObj("svse_tree_promission_check").getNodesByFilter(function(node){return node.checked});
+		for(index in svsenodearr){
+			svsenodes.push(svsenodearr[index].id);
+		}
+		console.log(svsenodes);
+		var settingnodes = [];
+		var svsesettingnodearr = $.fn.zTree.getZTreeObj("svse_other_promission_check").getNodesByFilter(function(node){return node.checked});
+		for(index in svsesettingnodearr){
+			settingnodes.push(svsesettingnodearr[index].action);
+		}
+		console.log(settingnodes);
+		var uid = $("#userPromissionSettingDiv #promissionUserId").val();
+		console.log(uid);
+		//存储可见节点数据
+		SvseUserDao.setDisplayPromission(uid,svsenodes,settingnodes,function(result){
+			console.log(result);
+		});
+		//存储节点授权
+		console.log(Session.set("userPromissionSettingGroupControlData"));
+		
+		//清空Session中的临时数据
+	},
+	"click #userPromissionSettingCloseBtn":function(){ //关闭权限控制弹窗
+		Session.set("userPromissionSettingGroupControlData",undefined);//清空Session中的临时数据
+		Session.set("userPromissionSettingGroupControlNodeId",undefined);
+		$("#userPromissionSettingDiv").modal('toggle');
+	}
+});
+
+Template.userPromissionSettingGroupControl.type = function(){
+	return Session.get("userPromissionSettingGroupControlType");
+}
+Template.userPromissionSettingGroupControl.rendered = function(){
+	var data = Session.get("userPromissionSettingGroupControlData");
+	var currendOperationUserId = $("#userPromissionSettingDiv #promissionUserId").val();//当前被操作的用户id
+	if(!currendOperationUserId) return;
+	//如果临时数据不存在，则从数据拉取  ???或者新建一个????	
+	if(!data){
+		//data = {};
+		console.log(currendOperationUserId);
+		data = SvseUserDao.getNodeOpratePromissByUserId(currendOperationUserId);
+		Session.set("userPromissionSettingGroupControlData",data);//存储到临时数据里面
+	}
+	var currend_id = Session.get("userPromissionSettingGroupControlNodeId");
+	var promissionCheckboxs = data[currend_id];
+	console.log("promissionCheckboxs:  ");
+	console.log(promissionCheckboxs);
+	//如果当前节点不存在授权
+	if(!promissionCheckboxs)
+		return;
+	//勾选相应的权限选项
+	for(promission in promissionCheckboxs){
+		if(!$("#userPromissionSettingGroupControlForm :checkbox[name="+promission+"]")[0]){
+			console.log(promission);
+			continue;
+		}
+		try{
+			$("#userPromissionSettingGroupControlForm :checkbox[name="+promission+"]")[0].checked = promissionCheckboxs[promission];
+		}catch(e){
+			console.log(e);
+		}
+	}
+}
+//两棵树的渲染
+Template.userPromissionSettingTree.rendered = function(){
 	$(function(){
 		var data = SvseDao.getTreeSimple();
-		var setting = {
+		var svsesetting = {
 			check:{
 				enable: true,
 				chkStyle: "checkbox",
@@ -177,65 +262,58 @@ Template.userPromissionSetting.rendered = function(){
 			},
 			callback:{
 				onClick:function(event, treeId, treeNode){
-					var  data  = Session.set("userPromissionSettingGroupControlData");
-					if(!data)
-						Session.set("userPromissionSettingGroupControlData",{});
-							
-					var id= treeNode.id;
-					var type = treeNode.type;
-					Session.set("userPromissionSettingGroupControlType",type);
-					//第一步  获取上一个操作节点，存储相关信息
-					//第二步  先从内存中读取 点击 的节点的操作权限，
+					//第一步  获取上一个操作节点，存储相关信息  ps:当前函数中实现
+					//第二步  先从内存中读取 点击 的节点的操作权限，  
 						//	若不存在，则从数据库中获取该节点的操作权限，反射到操作权限选择框中
-					//点击关闭按钮时 ，清空临时数据
+						// ps: Template.userPromissionSettingGroupControl.rendered中实现
+					//第三步 点击关闭按钮或者确认按钮时 ，清空临时数据 //ps:在 Template.userPromissionSetting.events 中实现
+						
+					var currend_id= treeNode.id;	//当前节点的ID
+					var current_type = treeNode.type === "entity" ? "entity" : "group" ;//当前节点类型
+					console.log("当前节点ID是" + currend_id  +"  节点类型是 " + current_type);
+					var foward_id = Session.get("userPromissionSettingGroupControlNodeId"); //获取上个节点id
+					if(currend_id === foward_id) return;  //如果当前节点和上一次点击节点相同则返回
 					
+					//设置节点对应的操作权限的临时存储数据
+					var  data  = Session.get("userPromissionSettingGroupControlData");		
+
+					//存储上一个节点	
+					if(typeof foward_id !== "undefined"){
+						var operation ={};//定义节点操作权限对象
+						$("#userPromissionSettingGroupControlForm :checkbox").each(function(){ //遍历复选框
+							operation[$(this).attr("name")] = this.checked;
+							this.checked = false;
+						});
+						//节点权限赋值
+						data[foward_id] = operation;
+						console.log("上个节点 "+foward_id+" 的权限情况是：");
+						console.log(operation);
+						data[foward_id] = operation;
+					}
+					Session.set("userPromissionSettingGroupControlData",data);//存储到临时数据里面
+					Session.set("userPromissionSettingGroupControlNodeId",currend_id); //存储临时信息
+					Session.set("userPromissionSettingGroupControlType",current_type); //改变模板状态			
 				}
 			}
 		};
-		$.fn.zTree.init($("#svse_tree_promission_check"), setting, data);
+		$.fn.zTree.init($("#svse_tree_promission_check"), svsesetting, data);
 		
 		var settingdata = NavigationSettionTree.getTreeData();
-		$.fn.zTree.init($("#svse_other_promission_check"), setting, settingdata);
-	});
-	
-	$(function(){
-		$('#userPromissionSettingDiv').modal({
-			backdrop:false,
-			keyboard:false,
-			show:false
-		}).css({
-			height:"545",
-			width:"800"
-		});
-	});
-	
-}
-
-Template.userPromissionSetting.events({
-	"click #userPromissionSettingSetNodesBtn":function(){
-		var svsenodes = [];
-		var svsenodearr = $.fn.zTree.getZTreeObj("svse_tree_promission_check").getNodesByFilter(function(node){return node.checked});
-		for(index in svsenodearr){
-			svsenodes.push(svsenodearr[index].id);
+		var othersetting ={
+			check:{
+				enable: true,
+				chkStyle: "checkbox",
+				chkboxType: { "Y": "ps", "N": "ps" }
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "id",
+					pIdKey: "pId",
+					rootPId: "0",
+				}
+			}
 		}
-		console.log(svsenodes);
-		var settingnodes = [];
-		var svsesettingnodearr = $.fn.zTree.getZTreeObj("svse_other_promission_check").getNodesByFilter(function(node){return node.checked});
-		for(index in svsesettingnodearr){
-			settingnodes.push(svsesettingnodearr[index].action);
-		}
-		console.log(settingnodes);
-		var uid = $("#userPromissionSettingDiv #promissionUserId").val();
-		console.log(uid);
-		SvseUserDao.setDisplayPromission(uid,svsenodes,settingnodes,function(result){
-			console.log(result);
-		});
-	},
-	"click #userPromissionSettingCloseBtn":function(){
-		$("#userPromissionSettingDiv").modal('toggle');
-	}
-});
-
-Template.userPromissionSettingGroupControl.type = function(){
-	return Session.get("userPromissionSettingGroupControlType");
+		$.fn.zTree.init($("#svse_other_promission_check"), othersetting, settingdata);
+	});
 }

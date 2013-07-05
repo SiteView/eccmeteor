@@ -127,7 +127,7 @@
 	</div>
 </Template>
 
-<Template name="userPromissionSetting">
+<Template name="userPromissionSetting"> <!--用户授权 --->
 	<div id="userPromissionSettingDiv" class="modal hide fade">
 		<div class="modal-header">
 			用户授权<span class="badge badge-info" id="promissionUsername"></span>
@@ -136,8 +136,7 @@
 		<div class="modal-body" style="height:400px">
 			<div class="row-fluid">
 				<div class="span6 well" style="overflow:auto">
-					<ul id="svse_tree_promission_check" class="ztree"></ul>
-					<ul id="svse_other_promission_check" class="ztree"></ul>
+					{{> userPromissionSettingTree}}
 				</div>
 				<div class="span6" style="overflow:auto">
 					{{> userPromissionSettingGroupControl}}
@@ -151,47 +150,56 @@
 	</div>
 </Template>
 
+<Template name="userPromissionSettingTree">
+	<ul id="svse_tree_promission_check" class="ztree"></ul>
+	<ul id="svse_other_promission_check" class="ztree"></ul>
+</Template>
+
 <Template name="userPromissionSettingGroupControl">
 	<form class="well form-horizontal" submit="return fasle;" id="userPromissionSettingGroupControlForm">
-		{{#if equals type  "group"}}
+		{{#if equal type  "group"}}
 		<span class="badge">组权限</span>
 		<ul class="nav nav-list">
 			<li>
-				<input type="checkbox" name="addEntity" value="true">
+				<input type="checkbox" name="addEntity">
 				<i class="icon-book"></i> 增加设备
 			</li>
 			<li>
-				<input type="checkbox" name="addGroup" value="true">
+				<input type="checkbox" name="addGroup">
 				<i class="icon-book"></i> 增加组
 			</li>
 			<li>
-				<input type="checkbox" name="editGroup" value="true">
+				<input type="checkbox" name="edit">
 				<i class="icon-book"></i> 编辑组
 			</li>
 			<li>
-				<input type="checkbox" name="delete" value="true">
+				<input type="checkbox" name="delete">
 				<i class="icon-book"></i> 删除组
+			</li>
+			<li>
+				<input type="checkbox" name="refresh">
+				<i class="icon-book"></i>刷新组
 			</li>
 		</ul>
 		<br>
 		{{/if}}
-		{{#if type "entity"}}
+		{{#if equal type "entity"}}
 		<span class="badge">设备权限</span>
 		<ul class="nav nav-list">
 			<li>
-				<input type="checkbox" name="addMonitor" value="true">
+				<input type="checkbox" name="addMonitor">
 				<i class="icon-book"></i> 增加监视器
 			</li>
 			<li>
-				<input type="checkbox" name="editEntity" value="true">
+				<input type="checkbox" name="edit">
 				<i class="icon-book"></i> 编辑设备
 			</li>
 			<li>
-				<input type="checkbox" name="delete" value="true">
+				<input type="checkbox" name="delete">
 				<i class="icon-book"></i> 删除设备
 			</li>
 			<li>
-				<input type="checkbox" name="refresh" value="true">
+				<input type="checkbox" name="refresh">
 				<i class="icon-book"></i> 刷新设备
 			</li>
 		</ul>
@@ -199,15 +207,15 @@
 		<span class="badge">监视器权限权限</span>
 		<ul class="nav nav-list">
 			<li>
-				<input type="checkbox" name="editMonitor" value="true">
+				<input type="checkbox" name="editMonitor">
 				<i class="icon-book"></i> 编辑监视器
 			</li>
 			<li>
-				<input type="checkbox" name="deleteMonitor" value="true">
+				<input type="checkbox" name="deleteMonitor">
 				<i class="icon-book"></i> 删除监视器
 			</li>
 			<li>
-				<input type="checkbox" name="refreshMonitor" value="true">
+				<input type="checkbox" name="refreshMonitor">
 				<i class="icon-book"></i> 刷新监视器
 			</li>
 		</ul>
