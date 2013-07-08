@@ -35,7 +35,7 @@ var SvseEntityTemplateDao = {
 		return items;
 	},
 	addEntity:function(entity,parentid,fn){//根据提交的信息和父节点添加设备
-		Utils.checkReCallFunction(fn);
+		fn = Utils.checkReCallFunction(fn);
 		Meteor.call("svSubmitEntity",entity,parentid,function(err,r_entity){
 			if(err){
 				fn(err);
@@ -89,7 +89,7 @@ var SvseEntityTemplateDao = {
 									SystemLogger(err2);
 									return;
 								}
-								fn();//执行回调函数
+								fn(undefined,selfId);//执行回调函数
 							});
 						}
 					});

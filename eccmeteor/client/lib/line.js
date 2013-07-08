@@ -3,6 +3,7 @@ function DrawLine(data,key,label){
 	this.key = key;
 	this.label = label;
 	this.data = data;
+	this.dateformate = "%H:%M";
 	this.drawLine = function(){ //折线统计图
 		var primary = this.key;
 		var margin = {
@@ -23,7 +24,7 @@ function DrawLine(data,key,label){
 		var xAxis = d3.svg.axis()
 			.scale(x)
 			.orient("bottom")
-			.tickFormat(d3.time.format("%H:%M"));
+			.tickFormat(d3.time.format(this.dateformate));
 			
 		var yAxis = d3.svg.axis()
 			.scale(y)

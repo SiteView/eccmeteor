@@ -1,5 +1,5 @@
 //节点关系
-var SvseDao = {
+SvseDao = {
 	//根据 节点id和子节点组名 获取该节点的子节点id
 	getChildrenIdsByRootIdAndChildSubType:function(id,subtype){
 		var node = Svse.findOne({sv_id:id});
@@ -10,23 +10,79 @@ var SvseDao = {
 	getNodesByRootId:function(rootId){
 		return Svse.find({parentid:rootId}).fetch();
 	},
-	getTree:function(parentid,branch){
-		if(!branch) branch =[];
+	getTree:function(parentid){ //不包含监视器 复杂数据类型
+		var branch =[];
 		var root = Svse.find({parentid:parentid}).fetch();
 		for(index in root){
 			var node ={}
 			//node["parentid"] = parentid;
 			node["id"] = root[index]["sv_id"];
-			node["label"]= SvseTree.findOne({sv_id:root[index]["sv_id"]})["sv_name"];
+		//	node["label"]= SvseTree.findOne({sv_id:root[index]["sv_id"]})["sv_name"];
+			node["name"]= SvseTree.findOne({sv_id:root[index]["sv_id"]})["sv_name"];
 			//node["label"]=  root[index]["sv_id"];
 			node["type"] = root[index]["type"];
 			if(root[index]["type"] !== "entity" && root[index]["has_son"]){
 				node["children"]= this.getTree(node["id"]);
 			}
+			if(root[index] && root[index]["type"] !== "entity"){
+				node["isParent"] = true;
+			}
+			if(parentid === "0") node["open"] = true;
 			branch.push(node);
 		}
 		return branch;
 	},
+	getTreeSimple:function(){//不包含监视器 简单数据类型
+		var nodes = Svse.find().fetch();
+		var branch = [];
+		for(index in nodes){
+			var obj = nodes[index];
+			var branchNode = {};
+			branchNode["id"] = obj["sv_id"];
+			branchNode["pId"] = obj["parentid"];
+			branchNode["type"] = obj["type"];
+			branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]})["sv_name"];
+			branchNode["isParent"] = true;
+			if(branchNode["pId"] === "0") branchNode["open"] = true;
+			if(obj["type"] === "entity"){
+				branchNode["isParent"] = false;
+			}
+			branch.push(branchNode);
+		}
+		return branch;
+	},
+	
+	getDetailTree:function(){ //包含监视器
+		
+		var nodes = Svse.find().fetch();
+		
+		var branch = [];
+		for(index in nodes){
+			var obj = nodes[index];
+			var branchNode = {};
+			branchNode["id"] = obj["sv_id"];
+			branchNode["pId"] = obj["parentid"];
+			branchNode["type"] = obj["type"];
+			branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]})["sv_name"];
+			branchNode["isParent"] = true;
+			if(branchNode["pId"] === "0") branchNode["open"] = true;
+			if(obj["type"] === "entity" && obj["submonitor"] && obj["submonitor"].length){
+				
+				var submonitor = obj["submonitor"];
+				for(subindex in submonitor){
+					var subobj = {};
+					subobj["id"] = submonitor[subindex];
+					subobj["pId"] = obj["sv_id"];
+					subobj["type"] = "monitor";
+					subobj["name"] = SvseTree.findOne({sv_id:submonitor[subindex]})["sv_name"];
+					branch.push(subobj);
+				}
+			}
+			branch.push(branchNode);
+		}
+		return branch;
+		
+	},	
 	removeNodesById:function(id){  //根据ID删除节点 返回删除的节点数
 		//同时删除SvseTree和Svse中的数据而且删除其子节点。 //先删除服务器中的节点再删本地数据库中的节点
 		Meteor.call("svDelChildren",id,function (err,result){

@@ -147,10 +147,46 @@ SyncFunction = {
 		}
 		SystemLogger("扫描 SyncTreeNodeData 变动结束。。");
 	},
+	//同步邮件列表
+	'SyncEmailList':function(){
+		SystemLogger("扫描 SysncEmailList 变动开始。。");
+		var list = SvseMethodsOnServer.svGetEmailList();
+		if(!list){
+			SystemLogger("初始化邮件列表失败",-1);
+			return;
+		}
+		for(itemname in list){
+			if(itemname.indexOf("return") !== -1) continue;
+			var item = list[itemname];
+			var flag = Utils.compareObject(item,SvseEmailList.findOne({nIndex:item["nIndex"]}),{_id:true});
+			if(flag) continue;
+			SvseEmailList.update({nIndex:item["nIndex"]},item);
+		}
+		SystemLogger("扫描 SysncEmailList 变动结束。。");
+	},
+	//同步报警规则
+	'SyncWarnerRules' : function(){
+		SystemLogger("扫描 SyncWarnerRules 变动开始。。");
+		var list = SvseMethodsOnServer.svGetWarnerRule();
+		if(!list){
+			SystemLogger("初始化报警规则失败",-1);
+			return;
+		}
+		for(itemname in list){
+			if(itemname.indexOf("return") !== -1) continue;
+			var item = list[itemname];
+			var flag = Utils.compareObject(item,SvseWarnerRule.findOne({nIndex:item["nIndex"]}),{_id:true});
+			if(flag) continue;
+			SvseWarnerRule.update({nIndex:item["nIndex"]},item);
+		}
+		SystemLogger("扫描 SyncWarnerRules 变动结束。。");
+	},
 	'sync' : function(){
 		SystemLogger("扫描变动开始。。");
 		SyncFunction.SyncTreeNodeData();
 		SyncFunction.SyncTreeStructure();
+		SyncFunction.SysncEmailList();
+		SyncFunction.SyncWarnerRules();
 		SystemLogger("扫描变动结束。。");
 	}
 }

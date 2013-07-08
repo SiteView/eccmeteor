@@ -193,7 +193,7 @@ var svGetAllTask = function(){
 //添加编辑监视器
 var svSubmitMonitor = function(monitor,parentid){
 	if(parentid){
-		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor','parentid':parentid,autoCreateTable:true,del_supplement:false},0); //修改
+		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor','parentid':parentid,autoCreateTable:true,del_supplement:false},0); //添加
 	}else{
 		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor',del_supplement:false},0); //修改
 	}
@@ -325,4 +325,162 @@ var svDisableTemp = function(ids,starttime,endtime){
 	}
 	var fmap= robj.fmap(0);
 	return fmap;
+}
+//通过时间段获取记录数据
+svQueryRecordsByTime = function(id,beginDate,endDate){
+		var robj = process.sv_forest({
+			'dowhat':'QueryRecordsByTime',
+			id:id, 
+			begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
+			end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
+		}, 0);
+		var fmap = robj.fmap(0);
+		var runtiomeRecords = [];
+		for(r in fmap){
+			runtiomeRecords.push(fmap[r]);
+		}
+		return runtiomeRecords;
+}
+
+//获取邮件列表
+svGetEmailList = function(){
+		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"emailAdress.ini",
+			"user":"default","sections":"default"}, 0);
+		if(!robj.isok(0)){
+		}
+		var fmap= robj.fmap(0);
+		return fmap;
+}
+
+//获取发送邮件的设置
+svGetSendEmailSetting = function(){
+		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",
+			"user":"default","sections":"default"}, 0);
+		if(!robj.isok(0)){
+			return;
+		}
+		var fmap= robj.fmap(0);
+		if(!fmap || !fmap["email_config"]) return ;
+		fmap["email_config"]["password"] = svDecryptOne(fmap["email_config"]["password"]);
+		return fmap["email_config"];
+}
+//email.ini写入
+svWriteEmailIniFileSectionString = function(section){
+	console.log(section);
+	section["password"] = svEncryptOne(section["password"]);
+	var ini = {"email_config":section};
+	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"email.ini",'user':"default",'section':"email_config"},0); 
+	console.log(robj.fmap(0));
+	return robj.fmap(0);
+}
+
+
+//解密
+svDecryptOne =  function (password){
+	var dowhat = {
+		'dowhat':'decrypt'
+	}
+	dowhat[password]="";
+	var robj = process.sv_univ(dowhat,0);
+	var fmap= robj.fmap(0);
+//	console.log(fmap)
+	return fmap.return[password];
+}
+
+//加密
+svEncryptOne = function(password){
+	var dowhat = {
+		'dowhat':'encrypt'
+	}
+	dowhat[password]="";
+	var robj = process.sv_univ(dowhat,0);
+	var fmap= robj.fmap(0);
+//	console.log(fmap)
+	return fmap.return[password];
+}
+
+//获取发送邮件模板
+svGetEmailTemplates = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"TXTtemplate.ini",
+			"user":"default","sections":"Email"}, 0);
+	var fmap= robj.fmap(0);
+	return fmap["Email"];
+}
+
+//获取报警规则列表
+svGetWarnerRule = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"alert.ini",
+			"user":"default","sections":"default"}, 0);
+	return robj.fmap(0);;
+}
+
+//Alert.ini文件写入
+svWriteAlertIniFileSectionString = function(sectionname,section){
+	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"alert.ini",'user':"default",'section':sectionname},0); 
+//	console.log(robj.fmap(0));
+	return robj.fmap(0);
+}
+
+//Alert.ini 删除
+svDeleteAlertInitFileSection = function(ids){
+	var dowhat = {
+		'dowhat' : 'DeleteIniFileSection',
+		'filename' : "alert.ini",
+		'user' : "default",
+		"sections" : ids
+	};
+	var robj = process.sv_univ(dowhat,0);
+	return robj.fmap(0);
+	
+}
+
+//改变报警规则状态
+svWriteAlertStatusInitFileSection = function(sectionName,status){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "alert.ini",
+		'user' : "default",
+		'section' : sectionName,
+		"key" : "AlertState",
+		"value" : status
+	}, 0);
+	return robj.fmap(0);
+}
+
+//emailAdress.ini写入
+svWriteEmailAddressIniFileSectionString = function(addressname,address){
+	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"emailAdress.ini",'user':"default",'section':addressname},0); 
+//	console.log(robj.fmap(0));
+	return robj.fmap(0);
+}
+
+//删除emailAddress.ini的section
+svDeleteEmailAddressIniFileSection = function(ids){
+	var dowhat = {
+		'dowhat' : 'DeleteIniFileSection',
+		'filename' : "emailAdress.ini",
+		'user' : "default",
+		"sections" : ids
+	};
+	var robj = process.sv_univ(dowhat,0);
+	return robj.fmap(0);
+}
+
+//更改邮件状态
+svWriteEmailAddressStatusInitFilesection = function(sectionName,status){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "emailAdress.ini",
+		'user' : "default",
+		'section' : sectionName,
+		"key" : "bCheck",
+		"value" : status
+	}, 0);
+	return robj.fmap(0);
+}
+
+//邮件测试
+svEmailTest = function(emailSetting){
+	emailSetting["dowhat"]="EmailTest";
+	 process.sv_univ(emailSetting,0);
 }

@@ -29,3 +29,19 @@ Meteor.publish("svse_entity_info",function(){
 Meteor.publish("svse_task",function(){
 	return SvseTask.find();
 });
+
+//邮件
+Meteor.publish("svse_emaillist",function(){
+	return SvseEmailList.find();
+});
+
+//报警规则
+Meteor.publish("svse_warnerrule",function(){
+	return SvseWarnerRule.find();
+});
+
+//用户信息
+Meteor.publish("userData",function(){
+	return Meteor.users.find(	{},
+								{fields: {'profile': 1,username:1}});
+});

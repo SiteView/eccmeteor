@@ -32,3 +32,27 @@ use meteor
 db.svse_tree.findOne("type":"monitor")
 db.svse_tree.findOne({"type":"monitor"})
 db.svse_tree.findOne({"sv_id":"1.9.15.1"})
+db.SvseWarnerRule.findOne()
+show dbs
+use meteor
+show collections
+db.svse_warnerrule.find({});
+use meteor
+db.users.findOne()
+use meteor
+db.users.find()
+db.users.remove(qxz7RXSQLHgwDwDtY)
+db.users.remove("qxz7RXSQLHgwDwDtY")
+db.users.remove({_id:"qxz7RXSQLHgwDwDtY"})
+db.users.find()
+use meteor
+db.users.findOne({username:"admin"})
+use meteor
+db.users.find()
+db.users.find({},{field:{profile:1}})
+db.users.find({},{fields:{profile:1}})
+db.users.find({},{fields:{profile:true}})
+db.users.find({},{profile:1})
+db.users.find({},{profile:1})
+db.users.update({_id:{$in:["oxN7k5S9pys7gxMk8", "oxN7k5S9pys7gxMk8"]}},{$set:{"profile.accountstatus":false}})
+db.users.find({},{profile:1})

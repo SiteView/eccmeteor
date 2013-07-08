@@ -1,6 +1,6 @@
 ﻿Meteor.methods({
   "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
-  "meteorSvForest":meteorSvForest, //调用 /lib/svdb.js中定义的方法
+  "meteorSvForest":meteorSvForest,
   "getQueryRecords":getQueryRecords,
   "GetMonitorTemplet":GetMonitorTemplet,
   "removeNodesById":SvseDaoOnServer.removeNodesById,
@@ -16,7 +16,25 @@
   "svDisableForever":svDisableForever,
   "svEnable":svEnable,
   "svDisableTemp":svDisableTemp,
-  "syncTreeData":SyncFunction.sync //同步数据
+  "svQueryRecordsByTime":svQueryRecordsByTime,
+  "svGetSendEmailSetting":svGetSendEmailSetting,
+  "svGetEmailTemplates":svGetEmailTemplates,
+  "svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
+  "svWriteEmailAddressIniFileSectionString":svWriteEmailAddressIniFileSectionString,
+  "svWriteEmailIniFileSectionString":svWriteEmailIniFileSectionString,
+  "svDeleteEmailAddressIniFileSection":svDeleteEmailAddressIniFileSection,
+  "svEmailTest":svEmailTest,
+  "svWriteEmailAddressStatusInitFilesection":svWriteEmailAddressStatusInitFilesection,
+  "svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
+  "svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
+  "syncTreeData":SyncFunction.sync, //同步数据
+  "syncEmailList" : SyncFunction.SyncEmailList,
+  "SyncWarnerRules" : SyncFunction.SyncWarnerRules,
+  "register":UserDaoOnServer.register,
+  "deleteUser":UserDaoOnServer.deleteUser,
+  "modifyPassword":UserDaoOnServer.resetPassword,
+  "forbidUser":UserDaoOnServer.forbid,
+  "setNodeDisplayPermission":UserDaoOnServer.setNodeDisplayPermission
 });//给客户端调用的
 
 //给服务端调用的。
@@ -32,7 +50,9 @@ var SvseMethodsOnServer = {
 	"svRefreshMonitors":svRefreshMonitors,
 	"svGetRefreshed":svGetRefreshed,
 	"svGetMonitor":svGetMonitor,
-	"svDeleteMonitor" : svDeleteMonitor
+	"svDeleteMonitor" : svDeleteMonitor,
+	"svGetEmailList" : svGetEmailList,
+	"svGetWarnerRule" :svGetWarnerRule
 }
 
 var SvseSyncData = {

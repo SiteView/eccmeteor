@@ -1,0 +1,224 @@
+<Template name="usersetting">
+<div class="form-horizontal">
+	<div class="btn-group">
+		<button class="btn" id="addusersetting">{{language.addbtn}}</button>
+		<button class="btn" id="delusersetting">{{language.delbtn}}</button>
+	</div>
+	<div class="btn-group">
+		<button class="btn" id="allowusersetting">{{language.allowbtn}}</button>
+		<button class="btn" id="forbidusersetting">{{language.forbidbtn}}</button>
+	</div>
+	<div class="btn-group">
+		<button class="btn" id="helpmessage">{{language.helpmessagebtn}}</button>
+	</div>
+</div>
+
+<br />
+{{> usersettingListTable}}
+{{> usersettingadd}}
+{{> usersettingedit}}
+{{> userPromissionSetting}}
+</Template>
+
+<Template name="usersettingListTable">
+<table class="table table-striped table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th><input type="checkbox" id="usersettingtableselectall"> 登录名</th>
+				<th>用户名</th>
+				<th>用户状态</th>
+				<th>用户类型</th>
+				<th>操作</th>
+				<th>授权</th>
+			</tr>
+		</thead>
+		<tbody id="userSettingList">
+			{{#each userlist}}
+			<tr>
+				<td><input type="checkbox" id="{{_id}}">  {{username}}</td>
+				<td>{{profile.aliasname}}</td>
+				<td>{{profile.accountstatus}}</td>
+				<td>{{profile.accounttype}}</td>
+				<td><button id="{{username}}" class="btn" name="edit"><i class="icon-edit"></i>编辑</button></td>
+				<td><button id="{{username}}" class="btn" name="promission"><i class="icon-edit"></i>授权</button></td>
+			</tr>
+			{{/each}}
+		</tbody>
+</table>
+</Template>
+
+<Template name="usersettingadd">
+	<div id="usersettingadddiv" class="modal hide fade">
+		<div class="modal-header">添加用户</div>
+		<div class="modal-body">
+		<form id="usersettingaddform" class="well form-horizontal" submit="return fasle;">
+			<fieldset>
+				<div class="control-group">
+				  <label class="control-label">登录名:</label>
+				  <div class="controls">
+					<input type="text" class="input-big" name="username" placeholder="5-16个字符">
+					<span class='help-inline' style="display:none">登录名已存在</span>
+				  </div>
+				</div>
+				<div class="control-group">
+				  <label class="control-label">用户名:</label>
+				  <div class="controls">
+					<input type="text" class="input-big" name="aliasname">
+				  </div>
+				</div>
+				<div class="control-group">
+				  <label class="control-label">密码:</label>
+				  <div class="controls">
+					<input type="password" class="input-big" name="password">
+				  </div>
+				</div>
+				<div class="control-group">
+				  <label class="control-label">确认密码:</label>
+				  <div class="controls">
+					<input type="password" class="input-big" name="password2">
+					<span class='help-inline' style="display:none">两次密码不一致</span>
+				  </div>
+				</div>
+			</fieldset>
+		</form>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-large" id="usersettingaddformcanclebtn">取消</button>
+			<button class="btn btn-primary btn-large" id="usersettingaddformsavebtn">保存</button>
+		</div>
+	</div>
+</Template>
+
+<Template name="usersettingedit">
+	<div id="usersettingeditdiv" class="modal hide fade">
+		<div class="modal-header">编辑用户</div>
+		<div class="modal-body">
+		<form id="usersettingeditform" class="well form-horizontal" submit="return fasle;">
+			<fieldset>
+				<div class="control-group">
+				  <label class="control-label">登录名:</label>
+				  <div class="controls">
+					<input type="text" class="input-big" name="username" readOnly>
+				  </div>
+				</div>
+				<div class="control-group">
+				  <label class="control-label">用户名:</label>
+				  <div class="controls">
+					<input type="text" class="input-big" name="aliasname">
+				  </div>
+				</div>
+				<div class="control-group">
+				  <label class="control-label">密码:</label>
+				  <div class="controls">
+					<input type="password" class="input-big" name="password">
+				  </div>
+				</div>
+				<div class="control-group">
+				  <label class="control-label">确认密码:</label>
+				  <div class="controls">
+					<input type="password" class="input-big" name="password2">
+				  </div>
+				</div>
+			</fieldset>
+		</form>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-large" id="usersettingeditformcanclebtn">取消</button>
+			<button class="btn btn-primary btn-large" id="usersettingeditformsavebtn">保存</button>
+		</div>
+	</div>
+</Template>
+
+<Template name="userPromissionSetting"> <!--用户授权 --->
+	<div id="userPromissionSettingDiv" class="modal hide fade">
+		<div class="modal-header">
+			用户授权<span class="badge badge-info" id="promissionUsername"></span>
+			<input type="hidden" id="promissionUserId">
+		</div>
+		<div class="modal-body" style="height:400px">
+			<div class="row-fluid">
+				<div class="span6 well" style="overflow:auto">
+					{{> userPromissionSettingTree}}
+				</div>
+				<div class="span6" style="overflow:auto">
+					{{> userPromissionSettingGroupControl}}
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-large" id="userPromissionSettingSetNodesBtn">授予节点</button>
+			<button class="btn btn-primary btn-large" id="userPromissionSettingCloseBtn">关闭</button>
+		</div>
+	</div>
+</Template>
+
+<Template name="userPromissionSettingTree">
+	<ul id="svse_tree_promission_check" class="ztree"></ul>
+	<ul id="svse_other_promission_check" class="ztree"></ul>
+</Template>
+
+<Template name="userPromissionSettingGroupControl">
+	<form class="well form-horizontal" submit="return fasle;" id="userPromissionSettingGroupControlForm">
+		{{#if equal type  "group"}}
+		<span class="badge">组权限</span>
+		<ul class="nav nav-list">
+			<li>
+				<input type="checkbox" name="addEntity">
+				<i class="icon-book"></i> 增加设备
+			</li>
+			<li>
+				<input type="checkbox" name="addGroup">
+				<i class="icon-book"></i> 增加组
+			</li>
+			<li>
+				<input type="checkbox" name="edit">
+				<i class="icon-book"></i> 编辑组
+			</li>
+			<li>
+				<input type="checkbox" name="delete">
+				<i class="icon-book"></i> 删除组
+			</li>
+			<li>
+				<input type="checkbox" name="refresh">
+				<i class="icon-book"></i>刷新组
+			</li>
+		</ul>
+		<br>
+		{{/if}}
+		{{#if equal type "entity"}}
+		<span class="badge">设备权限</span>
+		<ul class="nav nav-list">
+			<li>
+				<input type="checkbox" name="addMonitor">
+				<i class="icon-book"></i> 增加监视器
+			</li>
+			<li>
+				<input type="checkbox" name="edit">
+				<i class="icon-book"></i> 编辑设备
+			</li>
+			<li>
+				<input type="checkbox" name="delete">
+				<i class="icon-book"></i> 删除设备
+			</li>
+			<li>
+				<input type="checkbox" name="refresh">
+				<i class="icon-book"></i> 刷新设备
+			</li>
+		</ul>
+		<br>
+		<span class="badge">监视器权限权限</span>
+		<ul class="nav nav-list">
+			<li>
+				<input type="checkbox" name="editMonitor">
+				<i class="icon-book"></i> 编辑监视器
+			</li>
+			<li>
+				<input type="checkbox" name="deleteMonitor">
+				<i class="icon-book"></i> 删除监视器
+			</li>
+			<li>
+				<input type="checkbox" name="refreshMonitor">
+				<i class="icon-book"></i> 刷新监视器
+			</li>
+		</ul>
+		{{/if}}
+	</form>
+</Template>
