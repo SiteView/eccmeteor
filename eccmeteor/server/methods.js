@@ -30,11 +30,7 @@
   "syncTreeData":SyncFunction.sync, //同步数据
   "syncEmailList" : SyncFunction.SyncEmailList,
   "SyncWarnerRules" : SyncFunction.SyncWarnerRules,
-  "register":UserDaoOnServer.register,
-  "deleteUser":UserDaoOnServer.deleteUser,
-  "modifyPassword":UserDaoOnServer.resetPassword,
-  "forbidUser":UserDaoOnServer.forbid,
-  "setNodeDisplayPermission":UserDaoOnServer.setNodeDisplayPermission
+  "userDaoAgent":UserDaoAgent.agent
 });//给客户端调用的
 
 //给服务端调用的。

@@ -152,6 +152,21 @@
 		$(formid).find("input:text").each(function(){
 			$(this).val(obj[this.name]);
 		});
+	},
+	//对象属性名中 的 '.'和'-'的相互替换
+	"changePointAndLine":function(obj,flag){ 
+		if(!obj) return obj;
+		var robj = {};
+		if(flag === -1){
+			for(index in obj){
+				robj[index.replace(/\-/g,"\.")] = obj[index];
+			}
+		}else{
+			for(index in obj){
+				robj[index.replace(/\./g,"\-")] = obj[index];
+			}
+		}
+		return robj;
 	}
 }
 ServerUtils ={
