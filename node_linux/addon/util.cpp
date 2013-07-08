@@ -6,7 +6,7 @@
 #define KEY_PATH_CORE	"SOFTWARE\\SiteView\\SiteViewCore"
 #define KEY_NAME		"root_path_7"
 #endif
-#include "../libutil/Time.h"
+#include "../libutil/svtime.h"
 
 
 std::string TrimSpace(const std::string & input)
@@ -134,7 +134,7 @@ void outputRegeditKey(void)
 	}
 #else
 	string path= GetRootPath();
-	cout<<"    regedit key in linux is: "<<path.c_str()<<endl;
+	cout<<"    data path in linux is: "<<path.c_str()<<endl;
 #endif
 
 }
@@ -208,7 +208,7 @@ std::string GetRootPathByKey(string key)
 	}
 
 #else
-	strpath="/var/lib/sitview/ecc";
+	strpath="/var/lib/siteview/ecc";
 
 #endif
 	int pos=strpath.rfind("\\");

@@ -337,7 +337,8 @@ bool QueryData::QueryBySocket(LPSVDBQUERY lpquery,void **pret,S_UINT &len,string
 
 	}catch(...)
 	{
-		puts("socket error");
+		if((::strcmp(addr.c_str(),"localhost")!=0)&&(::strcmp(addr.c_str(),"127.0.0.1")!=0))
+			puts("socket error");
 		return false;
 	}
 

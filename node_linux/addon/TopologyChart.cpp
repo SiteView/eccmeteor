@@ -150,7 +150,7 @@ BOOL	TopologyChart::CreateObjectByRawData(const char *lpbuf,S_UINT bufsize)
 		memmove(&len,pt,tlen);
 		pt+=tlen;
 
-		if(m_Property.CreateObjectByRawData(pt,len)==NULL)
+		if(!m_Property.CreateObjectByRawData(pt,len))
 			return false;
 
 		pt+=len;

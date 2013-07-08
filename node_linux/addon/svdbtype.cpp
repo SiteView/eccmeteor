@@ -45,7 +45,7 @@ int IdcUser::PipeTreadPlusCount(0);
 void* IdcUser::m_pResource(NULL);
 void* IdcUser::m_pLanguage(NULL);
 
-#include "../libutil/time.h"
+#include "../libutil/svtime.h"
 #include "StringMap.h" 
 #include "Resource.h"
 #include "ResourcePool.h"

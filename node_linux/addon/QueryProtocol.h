@@ -155,7 +155,7 @@ typedef struct inifilequery	INIQUERY,*LPINIQUERY;
 #define B_RECENTSPAN	0x02
 #define B_SPAN		0x03
 
-#include "../libutil/time.h"
+#include "../libutil/svtime.h"
 
 struct dbquery
 {

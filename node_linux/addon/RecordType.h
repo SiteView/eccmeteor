@@ -3,7 +3,7 @@
 
 #include "svdbtype.h"
 #include <vector>
-#include "../libutil/time.h"
+#include "../libutil/svtime.h"
 
 using namespace svutil;
 

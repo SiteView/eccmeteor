@@ -15,7 +15,7 @@
 typedef	int BOOL;
 #endif
 
-#include "../libutil/time.h"
+#include "../libutil/svtime.h"
 
 using namespace svutil;
 

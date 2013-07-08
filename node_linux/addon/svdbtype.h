@@ -12,6 +12,12 @@ typedef	true TRUE;
 #ifndef FALSE
 typedef	false FALSE;
 #endif
+
+#else
+#include <unistd.h>
+#include <sys/time.h>
+#include <time.h>
+#include <netinet/in.h>
 #endif
 
 #ifndef	NULL

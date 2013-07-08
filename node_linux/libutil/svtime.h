@@ -3,7 +3,17 @@
 #ifndef	_USE_32BIT_TIME_T
 #define _USE_32BIT_TIME_T
 #endif
+
+#ifdef	WIN32
 #include <ctime>
+#else
+#include <time.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <netinet/in.h>
+#endif
+
+#include <stdio.h>
 #include <iostream>
 #include <string.h>
 

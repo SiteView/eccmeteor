@@ -13,6 +13,7 @@ public:
 	MyTCPStream(const IPV4Host &host,tpport_t port,size_t size=512);
 	~MyTCPStream(void);
 
+
 	size_t WriteData(const void *Source, size_t Size, timeout_t timeout=0)
 	{
 		try{
@@ -100,7 +101,19 @@ public:
 		return 0;
 	}
 
-	bool SConnect(const IPV4Host &host,tpport_t port,size_t size=512);
+	bool SConnect(const IPV4Host &host,tpport_t port,size_t size=512)
+	{
+		try{
+			Connect(host,port,size);
+		}catch(...)
+		{
+			puts("connect failed");
+			return false;
+		}
+
+		return true;
+	}
+
 	bool HasValid()
 	{
 		return so!=INVALID_SOCKET;
