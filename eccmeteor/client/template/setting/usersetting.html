@@ -139,7 +139,7 @@
 					{{> userPromissionSettingTree}}
 				</div>
 				<div class="span6" style="overflow:auto">
-					{{> userPromissionSettingGroupControl}}
+					{{> userPromissViewControle}}
 				</div>
 			</div>
 		</div>
@@ -153,6 +153,18 @@
 <Template name="userPromissionSettingTree">
 	<ul id="svse_tree_promission_check" class="ztree"></ul>
 	<ul id="svse_other_promission_check" class="ztree"></ul>
+</Template>
+
+<Template name="userPromissViewControle">
+	{{#if equal userpromissViewType "svse"}}
+		{{> userPromissionSettingGroupControl}}
+	{{/if}}
+	{{#if equal userpromissViewType 'warner'}}
+		{{> userPromissionSettingWarnerControl}}
+	{{/if}}
+	{{#if equal userpromissViewType 'setting'}}
+		{{> userPromissionSettingSettingControl}}
+	{{/if}}
 </Template>
 
 <Template name="userPromissionSettingGroupControl">
@@ -220,5 +232,85 @@
 			</li>
 		</ul>
 		{{/if}}
+	</form>
+</Template>
+
+<Template name="userPromissionSettingWarnerControl">
+	<form class="well form-horizontal" submit="return fasle;" id="userPromissionSettingWarnerControlForm">
+	{{#if equal type "warner"}}
+	
+	{{/if}}
+	{{#if equal type "warnerrule"}}
+		<span class="badge">报警规则操作权限</span>
+		<ul class="nav nav-list">
+			<li>
+				<input type="checkbox" name="add">
+				<i class="icon-book"></i> 添加
+			</li>
+			<li>
+				<input type="checkbox" name="update">
+				<i class="icon-book"></i> 编辑
+			</li>
+			<li>
+				<input type="checkbox" name="delete">
+				<i class="icon-book"></i> 删除
+			</li>
+		</ul>
+	{{/if}}
+	{{#if equal type "warnerlog"}}
+	
+	{{/if}}
+	{{#if equal type "warnerplan"}}
+	
+	{{/if}}
+	</form>
+</Template>
+
+<Template name="userPromissionSettingSettingControl">
+	<form class="well form-horizontal" submit="return fasle;" id="userPromissionSettingSettingControlForm">
+	{{#if equal type "basicsetting"}}
+	
+	{{/if}}
+	{{#if equal type "emailsetting"}}
+		<span class="badge">邮件操作权限</span>
+		<ul class="nav nav-list">
+			<li>
+				<input type="checkbox" name="add">
+				<i class="icon-book"></i> 添加邮件
+			</li>
+			<li>
+				<input type="checkbox" name="update">
+				<i class="icon-book"></i> 编辑邮件
+			</li>
+			<li>
+				<input type="checkbox" name="delete">
+				<i class="icon-book"></i> 删除邮件
+			</li>
+		</ul>
+	{{/if}}
+	{{#if equal type "messagesetting"}}
+	
+	{{/if}}
+	{{#if equal type "usersetting"}}
+		<span class="badge">用户操作权限</span>
+		<ul class="nav nav-list">
+			<li>
+				<input type="checkbox" name="add">
+				<i class="icon-book"></i> 添加用户
+			</li>
+			<li>
+				<input type="checkbox" name="updateStatus">
+				<i class="icon-book"></i> 更改用户状态
+			</li>
+			<li>
+				<input type="checkbox" name="updatePassword">
+				<i class="icon-book"></i> 重置密码
+			</li>
+			<li>
+				<input type="checkbox" name="updatePermission">
+				<i class="icon-book"></i> 授权管理
+			</li>
+		</ul>
+	{{/if}}
 	</form>
 </Template>

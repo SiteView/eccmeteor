@@ -26,15 +26,15 @@ var NavigationSettionTreeEvents = {
 NavigationSettionTree = {
 	getTreeData:function(){
 		return [
-			{id:1,pId:0,name:LanguageModel.getLanaguage().warner,action:"warner"},
-			{id:2,pId:0,name:LanguageModel.getLanaguage().setting,action:"setting"},
-			{id:11,pId:1,name:LanguageModel.getLanaguage().warnerrule,action:"warnerrule"},
-			{id:12,pId:1,name:LanguageModel.getLanaguage().warnerlog,action:"warnerlog"},
-			{id:13,pId:1,name:LanguageModel.getLanaguage().warnerplan,action:"warnerplan"},
-			{id:21,pId:2,name:LanguageModel.getLanaguage().othersetting.basicsetting,action:"basicsetting"},
-			{id:22,pId:2,name:LanguageModel.getLanaguage().othersetting.emailsetting,action:"emailsetting"},
-			{id:23,pId:2,name:LanguageModel.getLanaguage().othersetting.messagesetting,action:"messagesetting"},
-			{id:24,pId:2,name:LanguageModel.getLanaguage().othersetting.usersetting,action:"usersetting"},
+			{id:1,pId:0,name:LanguageModel.getLanaguage().warner,action:"warner",type:"warner"},
+			{id:2,pId:0,name:LanguageModel.getLanaguage().setting,action:"setting",type:"setting"},
+			{id:11,pId:1,name:LanguageModel.getLanaguage().warnerrule,action:"warnerrule",type:"warner"},
+			{id:12,pId:1,name:LanguageModel.getLanaguage().warnerlog,action:"warnerlog",type:"warner"},
+			{id:13,pId:1,name:LanguageModel.getLanaguage().warnerplan,action:"warnerplan",type:"warner"},
+			{id:21,pId:2,name:LanguageModel.getLanaguage().othersetting.basicsetting,action:"basicsetting",type:"setting"},
+			{id:22,pId:2,name:LanguageModel.getLanaguage().othersetting.emailsetting,action:"emailsetting",type:"setting"},
+			{id:23,pId:2,name:LanguageModel.getLanaguage().othersetting.messagesetting,action:"messagesetting",type:"setting"},
+			{id:24,pId:2,name:LanguageModel.getLanaguage().othersetting.usersetting,action:"usersetting",type:"setting"},
 		];
 	},
 	execute:function(action){

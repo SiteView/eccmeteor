@@ -22,7 +22,7 @@ SvseUserDao = {
 			fn(result);
 		});
 	},
-	"setDisplayPromission":function(userid,svseNodes,settingNodes,fn){ //设置节点的可见性
+	"setDisplayPermission":function(userid,svseNodes,settingNodes,fn){ //设置节点的可见性
 		Meteor.call("userDaoAgent","setNodeDisplayPermission",[userid,svseNodes,settingNodes],function(err,result){
 			if(err){
 				SystemLogger(err,-1);
@@ -30,16 +30,36 @@ SvseUserDao = {
 			fn(result);
 		});
 	},
-	'getNodePromissByUserIdAndNodeId':function(userId,nodeId){
+	'getNodePermissionByUserIdAndNodeId':function(userId,nodeId){
 		var user = Meteor.users.findOne(userId);
 		return user.profile.nodeOpratePermission ? user.profile.nodeOpratePermission[nodeId] : undefined;
 	},
-	"getNodeOpratePromissByUserId" : function(userId){
+	"getNodeOpratePermissionByUserId" : function(userId){
 		var user = Meteor.users.findOne(userId);
 		return user.profile.nodeOpratePermission ? ClientUtils.changePointAndLine(user.profile.nodeOpratePermission,-1) : {};
 	},
 	"setNodeOpratePermission":function(userId,nodePermission,fn){
 		Meteor.call("userDaoAgent","setNodeOpratePermission",[userId,nodePermission],function(err,result){
+			if(err){
+				SystemLogger(err,-1);
+			}
+			fn(result);
+		});
+	},
+	'getDisplayNodesByUserId':function(userId){
+		var user = Meteor.users.findOne(userId);
+		return user.profile.nodeDisplayPermission ? user.profile.nodeDisplayPermission : [];
+	},
+	'getDisplaySettingNodesByUserId':function(userId){
+		var user = Meteor.users.findOne(userId);
+		return user.profile.settingNodeDisplayPermission ? user.profile.settingNodeDisplayPermission : [];
+	},
+	'getSettingOperatePermissionByUserId':function(userId){
+		var user = Meteor.users.findOne(userId);
+		return user.profile.settingOperatePermission ? user.profile.settingOperatePermission : {};
+	},
+	"setSettingOperatePermission":function(usrId,nodePermission){
+		Meteor.call("userDaoAgent","setSettingOperatePermission",[userId,nodePermission],function(err,result){
 			if(err){
 				SystemLogger(err,-1);
 			}

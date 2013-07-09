@@ -184,6 +184,17 @@ Template.warnerrulelist.events = {
 			}
 		});
 		$("#emailwarnerdivedit").modal('toggle');
+		
+		var checkednodes = result.AlertTarget.split("\,")
+		//左边树的勾选
+		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_edit");
+		treeObj.checkAllNodes(false);//清空上一个用户状态
+		//节点勾选
+		for(var index  = 0; index < checkednodes.length ; index++){
+			treeObj.checkNode(treeObj.getNodesByFilter(function(node){
+				return  node.id  === checkednodes[index];
+			}, true), true);
+		}
 	}
 
 }
