@@ -1,6 +1,5 @@
 UserDaoAgent = {
 	"agent" : function(fn , args){
-		console.log(fn);
 		var flag = false;
 		switch(fn){
 			case "register": 
@@ -15,6 +14,9 @@ UserDaoAgent = {
 			case "setNodeOpratePermission":
 				flag = Agent.getPermission("settingOperatePermission>usersetting>updatePermission");
 				break;
+			case "setSettingOperatePermission":
+				flag = Agent.getPermission("settingOperatePermission>usersetting>updatePermission");
+				break;
 			case "deleteUser":
 				flag = Agent.getPermission("settingOperatePermission>usersetting>delete");
 				break;
@@ -26,6 +28,11 @@ UserDaoAgent = {
 				break;
 			default : flag = false;
 		}
+		if(!UserDaoOnServer[fn]){
+			console.log(fn);
+			return Agent.getReturn();
+		}
+			
 		return flag ? UserDaoOnServer[fn].apply(undefined,args) : Agent.getReturn();
 	}
 }

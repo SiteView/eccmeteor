@@ -7,6 +7,9 @@ SvseUserDao = {
 	"getUserByUsername":function(username){
 		return Meteor.users.findOne({username:username});
 	},
+	"getUserByUserId" : function(userid){
+		return Meteor.users.findOne(userid);
+	},
 	"setPassword":function(user,fn){
 		Meteor.call("userDaoAgent","resetPassword",[user],function(err,result){
 			fn(result);
@@ -58,7 +61,7 @@ SvseUserDao = {
 		var user = Meteor.users.findOne(userId);
 		return user.profile.settingOperatePermission ? user.profile.settingOperatePermission : {};
 	},
-	"setSettingOperatePermission":function(usrId,nodePermission){
+	"setSettingOperatePermission":function(userId,nodePermission,fn){
 		Meteor.call("userDaoAgent","setSettingOperatePermission",[userId,nodePermission],function(err,result){
 			if(err){
 				SystemLogger(err,-1);

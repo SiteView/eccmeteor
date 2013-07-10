@@ -67,14 +67,14 @@ Template.usersettingListTable.rendered = function(){
 }
 Template.usersettingListTable.events({
 	"click #userSettingList button[name='edit']":function(e){
-		var user = SvseUserDao.getUserByUsername(e.target.id);
+		var user = SvseUserDao.getUserByUserId(e.target.id);
 		$('#usersettingeditdiv :text[name="username"]').val(user.username);
 		$('#usersettingeditdiv :text[name="aliasname"]').val(user.profile.aliasname);
 		$('#usersettingeditdiv').modal('toggle');
 	},
 	"click #userSettingList button[name='promission']":function(e){ //点击授权按钮时 获取临时数据
 		console.log(e.target.id);
-		var user = SvseUserDao.getUserByUsername(e.target.id);
+		var user = SvseUserDao.getUserByUserId(e.target.id);
 		console.log(user);
 		$("#userPromissionSettingDiv #promissionUsername").html(user.username);
 		$("#userPromissionSettingDiv #promissionUserId").val(user._id);
@@ -230,19 +230,6 @@ Template.userPromissionSetting.events({
 			$("#userPromissionSettingDiv").modal('toggle');
 			return;
 		}
-		/*
-		//获取最后一个节点设置数据
-		var currend_id = Session.get("userPromissionSettingGroupControlNodeId");
-		if(currend_id){
-			var operation ={};//定义节点操作权限对象
-			$("#userPromissionSettingGroupControlForm :checkbox").each(function(){ //遍历复选框
-				operation[$(this).attr("name")] = this.checked;
-				this.checked = false;
-			});
-			//节点权限赋值
-			data[currend_id] = operation;
-		}
-		*/
 		console.log("权限是");
 		console.log(data);
 		
@@ -265,13 +252,14 @@ Template.userPromissionSetting.events({
 		SvseUserDao.setDisplayPermission(uid,svsenodes,svseOperateNodes,function(result){
 			console.log(result);
 		});
+		console.log("uid setNodeOpratePermission " +uid);
 		//存储节点操作权限
 		SvseUserDao.setNodeOpratePermission(uid,ClientUtils.changePointAndLine(data),function(result){
 			console.log(result);
 		});
-		
+		console.log("uid setSettingOperatePermission " +uid);
 		//存储设置节点操作权限
-		SvseUserDao.setNodeOpratePermission(uid,operationData,function(result){
+		SvseUserDao.setSettingOperatePermission(uid,operationData,function(result){
 			console.log(result);
 		});
 		
@@ -328,6 +316,9 @@ Template.userPromissionSettingGroupControl.events({
 		console.log("选中节点的name是"+name +"======="+checked);
 		var  data  = Session.get("userPromissionSettingGroupControlData");
 		var currend_id  =  Session.get("userPromissionSettingGroupControlNodeId");
+		if(!data[currend_id]){
+			data[currend_id] = {};
+		}
 		data[currend_id][name] = checked;
 		Session.set("userPromissionSettingGroupControlData",data);
 	}
@@ -414,8 +405,8 @@ Template.userPromissionSettingTree.rendered = function(){
 					//第一步  获取当前操作节点
 					var currend_viewType = treeNode.type;
 					var currend_action = treeNode.action;
-					if(Session.get("userPromissionSettingOperationControlAction") === currend_action)//两次点击同一个按钮时 无动作返回
-						return ;
+				//	if(Session.get("userPromissionSettingOperationControlAction") === currend_action)//两次点击同一个按钮时 无动作返回
+				//		return ;
 					Session.set("userpromissViewType",currend_viewType);
 					Session.set("userPromissionSettingOperationControlAction",currend_action); //改变模板状态					
 				}
@@ -440,17 +431,20 @@ Template.userPromissionSettingSettingControl.rendered = function(){
 	var  data  = Session.get("userPromissionSettingOperationControlData");
 	var currend_action = Session.get("userPromissionSettingOperationControlAction"); //改变模板状态
 	var promissionCheckboxs = data[currend_action];
+	console.log("邮件设置");
+	console.log(promissionCheckboxs);
 	//如果当前节点不存在授权
 	if(!promissionCheckboxs)
 		return;
 	//勾选相应的权限选项
-	for(promission in promissionCheckboxs){
-		if(!$("#userPromissionSettingSettingControlForm :checkbox[name="+promission+"]")[0]){
-			console.log(promission);
+	for(perission in promissionCheckboxs){
+		console.log(perission+":"+ promissionCheckboxs[perission]);
+		if(!$("#userPromissionSettingSettingControlForm :checkbox[name="+perission+"]")[0]){
+			console.log(perission);
 			continue;
 		}
 		try{
-			$("#userPromissionSettingSettingControlForm :checkbox[name="+promission+"]")[0].checked = promissionCheckboxs[promission];
+			$("#userPromissionSettingSettingControlForm :checkbox[name="+perission+"]")[0].checked = promissionCheckboxs[perission];
 		}catch(e){
 			console.log(e);
 		}
