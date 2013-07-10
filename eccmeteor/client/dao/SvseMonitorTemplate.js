@@ -1,5 +1,5 @@
 //监视器模板属性
-var SvseMonitorTemplateDao ={
+SvseMonitorTemplateDao ={
 	getTemplateById:function(id){//根据id获取模板
 		return SvseMonitorTemplate.findOne({"return.id" : id});
 	},

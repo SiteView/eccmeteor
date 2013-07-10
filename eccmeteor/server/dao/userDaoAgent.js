@@ -26,10 +26,10 @@ UserDaoAgent = {
 			case "forbid":
 				flag = Agent.getPermission("settingOperatePermission>usersetting>updateStatus");
 				break;
-			default : flag = false;
+			default : flag = true;
 		}
 		if(!UserDaoOnServer[fn]){
-			console.log(fn);
+			Agent.error("UserDaoOnServer",fn);
 			return Agent.getReturn();
 		}
 			

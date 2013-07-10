@@ -1,5 +1,5 @@
 //初始化设备模板信息
-function initSvseEntityTempletAtStartUp(entityIds){
+initSvseEntityTempletAtStartUp = function (entityIds){
 	for(id in entityIds){
 		var temp = SvseMethodsOnServer.GetEntityTemplet(entityIds[id])
 		if(!temp){
@@ -21,7 +21,7 @@ function initSvseEntityTempletAtStartUp(entityIds){
 }
 
 //初始化设备模板组信息
-function initSvseEntityTempletGroupAtStartUp(debug){
+initSvseEntityTempletGroupAtStartUp = function (debug){
 	SystemLogger("设备模板初始化开始。。。");
 	if(debug === -1)return;
 	if(debug === 0){

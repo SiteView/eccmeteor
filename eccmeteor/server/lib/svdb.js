@@ -1,4 +1,4 @@
-﻿var meteorSvUniv = function(dowhat){
+﻿meteorSvUniv = function(dowhat){
 	var robj = process.sv_univ(dowhat, 0);	
 	if(!robj.isok(0)){
 		throw new Meteor.Error(500,robj.estr(0));
@@ -6,7 +6,7 @@
 	var fmap = robj.fmap(0);
 	return fmap;
 }
-var meteorSvForest = function(dowhat){
+meteorSvForest = function(dowhat){
     var robj = process.sv_forest(dowhat, 0);
 	if(!robj.isok(0)){
 		throw new Meteor.Error(500,robj.estr(0));
@@ -15,7 +15,7 @@ var meteorSvForest = function(dowhat){
 	return fmap;
 }
 
-var svForest = function(dowhat){
+svForest = function(dowhat){
     var robj = process.sv_forest(dowhat, 0);
 	if(!robj.isok(0)){
 		SystemLogger(robj.estr(0),0);
@@ -25,7 +25,59 @@ var svForest = function(dowhat){
 	return fmap;
 }
 
-var svGetDefaultTreeData = function(parentid,onlySon){
+svGetAllMonitorTempletInfo = function(){
+	var dowhat ={'dowhat':'GetAllMonitorTempletInfo'};
+	var robj = process.sv_univ(dowhat, 0);	
+	if(!robj.isok(0)){
+		SystemLogger.log(robj.estr(0),-1);
+		return false;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+}
+
+svGetTreeData = function(parentid){
+	if(typeof parentid === "undefined")
+		parentid = "default";
+	var dowhat = {
+		'dowhat' : 'GetTreeData',
+		'parentid' : parentid,
+		'onlySon':false
+	}
+	var robj = process.sv_forest(dowhat, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+	
+}
+
+svGetTreeDataChildrenNodes = function(id,type){
+	if (type === "group") {
+		what = 'GetGroup';
+	} else if (type == "entity") {
+		what = 'GetEntity';
+	} else if (type == "se") {
+		what = 'GetSVSE';
+	}
+	var dowhat = {
+		'dowhat' : what,
+		'id' : id
+	};
+	var robj = process.sv_univ(dowhat, 0);	
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+}
+//=====================注意！！！！==============//
+//===========以上为0.6.4修改添加方法==============//
+
+svGetDefaultTreeData = function(parentid,onlySon){
 	if(typeof onlySon === "undefined") onlySon = true;
 	var dowhat = {
 		'dowhat' : 'GetTreeData',
@@ -40,7 +92,7 @@ var svGetDefaultTreeData = function(parentid,onlySon){
 	return robj.fmap(0);
 }
 
-var svGetSVSE = function (id){
+svGetSVSE = function (id){
 	var dowhat = {
 		'dowhat' : 'GetSVSE',
 		'id':id
@@ -53,7 +105,7 @@ var svGetSVSE = function (id){
 	return robj.fmap(0);
 }
 
-var svGetGroup = function (id){
+svGetGroup = function (id){
 	var dowhat = {
 		'dowhat' : 'GetGroup',
 		'id':id
@@ -65,7 +117,7 @@ var svGetGroup = function (id){
 	}
 	return robj.fmap(0);
 }
-var svGetEntity = function (id){
+svGetEntity = function (id){
 	var dowhat = {
 		'dowhat' : 'GetEntity',
 		'id':id
@@ -78,7 +130,7 @@ var svGetEntity = function (id){
 	return robj.fmap(0);
 }
 //获取监视器一段时间内的状态记录
-var getQueryRecords = function(id,count){
+getQueryRecords = function(id,count){
 	var dowhat ={'dowhat':'QueryRecordsByCount','id':id,'count':count};
 	var robj = process.sv_forest(dowhat, 0);
 	if(!robj.isok(0)){
@@ -92,18 +144,19 @@ var getQueryRecords = function(id,count){
 	return runtiomeRecords;
 }
 //获取监视器模板
-var GetMonitorTemplet = function(id){
+svGetMonitorTemplet = function(id){
 	var dowhat ={'dowhat':'GetMonitorTemplet',id:id};
 	var robj= process.sv_univ(dowhat, 0);
 	if(!robj.isok(0)){
-		throw new Meteor.Error(500,robj.estr(0));
+		SystemLogger.log(robj.estr(0),-1);
+		return false;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
 }
 
 //添加，修改组
-var svSubmitGroup = function(group,parentid){
+svSubmitGroup = function(group,parentid){
 	if(parentid){
 		var robj= process.sv_submit(group,{'dowhat':'SubmitGroup','parentid':parentid},0); //增加
 	}else{
@@ -118,7 +171,7 @@ var svSubmitGroup = function(group,parentid){
 	return fmap;
 }
 //节点删除
-var svDelChildren = function(id){  //删除该节点以及其子节点
+svDelChildren = function(id){  //删除该节点以及其子节点
 	var robj = process.sv_univ({'dowhat':'DelChildren','parentid':id}, 0);
 	if(!robj.isok(0)){
 		throw new Meteor.Error(500,robj.estr(0));
@@ -128,7 +181,7 @@ var svDelChildren = function(id){  //删除该节点以及其子节点
 }
 
 //获取设备模板集
-var GetAllEntityGroups = function(){
+GetAllEntityGroups = function(){
 	var dowhat ={'dowhat':'GetAllEntityGroups'};
 	var robj= process.sv_univ(dowhat, 0);
 	if(!robj.isok(0)){
@@ -140,7 +193,7 @@ var GetAllEntityGroups = function(){
 	return fmap;
 }
 
-var GetEntityTemplet = function(id){
+GetEntityTemplet = function(id){
 	var dowhat ={'dowhat':'GetEntityTemplet',id:id};
 	var robj= process.sv_univ(dowhat, 0);
 	if(!robj.isok(0)){
@@ -152,7 +205,7 @@ var GetEntityTemplet = function(id){
 	return fmap;
 }
 //添加编辑设备
-var svSubmitEntity = function(entity,parentid){
+svSubmitEntity = function(entity,parentid){
 	if(parentid){
 		var robj= process.sv_submit(entity,{'dowhat':'SubmitEntity','parentid':parentid},0); //增加
 	}else{
@@ -166,7 +219,7 @@ var svSubmitEntity = function(entity,parentid){
 	return fmap;
 }
 //获取设备详细信息
-var svGetEntity =  function(id){
+svGetEntity =  function(id){
 		var dowhat ={'dowhat':'GetEntity','id':id,'sv_depends':true};
 		var robj= process.sv_univ(dowhat, 0);
 		if(!robj.isok(0)){
@@ -178,7 +231,7 @@ var svGetEntity =  function(id){
 }
 
 //获取计划任务
-var svGetAllTask = function(){
+svGetAllTask = function(){
 	var dowhat ={'dowhat':'GetAllTask'};
 	var robj= process.sv_univ(dowhat, 0);
 	//var robj = process.sv_forest(dowhat, 0);
@@ -191,7 +244,7 @@ var svGetAllTask = function(){
 }
 
 //添加编辑监视器
-var svSubmitMonitor = function(monitor,parentid){
+svSubmitMonitor = function(monitor,parentid){
 	if(parentid){
 		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor','parentid':parentid,autoCreateTable:true,del_supplement:false},0); //添加
 	}else{
@@ -206,7 +259,7 @@ var svSubmitMonitor = function(monitor,parentid){
 }
 
 //刷新监视器
-var svRefreshMonitors = function (id,pid,instantReturn){
+svRefreshMonitors = function (id,pid,instantReturn){
 	if(!instantReturn){
 		instantReturn = false;	
 	}
@@ -222,7 +275,7 @@ var svRefreshMonitors = function (id,pid,instantReturn){
 	return fmap;
 }
 //获取刷新监视器结果
-var svGetRefreshed = function (queueName,pid){
+svGetRefreshed = function (queueName,pid){
 	var dowhat ={'dowhat':'GetRefreshed',queueName:queueName,parentid:pid};
 	var robj= process.sv_univ(dowhat, 0);
 	//var robj = process.sv_forest(dowhat, 0);
@@ -233,7 +286,7 @@ var svGetRefreshed = function (queueName,pid){
 }
 
 //获取监视器
-var svGetMonitor = function(id){
+svGetMonitor = function(id){
 	var dowhat ={'dowhat':'GetMonitor','id':id};
 	var robj= process.sv_univ(dowhat, 0);
 	//var robj = process.sv_forest(dowhat, 0);
@@ -245,7 +298,7 @@ var svGetMonitor = function(id){
 	return fmap;
 }
 //删除监视器
-var svDeleteMonitor = function (id){
+svDeleteMonitor = function (id){
 	var robj = process.sv_univ({'dowhat':'DelChildren','parentid':id}, 0);
 	if(!robj.isok(0)){
 		return false;
@@ -256,7 +309,7 @@ var svDeleteMonitor = function (id){
 
 //获取动态数据
 
-var svGetDynamicData = function(entityId,monitorTplId){
+svGetDynamicData = function(entityId,monitorTplId){
 	var robj = process.sv_univ({'dowhat':'GetDynamicData','entityId':entityId,'monitorTplId':monitorTplId}, 0);
 	if(!robj.isok(0)){
 		throw new Meteor.Error(500,robj.estr(0));
@@ -267,7 +320,7 @@ var svGetDynamicData = function(entityId,monitorTplId){
 }
 
 //永久禁用
-var svDisableForever = function (ids){
+svDisableForever = function (ids){
 	console.log("svDisableForever  ids is ");
 	console.log(ids);
 	if(!ids || !ids.length) return true;
@@ -288,7 +341,7 @@ var svDisableForever = function (ids){
 }
 
 //启用
-var svEnable = function (ids) {
+svEnable = function (ids) {
 	console.log("svEnable  ids is ");
 	console.log(ids);
 	if(!ids || !ids.length ) return true;
@@ -308,7 +361,7 @@ var svEnable = function (ids) {
 	return fmap;
 }
 //临时禁用
-var svDisableTemp = function(ids,starttime,endtime){
+svDisableTemp = function(ids,starttime,endtime){
 	if(!ids || !ids.length) return true;
 	var dowhat = {'dowhat':'DisableTemp'};
 	for(index in ids){

@@ -15,7 +15,7 @@
 	thread.start([5]);//开始调用
 	thread.close();//结束调用
 **/
-function UnrealThread(fn,time){
+UnrealThread = function(fn,time){
     var thread = {
         _fn : function(arg){
             fn.apply(undefined,arg)

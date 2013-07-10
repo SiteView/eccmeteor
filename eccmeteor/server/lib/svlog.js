@@ -1,3 +1,4 @@
+/*
 (function svlog_NameSpace() { //简易的名空间机制，避免全局变量污染
 
 //开发阶段的开关，是否启动本程序的  “自动增量导入log到mongodb” 的功能 
@@ -47,6 +48,8 @@ var mon_tpls_id= Array();
  * dateFormat (new Date (), "%Y-%m-%d %H:%M:%S", false);  返回 2012-05-18 05:37:21 <br/>
  * 非法 date 则返回 NaN-aN-aN aN:aN:aN
  */
+ 
+ /*
 function dateFormat(date, fstr, utc) {
 	fstr = arguments[2]?arguments[2]:"%Y-%m-%d %H:%M:%S";
 	utc = arguments[3]?arguments[3]:false;
@@ -82,6 +85,8 @@ function dateFormat(date, fstr, utc) {
  * str1 与 str2 的毫秒差（距1970年的毫秒数），前者更大则结果>0 <br/>
  * 2012-05-18 05:37:21
  */
+ 
+ /*
 function dateDiff(str1, str2) {
 	var d1 = Date.parse(str1); // 非法格式则返回NaN
 	if (d1 === 'NaN')
@@ -125,6 +130,7 @@ var callback = function(error, docs) {
 /**
  * 分解 dstr 成字段
  */
+ /*
 function split_dstr(mon){
 	if(mon===undefined)
 		return mon;
@@ -192,6 +198,7 @@ function split_dstr(mon){
 /**
  * 构造查询参数 dowhat
  */
+ /*
 function buildWhat(id, begin_date, end_date){
 	var what;
 	if(begin_date === undefined){
@@ -237,6 +244,7 @@ function buildWhat(id, begin_date, end_date){
 /**
  * 插入数据到 mongodb
  */
+ /*
 function insertlog(id, robj, collection){
 	if (robj.isok() !== true)
 		return 0;
@@ -272,6 +280,7 @@ function insertlog(id, robj, collection){
 /**
  * 遇到超多log 监测器的特殊处理机制
  */
+ /*
 function queryTooBigLog(id, robj, collection){
 	if(debug>1)
 		console.log('svlog queryTooBigLog: '+ id +' ...');	
@@ -334,6 +343,7 @@ function queryTooBigLog(id, robj, collection){
 /**
  * 取得 ecc 中的log，并插入
  */
+ /*
 function querylog(id, begin_time, collection) {
 	var what;
 	if(begin_time === undefined){
@@ -368,6 +378,7 @@ function querylog(id, begin_time, collection) {
 /**
  * 计算监测器运行周期
  */
+ /*
 function getFreq(str) {
 	var index = str.indexOf("分钟");
 	if (index > 0) {
@@ -386,6 +397,7 @@ function getFreq(str) {
 /**
  * 对比已有数据，检查是否需要更新
  */
+ /*
 function checkUpdate(qtime, qid, collection) {
 	var mon= monitors[qid];
 	if(mon===undefined)
@@ -437,6 +449,7 @@ function checkUpdate(qtime, qid, collection) {
 /**
  * 连接数据库，检查更新
  */
+ /*
 var update = function(error, client) {
 	if (error)
 		throw error;	
@@ -598,6 +611,7 @@ var update = function(error, client) {
 /**
  * 定时重复执行的任务
  */
+ /*
 var repeatJob = function() {
 	if(is_updating || !can_run)
 		return;
@@ -657,6 +671,7 @@ var repeatJob = function() {
 /**
  * 取得监测器模板数据
  */
+ /*
 function setMonTpls(){
 //	mon_tpls_id;
 	var robj;
@@ -713,6 +728,7 @@ function setMonTpls(){
 /**
  * 调试用的方法
  */
+ /*
 function dbReIndex(){
 	db.open(function(error, client) {
 		if (error)
@@ -731,6 +747,7 @@ function dbReIndex(){
 /**
  * 删除log，调试用的方法
  */
+ /*
 function removeLine(){
 	db.open(function(error, client) {
 		if (error)
@@ -769,3 +786,4 @@ repeatJob();
 
 
 }());//end of 名空间
+*/

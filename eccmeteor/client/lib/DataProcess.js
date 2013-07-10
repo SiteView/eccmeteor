@@ -1,4 +1,4 @@
-function DataProcess(data,keys){//数据的初步处理
+DataProcess = function(data,keys){//数据的初步处理
 	this.sortReturnTime = function(array){ //根据时间进行冒泡排序
 		if(!array || array.length == 0) return;
 		var length = array.length;

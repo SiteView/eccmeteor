@@ -2,7 +2,6 @@
   "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
   "meteorSvForest":meteorSvForest,
   "getQueryRecords":getQueryRecords,
-  "GetMonitorTemplet":GetMonitorTemplet,
   "removeNodesById":SvseDaoOnServer.removeNodesById,
   "svSubmitGroup":svSubmitGroup,
   "svDelChildren":svDelChildren,
@@ -34,7 +33,7 @@
 });//给客户端调用的
 
 //给服务端调用的。
-var SvseMethodsOnServer = {
+SvseMethodsOnServer = {
 	"GetAllEntityGroups":GetAllEntityGroups,
 	"GetEntityTemplet":GetEntityTemplet,
 	"meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
@@ -48,10 +47,15 @@ var SvseMethodsOnServer = {
 	"svGetMonitor":svGetMonitor,
 	"svDeleteMonitor" : svDeleteMonitor,
 	"svGetEmailList" : svGetEmailList,
-	"svGetWarnerRule" :svGetWarnerRule
+	"svGetWarnerRule" :svGetWarnerRule,
+	"svGetAllMonitorTempletInfo":svGetAllMonitorTempletInfo,
+	"svGetMonitorTemplet":svGetMonitorTemplet,
+	"svGetTreeData":svGetTreeData,
+	"svGetDefaultTreeData" : svGetDefaultTreeData,
+	"svGetTreeDataChildrenNodes":svGetTreeDataChildrenNodes
 }
 
-var SvseSyncData = {
+SvseSyncData = {
 	"svGetDefaultTreeData" : svGetDefaultTreeData,
 	"svGetSVSE" : svGetSVSE,
 	"svGetGroup" : svGetGroup,

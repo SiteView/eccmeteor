@@ -1,5 +1,5 @@
 //初始化设备详细信息 //需要在SvseTree初始化完成后进行
-function initSvseEntityInfoAtStartUp(debug){
+initSvseEntityInfoAtStartUp = function(debug){
 	SystemLogger("设备详细信息初始化开始...");
 	if(debug == -1)return;
 	if(debug == 0){

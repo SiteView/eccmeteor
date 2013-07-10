@@ -1,4 +1,4 @@
-function DrawLine(data,key,label){
+DrawLine = function(data,key,label){
 	this.svgDomId = "svg#line";
 	this.key = key;
 	this.label = label;

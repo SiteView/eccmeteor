@@ -1,4 +1,4 @@
-function DrawTable(){
+DrawTable = function (){
 	this.drawTable = function(dataset,domId){
 		var trs = d3.select(domId).selectAll("tr").data(dataset);
 		trs.enter().append("tr");//插入tr

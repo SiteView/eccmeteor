@@ -1,4 +1,4 @@
-var SvseTaskDao = {
+SvseTaskDao = {
 	"getAllTaskNames":function(){
 		var tasks = SvseTask.find().fetch();
 		var names = [];

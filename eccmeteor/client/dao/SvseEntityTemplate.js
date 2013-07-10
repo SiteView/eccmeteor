@@ -1,4 +1,4 @@
-var SvseEntityTemplateDao = {
+SvseEntityTemplateDao = {
 	getEntityGroup:function(){//获取设备分组数据
 		return SvseEntityTempletGroup.find({}).fetch();
 	},

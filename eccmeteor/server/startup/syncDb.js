@@ -1,4 +1,4 @@
-var SysncDb =  {
+SysncDb =  {
 	findSubGroupById :　function(id){
 		var subGroup = Svse.findOne({sv_id:id},{fields: {subgroup: true}});
 		if(!subGroup) return false;

@@ -1,4 +1,4 @@
-function initTaskAtStartUp(debug){
+initTaskAtStartUp = function(debug){
 	SystemLogger("初始化计划任务开始...");
 	if(debug === -1)return;
 	if(debug === 0){

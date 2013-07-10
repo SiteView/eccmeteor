@@ -1,25 +1,22 @@
 //插入监视器模板信息
-function initSvseMonitorsTemplateAtStartUp(debug){
+initSvseMonitorsTemplateAtStartUp = function(debug){
 	if(debug === -1)return;
-	var dowhat ={'dowhat':'GetAllMonitorTempletInfo'};
-	Meteor.call("meteorSvUniv", dowhat, function (err, result) {
-		if(err){
-			SystemLogger("initSvseMonitorsTemplateAtStartUp方法错误："+err);
-			return;
+	var result = SvseMethodsOnServer.svGetAllMonitorTempletInfo();
+	if(!result){
+		SystemLogger("initSvseMonitorsTemplateAtStartUp failed,svGetAllMonitorTempletInfo exists errors!!",-1);
+		return;
+	}
+	SvseMonitorTemplate.remove({});
+	SystemLogger("模板正在更新。。。");
+	for(id in result["monitors"]){
+		var monitor = SvseMethodsOnServer.svGetMonitorTemplet(id);
+		if(!monitor){
+			SystemLogger("initSvseMonitorsTemplateAtStartUp  failed,svGetMonitorTemplet " +id+" exists errors!!",-1);
+			continue;
 		}
-		SvseMonitorTemplate.remove({});
-		SystemLogger("模板正在更新。。。");
-		for(id in result["monitors"]){
-			Meteor.call("GetMonitorTemplet",id,function (err, monitor) {
-				if(err){
-					SystemLogger("GetMonitorTemplet错误："+err);
-				}else{
-					SvseMonitorTemplate.insert(monitor,function(err1,r_id){
-						if(err1)SystemLogger(err1);
-					});
-				}
-			});		
-		}
-		SystemLogger("模板更新完成！");
-	})
+		SvseMonitorTemplate.insert(monitor,function(err,r_id){
+			if(err)SystemLogger(err,-1);
+		});
+	}
+	SystemLogger("模板更新完成！");
 }

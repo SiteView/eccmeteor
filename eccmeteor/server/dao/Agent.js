@@ -22,5 +22,8 @@ Agent = {
 			return false;
 		}
 		return permissionflag;
+	},
+	"error":function(cls,fn){
+		SystemLogger(cls +" function "+fn+" isn't exists",-1);
 	}
 }
