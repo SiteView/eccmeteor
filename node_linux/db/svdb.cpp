@@ -25,7 +25,7 @@
 #include "EntityPool.h"
 #include "GroupPool.h"
 #include <util.h>
-#include "ResourcePool.h"
+#include <ResourcePool.h>
 #include "GeneralPool.h"
 #include "EntityTempletPool.h"
 #include "EntityGroupPool.h"

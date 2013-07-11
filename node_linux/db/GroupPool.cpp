@@ -1,4 +1,4 @@
-#include <grouppool.h>
+#include "GroupPool.h"
 #include "somefunc.h"
 
 GroupPool::GroupPool(void)

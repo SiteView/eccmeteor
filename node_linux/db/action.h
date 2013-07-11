@@ -4,8 +4,8 @@
 #define	SITEVIEW_ACTION_H
 
 #include "svbase.h"
-#include "svdbtype.h"
-#include "svdbapi.h"
+#include <svdbtype.h>
+#include <svdbapi.h>
 #include "SvdbMain.h"
 
 //  listrcd.begin()->monitorid ”√”⁄±£¥Ê estr

@@ -1,4 +1,4 @@
-#include <svsepool.h>
+#include "SVSEPool.h"
 #include "somefunc.h"
 
 SVSEPool::SVSEPool(void)
@@ -254,7 +254,7 @@ char* SVSEPool::GetRawData(char *lpbuf,S_UINT bufsize, bool onlyLocked)
 
 	return lpbuf;
 }
-bool SVSEPool::CreateObjectByRawData(const char *lpbuf,S_UINT bufsize)
+BOOL SVSEPool::CreateObjectByRawData(const char *lpbuf,S_UINT bufsize)
 {
 	if(lpbuf==NULL)
 		return false;

@@ -2,9 +2,9 @@
 
 
 #include "action.h"
-#include "svdbapi.h"
-#include "util.h"
-#include "QueryProtocol.h"
+#include <svdbapi.h>
+#include <util.h>
+#include <QueryProtocol.h>
 #include "somefunc.h"
 
 

@@ -1,7 +1,7 @@
 #ifndef SVDB_QUEUE_
 #define SVDB_QUEUE_
 #include "Table.h"
-#include "QueueRecord.h"
+#include <QueueRecord.h>
 
 //struct QueueHead{
 //

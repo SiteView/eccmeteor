@@ -1,7 +1,7 @@
 #ifndef  DRAGONFLOW_BACKUPRECORDDAMON
 #define DRAGONFLOW_BACKUPRECORDDAMON
 
-#include "Threadex.h"
+#include "ThreadEx.h"
 #include "backuprecord.h"
 
 class CBackupRecord;

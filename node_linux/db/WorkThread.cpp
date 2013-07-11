@@ -2,7 +2,7 @@
 #include "DB.h"
 #include <QueueRecord.h>
 #include "ThreadContrl.h"
-#include <action.h>
+#include "action.h"
 
 WorkThread::WorkThread(void)
 {

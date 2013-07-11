@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libutil", "libutil\libutil.vcxproj", "{2CF06299-DBD8-3631-9504-6F4CE75AD39B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "addon", "addon\addon.vcxproj", "{0BEE6507-380C-3859-A691-8CC1CB9BD832}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ccgnu", "ccgnu2\w32\ccgnu.vcxproj", "{2F9D357F-BDD3-4B12-9BF9-F29534E7E427}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testsvapi", "testsvapi\testsvapi.vcxproj", "{A7EC8E2A-DD34-39F6-B9B7-76C84411AFDA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0BEE6507-380C-3859-A691-8CC1CB9BD832} = {0BEE6507-380C-3859-A691-8CC1CB9BD832}
+		{2F9D357F-BDD3-4B12-9BF9-F29534E7E427} = {2F9D357F-BDD3-4B12-9BF9-F29534E7E427}
+		{2CF06299-DBD8-3631-9504-6F4CE75AD39B} = {2CF06299-DBD8-3631-9504-6F4CE75AD39B}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+		Template|Win32 = Template|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CF06299-DBD8-3631-9504-6F4CE75AD39B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2CF06299-DBD8-3631-9504-6F4CE75AD39B}.Debug|Win32.Build.0 = Debug|Win32
+		{2CF06299-DBD8-3631-9504-6F4CE75AD39B}.Release|Win32.ActiveCfg = Release|Win32
+		{2CF06299-DBD8-3631-9504-6F4CE75AD39B}.Release|Win32.Build.0 = Release|Win32
+		{2CF06299-DBD8-3631-9504-6F4CE75AD39B}.Template|Win32.ActiveCfg = Debug|Win32
+		{2CF06299-DBD8-3631-9504-6F4CE75AD39B}.Template|Win32.Build.0 = Debug|Win32
+		{0BEE6507-380C-3859-A691-8CC1CB9BD832}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0BEE6507-380C-3859-A691-8CC1CB9BD832}.Debug|Win32.Build.0 = Debug|Win32
+		{0BEE6507-380C-3859-A691-8CC1CB9BD832}.Release|Win32.ActiveCfg = Release|Win32
+		{0BEE6507-380C-3859-A691-8CC1CB9BD832}.Release|Win32.Build.0 = Release|Win32
+		{0BEE6507-380C-3859-A691-8CC1CB9BD832}.Template|Win32.ActiveCfg = Debug|Win32
+		{0BEE6507-380C-3859-A691-8CC1CB9BD832}.Template|Win32.Build.0 = Debug|Win32
+		{2F9D357F-BDD3-4B12-9BF9-F29534E7E427}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2F9D357F-BDD3-4B12-9BF9-F29534E7E427}.Debug|Win32.Build.0 = Debug|Win32
+		{2F9D357F-BDD3-4B12-9BF9-F29534E7E427}.Release|Win32.ActiveCfg = Release|Win32
+		{2F9D357F-BDD3-4B12-9BF9-F29534E7E427}.Release|Win32.Build.0 = Release|Win32
+		{2F9D357F-BDD3-4B12-9BF9-F29534E7E427}.Template|Win32.ActiveCfg = Release|Win32
+		{2F9D357F-BDD3-4B12-9BF9-F29534E7E427}.Template|Win32.Build.0 = Release|Win32
+		{A7EC8E2A-DD34-39F6-B9B7-76C84411AFDA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A7EC8E2A-DD34-39F6-B9B7-76C84411AFDA}.Debug|Win32.Build.0 = Debug|Win32
+		{A7EC8E2A-DD34-39F6-B9B7-76C84411AFDA}.Release|Win32.ActiveCfg = Release|Win32
+		{A7EC8E2A-DD34-39F6-B9B7-76C84411AFDA}.Release|Win32.Build.0 = Release|Win32
+		{A7EC8E2A-DD34-39F6-B9B7-76C84411AFDA}.Template|Win32.ActiveCfg = Debug|Win32
+		{A7EC8E2A-DD34-39F6-B9B7-76C84411AFDA}.Template|Win32.Build.0 = Debug|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

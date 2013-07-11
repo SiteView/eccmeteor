@@ -3736,6 +3736,223 @@ void TCPSession::initial(void)
 		exit();
 }
 
+SimpleTCPStream::SimpleTCPStream(TCPSocket &server, size_t size) :
+		Socket(accept(server.getSocket(), NULL, NULL))
+{
+	tpport_t port;
+	IPV4Host host = getPeer(&port);
+
+	if (!server.onAccept(host, port))
+	{
+		endSocket();
+		error(errConnectRejected);
+		return;
+	}
+
+	Socket::state = CONNECTED;
+}
+
+SimpleTCPStream::SimpleTCPStream(const IPV4Host &host, tpport_t port,
+		size_t size) :
+		Socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
+{
+	Connect(host, port, size);
+}
+
+SimpleTCPStream::~SimpleTCPStream()
+{
+	endStream();
+}
+
+IPV4Host SimpleTCPStream::getSender(tpport_t *port) const
+{
+	return IPV4Host();
+}
+
+void SimpleTCPStream::Connect(const IPV4Host &host, tpport_t port, size_t size)
+{
+	size_t i;
+
+	for (i = 0; i < host.getAddressCount(); i++)
+	{
+		struct sockaddr_in addr;
+		memset(&addr, 0, sizeof(addr));
+		addr.sin_family = AF_INET;
+		addr.sin_addr = host.getAddress(i);
+		addr.sin_port = htons(port);
+
+		// Win32 will crash if you try to connect to INADDR_ANY.
+		if (INADDR_ANY == addr.sin_addr.s_addr)
+			addr.sin_addr.s_addr = INADDR_LOOPBACK;
+		if (::connect(so, (struct sockaddr *) &addr, (socklen_t) sizeof(addr))
+				== 0)
+			break;
+	}
+
+	if (i == host.getAddressCount())
+	{
+		connectError();
+		endSocket();
+		return;
+	}
+
+	Socket::state = CONNECTED;
+}
+
+SimpleTCPStream::SimpleTCPStream() :
+		Socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)
+{
+	// Do nothing extra.
+}
+
+SimpleTCPStream::SimpleTCPStream(const SimpleTCPStream &source) :
+#ifdef WIN32
+				Socket(source.so)
+#else
+				Socket(dup(source.so))
+#endif
+{
+}
+
+void SimpleTCPStream::endStream(void)
+{
+	endSocket();
+}
+
+ssize_t SimpleTCPStream::read(char *bytes, size_t length, timeout_t timeout)
+{
+	// Declare local variables.
+	ssize_t rlen = 0;
+	size_t totalrecv = 0;
+	char *currentpos = bytes;
+
+	// Check for reasonable requested length.
+	if (length < 1)
+	{
+		return (ssize_t) totalrecv;
+	}
+
+	while (totalrecv < length)
+	{
+		// Check for timeout condition.
+		if (timeout)
+		{
+			if (!isPending(pendingInput, timeout))
+			{
+				error(errTimeout);
+				return -1;
+			}
+		}
+
+		// Attempt to read data.
+		rlen = _IORET64 ::recv(so, (char *) currentpos,
+				_IOLEN64 (length - totalrecv), 0);
+		if (rlen == 0 || rlen == -1)
+		{
+			break;
+		}
+		// cout << "received " << rlen << " bytes, remaining " << length - totalrecv << flush;
+
+		totalrecv += rlen;
+		currentpos += rlen;
+	}
+
+	// Set error condition if necessary.
+	if (rlen == -1)
+	{
+		error(errInput);
+	}
+
+	// Return total number of bytes recieved.
+	return (ssize_t) totalrecv;
+}
+
+ssize_t SimpleTCPStream::write(const char *bytes, size_t length,
+		timeout_t timeout)
+{
+	// Declare local variables.
+	ssize_t rlen = 0;
+
+	// Check for reasonable requested length.
+	if (length < 1)
+	{
+		return rlen;
+	}
+
+	// Check for timeout condition.
+	if (timeout)
+	{
+		if (!isPending(pendingOutput, timeout))
+		{
+			error(errTimeout);
+			return -1;
+		}
+	}
+
+	// Attempt to write data.
+	rlen = _IORET64 ::send(so, (const char *) bytes, _IOLEN64 length,
+			MSG_NOSIGNAL);
+	if (rlen == -1)
+	{
+		error(errOutput);
+	}
+
+	return rlen;
+}
+
+ssize_t SimpleTCPStream::peek(char *bytes, size_t length, timeout_t timeout)
+{
+	// Declare local variables.
+	ssize_t rlen = 0;
+	size_t totalrecv = 0;
+	char *currentpos = bytes;
+
+	// Check for reasonable requested length.
+	if (length < 1)
+	{
+		return (ssize_t) totalrecv;
+	}
+
+	while (totalrecv < length)
+	{
+		// Check for timeout condition.
+		if (timeout)
+		{
+			if (!isPending(pendingInput, timeout))
+			{
+				error(errTimeout);
+				return -1;
+			}
+		}
+
+		// Attempt to read data.
+		rlen = _IORET64 ::recv(so, (char *) currentpos,
+				_IOLEN64 (length - totalrecv), MSG_PEEK);
+		if (rlen == 0 || rlen == -1)
+		{
+			break;
+		}
+		// cout << "received " << rlen << " bytes, remaining " << length - totalrecv << flush;
+
+		totalrecv += rlen;
+		currentpos += rlen;
+	}
+
+	// Set error condition if necessary.
+	if (rlen == -1)
+	{
+		error(errInput);
+	}
+
+	// Return total number of bytes recieved.
+	return (ssize_t) totalrecv;
+}
+
+bool SimpleTCPStream::isPending(Pending pending, timeout_t timeout)
+{
+	return Socket::isPending(pending, timeout);
+}
+
 ostream& operator<<(ostream &os, const IPV4Address &ia)
 {
 	os << inet_ntoa(getaddress(ia));

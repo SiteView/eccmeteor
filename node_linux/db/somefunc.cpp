@@ -71,6 +71,9 @@ StrMap & GetStrMap(MapStrMap & fmap, string section)
 
 bool SVCopyFile(string file1, string file2)
 {
+#ifdef WIN32
+	return CopyFile(file1.c_str(),file2.c_str(),false);
+#else
 	int hd1 = ::open(file1.c_str(), O_RDWR, S_IRUSR | S_IWUSR);
 	if (hd1 < 0)
 	{
@@ -97,6 +100,7 @@ bool SVCopyFile(string file1, string file2)
 	close(hd1);
 	close(hd2);
 	return true;
+#endif
 }
 
 bool CheckFileSize(string fname, int flen)

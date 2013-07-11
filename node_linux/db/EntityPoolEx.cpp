@@ -59,7 +59,7 @@ bool EntityPoolEx::Load(void)
 
 	}catch(...)
 	{
-		puts("Load EntityPool Exception");
+		printf("Load EntityPool Exception,%s, len:%d\n", m_FilePath.getword(),len);
 		return false;
 	}
 

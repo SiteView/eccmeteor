@@ -215,7 +215,7 @@ public:
 	bool	GetBackupData(std::list<SingelRecord> & listrcd);
 	S_UINT	GetRawDataSize(bool onlyLocked= false);
 	char*	GetRawData(char *lpbuf,S_UINT bufsize, bool onlyLocked= false);
-	bool	CreateObjectByRawData(const char *lpbuf,S_UINT bufsize);
+	BOOL	CreateObjectByRawData(const char *lpbuf,S_UINT bufsize);
 	bool	UpdateConfig(const char *data, S_UINT datalen);
 
 

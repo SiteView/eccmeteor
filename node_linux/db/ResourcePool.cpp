@@ -1,4 +1,4 @@
-#include "ResourcePool.h"
+#include <ResourcePool.h>
 #include "somefunc.h"
 
 ResourcePool::ResourcePool(void)

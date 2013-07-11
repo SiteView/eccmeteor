@@ -108,7 +108,7 @@ bool Option::LoadOption()
 	if(!svalue.empty())
 		m_enabledbrecordtrack=(atoi(svalue.c_str())==1);
 
-	printf("EnableTrackDBRecord:%s\n",svalue.c_str());
+	printf("EnableTrackDBRecord:%d\n",m_enabledbrecordtrack);
 
 	svalue=GetIniSetting(inif,"svdb","EnableTrackIniFile","");
 	if(!svalue.empty())
@@ -168,7 +168,7 @@ bool Option::LoadOption()
 		bool m_enable=(atoi(svalue.c_str())!=0);
 		IdcUser::EnableConfigDB = m_enable;
 	}
-	printf("EnableConfigDB:%s\n",svalue.c_str());
+	printf("EnableConfigDB:%d\n",IdcUser::EnableConfigDB);
 
 	svalue=GetIniSetting(inif,"backupCenter","CenterAdress","");
 	if(!svalue.empty())

@@ -6,7 +6,7 @@
 #include "MonitorTempletPool.h"
 #include "MonitorPool.h"
 #include "SVSEPool.h"
-#include "ResourcePool.h"
+#include <ResourcePool.h>
 #include "GroupPool.h"
 #include "EntityPool.h"
 #include "GeneralPool.h"

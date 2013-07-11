@@ -195,7 +195,12 @@ bool Page::swapinex()
 	ost::MutexLock lock(m_ppt->m_IOMutex);
 
 	int tPageSize= m_ppt->GetPagePoolHead().m_PageSize;
-	int tHd= m_ppt->m_fhd[m_mpos.m_fileindex]->m_hd;
+#ifdef WIN32
+		HANDLE tHd;
+#else
+		int tHd;
+#endif
+	tHd= m_ppt->m_fhd[m_mpos.m_fileindex]->m_hd;
 
 	if(m_rawdata==NULL)
 		m_rawdata=new char[tPageSize];

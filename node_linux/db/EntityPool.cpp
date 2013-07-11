@@ -1,4 +1,4 @@
-#include <entitypool.h>
+#include "EntityPool.h"
 #include "somefunc.h"
 #include <Des.h>
 
