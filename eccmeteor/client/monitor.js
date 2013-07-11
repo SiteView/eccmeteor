@@ -318,7 +318,10 @@ Template.operateNode.events ={
 	"click a#removeNodes":function(){ //删除子节点
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode").type === "se") return;
 		var id = Session.get("checkedTreeNode")["id"];
-		SvseDao.removeNodesById(id);
+		SvseDao.removeNodesById(id,function(result){
+			console.log("events click a#removeNodes:");
+			console.log(result);
+		});
 		var fatherId = id.substring(0,id.lastIndexOf("\."));//获取删除节点的父节点Id
 	//	ConstructorNavigateTree.checkedNodeByTreeId(fatherId);//根据id选中节点设置到Session中
 		SwithcView.view(MONITORVIEW.GROUPANDENTITY);//设置视图状态

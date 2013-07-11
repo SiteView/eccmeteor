@@ -15,11 +15,8 @@ SvseDao = {
 		var root = Svse.find({parentid:parentid}).fetch();
 		for(index in root){
 			var node ={}
-			//node["parentid"] = parentid;
 			node["id"] = root[index]["sv_id"];
-		//	node["label"]= SvseTree.findOne({sv_id:root[index]["sv_id"]})["sv_name"];
 			node["name"]= SvseTree.findOne({sv_id:root[index]["sv_id"]})["sv_name"];
-			//node["label"]=  root[index]["sv_id"];
 			node["type"] = root[index]["type"];
 			if(root[index]["type"] !== "entity" && root[index]["has_son"]){
 				node["children"]= this.getTree(node["id"]);
@@ -52,10 +49,8 @@ SvseDao = {
 		return branch;
 	},
 	
-	getDetailTree:function(){ //包含监视器
-		
+	getDetailTree:function(){ //包含监视器	
 		var nodes = Svse.find().fetch();
-		
 		var branch = [];
 		for(index in nodes){
 			var obj = nodes[index];
@@ -83,86 +78,42 @@ SvseDao = {
 		return branch;
 		
 	},	
-	removeNodesById:function(id){  //根据ID删除节点 返回删除的节点数
+	removeNodesById:function(id,fn){  //根据ID删除节点 返回删除的节点数
 		//同时删除SvseTree和Svse中的数据而且删除其子节点。 //先删除服务器中的节点再删本地数据库中的节点
-		Meteor.call("svDelChildren",id,function (err,result){
+		Meteor.call('svseDaoAgent','removeNodesById',[id,true],function(err,result){
 			if(err){
-				SystemLogger(err);
-				return;
-			}
-			Meteor.call("removeNodesById",id,function (err){
-				if(err)return;			
-			});	
-		});	
-	},
-	addNode:function(group,parentid,fn){
-		fn = Utils.checkReCallFunction(fn);
-		//服务器端插入组
-		Meteor.call("svSubmitGroup",group,parentid,function (err,result){
-			if(err){
-				fn(err);//回调函数
-				return;
-			}
-			//客户端数据库插入数据
-			//Svse Collention
-			SystemLogger("sv返回到客户端的result:");
-			SystemLogger(result);
-			var selfId = result["return"]["id"];
-			var selfProperty = result["property"];
-			//1. 插入节点到SvseTree	
-			Meteor.call("getNodeByParentIdAndId",parentid,selfId,function (err,result){
-				if(err){
-					fn(err);//回调函数
-					return;
+				console.log(err);
+				fn({status:false,msg:err})
+			}else{
+				if(result && !reult[status]){ // 无权限
+					console.log(result.msg);
+					fn(result);
+				}else{
+					fn({status:true})
 				}
-				SvseTree.insert(result,function(err,_id){
-					if(err){
-						SystemLogger("插入到SvseTree失败，错误是：");
-						fn(err);//回调函数
-						return;
-					}
-					SystemLogger("插入到SvseTree成功，_id为"+_id);
-					SystemLogger("FindOne结果是：");
-					SystemLogger(SvseTree.findOne(_id));
-					//2插入本身到Svse
-					var node ={
-						"parentid" : parentid,
-						"sv_id" : selfId,
-						"property" : selfProperty,
-						"type" : result.type
-					};
-					Svse.insert(node, function (err1, r_id) {
-						if (err1) {
-							SystemLogger("插入子节点" +selfId + "失败");
-							fn(err1);//回调函数
-							return;
-						}
-						
-						SystemLogger("插入自身到Svse成功，_id为"+r_id);
-						SystemLogger("FindOne结果是：");
-						SystemLogger(Svse.findOne(r_id));
-						//3 插入到父节点（更新父节点）
-						var parentNode = Svse.findOne({sv_id:parentid});
-						SystemLogger("找到的父节点是");
-						SystemLogger(parentNode);
-						Svse.update(parentNode._id,{$set:{has_son:true},$push:{subgroup:selfId}},function(err2){
-							if(err2){
-								SystemLogger("更新父节点失败，错误是：");
-								fn(err2);//回调函数
-								return;
-							}
-							SystemLogger("更新父节点成功，_id为"+parentNode._id);
-							SystemLogger("FindOne结果是：");
-							SystemLogger(Svse.findOne(parentNode._id));
-							fn();
-						});
-					});
-				});
-			});	
-		});	
+			}
+			
+		});
+	},
+	addGroup:function(group,parentid,fn){
+		fn = Utils.checkReCallFunction(fn);
+		Meteor.call('svseDaoAgent','addGroup',[group,parentid],function(err,result){
+			if(err){
+				console.log(err);
+				fn({status:false,msg:err})
+			}else{
+				if(result && !reult[status]){ // 无权限
+					console.log(result.msg);
+					fn(result);
+				}else{
+					fn({status:true})
+				}
+			}
+		})
 	},
 	
-	editNode:function(group){
+	editGroup:function(group,selfId,fn){
+		/*
 		Meteor.call("svSubmitGroup",group,undefined,function (err,result){
 			if(err){
 				SystemLogger(err);
@@ -202,6 +153,20 @@ SvseDao = {
 			})
 			
 		});	
+		*/
+		Meteor.call('svseDaoAgent',"editGroup",[group,selfId],function(err,result){
+			if(err){
+				console.log(err);
+				fn({status:false,msg:err})
+			}else{
+				if(result && !reult[status]){ // 无权限
+					console.log(result.msg);
+					fn(result);
+				}else{
+					fn({status:true})
+				}
+			}
+		});
 	},
 	
 	getGroup:function(id){

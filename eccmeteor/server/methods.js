@@ -2,9 +2,9 @@
   "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
   "meteorSvForest":meteorSvForest,
   "getQueryRecords":getQueryRecords,
-  "removeNodesById":SvseDaoOnServer.removeNodesById,
+//  "removeNodesById":SvseDaoOnServer.removeNodesById,
   "svSubmitGroup":svSubmitGroup,
-  "svDelChildren":svDelChildren,
+//  "svDelChildren":svDelChildren,
   "getNodeByParentIdAndId":SvseTreeDaoOnServer.getNodeByParentIdAndId,
   "svSubmitEntity":svSubmitEntity,
   "entityAddMonitor":SvseMonitorDaoOnServer.addMonitor,
@@ -29,7 +29,8 @@
   "syncTreeData":SyncFunction.sync, //同步数据
   "syncEmailList" : SyncFunction.SyncEmailList,
   "SyncWarnerRules" : SyncFunction.SyncWarnerRules,
-  "userDaoAgent":UserDaoAgent.agent
+  "userDaoAgent":UserDaoAgent.agent,
+  "svseDaoAgent":SvseDaoAgent.agent
 });//给客户端调用的
 
 //给服务端调用的。
@@ -52,7 +53,10 @@ SvseMethodsOnServer = {
 	"svGetMonitorTemplet":svGetMonitorTemplet,
 	"svGetTreeData":svGetTreeData,
 	"svGetDefaultTreeData" : svGetDefaultTreeData,
-	"svGetTreeDataChildrenNodes":svGetTreeDataChildrenNodes
+	"svGetTreeDataChildrenNodes":svGetTreeDataChildrenNodes,
+	"svDelChildren":svDelChildren,
+	"svSubmitGroup":svSubmitGroup,
+	"svGetNodeByParentidAndSelfId":svGetNodeByParentidAndSelfId
 }
 
 SvseSyncData = {
