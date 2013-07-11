@@ -13,6 +13,6 @@
 
 
 * linux 编译
-  1.	推荐 linux 平台为 centos6.2-32bit，需要的编译环境有：Python 2.6 or 2.7，GNU Make 3.81 or newer，CMake, gcc-c++
+  1.	推荐 linux 平台为 centos6.X-32bit，需要的编译环境有：Python 2.6 or 2.7，GNU Make 3.81 or newer，CMake, gcc-c++
   2.	
     
