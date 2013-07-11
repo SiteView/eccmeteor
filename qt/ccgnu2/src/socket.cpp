@@ -815,7 +815,7 @@ bool Socket::isPending(Pending pending, timeout_t timeout)
 		return true;
 	FD_SET(sosave, &grp);
 #ifdef	WIN32
-	Thread::Cancel cancel = Thread::enterCancel();
+//	Thread::Cancel cancel = Thread::enterCancel();
 #endif
 	switch(pending) {
 	case pendingInput:
@@ -829,7 +829,7 @@ bool Socket::isPending(Pending pending, timeout_t timeout)
 		break;
 	}
 #ifdef	WIN32
-	Thread::exitCancel(cancel);
+//	Thread::exitCancel(cancel);
 #endif
 	if(status < 1)
 		return false;
@@ -1935,10 +1935,6 @@ Socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
 	}
 
 	setSegmentSize(mss);
-#ifdef 	WIN32
-	bufferSize(20000);
-#endif
-
 	if(listen(so, backlog)) {
 		endSocket();
 		error(errBindingFailed,(char *)"Could not listen on socket",socket_errno);
@@ -2002,10 +1998,6 @@ Socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
 	}
 
 	setSegmentSize(mss);
-#ifdef 	WIN32
-	bufferSize(20000);
-#endif
-
 	if(listen(so, backlog)) {
 		endSocket();
 		error(errBindingFailed,(char *)"Could not listen on socket",
@@ -2038,9 +2030,6 @@ Socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
 	}
 
 	setSegmentSize(mss);
-#ifdef 	WIN32
-	bufferSize(20000);
-#endif
 
 	if(listen(so, backlog)) {
 		endSocket();
@@ -2127,9 +2116,6 @@ Socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP)
 	}
 
 	setSegmentSize(mss);
-#ifdef 	WIN32
-	bufferSize(20000);
-#endif
 
 	if(listen(so, backlog)) {
 		endSocket();
@@ -2192,9 +2178,6 @@ Socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP)
 	}
 
 	setSegmentSize(mss);
-#ifdef 	WIN32
-	bufferSize(20000);
-#endif
 
 	if(listen(so, backlog)) {
 		endSocket();
@@ -2228,9 +2211,6 @@ Socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP)
 	}
 
 	setSegmentSize(mss);
-#ifdef 	WIN32
-	bufferSize(20000);
-#endif
 
 	if(listen(so, backlog)) {
 		endSocket();
@@ -3358,9 +3338,15 @@ void TCPStream::segmentBuffering(unsigned mss)
 	if(mss < 80)
 		mss = 80;
 
-#ifdef 	WIN32
-	bufferSize(20000);
-#endif
+	if(mss * 7 < 64000)
+		bufferSize(mss * 7);
+	else if(mss * 6 < 64000)
+		bufferSize(mss * 6);
+	else
+		bufferSize(mss * 5);
+
+	if(mss < 512)
+		sendLimit(mss * 4);
 
 	allocate(mss);
 			}

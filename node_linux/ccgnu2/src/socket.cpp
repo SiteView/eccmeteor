@@ -815,7 +815,7 @@ bool Socket::isPending(Pending pending, timeout_t timeout)
 		return true;
 	FD_SET(sosave, &grp);
 #ifdef	WIN32
-	Thread::Cancel cancel = Thread::enterCancel();
+//	Thread::Cancel cancel = Thread::enterCancel();
 #endif
 	switch(pending) {
 	case pendingInput:
@@ -829,7 +829,7 @@ bool Socket::isPending(Pending pending, timeout_t timeout)
 		break;
 	}
 #ifdef	WIN32
-	Thread::exitCancel(cancel);
+//	Thread::exitCancel(cancel);
 #endif
 	if(status < 1)
 		return false;

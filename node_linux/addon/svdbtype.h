@@ -88,6 +88,8 @@ typedef std::list<svutil::word>	WORDLIST;
 #include <map>
 using std::string;
 
+clock_t DisplayDebugTime(string tag= "time", clock_t time1 = clock());
+
 class IdcUser
 {
 public:

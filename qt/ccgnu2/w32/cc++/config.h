@@ -208,15 +208,15 @@ typedef DWORD size_t;
 #define	__EXPORT_TEMPLATE(x)
 #else
 
-#ifndef _MSC_VER
+//#ifndef _MSC_VER
 	#define	__DLLRTL  __declspec(dllexport)
 	#define	__EXPORT  __declspec(dllimport)
 	#define	__EXPORT_TEMPLATE(x)	template class __EXPORT x;
-#else
-	#define	__DLLRTL
-	#define	__EXPORT
-	#define	__EXPORT_TEMPLATE(x)	template class x;
-#endif
+//#else
+//	#define	__DLLRTL
+//	#define	__EXPORT
+//	#define	__EXPORT_TEMPLATE(x)	template class x;
+//#endif
 
 #define	__LOCAL
 #endif

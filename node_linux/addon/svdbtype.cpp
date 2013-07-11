@@ -264,3 +264,10 @@ bool IdcUser::SetTeleBackupId(std::set<std::string> newid)
 	return true;
 }
 
+clock_t DisplayDebugTime(string tag, clock_t time1)
+{
+	clock_t time2 = clock();
+	double needtime1 = (double) (time2 - time1) / CLK_TCK;
+	printf("%s,  %.3f seconds\n\n", tag.c_str(), needtime1);
+	return time2;
+}
