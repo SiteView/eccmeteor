@@ -129,5 +129,21 @@ SvseMonitorDao = {
 		}
 		//如果没有找到画图主键，或者不能画图 ，返回。
 		return monitorForeignKeys.length ? {monitorForeignKeys:monitorForeignKeys,monitorPrimary:monitorPrimary,monitorDescript:monitorDescript}: undefined ;
+	},
+	deleteMonitor : function(monitorid,parentid,fn){
+		fn = Utils.checkReCallFunction(fn);
+		Meteor.call("svseMonitorDaoAgent","deleteMonitor",[monitorid,parentid],function (err,result){
+			if(err){
+				console.log(err);
+				fn({status:false,msg:err})
+			}else{
+				if(result && !reult[status]){ // 无权限
+					console.log(result.msg);
+					fn(result);
+				}else{
+					fn({status:true})
+				}
+			}
+		});
 	}
 }

@@ -3,18 +3,18 @@
   "meteorSvForest":meteorSvForest,
   "getQueryRecords":getQueryRecords,
 //  "removeNodesById":SvseDaoOnServer.removeNodesById,
-  "svSubmitGroup":svSubmitGroup,
+//  "svSubmitGroup":svSubmitGroup,
 //  "svDelChildren":svDelChildren,
   "getNodeByParentIdAndId":SvseTreeDaoOnServer.getNodeByParentIdAndId,
   "svSubmitEntity":svSubmitEntity,
   "entityAddMonitor":SvseMonitorDaoOnServer.addMonitor,
   "getMonitorInfoById" :SvseMonitorDaoOnServer.getMonitorInfoById,
   "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
-  "deleteMonitor":SvseMonitorDaoOnServer.deleteMonitor,
+//  "deleteMonitor":SvseMonitorDaoOnServer.deleteMonitor,
   "svGetDynamicData":svGetDynamicData,
-  "svDisableForever":svDisableForever,
-  "svEnable":svEnable,
-  "svDisableTemp":svDisableTemp,
+//  "svDisableForever":svForbidNodeForever,
+//  "svEnable":svAllowNode,
+//  "svDisableTemporary":svDisableTemporary,
   "svQueryRecordsByTime":svQueryRecordsByTime,
   "svGetSendEmailSetting":svGetSendEmailSetting,
   "svGetEmailTemplates":svGetEmailTemplates,
@@ -30,7 +30,8 @@
   "syncEmailList" : SyncFunction.SyncEmailList,
   "SyncWarnerRules" : SyncFunction.SyncWarnerRules,
   "userDaoAgent":UserDaoAgent.agent,
-  "svseDaoAgent":SvseDaoAgent.agent
+  "svseDaoAgent":SvseDaoAgent.agent,
+  "svseMonitorDaoAgent":SvseMonitorDaoAgent.agent
 });//给客户端调用的
 
 //给服务端调用的。
@@ -56,7 +57,10 @@ SvseMethodsOnServer = {
 	"svGetTreeDataChildrenNodes":svGetTreeDataChildrenNodes,
 	"svDelChildren":svDelChildren,
 	"svSubmitGroup":svSubmitGroup,
-	"svGetNodeByParentidAndSelfId":svGetNodeByParentidAndSelfId
+	"svGetNodeByParentidAndSelfId":svGetNodeByParentidAndSelfId,
+	"svForbidNodeTemporary":svForbidNodeTemporary,
+	"svForbidNodeForever":svForbidNodeForever,
+	"svAllowNode":svAllowNode
 }
 
 SvseSyncData = {

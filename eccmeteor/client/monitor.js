@@ -291,7 +291,7 @@ Template.operateNode.events ={
 			SvseDao.enableNode([id],function(err){});
 			return;
 		}
-		SvseDao.forbidNode([id],function(err){});
+		SvseDao.forbidNodeForever([id],function(result){});
 		//console.log("forbidGroup");
 	},
 	"click .btn#addEntity":function(){
@@ -313,7 +313,7 @@ Template.operateNode.events ={
 			return;
 		}
 		SystemLogger("禁用设备"+id)
-		SvseDao.forbidNode([id],function(err){});
+		SvseDao.forbidNodeForever([id],function(result){});
 	},
 	"click a#removeNodes":function(){ //删除子节点
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode").type === "se") return;
@@ -342,9 +342,10 @@ Template.operateNode.events ={
 		var monitorid = Session.get("checkedMonitorId")["id"];
 		var parentid  = Session.get("checkedTreeNode")["id"];
 		SystemLogger(monitorid+"::"+parentid);
-		SvseDao.removeMonitor(monitorid,parentid,function(err){
-			if(err) SystemLogger(err);
-		})
+		SvseMonitorDao.deleteMonitor(monitorid,parentid,function(result){
+			SystemLogger("a#deleteMonitor");
+			SystemLogger(result);
+		});
 	},
 	"click a#forbidMonitor" : function(e){
 		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;

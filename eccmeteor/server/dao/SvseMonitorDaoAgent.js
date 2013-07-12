@@ -9,7 +9,7 @@ SvseMonitorDaoAgent = {
 				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">addGroup");
 				break;
 			case "deleteMonitor":
-				flag = Agent.getPermission("nodeOpratePermission>usersetting>updatePermission");
+				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">deleteMonitor");
 				break;
 			default : flag = true;
 		}

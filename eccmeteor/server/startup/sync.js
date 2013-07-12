@@ -185,7 +185,7 @@ SyncFunction = {
 		SystemLogger("扫描变动开始。。");
 		SyncFunction.SyncTreeNodeData();
 		SyncFunction.SyncTreeStructure();
-		SyncFunction.SysncEmailList();
+		SyncFunction.SyncEmailList();
 		SyncFunction.SyncWarnerRules();
 		SystemLogger("扫描变动结束。。");
 	}

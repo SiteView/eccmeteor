@@ -272,15 +272,7 @@ svGetMonitor = function(id){
 	var fmap = robj.fmap(0);
 	return fmap;
 }
-//删除监视器
-svDeleteMonitor = function (id){
-	var robj = process.sv_univ({'dowhat':'DelChildren','parentid':id}, 0);
-	if(!robj.isok(0)){
-		return false;
-	}
-	var fmap= robj.fmap(0);
-	return fmap;
-}
+
 
 //获取动态数据
 
@@ -294,66 +286,6 @@ svGetDynamicData = function(entityId,monitorTplId){
 	return fmap;	
 }
 
-//永久禁用
-svDisableForever = function (ids){
-	console.log("svDisableForever  ids is ");
-	console.log(ids);
-	if(!ids || !ids.length) return true;
-	console.log("执行 svDisableForever");
-	var dowhat = {'dowhat':'DisableForever'};
-	for(index in ids){
-		dowhat[ids[index]] = "";
-	}
-	SystemLogger("执行禁止：");
-	SystemLogger(dowhat);
-	var robj = process.sv_univ(dowhat, 0);
-	if(!robj.isok(0)){
-		throw new Meteor.Error(500,robj.estr(0));
-	}
-	var fmap= robj.fmap(0);
-	console.log(fmap);
-	return fmap;	
-}
-
-//启用
-svEnable = function (ids) {
-	console.log("svEnable  ids is ");
-	console.log(ids);
-	if(!ids || !ids.length ) return true;
-	console.log("执行 svEnable");
-	var dowhat = {'dowhat':'Enable'} 
-	for(index in ids){
-		dowhat[ids[index]] = "";
-	}
-	SystemLogger("执行启用：");
-	SystemLogger(dowhat);
-	var robj = process.sv_univ(dowhat, 0);
-	if(!robj.isok(0)){
-		throw new Meteor.Error(500,robj.estr(0));
-	}
-	var fmap= robj.fmap(0);
-	console.log(fmap);
-	return fmap;
-}
-//临时禁用
-svDisableTemp = function(ids,starttime,endtime){
-	if(!ids || !ids.length) return true;
-	var dowhat = {'dowhat':'DisableTemp'};
-	for(index in ids){
-		dowhat[ids[index]] = "";
-	}
-	dowhat['sv_starttime'] = starttime;
-	dowhat['sv_endtime'] = endtime;
-	
-	SystemLogger("执行临时禁止：");
-	SystemLogger(dowhat);
-	var robj = process.sv_univ(dowhat, 0);
-	if(!robj.isok(0)){
-		throw new Meteor.Error(500,robj.estr(0));
-	}
-	var fmap= robj.fmap(0);
-	return fmap;
-}
 //通过时间段获取记录数据
 svQueryRecordsByTime = function(id,beginDate,endDate){
 		var robj = process.sv_forest({
@@ -577,4 +509,80 @@ svGetNodeByParentidAndSelfId = function(parentid,selfId){
 		}	
 	}
 	return node;
+}
+
+//临时禁用
+svForbidNodeTemporary = function(ids,starttime,endtime){
+	if(!ids || !ids.length) return true;
+	var dowhat = {'dowhat':'DisableTemp'};
+	for(index in ids){
+		dowhat[ids[index]] = "";
+	}
+	dowhat['sv_starttime'] = starttime;
+	dowhat['sv_endtime'] = endtime;
+	
+	SystemLogger("执行临时禁止：");
+	SystemLogger(dowhat);
+	var robj = process.sv_univ(dowhat, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	var fmap= robj.fmap(0);
+	return fmap;
+}
+
+//永久禁用
+svForbidNodeForever = function (ids){
+	console.log("svDisableForever  ids is ");
+	console.log(ids);
+	if(!ids || !ids.length) return true;
+	console.log("执行 svDisableForever");
+	var dowhat = {'dowhat':'DisableForever'};
+	for(index in ids){
+		dowhat[ids[index]] = "";
+	}
+	SystemLogger("执行禁止：");
+	SystemLogger(dowhat);
+	var robj = process.sv_univ(dowhat, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	var fmap= robj.fmap(0);
+	return fmap;	
+}
+
+//启用
+svAllowNode = function (ids) {
+	console.log("svEnable  ids is ");
+	console.log(ids);
+	if(!ids || !ids.length ) return true;
+	console.log("执行 svEnable");
+	var dowhat = {'dowhat':'Enable'} 
+	for(index in ids){
+		dowhat[ids[index]] = "";
+	}
+	SystemLogger("执行启用：");
+	SystemLogger(dowhat);
+	var robj = process.sv_univ(dowhat, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	var fmap= robj.fmap(0);
+	console.log(fmap);
+	return fmap;
+}
+/* ==========================SvseMonitor 使用部分 ============================ */
+
+//删除监视器
+svDeleteMonitor = function (id){
+	var robj = process.sv_univ({'dowhat':'DelChildren','parentid':id}, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	var fmap= robj.fmap(0);
+	return fmap;
 }

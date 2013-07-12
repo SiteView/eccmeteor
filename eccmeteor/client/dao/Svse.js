@@ -1,5 +1,6 @@
 //节点关系
 SvseDao = {
+	AGENT:"svseDaoAgent",
 	//根据 节点id和子节点组名 获取该节点的子节点id
 	getChildrenIdsByRootIdAndChildSubType:function(id,subtype){
 		var node = Svse.findOne({sv_id:id});
@@ -80,7 +81,7 @@ SvseDao = {
 	},	
 	removeNodesById:function(id,fn){  //根据ID删除节点 返回删除的节点数
 		//同时删除SvseTree和Svse中的数据而且删除其子节点。 //先删除服务器中的节点再删本地数据库中的节点
-		Meteor.call('svseDaoAgent','removeNodesById',[id,true],function(err,result){
+		Meteor.call(SvseDao.AGENT,'removeNodesById',[id,true],function(err,result){
 			if(err){
 				console.log(err);
 				fn({status:false,msg:err})
@@ -97,7 +98,7 @@ SvseDao = {
 	},
 	addGroup:function(group,parentid,fn){
 		fn = Utils.checkReCallFunction(fn);
-		Meteor.call('svseDaoAgent','addGroup',[group,parentid],function(err,result){
+		Meteor.call(SvseDao.AGENT,'addGroup',[group,parentid],function(err,result){
 			if(err){
 				console.log(err);
 				fn({status:false,msg:err})
@@ -113,48 +114,7 @@ SvseDao = {
 	},
 	
 	editGroup:function(group,selfId,fn){
-		/*
-		Meteor.call("svSubmitGroup",group,undefined,function (err,result){
-			if(err){
-				SystemLogger(err);
-				return;
-			}
-		//	var nodeId = result["return"]["id"];
-			SystemLogger("修改以后");
-			SystemLogger(result);
-			var sv_id = result["return"]["id"];
-			var node = SvseTree.findOne({sv_id:sv_id});
-			if(!node){
-				SystemLogger("SvseTree 找不到"+sv_id);
-				return;
-			}
-			
-			SvseTree.update(
-				node._id,
-				{$set:
-					{
-						sv_name:result.property.sv_name,
-						sv_description:result.property.sv_description
-					}
-				},
-				function(err){
-					if(err){
-						SystemLogger("SvseTree更新错误");
-						SystemLogger(err);
-					}
-				}
-			);
-			
-			Svse.update({sv_id:sv_id},{$set:{property:result.property}},function(err){
-				if(err){
-					SystemLogger("Svse更新错误");
-					SystemLogger(err);
-				}
-			})
-			
-		});	
-		*/
-		Meteor.call('svseDaoAgent',"editGroup",[group,selfId],function(err,result){
+		Meteor.call(SvseDao.AGENT,"editGroup",[group,selfId],function(err,result){
 			if(err){
 				console.log(err);
 				fn({status:false,msg:err})
@@ -176,41 +136,39 @@ SvseDao = {
 		return group["property"];
 	},
 	
-	removeMonitor : function(monitorid,parentid,fn){
-		fn = Utils.checkReCallFunction(fn);
-		Meteor.call("deleteMonitor",monitorid,parentid,function (err,result){
-			err ? fn(err) : fn();
-		});
-	},
-	forbidNode : function(ids,fn){
+	forbidNodeForever : function(ids,fn){
 		console.log("forbiNode ids is ");
 		console.log(ids);
 		fn = Utils.checkReCallFunction(fn);
-		Meteor.call("svDisableForever",ids,function(err,result){
-			err ? fn(err) : fn();
-			console.log(result);
-			Meteor.call("syncTreeData");//数据更新
+		Meteor.call(SvseDao.AGENT,'forbidNodeForever',[ids],function(err,result){
+			if(err){
+				console.log(err);
+				fn({status:false,msg:err})
+			}else{
+				fn({status:true})
+			}
 		});
 	},
 	enableNode : function(ids,fn){
 		fn = Utils.checkReCallFunction(fn);
-		Meteor.call("svEnable",ids,function(err,result){
-			err ? fn(err) : fn();
-			console.log(result);
-			Meteor.call("syncTreeData");//数据更新
+		Meteor.call(SvseDao.AGENT,'allowNode',[ids],function(err,result){
+			if(err){
+				console.log(err);
+				fn({status:false,msg:err})
+			}else{
+				fn({status:true})
+			}
 		});
 	},
 	refreshTreeData : function(){
-		Meteor.call("syncTreeData");//数据更新
+		Meteor.call(SvseDao.AGENT,'syncAll');
 	},
-	forbidTemp : function(ids,starttime,endtime,fn){
+	forbidNodeTemporary : function(ids,starttime,endtime,fn){ //temporary
 		console.log("forbiNode ids is ");
 		console.log(ids);
 		fn = Utils.checkReCallFunction(fn);
-		Meteor.call("svDisableTemp",ids,starttime,endtime,function(err,result){
-			err ? fn(err) : fn();
-			console.log(result);
-			Meteor.call("syncTreeData");//数据更新
+		Meteor.call(SvseDao.AGENT,[ids,starttime,endtime],function(err,result){
+			fn(result)
 		});
 	}
 }

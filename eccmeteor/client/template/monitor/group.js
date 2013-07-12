@@ -27,7 +27,7 @@ Template.showGroupEdit.events({
 		if(!property["sv_dependson"])
 			property["sv_dependson"] = "";
 		var selfId = Session.get("checkedTreeNode")["id"];
-		var group = {'property':property};
+		var group = {'property':property,'return':{'id':selfId}};
 		SvseDao.editGroup(group,selfId,function(result){
 			if(result.status){
 				SystemLogger(result.msg);

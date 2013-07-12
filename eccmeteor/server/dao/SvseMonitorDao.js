@@ -32,16 +32,16 @@ SvseMonitorDaoOnServer = {
 	},
 	deleteMonitor : function (monitorid,parentid) {
 		var fmap = SvseMethodsOnServer.svDeleteMonitor(monitorid);
-		if(!fmap) throw new Meteor.Error(500,"deleteMonitor has error");
+		if(!fmap) throw new Meteor.Error(500,"SvseMonitorDaoOnServer deleteMonitor has error");
 		SvseTree.remove({sv_id:monitorid},function(err){
 			if(err){
 				SystemLogger(err,-1);
-				throw new Meteor.Error(500,"deleteMonitor process SvseTree.remove has error");
+				throw new Meteor.Error(500,"SvseMonitorDaoOnServer deleteMonitor SvseTree.remove has error");
 			} 
 			Svse.update({sv_id:parentid},{$pull:{submonitor:monitorid}},function (err){
 				if(err) {
 					SystemLogger(err,-1);
-					throw new Meteor.Error(500,"deleteMonitor process Svse.update has error");
+					throw new Meteor.Error(500,"SvseMonitorDaoOnServer deleteMonitor Svse.update has error");
 				}
 			});
 		});
