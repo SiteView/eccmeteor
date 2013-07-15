@@ -9,7 +9,9 @@ Template.emailsetting.events  = {
 			ids.push($(checks[i]).attr("id"));
 		}
 		if(ids.length)
-			SvseEmailDao.deleteEmailAddressByIds(ids);
+			SvseEmailDao.deleteEmailAddressByIds(ids,function(result){
+				SystemLogger(result);
+			});
 	},
 	"click #allowemailsetting" : function(){  //启用邮件地址
 		var checks = $("#emailSettingList :checkbox[checked]");
@@ -18,7 +20,9 @@ Template.emailsetting.events  = {
 			ids.push($(checks[i]).attr("id"));
 		}
 		if(ids.length)
-			SvseEmailDao.updateEmailAddressStatus(ids,"0");
+			SvseEmailDao.updateEmailAddressStatus(ids,"0",function(result){
+				SystemLogger(result);
+			});
 	},
 	"click #forbidemailsetting" : function(){ //禁用邮件地址
 		var checks = $("#emailSettingList :checkbox[checked]");
@@ -27,7 +31,9 @@ Template.emailsetting.events  = {
 			ids.push($(checks[i]).attr("id"));
 		}
 		if(ids.length)
-			SvseEmailDao.updateEmailAddressStatus(ids,"1");
+			SvseEmailDao.updateEmailAddressStatus(ids,"1",function(result){
+				SystemLogger(result);
+			});
 	},
 	"click #refreshemailsetting" : function(){
 		//邮件同步
@@ -42,8 +48,9 @@ Template.emailsetting.events  = {
 	"click #emailbasicsettingapplybtn" : function(){
 		var emailbasicsetting = ClientUtils.formArrayToObject($("#emailbasicsetting").serializeArray());
 		console.log(emailbasicsetting);
-		SvseEmailDao.setEmailBasicSetting(emailbasicsetting,function(){
-			console.log("成功！")
+		SvseEmailDao.setEmailBasicSetting(emailbasicsetting,function(result){
+			console.log(result);
+			console.log("成功！");
 		});
 	},
 	"click #emailbasicsettingtestbtn" : function(){
@@ -122,7 +129,8 @@ Template.emailbasicsettingofaddress.events = {
 	//	console.log(emailbasicsettingofaddressbasciinfo);
 		var address = {};
 		address[nIndex] = emailbasicsettingofaddressbasciinfo;
-		SvseEmailDao.addEmailAddress(nIndex,address,function(){
+		SvseEmailDao.addEmailAddress(nIndex,address,function(result){
+			SystemLogger(result);
 			$('#emailaddresssettingdiv').modal('toggle');
 		});
 	}

@@ -19,19 +19,20 @@
   "svGetSendEmailSetting":svGetSendEmailSetting,
   "svGetEmailTemplates":svGetEmailTemplates,
   "svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
-  "svWriteEmailAddressIniFileSectionString":svWriteEmailAddressIniFileSectionString,
-  "svWriteEmailIniFileSectionString":svWriteEmailIniFileSectionString,
-  "svDeleteEmailAddressIniFileSection":svDeleteEmailAddressIniFileSection,
+//  "svWriteEmailAddressIniFileSectionString":svWriteEmailAddressIniFileSectionString,
+//  "svWriteEmailIniFileSectionString":svWriteEmailIniFileSectionString,
+//  "svDeleteEmailAddressIniFileSection":svDeleteEmailAddressIniFileSection,
   "svEmailTest":svEmailTest,
-  "svWriteEmailAddressStatusInitFilesection":svWriteEmailAddressStatusInitFilesection,
+//  "svWriteEmailAddressStatusInitFilesection":svWriteEmailAddressStatusInitFilesection,
   "svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
   "svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
   "syncTreeData":SyncFunction.sync, //同步数据
-  "syncEmailList" : SyncFunction.SyncEmailList,
+//  "syncEmailList" : SyncFunction.SyncEmailList,
   "SyncWarnerRules" : SyncFunction.SyncWarnerRules,
   "userDaoAgent":UserDaoAgent.agent,
   "svseDaoAgent":SvseDaoAgent.agent,
-  "svseMonitorDaoAgent":SvseMonitorDaoAgent.agent
+  "svseMonitorDaoAgent":SvseMonitorDaoAgent.agent,
+  "svseEmailDaoAgent":SvseEmailDaoAgent.agent
 });//给客户端调用的
 
 //给服务端调用的。
@@ -60,7 +61,11 @@ SvseMethodsOnServer = {
 	"svGetNodeByParentidAndSelfId":svGetNodeByParentidAndSelfId,
 	"svForbidNodeTemporary":svForbidNodeTemporary,
 	"svForbidNodeForever":svForbidNodeForever,
-	"svAllowNode":svAllowNode
+	"svAllowNode":svAllowNode,
+	"svWriteEmailAddressIniFileSectionString":svWriteEmailAddressIniFileSectionString,
+	"svWriteEmailIniFileSectionString":svWriteEmailIniFileSectionString,
+	"svDeleteEmailAddressIniFileSection":svDeleteEmailAddressIniFileSection,
+	"svWriteEmailAddressStatusInitFilesection":svWriteEmailAddressStatusInitFilesection,
 }
 
 SvseSyncData = {

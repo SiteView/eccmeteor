@@ -324,15 +324,6 @@ svGetSendEmailSetting = function(){
 		fmap["email_config"]["password"] = svDecryptOne(fmap["email_config"]["password"]);
 		return fmap["email_config"];
 }
-//email.ini写入
-svWriteEmailIniFileSectionString = function(section){
-	console.log(section);
-	section["password"] = svEncryptOne(section["password"]);
-	var ini = {"email_config":section};
-	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"email.ini",'user':"default",'section':"email_config"},0); 
-	console.log(robj.fmap(0));
-	return robj.fmap(0);
-}
 
 
 //解密
@@ -402,38 +393,6 @@ svWriteAlertStatusInitFileSection = function(sectionName,status){
 		'user' : "default",
 		'section' : sectionName,
 		"key" : "AlertState",
-		"value" : status
-	}, 0);
-	return robj.fmap(0);
-}
-
-//emailAdress.ini写入
-svWriteEmailAddressIniFileSectionString = function(addressname,address){
-	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"emailAdress.ini",'user':"default",'section':addressname},0); 
-//	console.log(robj.fmap(0));
-	return robj.fmap(0);
-}
-
-//删除emailAddress.ini的section
-svDeleteEmailAddressIniFileSection = function(ids){
-	var dowhat = {
-		'dowhat' : 'DeleteIniFileSection',
-		'filename' : "emailAdress.ini",
-		'user' : "default",
-		"sections" : ids
-	};
-	var robj = process.sv_univ(dowhat,0);
-	return robj.fmap(0);
-}
-
-//更改邮件状态
-svWriteEmailAddressStatusInitFilesection = function(sectionName,status){
-	var robj = process.sv_univ({
-		'dowhat' : 'WriteIniFileString',
-		'filename' : "emailAdress.ini",
-		'user' : "default",
-		'section' : sectionName,
-		"key" : "bCheck",
 		"value" : status
 	}, 0);
 	return robj.fmap(0);
@@ -585,4 +544,60 @@ svDeleteMonitor = function (id){
 	}
 	var fmap= robj.fmap(0);
 	return fmap;
+}
+
+/* ==========================SvseEmail 使用部分 ============================ */
+
+//emailAdress.ini写入
+svWriteEmailAddressIniFileSectionString = function(addressname,address){
+	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"emailAdress.ini",'user':"default",'section':addressname},0); 
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	return robj.fmap(0);
+}
+
+//email.ini写入
+svWriteEmailIniFileSectionString = function(section){
+	console.log(section);
+	section["password"] = svEncryptOne(section["password"]);
+	var ini = {"email_config":section};
+	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"email.ini",'user':"default",'section':"email_config"},0); 
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	SystemLogger(robj.fmap(0));
+	return robj.fmap(0);
+}
+
+//删除emailAddress.ini的section
+svDeleteEmailAddressIniFileSection = function(ids){
+	var dowhat = {
+		'dowhat' : 'DeleteIniFileSection',
+		'filename' : "emailAdress.ini",
+		'user' : "default",
+		"sections" : ids
+	};
+	var robj = process.sv_univ(dowhat,0);
+	return robj.fmap(0);
+}
+
+
+//更改邮件状态
+svWriteEmailAddressStatusInitFilesection = function(sectionName,status){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "emailAdress.ini",
+		'user' : "default",
+		'section' : sectionName,
+		"key" : "bCheck",
+		"value" : status
+	}, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	return robj.fmap(0);
 }
