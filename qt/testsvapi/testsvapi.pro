@@ -20,12 +20,15 @@ TEMPLATE = app
 
 #源文件编码方式
 CODECFORSRC = GBK
+
+DEFINES += _USE_32BIT_TIME_T
 win32 {
 	DEFINES += WIN32
+	LIBS += -L../bin -llibutil -llibccgnu2 -llibaddon	
 }
-DEFINES += _USE_32BIT_TIME_T
-LIBS += -L../bin -llibutil -llibccgnu2 -llibaddon
-
+unix {
+	LIBS += -L../bin -laddon -lutil -lccgnu2 -lpthread
+}
 
 SOURCES += \
     main.cpp \

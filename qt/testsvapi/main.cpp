@@ -4,44 +4,59 @@
 
 #include <string>
 #include <addon.h>
+#include <svdbapi.h>
+#include <svdbtype.h>
 using namespace std;
 
 void test1(string temp)
 {
-	cout<<"DeleteGroup:"<<DeleteGroup("1.34")<<endl;
+	cout << "DeleteGroup:" << DeleteGroup("1.34") << endl;
 }
 
 void test2(string temp)
 {
-    cout<<"读取svdb中包含的国际化语言有："<<endl;
+	cout << "language in svdb: " << endl;
 	PAIRLIST retlist1;
-	if( !GetAllResourceInfo(retlist1) )
+	if (!GetAllResourceInfo(retlist1))
 	{
-		cout<<"连接 svdb 失败"<<endl;
+		cout << "failed to connect svdb" << endl;
 		return;
 	}
-	for(PAIRLIST::iterator it =retlist1.begin();it!=retlist1.end();it++)
+	for (PAIRLIST::iterator it = retlist1.begin(); it != retlist1.end(); it++)
 	{
-		cout<<it->name<<endl;
+		cout << it->name << endl;
 	}
+}
+
+void test3(string temp)
+{
+	string ret = GetIniFileString("configxml", "value", "", "nnmscanconfig.ini");
+	bool isok = ret!="";
+	cout << "GetIniFileString:" << isok << endl;
 }
 
 int main(int argc, char* argv[])
 {
 	string temp;
 	SetSvdbAddrByFile("svapi.ini");
-	while( temp!="q" )
+	cout<<"!! svdb addr: "<<GetSvdbAddr()<<" !!\n\n"<<endl;
+	while (temp != "q")
 	{
-
-		try{
-			test1(temp);
-		}
-		catch(...)
+		clock_t time1 = clock();
+		try
 		{
-			cout<<"exception"<<endl;
+
+			test2(temp);
+			test3(temp);
+			//	Sleep(5000);
+
+		} catch (...)
+		{
+			cout << "exception" << endl;
 		}
-		cout<<"\n\n\n按下 Enter 键重运行一次，按下 q ＋ Enter 退出"<<endl;
-		getline(cin,temp);
+		DisplayDebugTime("", time1);
+		cout << "\n\n\n press: \"Enter\" to run again, press: \"q + Enter\" to quit" << endl;
+		getline(cin, temp);
 	}
-	return 0;	
+	return 0;
 }

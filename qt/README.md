@@ -13,6 +13,8 @@
 
 
 * linux 编译
-  1.	推荐 linux 平台为 centos6.X-32bit，需要的编译环境有：Python 2.6 or 2.7，GNU Make 3.81 or newer，CMake, gcc-c++
-  2.	
-    
+  1.	推荐 linux 平台为 centos6.X-32bit，需要的编译环境有：GNU Make 3.81 or newer，CMake, gcc-c++
+  2.	http://qt-project.org/downloads ，到该页面下载安装 “Qt 5.1.0 for Android (Linux 32-bit, 463 MB) (Info)”
+  3.	到\testsvapi\目录，执行：qmake -o Makefile testsvapi.pro ，然后执行：make
+  4.	设置 \bin\svapi.ini 中的 svdb 地址，运行 testsvapi，即成功返回 ecc 数据
+  

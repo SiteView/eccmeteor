@@ -66,6 +66,9 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <DisableSpecificWarnings>4100;4018;4096;4996;4101;4503;4189;</DisableSpecificWarnings>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -86,7 +89,7 @@
       <PreprocessorDefinitions>_CONSOLE;UNICODE;WIN32;WIN32;_USE_32BIT_TIME_T;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Lib>
-      <AdditionalDependencies>ws2_32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;Advapi32.lib;</AdditionalDependencies>
       <OutputFile>$(OutDir)libaddon$(TargetExt)</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
