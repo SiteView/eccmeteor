@@ -7,6 +7,8 @@ eccmeteor
   * meteor add bootstrap
   * metoer add d3
   * meteor remove autopublish
+  * meteor add accounts-base
+  * meteor add accounts-password
   * 从网址https://github.com/SiteView/eccmeteor/tree/master/eccmeteor 下载该目录下的所有文件 复制到 eccmeeor目录下
   * meteor (或 meteor run -p 3000)  ##用-p 参数指定访问端口 默认为3000
 * 注意：
