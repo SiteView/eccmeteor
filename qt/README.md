@@ -1,4 +1,9 @@
-﻿  
+﻿
+* svdb_linux 使用说明
+  1.  下载 \bin\svdb 到linux（centos）中，设置其权限，执行：svdb 即可启动，Ctrl+c 停止；
+  2.  启动为linux服务：启动命令：svdb -service ，停止命令：svdb -stop ，如需开机启动则将这两条命令添加到 linux 启动脚本中。
+
+  
 * svapi library for qt 说明
   1.  本目录中的所有工程，为了避免与原有程序新旧共存时互相冲突，全部采用静态链接，例如：windows下仅依赖 msvcp100.dll 和 msvcr100.dll 。
   2.  \bin 目录下包括了所有需要依赖的库，包括了 linux 的.a ，windows 的.lib
