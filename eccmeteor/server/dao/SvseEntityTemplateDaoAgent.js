@@ -2,9 +2,11 @@ SvseEntityTemplateDaoAgent = {
 	"agent" : function(fn , args){
 		var flag = false;
 		switch(fn){
-			case "addEmailAddress": 
-				flag = Agent.getPermission("settingOperatePermission>emailsetting>add");
+			case "addEntity": 
+				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">add");
 				break;
+			case "updateEntity":
+				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">edit");
 			default : flag = true;
 		}
 		if(!SvseEntityTemplateDao[fn]){

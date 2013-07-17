@@ -1,5 +1,7 @@
 SvseMonitorDao = {
+	AGENT:"svseMonitorDaoAgent",
 	addMonitor:function(monitor,parentid,fn){ //添加监视器
+		/*
 		fn = Utils.checkReCallFunction(fn);
 		Meteor.call("entityAddMonitor",monitor,parentid,function(err,r_monitor){
 			if(err){
@@ -32,43 +34,51 @@ SvseMonitorDao = {
 					});
 			});
 		});
+		*/
+		Meteor.call(SvseMonitorDao.AGENT,"addMonitor",[monitor,parentid],function(err,result){
+			if(err){
+				SystemLogger(err);
+				fn({status:false,msg:err})
+			}else{
+				if(result && !reult[status]){ // 无权限
+					SystemLogger(err);
+					fn(result);
+				}else{
+					fn({status:true})
+				}
+			}
+		});
 	},
 	getMonitor : function(id,fn){
 		Utils.checkReCallFunction(fn);
-		Meteor.call("getMonitorInfoById",id,function(err,r_monitor){
+		Meteor.call(SvseMonitorDao.AGENT,"getMonitorInfoById",[id],function(err,result){
 			if(err){
 				fn(err)
 				return;
 			}
-			fn(undefined,r_monitor);
+			fn(undefined,result);
 		});
-	
 	},
 	editMonitor : function(monitor,parentid,fn){
 		Utils.checkReCallFunction(fn);
-		Meteor.call("entityEditMonitor",monitor,parentid,function(err,r_monitor){
+		Meteor.call(SvseMonitorDao.AGENT,'editMonitor',[monitor,parentid],function(err,result){
 			if(err){
-				fn(err)
-				return;
-			}
-			var selfId =  r_monitor.sv_id;
-			oldNode = SvseTree.findOne({sv_id:selfId});
-			console.log("原来的SvseTree节点是");
-			console.log(oldNode);
-			SvseTree.update(oldNode._id,{$set:{status:oldNode.status}},function(err){
-				if(err){
-					SystemLogger("更新SvseTree错误是：");
-					fn(err);
+				SystemLogger(err);
+				fn({status:false,msg:err})
+			}else{
+				if(result && !reult[status]){ // 无权限
+					SystemLogger(err);
+					fn(result);
 				}else{
-					SystemLogger("更新SvseTree节点成功");
-					fn();
+					fn({status:true})
 				}
-			});
-			
+			}
+		
 		});
 	},
 	addMultiMonitor : function(monitors,parentid,fn){
 		for(index in monitors){
+			/*
 			//SvseMonitorDao.addMonitor(monitors[index],parentid)
 			Meteor.call("entityAddMonitor",monitors[index],parentid,function(err,r_monitor){
 				if(err){
@@ -102,6 +112,20 @@ SvseMonitorDao = {
 					});
 				});
 			});
+			*/
+			Meteor.call(SvseMonitorDao.AGENT,"addMultiMonitor",[monitors,parentid],function(err,result){
+				if(err){
+				SystemLogger(err);
+				fn({status:false,msg:err})
+				}else{
+					if(result && !reult[status]){ // 无权限
+						SystemLogger(err);
+						fn(result);
+					}else{
+						fn({status:true})
+					}
+				}
+			});
 		}
 	},
 	getMonitorForeignKeys: function(tree_id){
@@ -132,7 +156,7 @@ SvseMonitorDao = {
 	},
 	deleteMonitor : function(monitorid,parentid,fn){
 		fn = Utils.checkReCallFunction(fn);
-		Meteor.call("svseMonitorDaoAgent","deleteMonitor",[monitorid,parentid],function (err,result){
+		Meteor.call(SvseMonitorDao.AGENT,"deleteMonitor",[monitorid,parentid],function (err,result){
 			if(err){
 				console.log(err);
 				fn({status:false,msg:err})

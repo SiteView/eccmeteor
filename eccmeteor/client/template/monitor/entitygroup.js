@@ -38,12 +38,13 @@ Template.showEntity.events = {
 		var parentid =checkedTreeNode.id;
 		var entity ={"property":property};
 		SystemLogger(entity);
-		SvseEntityTemplateDao.addEntity(entity,parentid,function(err,entityid){
-			if(err){
+		SvseEntityTemplateDao.addEntity(entity,parentid,function(result){
+			if(!result.status){
 				SystemLogger("SvseEntityTemplateDao.addEntity 捕捉到错误");
-				SystemLogger(err);
+				SystemLogger(result);
 				return;
 			}
+			var entityid = result.option['id'];
 			console.log("添加的设备ID是 "+entityid);
 			SessionManage.setAddedEntityId(entityid);//临时数据管理
 			Session.set("viewstatus",MONITORVIEW.QUICKLYADDMONITY);	//跳到快速添加页面		
@@ -80,8 +81,8 @@ Template.showEditEntity.events = {
 		var entityid =checkedTreeNode.id;
 		var entity ={"property":property,"return":{id:entityid}};
 		SystemLogger(entity);
-		SvseEntityTemplateDao.editEntity(entity,function(err){
-			if(err){
+		SvseEntityTemplateDao.editEntity(entity,entityid,function(result){
+			if(!result.status){
 				SystemLogger(err);
 				SystemLogger("editEntity 捕捉到错误");
 				return;

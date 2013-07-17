@@ -14,14 +14,27 @@ Template.warnerrule.events = {
 		SvseWarnerRuleDao.deleteWarnerRules(getWarnerRuleListSelectAll());
 	},
 	"click #allowewarnerrule":function(){
-		SvseWarnerRuleDao.updateWarnerRulesStatus(getWarnerRuleListSelectAll(),"Enable");
+		SvseWarnerRuleDao.updateWarnerRulesStatus(getWarnerRuleListSelectAll(),"Enable",function(result){
+			if(result.status){
+				SystemLogger("改变状态"+result.option.count+"条");
+			}
+		});
 	},
 	"click #forbidwarnerrule":function(){
-		SvseWarnerRuleDao.updateWarnerRulesStatus(getWarnerRuleListSelectAll(),"Disable");
+		SvseWarnerRuleDao.updateWarnerRulesStatus(getWarnerRuleListSelectAll(),"Disable",function(result){
+			if(result.status){
+				SystemLogger("改变状态"+result.option.count+"条");
+			}
+		});
 	},
 	"click #refreshwarnerrule":function(){
-		SvseWarnerRuleDao.sync(function(){
-			console.log("刷新完成");
+		SvseWarnerRuleDao.sync(function(result){
+			if(result.status){
+				console.log("刷新完成");
+			}else{
+				SystemLogger(result);
+			}
+			
 		});
 	},
 	"click #warnerrulehelpmessage":function(){
@@ -61,8 +74,13 @@ Template.warnerruleofemail.events = {
 		var section = {};
 		section[nIndex] = warnerruleofemailform;
 		console.log(section);
-		SvseWarnerRuleDao.setWarnerRuleOfEmail(nIndex,section,function(){
-			$('#emailwarnerdiv').modal('toggle');
+		SvseWarnerRuleDao.setWarnerRuleOfEmail(nIndex,section,function(result){
+			if(result.status){
+				$('#emailwarnerdiv').modal('toggle');
+			}else{
+				SystemLogger(result.msg);
+			}
+			
 		});
 	}
 }
@@ -306,7 +324,7 @@ Template.warnerruleofemailedit.events = {
 		var section = {};
 		section[warnerruleofemailformedit["nIndex"]] = warnerruleofemailformedit;
 		console.log(section);
-		SvseWarnerRuleDao.updateWarnerRule(warnerruleofemailformedit["nIndex"],section,function(){
+		SvseWarnerRuleDao.updateWarnerRule(warnerruleofemailformedit["nIndex"],section,function(result){
 			$('#emailwarnerdivedit').modal('toggle');
 		});
 	}

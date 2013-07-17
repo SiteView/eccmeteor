@@ -83,10 +83,11 @@ Template.showMonitorInfo.events = {
 		console.log(monitor);
 		SystemLogger("正在刷新监视器....");
 		if(!monitorstatus){ //如果是添加监视器
-			SvseMonitorDao.addMonitor(monitor,parentid,function(err){
-				if(err){
-					SystemLogger(err,-1);
-				}else{
+			SvseMonitorDao.addMonitor(monitor,parentid,function(result){
+				if(result && !result.status){
+					SystemLogger(result.msg,-1);
+				}
+				else{
 					SystemLogger("刷新监视器完成....");
 				}
 				Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
@@ -94,9 +95,9 @@ Template.showMonitorInfo.events = {
 		}else{//如果编辑监视器
 			monitor["return"] = {id : Session.get("checkedMonitorId").id,return : true};
 			console.log(monitor);
-			SvseMonitorDao.editMonitor(monitor,parentid,function(err){
-				if(err){
-					SystemLogger(err,-1);
+			SvseMonitorDao.editMonitor(monitor,parentid,function(result){
+				if(!result.status){
+					SystemLogger(result.msg,-1);
 				}else{
 					SystemLogger("刷新监视器完成....");
 				}

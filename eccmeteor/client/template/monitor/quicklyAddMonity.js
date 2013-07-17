@@ -78,12 +78,11 @@ Template.showQuickMonityTemplate.events = {
 		console.log("father id is "+SessionManage.getAddedEntityId());
 		console.log(templates);
 		SystemLogger("正在刷新多个监视器...");
-		SvseMonitorDao.addMultiMonitor(templates,SessionManage.getAddedEntityId(),function(err,nid){
-			if(err){
-				SystemLogger(err,-1);
-				SystemLogger("添加监视器" + nid+"失败");
+		SvseMonitorDao.addMultiMonitor(templates,SessionManage.getAddedEntityId(),function(result){
+			if(!result.status){
+				SystemLogger(result.msg,-1);
 			}else{
-				SystemLogger("添加监视器" + nid+"成功");
+				SystemLogger("刷新完成...");
 			}
 		});
 	},

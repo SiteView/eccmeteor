@@ -5,10 +5,10 @@
 //  "removeNodesById":SvseDaoOnServer.removeNodesById,
 //  "svSubmitGroup":svSubmitGroup,
 //  "svDelChildren":svDelChildren,
-  "getNodeByParentIdAndId":SvseTreeDaoOnServer.getNodeByParentIdAndId,
-  "svSubmitEntity":svSubmitEntity,
-  "entityAddMonitor":SvseMonitorDaoOnServer.addMonitor,
-  "getMonitorInfoById" :SvseMonitorDaoOnServer.getMonitorInfoById,
+//  "getNodeByParentIdAndId":SvseTreeDaoOnServer.getNodeByParentIdAndId,
+//  "svSubmitEntity":svSubmitEntity,
+//  "entityAddMonitor":SvseMonitorDaoOnServer.addMonitor,
+//  "getMonitorInfoById" :SvseMonitorDaoOnServer.getMonitorInfoById,
   "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
 //  "deleteMonitor":SvseMonitorDaoOnServer.deleteMonitor,
   "svGetDynamicData":svGetDynamicData,
@@ -18,29 +18,31 @@
   "svQueryRecordsByTime":svQueryRecordsByTime,
   "svGetSendEmailSetting":svGetSendEmailSetting,
   "svGetEmailTemplates":svGetEmailTemplates,
-  "svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
+//  "svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
 //  "svWriteEmailAddressIniFileSectionString":svWriteEmailAddressIniFileSectionString,
 //  "svWriteEmailIniFileSectionString":svWriteEmailIniFileSectionString,
 //  "svDeleteEmailAddressIniFileSection":svDeleteEmailAddressIniFileSection,
   "svEmailTest":svEmailTest,
 //  "svWriteEmailAddressStatusInitFilesection":svWriteEmailAddressStatusInitFilesection,
-  "svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
-  "svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
+//  "svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
+// "svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
   "syncTreeData":SyncFunction.sync, //同步数据
 //  "syncEmailList" : SyncFunction.SyncEmailList,
-  "SyncWarnerRules" : SyncFunction.SyncWarnerRules,
+ // "SyncWarnerRules" : SyncFunction.SyncWarnerRules,
   "userDaoAgent":UserDaoAgent.agent,
   "svseDaoAgent":SvseDaoAgent.agent,
   "svseMonitorDaoAgent":SvseMonitorDaoAgent.agent,
-  "svseEmailDaoAgent":SvseEmailDaoAgent.agent
+  "svseEmailDaoAgent":SvseEmailDaoAgent.agent,
+  "svseEntityTemplateDaoAgent":SvseEntityTemplateDaoAgent.agent,
+  "svseWarnerRuleDaoAgent":SvseWarnerRuleDaoAgent.agent
 });//给客户端调用的
 
-//给服务端调用的。
+//给服务端调用的。//调用 /lib/svdb.js中定义的方法
 SvseMethodsOnServer = {
 	"GetAllEntityGroups":GetAllEntityGroups,
 	"GetEntityTemplet":GetEntityTemplet,
-	"meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
-	"meteorSvForest":meteorSvForest,//调用 /lib/svdb.js中定义的方法
+	"meteorSvUniv":meteorSvUniv,
+	"meteorSvForest":meteorSvForest,
 	"svForest":svForest,
 	"svGetEntity":svGetEntity,
 	"svGetAllTask":svGetAllTask,
@@ -66,6 +68,10 @@ SvseMethodsOnServer = {
 	"svWriteEmailIniFileSectionString":svWriteEmailIniFileSectionString,
 	"svDeleteEmailAddressIniFileSection":svDeleteEmailAddressIniFileSection,
 	"svWriteEmailAddressStatusInitFilesection":svWriteEmailAddressStatusInitFilesection,
+	"svSubmitEntity":svSubmitEntity,
+	"svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
+	"svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
+	"svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
 }
 
 SvseSyncData = {

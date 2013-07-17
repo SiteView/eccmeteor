@@ -1,4 +1,5 @@
 SvseEntityTemplateDao = {
+	AGENT:"svseEntityTemplateDaoAgent",
 	getEntityGroup:function(){//获取设备分组数据
 		return SvseEntityTempletGroup.find({}).fetch();
 	},
@@ -36,65 +37,14 @@ SvseEntityTemplateDao = {
 	},
 	addEntity:function(entity,parentid,fn){//根据提交的信息和父节点添加设备
 		fn = Utils.checkReCallFunction(fn);
-		Meteor.call("svSubmitEntity",entity,parentid,function(err,r_entity){
+
+		Meteor.call(SvseEntityTemplateDao.AGENT,"addEntity",[entity,parentid],function(err,result){
 			if(err){
-				fn(err);
-				return;
+				SystemLogger(err);
+				fn({status:false,msg:err})
+			}else{
+				fn(result);
 			}
-			SystemLogger("后台添加成功,返回值是：");
-			SystemLogger(r_entity);
-			SvseEntityInfo.insert(r_entity,function(err,e_id){
-				if(!err){
-					SystemLogger("添加设备到Info"+e_id);
-				}
-			});
-			var selfId = r_entity["return"]["id"];
-			//1. 插入节点到SvseTree	
-			Meteor.call("getNodeByParentIdAndId",parentid,selfId,function (err,result){
-				if(err){
-					SystemLogger(err);
-					return;
-				}
-				SvseTree.insert(result,function(err,_id){
-					if(err){
-						SystemLogger("插入到SvseTree失败，错误是：");
-						SystemLogger(err);
-						return;
-					}
-					SystemLogger("插入到SvseTree成功，_id为"+_id);
-					SystemLogger("FindOne结果是：");
-					SystemLogger(SvseTree.findOne(_id));
-					//2插入本身到Svse
-					var node ={
-						"parentid" : parentid,
-						"sv_id" : selfId,
-						"type" : result.type
-					};
-					Svse.insert(node, function (err1, r_id) {
-						if (err1) {
-							SystemLogger("插入子节点" +selfId + "失败");
-						}else{
-							SystemLogger("插入自身到Svse成功，_id为"+r_id);
-							SystemLogger("FindOne结果是：");
-							SystemLogger(Svse.findOne(r_id));
-							
-							//3 插入到父节点（更新父节点）
-							var parentNode = Svse.findOne({sv_id:parentid});
-							SystemLogger("找到的父节点是");
-							SystemLogger(parentNode);
-							
-							Svse.update(parentNode._id,{$set:{has_son:true},$push:{subentity:selfId}},function(err2){
-								if(err2){
-									SystemLogger("更新父节点失败，错误是：");
-									SystemLogger(err2);
-									return;
-								}
-								fn(undefined,selfId);//执行回调函数
-							});
-						}
-					});
-				});
-			});	
 		});
 	},
 	getSvseEntityDevicetypeBySvseTreeId:function(id){//根据设备在SvseTree的id获取该设备的类型
@@ -143,41 +93,20 @@ SvseEntityTemplateDao = {
 	getItemsAndDefaultValueBySvId:function(id){//获取一般属性
 		return SvseEntityInfo.findOne({"return.id":id})["property"];
 	},
-	editEntity:function(entity,fn){
-		fn = Utils.checkReCallFunction(fn);
-		Meteor.call("svSubmitEntity",entity,false,function(err,r_entity){
+	editEntity:function(entity,entityId,fn){
+		Meteor.call(SvseEntityTemplateDao.AGENT,"updateEntity",[entity,entityId],function(err,result){
 			if(err){
-				fn(err);
-				return;
-			}
-			//需要更新的地方
-			//1.SvseTree 节点的sv_name
-			//2.SvseEntityInfo
-			SystemLogger("后台修改后的Node为");
-			SystemLogger(r_entity);
-			var r_id = r_entity["return"]["id"]
-			var oriNode = SvseTree.findOne({sv_id:r_id});
-			SystemLogger("SvseTree.findOne找到的是：");
-			SystemLogger(oriNode);
-			SvseTree.update(oriNode._id,{ $set: { sv_name: r_entity["property"]["sv_name"] } },function(err){ //更新SvseTree
-				if(err){
-					SystemLogger("editEntity 时SvseTree.update出现错误");
+				SystemLogger(err);
+				fn({status:false,msg:err})
+			}else{
+				if(result && !reult[status]){ // 无权限
 					SystemLogger(err);
-					return;
+					fn(result);
+				}else{
+					fn({status:true})
 				}
-				var r_info = SvseEntityInfo.findOne({"return.id":r_id}); //获取SvseEntityInfo原来节点数据
-				SystemLogger("SvseEntityInfo.findOne找到的是：");
-				SystemLogger(r_info);
-				SvseEntityInfo.update(r_info._id,{$set:{property:entity["property"],return:entity["return"]}},function(err){ //更新SvseEntityInfo
-					if(err){
-						SystemLogger("editEntity 时SvseEntityInfo.update出现错误");
-						SystemLogger(err);
-						return;
-					}
-					fn();//执行回调函数
-				});
-			})
-		})
+			}
+		});
 	},
 	getEntityMontityByDevicetype:function(type,status){ //获取设备的可以添加监视器 status控制是否为快速添加的监视器 true 快速添加，false为选择添加，默认为选择添加
 		SystemLogger("SvseEntityTemplate.js 的getQuickAddMontityByDevicetype打印：");

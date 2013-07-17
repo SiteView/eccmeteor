@@ -179,20 +179,7 @@ GetEntityTemplet = function(id){
 	var fmap = robj.fmap(0);
 	return fmap;
 }
-//添加编辑设备
-svSubmitEntity = function(entity,parentid){
-	if(parentid){
-		var robj= process.sv_submit(entity,{'dowhat':'SubmitEntity','parentid':parentid},0); //增加
-	}else{
-		var robj= process.sv_submit(entity,{'dowhat':'SubmitEntity'},0); //修改
-	}	
-	if(!robj.isok(0)){
-		SystemLogger(robj.estr(0),0);
-		throw new Meteor.Error(500,robj);
-	}
-	var fmap= robj.fmap(0);
-	return fmap;
-}
+
 //获取设备详细信息
 svGetEntity =  function(id){
 		var dowhat ={'dowhat':'GetEntity','id':id,'sv_depends':true};
@@ -218,20 +205,7 @@ svGetAllTask = function(){
 	return fmap;
 }
 
-//添加编辑监视器
-svSubmitMonitor = function(monitor,parentid){
-	if(parentid){
-		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor','parentid':parentid,autoCreateTable:true,del_supplement:false},0); //添加
-	}else{
-		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor',del_supplement:false},0); //修改
-	}
-	if(!robj.isok(0)){
-		SystemLogger(robj.estr(0),-1);
-		return false;
-	}
-	var fmap= robj.fmap(0);
-	return fmap;
-}
+
 
 //刷新监视器
 svRefreshMonitors = function (id,pid,instantReturn){
@@ -260,18 +234,7 @@ svGetRefreshed = function (queueName,pid){
 	return fmap;
 }
 
-//获取监视器
-svGetMonitor = function(id){
-	var dowhat ={'dowhat':'GetMonitor','id':id};
-	var robj= process.sv_univ(dowhat, 0);
-	//var robj = process.sv_forest(dowhat, 0);
-	if(!robj.isok(0)){
-		SystemLogger(robj.estr(0),-1);
-		return false;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
-}
+
 
 
 //获取动态数据
@@ -365,38 +328,6 @@ svGetWarnerRule = function(){
 	return robj.fmap(0);;
 }
 
-//Alert.ini文件写入
-svWriteAlertIniFileSectionString = function(sectionname,section){
-	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"alert.ini",'user':"default",'section':sectionname},0); 
-//	console.log(robj.fmap(0));
-	return robj.fmap(0);
-}
-
-//Alert.ini 删除
-svDeleteAlertInitFileSection = function(ids){
-	var dowhat = {
-		'dowhat' : 'DeleteIniFileSection',
-		'filename' : "alert.ini",
-		'user' : "default",
-		"sections" : ids
-	};
-	var robj = process.sv_univ(dowhat,0);
-	return robj.fmap(0);
-	
-}
-
-//改变报警规则状态
-svWriteAlertStatusInitFileSection = function(sectionName,status){
-	var robj = process.sv_univ({
-		'dowhat' : 'WriteIniFileString',
-		'filename' : "alert.ini",
-		'user' : "default",
-		'section' : sectionName,
-		"key" : "AlertState",
-		"value" : status
-	}, 0);
-	return robj.fmap(0);
-}
 
 //邮件测试
 svEmailTest = function(emailSetting){
@@ -599,5 +530,87 @@ svWriteEmailAddressStatusInitFilesection = function(sectionName,status){
 		SystemLogger(robj.estr(0),-1);
 		return false;
 	}
+	return robj.fmap(0);
+}
+
+
+/* ==========================SvseEntityTemplate 使用部分 ============================ */
+
+//添加编辑设备
+svSubmitEntity = function(entity,parentid){
+	if(parentid){
+		var robj= process.sv_submit(entity,{'dowhat':'SubmitEntity','parentid':parentid},0); //增加
+	}else{
+		var robj= process.sv_submit(entity,{'dowhat':'SubmitEntity'},0); //修改
+	}	
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	var fmap= robj.fmap(0);
+	return fmap;
+}
+
+/* =====================      SvseMonitorDao          =====================================*/
+//添加编辑监视器
+svSubmitMonitor = function(monitor,parentid){
+	if(parentid){
+		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor','parentid':parentid,autoCreateTable:true,del_supplement:false},0); //添加
+	}else{
+		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor',del_supplement:false},0); //修改
+	}
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	var fmap= robj.fmap(0);
+	return fmap;
+}
+
+//获取监视器
+svGetMonitor = function(id){
+	var dowhat ={'dowhat':'GetMonitor','id':id};
+	var robj= process.sv_univ(dowhat, 0);
+	//var robj = process.sv_forest(dowhat, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+}
+
+/* =========================  SvseWarnerRule ================================ */
+
+//Alert.ini文件写入
+svWriteAlertIniFileSectionString = function(sectionname,section){
+	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"alert.ini",'user':"default",'section':sectionname},0); 
+//	console.log(robj.fmap(0));
+	return robj.fmap(0);
+}
+
+//Alert.ini 删除
+svDeleteAlertInitFileSection = function(ids){
+	var dowhat = {
+		'dowhat' : 'DeleteIniFileSection',
+		'filename' : "alert.ini",
+		'user' : "default",
+		"sections" : ids
+	};
+	var robj = process.sv_univ(dowhat,0);
+	return robj.fmap(0);
+	
+}
+
+//改变报警规则状态
+svWriteAlertStatusInitFileSection = function(sectionName,status){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "alert.ini",
+		'user' : "default",
+		'section' : sectionName,
+		"key" : "AlertState",
+		"value" : status
+	}, 0);
 	return robj.fmap(0);
 }
