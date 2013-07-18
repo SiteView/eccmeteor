@@ -169,10 +169,7 @@ public:
 	bool InitLockedSVSEPool()
 	{
 		if(!IdcUser::SELocked)
-		{
-			puts("Quit svse init, because set \"SELocked=1\" \n");
 			return false;
-		}
 
 		for(S_UINT seId= 1; seId<=maxsize; seId++) 
 		{
