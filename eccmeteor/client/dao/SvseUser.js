@@ -68,5 +68,8 @@ SvseUserDao = {
 			}
 			fn(result);
 		});
+	},
+	"login":function(usename,password,fn){
+	    Meteor.loginWithPassword(usename,password,fn);
 	}
 }

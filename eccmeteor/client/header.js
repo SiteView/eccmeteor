@@ -12,3 +12,9 @@ Template.multilanguage.events = {
 		Session.set("language",e.target.name);
 	}
 }
+
+Template.userLogging.events({
+    "click a[data-action='logout']":function(){
+        Meteor.logout();
+    }
+});

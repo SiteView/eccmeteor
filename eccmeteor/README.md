@@ -34,6 +34,9 @@ eccmeteor
     * mrt add bootstrap
     * mrt add d3
     * mrt remove autopublish
+    * mrt add accounts-base
+    * mrt add accounts-password
+    * mrt add router
     * mrt run -p 3000
     
   

@@ -1,0 +1,22 @@
+<Template name="Login">
+    <form id="loginForm" class="well form-horizontal"> 
+        <fieldset>
+			<div class="control-group">
+				<label class="control-label">登录名:</label>
+				<div class="controls">
+				    <input type="text" class="input-big" name="username">
+			    </div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">密码:</label>
+				<div class="controls">
+					<input type="password" class="input-big" name="password">
+				</div>
+			</div>
+			<span class='help-inline' style="display:none" id="loginErrorMsg">登陆名不存在或密码错误</span>
+			<div class="form-actions">
+			     <button id="loginBtn" class="btn btn-primary"> 登陆 </button>
+			</div>
+		</fieldset>
+    </form>
+</Template>

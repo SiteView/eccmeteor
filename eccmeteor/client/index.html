@@ -2,14 +2,9 @@
   <title>EccTest1</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="css/line.css">
-  <!--
-	  <link rel="stylesheet" type="text/css" href="css/jqtree.css">  
-	  <link href="css/bootstrap-multiselect.css" rel="stylesheet">
-  -->
   <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
   <link href="css/zTreeStyle.css" rel="stylesheet">
   <script src="js/jquery.cookie.js" type="text/javascript"></script>
-  <!--<script src="js/tree.jquery.js" type="text/javascript"></script>-->
   <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
   <script type="text/javascript" src="js/bootstrap-multiselect.min.js"></script>
   <script type="text/javascript" src="js/bootstrap-datetimepicker-Language.js"></script>
@@ -18,21 +13,5 @@
 </head>
 
 <body>
-	{{> header}}
-	<div style="margin-top:37px">
-		<div class="container">
-			<div class="tabbable">
-			  <ul class="nav nav-tabs">
-				<li class="active"><a href="#1" data-toggle="tab">监视器</a></li>
-				<li><a href="#2" data-toggle="tab">视图</a></li>
-				<li><a href="#3" data-toggle="tab">系统消息</a></li>
-			  </ul>
-			  <div class="tab-content">
-				{{> moitorContent}}
-				{{> viewContent}}
-				{{> systemInfoContent}}
-			  </div>
-			</div>
-		</div>
-	</div>
+	{{renderPage}}
 </body>

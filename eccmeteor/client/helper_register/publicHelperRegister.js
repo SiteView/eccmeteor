@@ -111,3 +111,8 @@ Handlebars.registerHelper('language',function(arg){
 Handlebars.registerHelper('language',function(){
 	return Language.findOne({name:Session.get("language")}).value;
 });
+
+/*当前用户名*/
+Handlebars.registerHelper('currentUsername',function(){
+    return Meteor.user()  ? Meteor.user().profile.aliasname : "Cryptonym"
+});

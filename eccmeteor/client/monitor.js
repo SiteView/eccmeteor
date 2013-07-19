@@ -77,126 +77,38 @@ function drawImage(id,count){
 		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图
 		Session.set("recordsData",recordsData);
 	});
-	/*
-	//var monitor = SvseTree.findOne({sv_id:id});//找到该监视器所依赖的监视器模板
-	var monitor = SvseTreeDao.getNodeById(id);//找到该监视器所依赖的监视器模板
-	if(!monitor)return; //如果该监视器不存在，不划线
-	var monitorTypeId = monitor.sv_monitortype+""; //获取监视器模板ID
-	SystemLogger("Monitor ID is: "+id+"  and its monitor template ID is  "+ monitorTypeId);
-	//获取监视器模板	
-	//var monitorTemplate = SvseMonitorTemplate.findOne({"return.id" : monitorTypeId});
-	var monitorTemplate = SvseMonitorTemplateDao.getTemplateById(monitorTypeId);
-	//SystemLogger(monitorTemplate);
-	//遍历 模板对象，找到 画图数据的主键，定义找到主键标志
-	var findFlag = false;
-	var monitorPrimary = "";
-	var monitorDescript = "";
-	var monitorForeignKeys = []; //定义 数据主副键的数组，用来求最大、平均等
-	for (property in monitorTemplate) {
-		if (property.indexOf("ReturnItem") != -1) { //主键包含在ReturnItem1，ReturnItem2,..等属性中
-			var template = monitorTemplate[property];
-			if (template["sv_primary"] === "1" && template["sv_drawimage"] == "1") {  //判断是否为主键和是否可以画图
-				monitorPrimary = template["sv_name"];
-				monitorDescript = template["sv_label"];
-				SystemLogger("画图属性为"+property+"画图主键为  "+monitorPrimary + "画图说明"+monitorDescript);
-				findFlag = true;
-				monitorForeignKeys.push({name:template["sv_name"],label:template["sv_label"]});
-			}else{
-				monitorForeignKeys.push({name:template["sv_name"],label:template["sv_label"]});
-			}
-		}
-	}
-	//获取画图数据
-	
-	 //如果没有找到画图主键，或者不能画图 ，返回。
-	if(!findFlag) 
-	{
-		SystemLogger("监视器 "+ id+"不能绘制图形");
-		return;
-	}
-	//获取画图数据
-	Meteor.call("getQueryRecords",id,count, function (err, result) {
-		if(err){
-			SystemLogger(err);
-			return;
-		}	
-		var dataProcess = new DataProcess(result,monitorForeignKeys);
-		var resultData = dataProcess.getData();
-		var recordsData = dataProcess.getRecordsDate();
-		var keys = dataProcess.getDataKey();
-		var table = new DrawTable();//调用 client/lib 下的table.js 中的drawLine函数画图
-		table.drawTable(keys,"#tableData");
-		var line = new DrawLine(resultData,monitorPrimary,monitorDescript);
-		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图
-		Session.set("recordsData",recordsData);
-	});
-	*/
+
 }
 
-//初始化导航树
-/*
-Deps.autorun(function(c){
-	if(Session.get("SvseCollectionComplete")&&Session.get("moitorContentRendered")){
-		var data = SvseDao.getTree("0");
-		var $tree = $('#svse_tree');
-		if(Session.get("treeload")){ //避免重复加载
-			SystemLogger("tree重新加载");
-			$tree.tree("loadData",data);
-			return;
+var drawSvseTree = function(){
+    var expandnodes = $.cookie("expandnode") ?　$.cookie("expandnode").split(",")　: [];
+	var data = SvseDao.getTree("0");
+	var setting = {
+		callback:{
+			onClick:function(event, treeId, treeNode){
+				var id= treeNode.id;
+				var type = treeNode.type;
+				var checkedTreeNode = {};
+				checkedTreeNode.id = id;
+				checkedTreeNode.type=type;
+				checkedTreeNode.name = treeNode.name;
+				Session.set("checkedTreeNode",checkedTreeNode);//记录点击的节点。根据该节点获取 编辑增加设备时的基本信息;
+				if(type !== "entity"){
+					SwithcView.view(MONITORVIEW.GROUPANDENTITY); //设置视图状态
+					Session.set("svid",id);
+					return;
+				}
+				SwithcView.view(MONITORVIEW.MONTIOTR);//设置视图状态
+				Session.set("entityid",id);
+			}
 		}
-		$tree.tree({
-				saveState:true,
-				data : data,
-				autoOpen: 0
-		});
-		Session.set("treeload",true);//避免重复加载
-		$tree.bind('tree.click',function (event) { //绑定树的点击事件
-					var node = event.node;
-					var id= node.id;
-					var type = node.type;
-					var checkedTreeNode = {};
-					checkedTreeNode.id = id;
-					checkedTreeNode.type=type;
-					checkedTreeNode.name = node.name;
-					Session.set("checkedTreeNode",checkedTreeNode);//记录点击的节点。根据该节点获取 编辑增加设备时的基本信息;
-					if(type !== "entity"){
-						SwithcView.view(MONITORVIEW.GROUPANDENTITY); //设置视图状态
-						Session.set("svid",id);
-						return;
-					}
-					SwithcView.view(MONITORVIEW.MONTIOTR);//设置视图状态
-					Session.set("entityid",id);
-		});
-	}
-});
-*/
+	};	
+	$.fn.zTree.init($("#svse_tree"), setting, [ClientUtils.expandTreeNode(data[0],expandnodes)]);
+}
 
 Deps.autorun(function(c){
 	if(Session.get("SvseCollectionComplete")&&Session.get("moitorContentRendered")){
-		console.log("cookie  "+$.cookie("expandnode"));
-		var expandnodes = $.cookie("expandnode") ?　$.cookie("expandnode").split(",")　: [];
-		var data = SvseDao.getTree("0");
-		var setting = {
-			callback:{
-				onClick:function(event, treeId, treeNode){
-					var id= treeNode.id;
-					var type = treeNode.type;
-					var checkedTreeNode = {};
-					checkedTreeNode.id = id;
-					checkedTreeNode.type=type;
-					checkedTreeNode.name = treeNode.name;
-					Session.set("checkedTreeNode",checkedTreeNode);//记录点击的节点。根据该节点获取 编辑增加设备时的基本信息;
-					if(type !== "entity"){
-						SwithcView.view(MONITORVIEW.GROUPANDENTITY); //设置视图状态
-						Session.set("svid",id);
-						return;
-					}
-					SwithcView.view(MONITORVIEW.MONTIOTR);//设置视图状态
-					Session.set("entityid",id);
-				}
-			}
-		};	
-		$.fn.zTree.init($("#svse_tree"), setting, [ClientUtils.expandTreeNode(data[0],expandnodes)]);
+		drawSvseTree();
 	}
 });
 
@@ -219,24 +131,6 @@ Template.moitorContent.rendered = function(){
 			console.log(ids);
 			$.cookie("expandnode",ids.substr(1,ids.length));
 		});
-		//初始化设置等导航节点
-		/*
-		(function(){
-			var setting = {
-				data: {
-					simpleData: {
-						enable: true
-					}
-				},
-				callback:{
-					onClick:function(event, treeId, treeNode){
-						NavigationSettionTree.execute(treeNode.action);
-					}
-				}
-			};
-			$.fn.zTree.init($("#setting_tree"), setting, NavigationSettionTree.getTreeData());
-		})();
-		*/
 	});
 }
 
@@ -257,6 +151,7 @@ Template.moitorContentTree.rendered = function(){
 		};
 		$.fn.zTree.init($("#setting_tree"), setting, NavigationSettionTree.getTreeData());
 	})();
+//	drawSvseTree();
 }
 
 
