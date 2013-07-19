@@ -39,10 +39,10 @@ RM = /usr/bin/cmake -E remove -f
 CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/node_linux/sv_addon
+CMAKE_SOURCE_DIR = /root/nodeln/sv_addon
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/node_linux/sv_addon
+CMAKE_BINARY_DIR = /root/nodeln/sv_addon
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,9 +69,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/node_linux/sv_addon/CMakeFiles /root/node_linux/sv_addon/CMakeFiles/progress.make
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/nodeln/sv_addon/CMakeFiles /root/nodeln/sv_addon/CMakeFiles/progress.make
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/node_linux/sv_addon/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/nodeln/sv_addon/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

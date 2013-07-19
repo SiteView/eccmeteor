@@ -1,5 +1,5 @@
 
-PROJECT(db)
+PROJECT(tsvapi)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 AUX_SOURCE_DIRECTORY(. DIR_SRCS)
 
@@ -14,5 +14,6 @@ endif()
 
 LINK_DIRECTORIES("/root/nodeln/addon" "/root/nodeln/libutil" "/root/nodeln/ccgnu2/src/.libs")
 
+SET(EXECUTABLE_OUTPUT_PATH "../bin")
 ADD_EXECUTABLE(testsvapi ${DIR_SRCS})
 TARGET_LINK_LIBRARIES(testsvapi pthread libccgnu2.a libutil.a libaddon.a )

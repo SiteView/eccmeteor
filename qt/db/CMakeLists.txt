@@ -12,7 +12,9 @@ else()
 INCLUDE_DIRECTORIES("." "../addon" "../libutil" "../ccgnu2/inc" "../ccgnu2/src")
 endif()
 
-LINK_DIRECTORIES("/root/nodeln/addon" "/root/nodeln/libutil" "/root/nodeln/ccgnu2/src/.libs")
+#LINK_DIRECTORIES("/root/nodeln/addon" "/root/nodeln/libutil" "/root/nodeln/ccgnu2/src/.libs")
+LINK_DIRECTORIES("../bin")
 
+SET(EXECUTABLE_OUTPUT_PATH "../bin")
 ADD_EXECUTABLE(svdb ${DIR_SRCS})
-TARGET_LINK_LIBRARIES(svdb pthread libccgnu2.a libutil.a libaddon.a )
+TARGET_LINK_LIBRARIES(svdb pthread libaddon.a libccgnu2.a libutil.a )

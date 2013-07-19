@@ -70,10 +70,10 @@
       ],
 	  
       'libraries': [ 
-        '<(PRODUCT_DIR)/../../../sv_addon/libaddonsv.a',
-        '<(PRODUCT_DIR)/../../../addon/libaddon.a',
-        '<(PRODUCT_DIR)/../../../libutil/libutil.a',
-		'<(PRODUCT_DIR)/../../../ccgnu2/src/.libs/libccgnu2.a',
+        '<(PRODUCT_DIR)/../../../bin/libaddonsv.a',
+        '<(PRODUCT_DIR)/../../../../qt/bin/libaddon.a',
+        '<(PRODUCT_DIR)/../../../../qt/bin/libutil.a',
+		'<(PRODUCT_DIR)/../../../../qt/bin/libccgnu2.a',
       ],
 	  
       'sources': [
