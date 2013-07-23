@@ -70,6 +70,11 @@ SvseUserDao = {
 		});
 	},
 	"login":function(usename,password,fn){
-	    Meteor.loginWithPassword(usename,password,fn);
+	    if(Meteor.users.findOne({username:usename}) && Meteor.users.findOne({username:usename}).profile.accountstatus){
+	        Meteor.loginWithPassword(usename,password,fn);
+	    }else{
+	        fn("你的帐户已被禁用，请联系系统管理员",true)
+	    }
+	    
 	}
 }

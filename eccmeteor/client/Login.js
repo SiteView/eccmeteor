@@ -5,13 +5,25 @@ Template.Login.events({
     "click #loginBtn":function(){
       var username = $("#loginForm :input[name='username']").val();
       var password = $("#loginForm :input[name='password']").val();
-      SvseUserDao.login(username,password,function(err){
-        if(err){
-            console.log(err);
-           $("#loginForm #loginErrorMsg").css("display","block");
+      var errorMsg = $("#loginForm #loginErrorMsg");
+      if(!password || password.replace(/" "/g,"").length === 0){
+        errorMsg.html("密码不能为空").css("display","block");
+        return;
+      }
+      SvseUserDao.login(username,password,function(err,status){
+        if(err){ 
+          errorMsg.html(status ? err : "登陆名不存在或密码错误").css("display","block");
         }else{
             Meteor.Router.to("/home");
         }
       });
     }
+});
+
+Deps.autorun(function(){
+  if(!Meteor.user())
+    return;
+  if(!Meteor.user().profile.accountstatus){
+    Meteor.logout(function(){alert('你的账户已被禁止，请联系系统管理员');});    
+  }
 });
