@@ -2,6 +2,14 @@ Template.showGroupAndEntity.svid = function () {
 	return Session.get("svid");
 }
 
+Template.showGroupAndEntity.rendered = function(){
+    //初始化checkbox全选效果
+    $(function(){
+        ClientUtils.tableSelectAll("showGroupAndEntityTableGroupSelectAll");
+        ClientUtils.tableSelectAll("showGroupAndEntityTableEntitySelectAll");
+    });
+}
+
 Template.showMonitor.entityid = function () {
 	return Session.get("entityid");
 }
@@ -23,6 +31,13 @@ Template.showMonitor.rendered = function(){ //默认选中第一个监视进行�
 	if(!this._rendered) {
 			this._rendered = true;
 	}
+	
+	//初始化checkbox全选效果
+	 $(function(){
+        ClientUtils.tableSelectAll("showMonitorTableSelectAll");
+    });
+	
+	
 	var tr = $("#showMonitorList tr:first");
 	if(!tr){
 		$("#showSvg").css("display","none");
@@ -117,6 +132,9 @@ Template.operateNode.events ={
 		SvseDao.forbidNodeForever([id],function(result){});
 		//console.log("forbidGroup");
 	},
+	"click a#allowGroup":function(e){
+	    
+	},
 	"click .btn#addEntity":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
 		SwithcView.view(MONITORVIEW.ENTITYGROUP);//设置视图状态
@@ -189,7 +207,7 @@ Template.operateNode.events ={
 		SvseDao.refreshTreeData();
 	}
 }
-
+/*
 Deps.autorun(function(c){
 	//自动改变 禁用按钮的文字，为禁用或者启用。根据session中存的id的状态来决定。
 	//状态为disable则为启用，其他状态全为禁用。
@@ -211,6 +229,7 @@ Deps.autorun(function(c){
 	}
 	$("a#forbidMonitor").html(statusContext).attr("name",name);
 });
+
 
 Template.operateNode.rendered = function () {
 	var node = Session.get("checkedTreeNode");
@@ -235,3 +254,4 @@ Template.operateNode.rendered = function () {
 	console.log(type+":"+name);
 	$("a#forbid"+type).html(statusContext).attr("name",name);
 }
+*/

@@ -144,11 +144,6 @@
 			return zNode;
 	},
 	"formFillValue" : function(formid,obj){
-		/*
-		for(pro in obj){
-			$("#"+formid+" :text[name="+pro+"]").val(obj[pro]);
-		}
-		*/
 		$(formid).find("input:text").each(function(){
 			$(this).val(obj[this.name]);
 		});
@@ -167,8 +162,22 @@
 			}
 		}
 		return robj;
+	},
+	//表格中的checkbox全选效果
+	"tableSelectAll":function(id){
+	    $("#"+id).click(function(){
+			var flag = this.checked; 
+			$(this).closest("table").find("tbody :checkbox").each(function(){
+				this.checked = flag;
+			});
+		});
+	},
+	//根据表tbody id获取表格中选中的checkbox的id
+	"tableGetSelectedAll":function(id){
+	
 	}
 }
+
 ServerUtils ={
 }
 
