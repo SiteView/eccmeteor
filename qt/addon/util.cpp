@@ -134,7 +134,7 @@ void outputRegeditKey(void)
 	}
 #else
 	string path= GetRootPath();
-	cout<<"    data path in linux is: "<<path.c_str()<<endl;
+	cout<<"    ecc root path in linux is: "<<path.c_str()<<endl;
 #endif
 
 }
