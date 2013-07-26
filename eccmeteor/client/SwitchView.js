@@ -5,7 +5,7 @@ MONITORVIEW = {
 	ENTITYGROUP : "showEntityGroup", //设备模板展示视图
 	ENTITYITEM : "showEntity", //设备模板信息添加视图
 	ENTITYEDIT : "showEditEntity",
-	GROUPADD : "showGroupAdd", //添加组信息视图
+//	GROUPADD : "showGroupAdd", //添加组信息视图
 	GROUPEDIT : "showGroupEdit", //修改组信息
 	MONITORTEMPLATES : "showMonitorTemplate", //设备的监视器列表
 	MONITORADD : "showMonitorInfo", //监视器的增加

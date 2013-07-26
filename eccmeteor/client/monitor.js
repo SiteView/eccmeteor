@@ -2,12 +2,33 @@ Template.showGroupAndEntity.svid = function () {
 	return Session.get("svid");
 }
 
+Template.showGroupAndEntity.events({
+    "click #showGroupAndEntityTableGroupList tr":function(e){
+        $(e.target).find("div").css("display","block");
+        console.log("enter");
+    },
+     "click #showGroupAndEntityTableGroupList tr":function(e){
+        $(e.target).find("div").css("display","none");
+         console.log("leave");
+    }
+
+});
+
+
 Template.showGroupAndEntity.rendered = function(){
     //初始化checkbox全选效果
     $(function(){
         ClientUtils.tableSelectAll("showGroupAndEntityTableGroupSelectAll");
         ClientUtils.tableSelectAll("showGroupAndEntityTableEntitySelectAll");
     });
+    $(function(){
+        $("tbody tr").mouseenter(function(){
+            $(this).find("div :first").css("display","block");
+        }).mouseleave(function(){
+            $(this).find("div :first").css("display","none");
+        });
+    });
+    
 }
 
 Template.showMonitor.entityid = function () {
@@ -110,18 +131,23 @@ Template.operateNode.type = function(){
 //增删改操作Template
 Template.operateNode.events ={
 	"click .btn#addGroup":function(){
-		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
-		SwithcView.view(MONITORVIEW.GROUPADD);//设置视图状态
+	//	if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
+	//	SwithcView.view(MONITORVIEW.GROUPADD);//设置视图状态
+	    $("#showGroupAdddiv").modal('show');
 	},
 	"click .btn#editGroup":function(){
+	    /*
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
 		SwithcView.view(MONITORVIEW.GROUPEDIT);//设置视图状态
 		return;
 		var id = Session.get("checkedTreeNode")["id"];
 		var group= {'property':{'sv_name':'测试pc设备组','sv_description':'测试pc设备组'},'return':{'id':id}};
 		SvseDao.editNode(group);
+		*/
+		 $("#showGroupEditdiv").modal('show');
 	},
 	"click a#forbidGroup" : function(e){
+		/*
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "group") return;
 		var id  = Session.get("checkedTreeNode")["id"];
 		var status = e.target.name;
@@ -131,9 +157,23 @@ Template.operateNode.events ={
 		}
 		SvseDao.forbidNodeForever([id],function(result){});
 		//console.log("forbidGroup");
+		*/
+		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
+	    if(!groupsIds.length)
+	        return;
+	    console.log("禁用的组是：");
+	    console.log(groupsIds);
+	    return;
+	    SvseDao.forbidNodeForever(groupsIds,function(result){});
 	},
 	"click a#allowGroup":function(e){
-	    
+	    var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
+	    if(!groupsIds.length)
+	        return;
+	    console.log("启用的组是：");
+	    console.log(groupsIds);
+	    return;
+	    SvseDao.enableNode(groupsIds,function(err){});
 	},
 	"click .btn#addEntity":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;

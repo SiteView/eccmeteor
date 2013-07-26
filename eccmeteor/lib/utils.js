@@ -174,7 +174,12 @@
 	},
 	//根据表tbody id获取表格中选中的checkbox的id
 	"tableGetSelectedAll":function(id){
-	
+	    var checks = $("#"+id+" :checkbox[checked]");
+		var ids = [];
+		for(var i = 0 ; i < checks.length; i++){
+			ids.push($(checks[i]).attr("id"));
+		}
+		return ids;
 	}
 }
 
