@@ -23,8 +23,11 @@ Template.showGroupAdd.rendered = function(){
 }
 
 Template.showGroupEdit.getGroup = function(){
-	var id = Session.get("checkedTreeNode")["id"];
-	return SvseDao.getGroup(id);
+	//var id = Session.get("checkedTreeNode")["id"];
+	var id = Session.get("showGroupAndEntityEditNodeId");
+	var group = SvseDao.getGroup(id);
+	console.log(group)
+	return group;
 }
 
 Template.showGroupEdit.events({
@@ -33,13 +36,15 @@ Template.showGroupEdit.events({
 		var property = ClientUtils.formArrayToObject(arr);
 		if(!property["sv_dependson"])
 			property["sv_dependson"] = "";
-		var selfId = Session.get("checkedTreeNode")["id"];
+	//	var selfId = Session.get("checkedTreeNode")["id"];
+	    var selfId =  Session.get("showGroupAndEntityEditNodeId");
 		var group = {'property':property,'return':{'id':selfId}};
 		SvseDao.editGroup(group,selfId,function(result){
-			if(result.status){
+			if(!result.status){
 				SystemLogger(result.msg);
 			}else{
-				Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY); //设置视图状态
+			//	Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY); //设置视图状态
+			    $("#showGroupEditdiv").modal('hide');
 			}
 		});
 	},
@@ -49,5 +54,5 @@ Template.showGroupEdit.events({
 });
 
 Template.showGroupEdit.rendered = function(){
-    $("#showGroupEditdiv").modal('hide');
+   // $("#showGroupEditdiv").modal('hide');
 }

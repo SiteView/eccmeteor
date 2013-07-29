@@ -3,16 +3,33 @@ Template.showGroupAndEntity.svid = function () {
 }
 
 Template.showGroupAndEntity.events({
-    "click i.icon-trash":function(e){
-		var id = e.target.id
+    "click #showGroupAndEntityTableGroupList i.icon-trash":function(e){
+		var id = e.target.id;
+		console.log("删除组id:"+id);
 		SvseDao.removeNodesById(id,function(result){
 			if(!result.status){
 				console.log(result.msg);
 			}
 		});
     },
-     "click i.icon-edit":function(e){
-        var id = e.target.id
+     "click #showGroupAndEntityTableGroupList i.icon-edit":function(e){
+        var id = e.target.id;
+        Session.set("showGroupAndEntityEditNodeId",id);
+        console.log("编辑组id:"+id);
+        $("#showGroupEditdiv").modal('show');
+    },
+    "click #showGroupAndEntityTableEntityList i.icon-trash":function(e){
+		var id = e.target.id;
+		console.log("删除设备id:"+id);
+		SvseDao.removeNodesById(id,function(result){
+			if(!result.status){
+				console.log(result.msg);
+			}
+		});
+    },
+     "click #showGroupAndEntityTableEntityList i.icon-edit":function(e){
+        var id = e.target.id;
+        console.log("编辑设备id:"+id);
     }
 
 });
@@ -25,7 +42,7 @@ Template.showGroupAndEntity.rendered = function(){
         ClientUtils.tableSelectAll("showGroupAndEntityTableEntitySelectAll");
     });
     $(function(){
-        $("tbody[id] tr").mouseenter(function(){
+        $("tbody tr").mouseenter(function(){
             $(this).find("div :first").css("display","block");
         }).mouseleave(function(){
             $(this).find("div :first").css("display","none");
@@ -147,7 +164,7 @@ Template.operateNode.events ={
 		var group= {'property':{'sv_name':'测试pc设备组','sv_description':'测试pc设备组'},'return':{'id':id}};
 		SvseDao.editNode(group);
 		*/
-		 $("#showGroupEditdiv").modal('show');
+		// $("#showGroupEditdiv").modal('show');
 	},
 	"click a#forbidGroup" : function(e){
 		/*
@@ -226,6 +243,7 @@ Template.operateNode.events ={
 		});
 	},
 	"click a#removeNodes":function(){ //删除子节点
+	/*
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode").type === "se") return;
 		var id = Session.get("checkedTreeNode")["id"];
 		SvseDao.removeNodesById(id,function(result){
@@ -235,6 +253,8 @@ Template.operateNode.events ={
 		var fatherId = id.substring(0,id.lastIndexOf("\."));//获取删除节点的父节点Id
 	//	ConstructorNavigateTree.checkedNodeByTreeId(fatherId);//根据id选中节点设置到Session中
 		SwithcView.view(MONITORVIEW.GROUPANDENTITY);//设置视图状态
+		*/
+		
 	},
 	"click .btn#addMonitor":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
