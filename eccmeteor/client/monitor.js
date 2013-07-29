@@ -3,13 +3,16 @@ Template.showGroupAndEntity.svid = function () {
 }
 
 Template.showGroupAndEntity.events({
-    "click #showGroupAndEntityTableGroupList tr":function(e){
-        $(e.target).find("div").css("display","block");
-        console.log("enter");
+    "click i.icon-trash":function(e){
+		var id = e.target.id
+		SvseDao.removeNodesById(id,function(result){
+			if(!result.status){
+				console.log(result.msg);
+			}
+		});
     },
-     "click #showGroupAndEntityTableGroupList tr":function(e){
-        $(e.target).find("div").css("display","none");
-         console.log("leave");
+     "click i.icon-edit":function(e){
+        var id = e.target.id
     }
 
 });
@@ -22,7 +25,7 @@ Template.showGroupAndEntity.rendered = function(){
         ClientUtils.tableSelectAll("showGroupAndEntityTableEntitySelectAll");
     });
     $(function(){
-        $("tbody tr").mouseenter(function(){
+        $("tbody[id] tr").mouseenter(function(){
             $(this).find("div :first").css("display","block");
         }).mouseleave(function(){
             $(this).find("div :first").css("display","none");
@@ -185,6 +188,7 @@ Template.operateNode.events ={
 		SwithcView.view(MONITORVIEW.ENTITYEDIT);//设置视图状态
 	},
 	"click a#forbidEntity" : function(e){
+	/*
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
 		var id  = Session.get("checkedTreeNode")["id"];
 		var status = e.target.name;
@@ -195,6 +199,31 @@ Template.operateNode.events ={
 		}
 		SystemLogger("禁用设备"+id)
 		SvseDao.forbidNodeForever([id],function(result){});
+		*/
+		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
+	    if(!entityIds.length)
+	        return;
+	    console.log("禁用的设备是：");
+	    console.log(entityIds);
+	    return;
+	    SvseDao.forbidNodeForever(entityIds,function(result){
+			if(!result.status){
+				console.log(result.msg)
+			}
+		});
+	},
+	"click a#allowEntity":function(){
+		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
+	    if(!entityIds.length)
+	        return;
+	    console.log("启用的设备是：");
+	    console.log(entityIds);
+	    return;
+	    SvseDao.enableNode(entityIds,function(result){
+			if(!result.status){
+				console.log(result.msg)
+			}
+		});
 	},
 	"click a#removeNodes":function(){ //删除子节点
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode").type === "se") return;
@@ -229,11 +258,12 @@ Template.operateNode.events ={
 		});
 	},
 	"click a#forbidMonitor" : function(e){
-		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;
+		
+		//if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;
 		/*
 			1.判断当前选中的树节点是否为 设备，不是则不做任何事情
 			2.根据存在Sesion中的监视器id来禁用启用监视器
-		*/
+		
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
 		var id = Session.get("checkedMonitorId")["id"];
 		var status = e.target.name;
@@ -242,6 +272,32 @@ Template.operateNode.events ={
 			return;
 		}
 		SvseDao.forbidNode([id],function(err){});
+		*/
+		
+		var montitorsids = ClientUtils.tableGetSelectedAll("showMonitorList");
+	    if(!montitorsids.length)
+	        return;
+	    console.log("禁用的监视器是：");
+	    console.log(montitorsids);
+	    return;
+	    SvseDao.forbidNode(montitorsids,function(result){
+			if(!result.status){
+				console.log(result.msg)
+			}
+		});
+	},
+	"click a#allowMonitor":function(){
+		var montitorsids = ClientUtils.tableGetSelectedAll("showMonitorList");
+	    if(!montitorsids.length)
+	        return;
+	    console.log("启用的监视器是：");
+	    console.log(montitorsids);
+	    return;
+	    SvseDao.enableNode(montitorsids,function(result){
+			if(!result.status){
+				console.log(result.msg)
+			}
+		});
 	},
 	"click .btn#refresh" : function(){
 		SvseDao.refreshTreeData();
