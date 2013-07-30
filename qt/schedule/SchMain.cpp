@@ -728,11 +728,15 @@ bool SchMain::LoadPreLibrary(void)
 		if (str.empty())
 			continue;
 		sprintf(filepath, "%s/fcgi-bin/%s", g_strRootPath.getText(), str.c_str());
-		printf("PreLoad:%s\n", filepath);
+		printf("to preLoad:%s\n", filepath);
 		try
 		{
 #ifdef WIN32
-			::LoadLibrary(filepath);
+			HMODULE hm=::LoadLibrary(filepath);
+			if(!hm)
+			{
+				printf("Failed to preload library: %s, error:%d\n",(char *)filepath, GetLastError());
+			}
 #else
 #endif
 		} catch (...)

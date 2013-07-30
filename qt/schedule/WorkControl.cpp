@@ -115,8 +115,9 @@ BOOL WorkControl::AddTask(Monitors *pMonitor)
 	if (pMonitor->GetRunning())
 	{
 		pMonitor->SetSkipCount(pMonitor->GetSkipCount() + 1);
-		strError.Format("=== running long, MonitorID:%s, SkipCount:%d", pMonitor->GetMonitorID(), pMonitor->GetSkipCount());
-		putil->ErrorLog(strError);
+		strError.Format("=== running long, MonitorID:%s, SkipCount:%d\n", pMonitor->GetMonitorID(),
+				pMonitor->GetSkipCount());
+		printf(strError);
 	}
 	else
 	{
@@ -151,7 +152,8 @@ void WorkControl::CheckTaskQueue()
 
 void WorkControl::CheckTaskQueueByMonitor(Monitors *pMonitor)
 {
-	m_MSGQueue.SendMsg(WM_CHECKSINGLETASK, (void *) pMonitor);
+	if (pMonitor != NULL)
+		m_MSGQueue.SendMsg(WM_CHECKSINGLETASK, (void *) pMonitor);
 }
 
 void WorkControl::run()

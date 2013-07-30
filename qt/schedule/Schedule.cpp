@@ -47,7 +47,8 @@ void Run();
 
 void ToExit()
 {
-	SUtil::ErrorLog("MonitorSchedule closed.\n");
+	SUtil::ErrorLog("MonitorSchedule closed.");
+	puts("\n");
 }
 
 bool selfCheckIsOk()
@@ -317,6 +318,7 @@ void Run(void)
 #endif
 
 	}
+	putil->ErrorLog("MonitorSchedule starts up...");
 }
 
 class testtex: public ThreadEx
@@ -660,7 +662,6 @@ int main(int argc, char *argv[])
 		if (argc != 2 && argc != 4)
 		{
 			puts("Parameter error");
-			putil->ErrorLog("Parameter error");
 			return -1;
 		}
 
@@ -735,7 +736,6 @@ int main(int argc, char *argv[])
 				else
 				{
 					putil->ErrorLog("Refresh Monitors empty");
-					puts("eeeeeeee");
 				}
 				sprintf(buf, "Refresh end");
 				::PushMessage(argv[2], "Refresh_END", buf, strlen(buf) + 1, "default", argv[3]);

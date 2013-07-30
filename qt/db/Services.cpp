@@ -54,7 +54,12 @@ void  WINAPI SVS_ServiceCtrlHandler(DWORD opcode)
 			g_SubProcessState=false;
 
 		   ::PostThreadMessage(g_dbpi.dwThreadId,WM_QUIT,0,0);
-			::Sleep(2000);
+			if (g_dbpi.hProcess != NULL && ::WaitForSingleObject(g_dbpi.hProcess, 8500) == WAIT_TIMEOUT)
+			{
+				AddToErrorLog("Force to TerminateProcess svdb by service!");
+				::TerminateProcess(g_dbpi.hProcess, 2);
+			}
+			::Sleep(500);
 //			::TerminateProcess(g_pi.hProcess,3);
 
 //			AddToEventLog("服务退出正终止子进程");

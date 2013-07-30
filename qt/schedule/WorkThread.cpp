@@ -47,8 +47,6 @@ void WorkThread::run()
 
 #endif
 
-	Monitors *pMonitor = NULL;
-
 //	printf("In Thread :%s\n", this->GetThreadName());
 
 	try
@@ -61,6 +59,7 @@ void WorkThread::run()
 				strError = "WorkThread wait failed";
 				throw MSException((LPCSTR) strError);
 			}
+
 			if (m_Monitor == NULL)
 			{
 				m_Event.reset();
@@ -79,43 +78,48 @@ void WorkThread::run()
 				RunMonitor();
 			} catch (MSException &e)
 			{
-				if (pMonitor == NULL)
-					return;
-				pMonitor->SetSkipCount(pMonitor->GetSkipCount() + 1);
-				char errlog[2048] = { 0 };
-				sprintf(errlog, "=== %s,%s,MonitorID:%s, SkipCount:%d. ", this->GetThreadName(), e.GetDescription(),
-						m_Monitor->GetMonitorID(), pMonitor->GetSkipCount());
-				putil->ErrorLog(errlog);
+				if (m_Monitor != NULL)
+				{
+					m_Monitor->SetSkipCount(m_Monitor->GetSkipCount() + 1);
+					char errlog[2048] = { 0 };
+					sprintf(errlog, "=== %s,%s,MonitorID:%s, SkipCount:%d. ", this->GetThreadName(), e.GetDescription(),
+							m_Monitor->GetMonitorID(), m_Monitor->GetSkipCount());
+					putil->ErrorLog(errlog);
+				}
 			} catch (...)
 			{
-				pMonitor->SetSkipCount(pMonitor->GetSkipCount() + 1);
-				char errlog[2048] = { 0 };
-				sprintf(errlog, "=== Run monitor exception,MonitorID:%s, SkipCount:%d. ", m_Monitor->GetMonitorID(),
-						pMonitor->GetSkipCount());
-				putil->ErrorLog(errlog);
+				if (m_Monitor != NULL)
+				{
+					m_Monitor->SetSkipCount(m_Monitor->GetSkipCount() + 1);
+					char errlog[2048] = { 0 };
+					sprintf(errlog, "=== Run monitor exception,MonitorID:%s, SkipCount:%d. ", m_Monitor->GetMonitorID(),
+							m_Monitor->GetSkipCount());
+					putil->ErrorLog(errlog);
+				}
 			}
-			int oldstate = m_Monitor->GetLastState();
-			if (oldstate != m_MonitorState)
+			if (m_Monitor != NULL)
 			{
-				if ((m_MonitorState == Monitors::STATUS_ERROR) || (m_MonitorState == Monitors::STATUS_BAD))
-					m_Monitor->CalculateErrorFrequency(true);
-				else if ((oldstate == Monitors::STATUS_ERROR) || (oldstate == Monitors::STATUS_BAD))
-					m_Monitor->CalculateErrorFrequency(false);
+				int oldstate = m_Monitor->GetLastState();
+				if (oldstate != m_MonitorState)
+				{
+					if ((m_MonitorState == Monitors::STATUS_ERROR) || (m_MonitorState == Monitors::STATUS_BAD))
+						m_Monitor->CalculateErrorFrequency(true);
+					else if ((oldstate == Monitors::STATUS_ERROR) || (oldstate == Monitors::STATUS_BAD))
+						m_Monitor->CalculateErrorFrequency(false);
 
+				}
+				m_Monitor->SetLastState(m_MonitorState);
+
+				m_pWorkControl->AdjustActiveMonitorCount(m_Monitor, FALSE);
+
+				m_Monitor->SetRunning(FALSE);
 			}
-			m_Monitor->SetLastState(m_MonitorState);
 
-			m_pWorkControl->AdjustActiveMonitorCount(m_Monitor, FALSE);
-
-			m_Monitor->SetRunning(FALSE);
-
-			pMonitor = m_Monitor;
+			Monitors *pMonitor = m_Monitor;
 			InitData();
 			m_Event.reset();
 			m_pWorkControl->AddToIdleThread(this);
-
 			m_pWorkControl->CheckTaskQueueByMonitor(pMonitor);
-
 		}
 	} catch (...)
 	{
@@ -185,7 +189,7 @@ void WorkThread::RunMonitor()
 	HMODULE hm=::LoadLibrary(strDLLName);
 	if(!hm)
 	{
-		strError.Format("RunMonitor-Load library failed,DLL name:%s",(char *)strDLLName);
+		strError.Format("RunMonitor-Load library failed,DLL name:%s, error:%d",(char *)strDLLName, GetLastError());
 		throw MSException((LPCSTR)strError);
 	}
 
@@ -205,6 +209,7 @@ void WorkThread::RunMonitor()
 		if(m_pWorkControl->m_pOption->m_isDemo)
 		{
 			MutexLock lock(m_pWorkControl->m_pSchMain->m_DemoDllMutex);
+//			puts("===== call demo function ... ======\n");
 			(*pfunc)(m_InBuf,m_RetBuf,buflen);
 		}
 		else
@@ -300,8 +305,29 @@ void WorkThread::RunMonitor()
 	{
 		if ((m_Monitor->GetCheckError()) && (m_nRunCount < 2))
 		{
-			ClearResult();
-			RunMonitor();
+			try
+			{
+				printf("=== to check error, MonitorID:%s  \n", m_Monitor->GetMonitorID());
+				ClearResult();
+				RunMonitor();
+			} catch (MSException &e)
+			{
+				if (m_Monitor != NULL)
+				{
+					char errlog[2048] = { 0 };
+					sprintf(errlog, "=== %s,%s,MonitorID:%s", this->GetThreadName(), e.GetDescription(),
+							m_Monitor->GetMonitorID());
+					putil->ErrorLog(errlog);
+				}
+			} catch (...)
+			{
+				if (m_Monitor != NULL)
+				{
+					char errlog[2048] = { 0 };
+					sprintf(errlog, "=== Run monitor exception,MonitorID:%s  ", m_Monitor->GetMonitorID());
+					putil->ErrorLog(errlog);
+				}
+			}
 			return;
 		}
 	}
@@ -362,6 +388,7 @@ BOOL WorkThread::PaserResultV70(void)
 {
 	m_RVmap.clear();
 
+//	puts("\n------------------------PaserResult-----------------------");
 	if (!BulidStringMap(m_RVmap, m_RetBuf))
 	{
 		throw MSException("Build return data failed");
