@@ -183,7 +183,6 @@ Template.operateNode.events ={
 	        return;
 	    console.log("禁用的组是：");
 	    console.log(groupsIds);
-	    return;
 	    SvseDao.forbidNodeForever(groupsIds,function(result){});
 	},
 	"click a#allowGroup":function(e){
@@ -192,7 +191,6 @@ Template.operateNode.events ={
 	        return;
 	    console.log("启用的组是：");
 	    console.log(groupsIds);
-	    return;
 	    SvseDao.enableNode(groupsIds,function(err){});
 	},
 	"click .btn#addEntity":function(){
@@ -254,6 +252,18 @@ Template.operateNode.events ={
 	//	ConstructorNavigateTree.checkedNodeByTreeId(fatherId);//根据id选中节点设置到Session中
 		SwithcView.view(MONITORVIEW.GROUPANDENTITY);//设置视图状态
 		*/
+		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
+		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
+		var ids = entityIds.concat(entityIds);
+		if (!ids.length)
+			return;
+		SvseDao.removeNodesByIds(ids, function(result) {
+			if(result.status){
+				console.log("删除成功");
+			}else{
+				console.log("删除失败");
+			}
+		});
 		
 	},
 	"click .btn#addMonitor":function(){
@@ -299,8 +309,7 @@ Template.operateNode.events ={
 	        return;
 	    console.log("禁用的监视器是：");
 	    console.log(montitorsids);
-	    return;
-	    SvseDao.forbidNode(montitorsids,function(result){
+	    SvseDao.forbidNodeForever(montitorsids,function(result){
 			if(!result.status){
 				console.log(result.msg)
 			}

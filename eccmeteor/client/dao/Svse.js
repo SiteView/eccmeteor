@@ -84,16 +84,37 @@ SvseDao = {
 		Meteor.call(SvseDao.AGENT,'removeNodesById',[id,true],function(err,result){
 			if(err){
 				console.log(err);
-				fn({status:false,msg:err})
+				fn({status:false,msg:err});
 			}else{
 				if(result && !reult[status]){ // 无权限
 					console.log(result.msg);
 					fn(result);
 				}else{
-					fn({status:true})
+					fn({status:true});
 				}
 			}
 			
+		});
+	},
+	removeNodesByIds:function(ids,fn){
+		Meteor.call(SvseDao.AGENT, "removeNodesByIds", [ids], function(err, result) {
+			if (err) {
+				console.log(err);
+				fn({
+					status: false,
+					msg: err
+				});
+			} else {
+				if (result && !reult[status]) { // 无权限
+					console.log(result.msg);
+					fn(result);
+				} else {
+					fn({
+						status: true
+					});
+				}
+			}
+
 		});
 	},
 	addGroup:function(group,parentid,fn){

@@ -1,23 +1,32 @@
 ﻿<Template name="showEntityGroup">
-	<table class="table table-striped table-bordered table-condensed">
-	<tbody>
+	<div class="accordion" id="entityGroupAccordion">
 	{{#each entityGroup}}
 		{{#unless sv_hidden}}
-			<tr>
-				<td colspan="2">{{sv_name}}</td>
-			</tr>
-			{{#each entityTemplateId}}
-			<tr id="{{this}}">
-				{{#with getEntityPropertyById this}}
-				<td>{{sv_name}}</td><td>{{sv_description}}</td>
-				{{/with}}
-			</tr>
-			{{/each}}
-			<tr><td colspan="2"></td><tr>
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#entityGroupAccordion" href="#collapse{{sv_index}}">
+                	{{sv_name}}
+                </a>
+			</div>
+			<div id="collapse{{sv_index}}" class="accordion-body collapse">
+                <div class="accordion-inner">
+                	<table class="table table-striped table-bordered table-condensed">
+                		<tbody>
+				  			{{#each entityTemplateId}}
+							<tr id="{{this}}">
+								{{#with getEntityPropertyById this}}
+								<td>{{sv_name}}</td><td>{{sv_description}}</td>
+								{{/with}}
+							</tr>
+							{{/each}}
+						</tbody>
+					</table>
+                </div>
+            </div>
+        </div>
 		{{/unless}}
 	{{/each}}
-	</tbody>
-	</table>
+	</div>
 </Template>
 
 <Template name="showEntity">
