@@ -7,7 +7,8 @@ Template.showEntityGroup.events = {
 		var id = e.currentTarget.id;
 		if(!id)return;
 		Session.set("showEntityId",id);
-		Session.set("viewstatus",MONITORVIEW.ENTITYITEM);//设置视图状态
+		//Session.set("viewstatus",MONITORVIEW.ENTITYITEM);//设置视图状态
+		$("#showEntityDiv").modal("show");
 	}
 }
 
@@ -24,9 +25,9 @@ Template.showEntity.showEntityId = function(){
 }
 
 Template.showEntity.events = {
-	"click #addEntity":function(){
+	"click #showEntityFormSaveBtn":function(){
 		var checkedTreeNode =  Session.get("checkedTreeNode");//该node为父节点
-		var arr = $("#entityInfo").serializeArray();
+		var arr = $("#showEntityForm").serializeArray();
 		var property = {};
 		for(index in arr){
 			property[arr[index]["name"]] = arr[index]["value"];
@@ -42,16 +43,19 @@ Template.showEntity.events = {
 			if(!result.status){
 				SystemLogger("SvseEntityTemplateDao.addEntity 捕捉到错误");
 				SystemLogger(result);
+				$("#showEntityDiv").modal("hide");
 				return;
 			}
+			$("#showEntityDiv").modal("hide");
 			var entityid = result.option['id'];
 			console.log("添加的设备ID是 "+entityid);
 			SessionManage.setAddedEntityId(entityid);//临时数据管理
-			Session.set("viewstatus",MONITORVIEW.QUICKLYADDMONITY);	//跳到快速添加页面		
+		//	Session.set("viewstatus",MONITORVIEW.QUICKLYADDMONITY);	//跳到快速添加页面
+			$("#showQuickMonityTemplatediv").modal("show");	
 		});
 	},
-	"click #cancel":function(){
-		Session.set("viewstatus",MONITORVIEW.ENTITYGROUP);
+	"click #showEntityFormCancelBtn":function(){
+		$("#showEntityDiv").modal("hide");
 	}
 };
 
@@ -71,7 +75,7 @@ Template.showEditEntity.getItemsAndDefaultValueBySvIdAndDevicetype = function(sv
 Template.showEditEntity.events = {
 	"click #saveEntity":function(){
 		var checkedTreeNode =  Session.get("checkedTreeNode");//该node为设备节点本身
-		var arr = $("#entityEditInfo").serializeArray();
+		var arr = $("#showEditEntityForm").serializeArray();
 		var property = ClientUtils.formArrayToObject(arr);
 		
 		if(!property["sv_dependson"]){

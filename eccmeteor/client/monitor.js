@@ -194,8 +194,9 @@ Template.operateNode.events ={
 	    SvseDao.enableNode(groupsIds,function(err){});
 	},
 	"click .btn#addEntity":function(){
-		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
+	//	if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
 		SwithcView.view(MONITORVIEW.ENTITYGROUP);//设置视图状态
+	//	$("#showEntityGroupDiv").modal('show');
 	},
 	"click .btn#editEntity":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;

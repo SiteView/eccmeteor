@@ -63,7 +63,7 @@ Template.showQuickMonityTemplate.events = {
 			this.checked = !this.checked;
 		});
 	},
-	"click #savequickmonitorlist" : function () {
+	"click #showQuickMonityTemplateSaveBtn" : function () {
 		var checkeds = $("#quickMonitorList :checkbox[checked='checked']");
 		if(!checkeds.length){
 			Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
@@ -86,7 +86,8 @@ Template.showQuickMonityTemplate.events = {
 			}
 		});
 	},
-	"click #cancequickmonitorlist" : function() {
-		Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
+	"click #showQuickMonityTemplateCancelBtn" : function() {
+		//Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
+		$("#showQuickMonityTemplatediv").modal("hide");
 	}
 }

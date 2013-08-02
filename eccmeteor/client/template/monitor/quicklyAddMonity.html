@@ -1,21 +1,25 @@
 <Template name="showQuickMonityTemplate">
-	<table class="table table-striped table-bordered table-condensed">
-		<tbody id="quickMonitorList">
-		{{#each monities}}
-			<tr>
-				<td class="span1"><input type="checkbox" id="{{return.id}}"></td>
-				<td><a href="#">{{property.sv_label}}</a></td>
-				<td>{{property.sv_description}}</td>
-			</tr>
-		{{/each}}
-		</tbody>
-	</table>
-	<div>
-		
-		<button id="chooseallqucikmonitor" class="btn">全选</button>
-		<button id="unchooseallqucikmonitor" class="btn">反选</button>
-		<!---->
-		<button id="savequickmonitorlist" class="btn">{{language.save}}</button>
-		<button id="cancequickmonitorlist" class="btn">{{language.cancel}}</button>
+	<div id="showQuickMonityTemplatediv" class="modal hide fade">
+	    <div class="modal-header">添加组</div>
+		<div class="modal-body">
+			<table class="table table-striped table-bordered table-condensed">
+				<tbody id="quickMonitorList">
+				{{#each monities}}
+					<tr>
+						<td class="span1"><input type="checkbox" id="{{return.id}}"></td>
+						<td><a href="#">{{property.sv_label}}</a></td>
+						<td>{{property.sv_description}}</td>
+					</tr>
+				{{/each}}
+				</tbody>
+			</table>
+		</div>
+		<div class="modal-footer">	
+			<button id="chooseallqucikmonitor" class="btn">全选</button>
+			<button id="unchooseallqucikmonitor" class="btn">反选</button>
+			<!---->
+			<button id="showQuickMonityTemplateSaveBtn" class="btn btn-primary">{{language.save}}</button>
+			<button id="showQuickMonityTemplateCancelBtn" class="btn">{{language.cancel}}</button>
+		</div>
 	</div>
 </Template>
