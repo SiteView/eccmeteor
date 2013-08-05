@@ -1,0 +1,32 @@
+#content{
+	width: 800px;
+	height: 600px;
+	margin:0 auto;
+	margin-top: 200px;
+}
+#logindiv{
+	width: 674px;
+	height: 329px;
+}
+.loginformdiv{
+	width: 525px;
+	height: 329px;
+	padding-top: 150px;
+	background-image: url(img/body.png);
+	background-size:525px 329px;
+	background-repeat:no-repeat;
+	float: left;
+}
+.loginbtndiv{
+	width: 149px;
+	height: 329px;
+	background-image: url(img/login.png);
+	background-size:149px 329px;
+	cursor:pointer;
+	margin-left: 525px;
+	background-repeat:no-repeat;
+}
+#loginErrorMsg{
+	color: #b94a48;
+	display:none
+}

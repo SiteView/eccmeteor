@@ -2,10 +2,14 @@ Template.Login.events({
     "submit #loginForm":function(){
         return false;
     },
-    "click #loginBtn":function(){
+    "keydown input:password,click .loginbtndiv":function(e){
+      console.log(e.keyCode);
+      if(typeof e.keyCode !== "undefined" && e.keyCode !== 13){
+        return;
+      }
       var username = $("#loginForm :input[name='username']").val();
       var password = $("#loginForm :input[name='password']").val();
-      var errorMsg = $("#loginForm #loginErrorMsg");
+      var errorMsg = $("#loginErrorMsg");
       if(!password || password.replace(/" "/g,"").length === 0){
         errorMsg.html("密码不能为空").css("display","block");
         return;
