@@ -21,14 +21,26 @@ SETTINGVIEW = {
 	USERSETTING:"usersetting" //用户设置
 }
 
+//
+LAYOUTVIEW = {
+	SETTING:"settingLayout",//设置布局
+	NODE:"nodeLayout",//带操作按钮的节点布局
+	NOTOPERATION:"notOperationNodeLayout" //无操作按钮的节点布局
+}
+
 //视图切换
 SwithcView = {
 	view:function(viewName){
 		Session.set("viewstatus",viewName);
 	},
 	layout:function(layoutname){
-	    Session.set("layout",layoutname)
+	    Session.set("layout",layoutname);
+	},
+	render:function(viewName,layoutname){
+		Session.set("layout",layoutname);
+		Session.set("viewstatus",viewName);
 	}
+
 }
 
 

@@ -36,6 +36,14 @@
 	</div>
 </Template>
 
+<Template name="notOperationNodeLayout">
+	<div class="row-fluid">
+		{{#if viewstatus}}
+			{{renderPage viewstatus}}
+		{{/if}}
+	</div>
+</Template>
+
 <Template name="showMonitor"><!--展示监视器信息 -->
 	<table class="table table-striped table-bordered table-condensed">
 		<thead>
@@ -151,6 +159,7 @@
 	</table>
 	{{> showGroupAdd}}
 	{{> showGroupEdit}}
+	{{> showEditEntity}}
 </Template>
 
 <Template name="svg"><!-- svg 图像展示-->

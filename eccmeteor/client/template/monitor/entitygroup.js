@@ -9,6 +9,9 @@ Template.showEntityGroup.events = {
 		Session.set("showEntityId",id);
 		//Session.set("viewstatus",MONITORVIEW.ENTITYITEM);//设置视图状态
 		$("#showEntityDiv").modal("show");
+	},
+	"click #showEntityGroupBackBtn":function(){
+		SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE);
 	}
 }
 
@@ -58,7 +61,7 @@ Template.showEntity.events = {
 		$("#showEntityDiv").modal("hide");
 	}
 };
-
+/*
 Template.showEditEntity.entityId = function(){
 	return Session.get("checkedTreeNode").id;
 }
@@ -71,9 +74,21 @@ Template.showEditEntity.getItemsAndDefaultValueBySvIdAndDevicetype = function(sv
 	var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(sv_id);//根据SvseTree中的sv_id获取获取设备类型（即SvseEntityTempalate中的return.id）;
 	return SvseEntityTemplateDao.getItemsAndDefaultValueBySvIdAndDevicetype(sv_id,devicetype);
 }
+*/
+Template.showEditEntity.getItemsAndDefaultValue=function(){
+	var id = Session.get("showGroupAndEntityEditEntityId");
+	if(!id) return;
+	return SvseEntityTemplateDao.getItemsAndDefaultValueBySvId(id);
+}
+Template.showEditEntity.getItemsAndDefaultValueBySvIdAndDevicetype = function(){
+	var id = Session.get("showGroupAndEntityEditEntityId");
+	if(!id) return;
+	var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);//根据SvseTree中的sv_id获取获取设备类型（即SvseEntityTempalate中的return.id）;
+	return SvseEntityTemplateDao.getItemsAndDefaultValueBySvIdAndDevicetype(id,devicetype);
+}
 
 Template.showEditEntity.events = {
-	"click #saveEntity":function(){
+	"click #showEditEntityFormSaveBtn":function(){
 		var checkedTreeNode =  Session.get("checkedTreeNode");//该node为设备节点本身
 		var arr = $("#showEditEntityForm").serializeArray();
 		var property = ClientUtils.formArrayToObject(arr);
@@ -91,10 +106,12 @@ Template.showEditEntity.events = {
 				SystemLogger("editEntity 捕捉到错误");
 				return;
 			}
-			Session.set("viewstatus",MONITORVIEW.MONTIOTR);
+		//	Session.set("viewstatus",MONITORVIEW.MONTIOTR);
+			$("#showEditEntityDiv").modal('hide');
 		});
 	},
-	"click #cancel":function(){
-		Session.set("viewstatus",MONITORVIEW.MONTIOTR);
+	"click #showEditEntityFormCancelBtn":function(){
+		//Session.set("viewstatus",MONITORVIEW.MONTIOTR);
+		$("#showEditEntityDiv").modal('hide');
 	}
 }

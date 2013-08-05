@@ -10,7 +10,7 @@ Template.moitorContentTree.rendered = function(){
 			callback:{
 				onClick:function(event, treeId, treeNode){
 				    //设置布局
-				    SwithcView.layout("settingLayout");
+				    SwithcView.layout(LAYOUTVIEW.SETTING);
 				    //引用 navsetting.js中的函数
 					NavigationSettionTree.execute(treeNode.action);
 				}
@@ -43,7 +43,7 @@ var drawSvseTree = function(){
 		callback:{
 			onClick:function(event, treeId, treeNode){
 			    //设置布局
-				SwithcView.layout("nodeLayout");
+				SwithcView.layout(LAYOUTVIEW.NODE);
 				var id= treeNode.id;
 				var type = treeNode.type;
 				var checkedTreeNode = {};

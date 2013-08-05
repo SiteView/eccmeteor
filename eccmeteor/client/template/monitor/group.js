@@ -24,7 +24,7 @@ Template.showGroupAdd.rendered = function(){
 
 Template.showGroupEdit.getGroup = function(){
 	//var id = Session.get("checkedTreeNode")["id"];
-	var id = Session.get("showGroupAndEntityEditNodeId");
+	var id = Session.get("showGroupAndEntityEditGroupId");
 	var group = SvseDao.getGroup(id);
 	console.log(group)
 	return group;
@@ -37,7 +37,7 @@ Template.showGroupEdit.events({
 		if(!property["sv_dependson"])
 			property["sv_dependson"] = "";
 	//	var selfId = Session.get("checkedTreeNode")["id"];
-	    var selfId =  Session.get("showGroupAndEntityEditNodeId");
+	    var selfId =  Session.get("showGroupAndEntityEditGroupId");
 		var group = {'property':property,'return':{'id':selfId}};
 		SvseDao.editGroup(group,selfId,function(result){
 			if(!result.status){

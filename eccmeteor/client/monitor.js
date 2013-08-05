@@ -14,7 +14,7 @@ Template.showGroupAndEntity.events({
     },
      "click #showGroupAndEntityTableGroupList i.icon-edit":function(e){
         var id = e.target.id;
-        Session.set("showGroupAndEntityEditNodeId",id);
+        Session.set("showGroupAndEntityEditGroupId",id);
         console.log("编辑组id:"+id);
         $("#showGroupEditdiv").modal('show');
     },
@@ -30,8 +30,9 @@ Template.showGroupAndEntity.events({
      "click #showGroupAndEntityTableEntityList i.icon-edit":function(e){
         var id = e.target.id;
         console.log("编辑设备id:"+id);
+        Session.set("showGroupAndEntityEditEntityId",id);
+        $("#showEditEntityDiv").modal('show');
     }
-
 });
 
 
@@ -197,6 +198,7 @@ Template.operateNode.events ={
 	//	if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] === "entity") return;
 		SwithcView.view(MONITORVIEW.ENTITYGROUP);//设置视图状态
 	//	$("#showEntityGroupDiv").modal('show');
+		SwithcView.render(MONITORVIEW.ENTITYGROUP,LAYOUTVIEW.NOTOPERATION);
 	},
 	"click .btn#editEntity":function(){
 		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;

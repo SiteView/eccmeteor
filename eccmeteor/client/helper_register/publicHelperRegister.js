@@ -125,3 +125,7 @@ Handlebars.registerHelper('viewstatus',function(){
 Handlebars.registerHelper('layout',function(){
     return Session.get("layout");
 });
+
+Handlebars.registerHelper('getSession',function(arg){
+    return Session.get(arg);
+});
