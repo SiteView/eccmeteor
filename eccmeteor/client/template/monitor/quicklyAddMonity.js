@@ -83,11 +83,14 @@ Template.showQuickMonityTemplate.events = {
 				SystemLogger(result.msg,-1);
 			}else{
 				SystemLogger("刷新完成...");
+				$("#showQuickMonityTemplatediv").modal("hide");
+				SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
 			}
 		});
 	},
 	"click #showQuickMonityTemplateCancelBtn" : function() {
 		//Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
 		$("#showQuickMonityTemplatediv").modal("hide");
+		SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
 	}
 }

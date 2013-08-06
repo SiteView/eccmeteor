@@ -1,139 +1,4 @@
-Template.showGroupAndEntity.svid = function () {
-	return Session.get("svid");
-}
-
-Template.showGroupAndEntity.events({
-    "click #showGroupAndEntityTableGroupList i.icon-trash":function(e){
-		var id = e.target.id;
-		console.log("删除组id:"+id);
-		SvseDao.removeNodesById(id,function(result){
-			if(!result.status){
-				console.log(result.msg);
-			}
-		});
-    },
-     "click #showGroupAndEntityTableGroupList i.icon-edit":function(e){
-        var id = e.target.id;
-        Session.set("showGroupAndEntityEditGroupId",id);
-        console.log("编辑组id:"+id);
-        $("#showGroupEditdiv").modal('show');
-    },
-    "click #showGroupAndEntityTableEntityList i.icon-trash":function(e){
-		var id = e.target.id;
-		console.log("删除设备id:"+id);
-		SvseDao.removeNodesById(id,function(result){
-			if(!result.status){
-				console.log(result.msg);
-			}
-		});
-    },
-     "click #showGroupAndEntityTableEntityList i.icon-edit":function(e){
-        var id = e.target.id;
-        console.log("编辑设备id:"+id);
-        Session.set("showGroupAndEntityEditEntityId",id);
-        $("#showEditEntityDiv").modal('show');
-    }
-});
-
-
-Template.showGroupAndEntity.rendered = function(){
-    //初始化checkbox全选效果
-    $(function(){
-        ClientUtils.tableSelectAll("showGroupAndEntityTableGroupSelectAll");
-        ClientUtils.tableSelectAll("showGroupAndEntityTableEntitySelectAll");
-    });
-    $(function(){
-        $("tbody tr").mouseenter(function(){
-            $(this).find("div :first").css("display","block");
-        }).mouseleave(function(){
-            $(this).find("div :first").css("display","none");
-        });
-    });
-    
-}
-
-Template.showMonitor.entityid = function () {
-	return Session.get("entityid");
-}
-
-Template.showMonitor.events={
-	"click tbody tr":function(e){
-		var id  = e.currentTarget.id;
-		var status = e.currentTarget.title;
-		if(!id || id=="") return;
-		var ID = {id:id,type:"monitor"}
-		Session.set("checkedMonitorId",ID);//存储选中监视器的id
-		//用此方法代替上面的存储方式
-		SessionManage.setCheckedMonitroId(id);
-		drawImage(id);
-	}
-}
-
-Template.showMonitor.rendered = function(){ //默认选中第一个监视进行绘图
-	if(!this._rendered) {
-			this._rendered = true;
-	}
-	
-	//初始化checkbox全选效果
-	 $(function(){
-        ClientUtils.tableSelectAll("showMonitorTableSelectAll");
-    });
-	
-	
-	var tr = $("#showMonitorList tr:first");
-	if(!tr){
-		$("#showSvg").css("display","none");
-		return;//如果没有监视器则不画图
-	}
-	var id = tr.attr("id");
-	if(!id || id=="") {
-		$("#showSvg").css("display","none");
-		return;
-	}
-	$("#showSvg").css("display","block");
-	var ID = {id:id,type:"monitor"}
-	Session.set("checkedMonitorId",ID);//存储选中监视器的id
-	//用此方法代替上面的存储方式
-	SessionManage.setCheckedMonitroId(id);
-	drawImage(id);
-}
-Template.recordsData.recordsData = function(){
-	return Session.get("recordsData");
-}
-Template.recordsData.events = {
-	"click .btn#monitorDetail" :  function(){
-		SwithcView.view(MONITORVIEW.MONITORDETAIL);//设置视图状态为监视器详细信息
-	}
-}
-
-//画图前 获取相关数据
-function drawImage(id,count){
-	if(!count) var count = 200;
-	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
-	if(!foreigkeys){
-		SystemLogger("监视器"+id+"不能获取画图数据");
-		return;
-	}
-	//获取画图数据
-	Meteor.call("getQueryRecords",id,count, function (err, result) {
-		if(err){
-			SystemLogger(err);
-			return;
-		}	
-		var dataProcess = new DataProcess(result,foreigkeys["monitorForeignKeys"]);
-		var resultData = dataProcess.getData();
-		var recordsData = dataProcess.getRecordsDate();
-		var keys = dataProcess.getDataKey();
-		var table = new DrawTable();//调用 client/lib 下的table.js 中的drawLine函数画图
-		table.drawTable(keys,"#tableData");
-		var line = new DrawLine(resultData,foreigkeys["monitorPrimary"],foreigkeys["monitorDescript"]);
-		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图
-		Session.set("recordsData",recordsData);
-	});
-
-}
-
-Template.moitorContent.rendered = function(){
+Template.BodyContentOfMonitor.rendered = function(){
 	if(!Session.get("moitorContentRendered"))
 		Session.set("moitorContentRendered",true); //渲染完毕
 }
@@ -243,24 +108,15 @@ Template.operateNode.events ={
 			}
 		});
 	},
-	"click a#removeNodes":function(){ //删除子节点
-	/*
-		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode").type === "se") return;
-		var id = Session.get("checkedTreeNode")["id"];
-		SvseDao.removeNodesById(id,function(result){
-			console.log("events click a#removeNodes:");
-			console.log(result);
-		});
-		var fatherId = id.substring(0,id.lastIndexOf("\."));//获取删除节点的父节点Id
-	//	ConstructorNavigateTree.checkedNodeByTreeId(fatherId);//根据id选中节点设置到Session中
-		SwithcView.view(MONITORVIEW.GROUPANDENTITY);//设置视图状态
-		*/
+	"click a#removeNodes":function(){ 
+		//删除子节点
 		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
 		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
-		var ids = entityIds.concat(entityIds);
+		var parentid  = Session.get("checkedTreeNode").id;
+		var ids = entityIds.concat(groupsIds);
 		if (!ids.length)
 			return;
-		SvseDao.removeNodesByIds(ids, function(result) {
+		SvseDao.removeNodesByIds(ids,parentid,function(result) {
 			if(result.status){
 				console.log("删除成功");
 			}else{
@@ -335,51 +191,3 @@ Template.operateNode.events ={
 		SvseDao.refreshTreeData();
 	}
 }
-/*
-Deps.autorun(function(c){
-	//自动改变 禁用按钮的文字，为禁用或者启用。根据session中存的id的状态来决定。
-	//状态为disable则为启用，其他状态全为禁用。
-	var monitor = Session.get("checkedMonitorId");//存储选中监视器的id
-	if(!monitor) return;
-	var id = monitor["id"];
-	var node = SvseTreeDao.getNodeById(id);
-	var status = node ? node["status"] : false;
-	console.log("checkedMonitorId 变化");
-	//控制监视器禁止按钮的文本显示
-	var statusContext = "";
-	var name = "";
-	if( status === "disable"){
-		statusContext = "启用";
-		name = "enable"
-	}else{
-		statusContext = "禁用";
-		name = "disable"
-	}
-	$("a#forbidMonitor").html(statusContext).attr("name",name);
-});
-
-
-Template.operateNode.rendered = function () {
-	var node = Session.get("checkedTreeNode");
-	if(!node) return;
-	var id = node["id"];
-	var type = node["type"];
-	var n = SvseTreeDao.getNodeById(id);
-	console.log(status+":"+n["status"]);
-	var status = n ? n["status"] : false;
-	console.log("checkedTreeNode 变化");
-	//控制设备和组上禁止按钮的文本显示
-	type = type === "entity" ? "Entity" : "Group"; 
-	var statusContext = "";
-	var name = "";
-	if( status === "disable"){
-		statusContext = "启用";
-		name = "enable"
-	}else{
-		statusContext = "禁用";
-		name = "disable";
-	}
-	console.log(type+":"+name);
-	$("a#forbid"+type).html(statusContext).attr("name",name);
-}
-*/

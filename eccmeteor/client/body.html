@@ -1,5 +1,5 @@
-<Template name="home">
-{{> header}}
+<Template name="body">
+{{> bodyheader}}
 	<div style="margin-top:37px">
 		<div class="container">
 			<div class="tabbable">
@@ -9,9 +9,9 @@
 				<li><a href="#3" data-toggle="tab">系统消息</a></li>
 			  </ul>
 			  <div class="tab-content">
-				{{> moitorContent}}
+				{{> BodyContentOfMonitor}}
 				{{> viewContent}}
-				{{> systemInfoContent}}
+				{{> systemInfoContent}}		
 			  </div>
 			</div>
 		</div>

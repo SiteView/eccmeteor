@@ -1,7 +1,7 @@
 //定义视图状态
 MONITORVIEW = {
 	GROUPANDENTITY : "showGroupAndEntity", //组与设备视图 表格
-	MONTIOTR : "showMonitor", //监视器视图  表格，统计图，数据状态统计
+//	MONTIOTR : "showMonitor", //监视器视图  表格，统计图，数据状态统计
 	ENTITYGROUP : "showEntityGroup", //设备模板展示视图
 	ENTITYITEM : "showEntity", //设备模板信息添加视图
 	ENTITYEDIT : "showEditEntity",
@@ -20,7 +20,11 @@ SETTINGVIEW = {
 	WARNERRULE :"warnerrule", // 报警
 	USERSETTING:"usersetting" //用户设置
 }
-
+//整体模块视图
+MODULEVIEW = {
+	ENTITYMODULE:"EntityModule", //设备视图
+	GROUPMODULE:"GroupModule"
+}
 //
 LAYOUTVIEW = {
 	SETTING:"settingLayout",//设置布局

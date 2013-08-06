@@ -2,7 +2,7 @@ Meteor.Router.add({
     '/': 'Login',
     '/index':'Login',
     '/login':'Login',
-    '/home': 'home',
+    '/home': 'body',
     '*':"NoFound"
 });
 

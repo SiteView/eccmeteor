@@ -129,3 +129,9 @@ Handlebars.registerHelper('layout',function(){
 Handlebars.registerHelper('getSession',function(arg){
     return Session.get(arg);
 });
+
+Handlebars.registerHelper('trim',function(arg){
+	// Otherwise use our own trimming functionality
+	return arg ? arg.replace( /^\s+/, "" ).replace(/\s+$/, "" ) : arg;
+
+});

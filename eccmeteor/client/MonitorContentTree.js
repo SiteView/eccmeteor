@@ -57,7 +57,8 @@ var drawSvseTree = function(){
 					Session.set("svid",id);
 					return;
 				}
-				SwithcView.view(MONITORVIEW.MONTIOTR);//设置视图状态
+				//SwithcView.view(MONITORVIEW.MONTIOTR);//设置视图状态
+				SwithcView.view(MODULEVIEW.ENTITYMODULE);
 				Session.set("entityid",id);
 			}
 		}

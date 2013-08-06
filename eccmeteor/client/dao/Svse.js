@@ -96,8 +96,8 @@ SvseDao = {
 			
 		});
 	},
-	removeNodesByIds:function(ids,fn){
-		Meteor.call(SvseDao.AGENT, "removeNodesByIds", [ids], function(err, result) {
+	removeNodesByIds:function(ids,panrenid,fn){
+		Meteor.call(SvseDao.AGENT, "removeNodesByIds", [ids,panrenid], function(err, result) {
 			if (err) {
 				console.log(err);
 				fn({

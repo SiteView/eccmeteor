@@ -96,8 +96,12 @@ Template.showEditEntity.events = {
 		if(!property["sv_dependson"]){
 			property["sv_dependson"] = "";
 		}
-		property["sv_devicetype"] = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(Session.get("checkedTreeNode").id);
-		var entityid =checkedTreeNode.id;
+		
+		//property["sv_devicetype"] = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(Session.get("checkedTreeNode").id);
+		//var entityid =checkedTreeNode.id;
+		var entityid = Session.get("showGroupAndEntityEditEntityId"); 
+		property["sv_devicetype"] = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(entityid);
+		
 		var entity ={"property":property,"return":{id:entityid}};
 		SystemLogger(entity);
 		SvseEntityTemplateDao.editEntity(entity,entityid,function(result){
