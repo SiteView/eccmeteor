@@ -3,8 +3,6 @@ Template.Login.events({
         return false;
     },
     "keydown input:password, click .loginbtndiv":function(e){
-      console.log(e.keyCode);
-      console.log(e);
       if(e.keyCode !== 0 && e.keyCode !== 13){
         return;
       }

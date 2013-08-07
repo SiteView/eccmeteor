@@ -3,10 +3,10 @@
 		<thead>
 			<tr>
 			    <th><input type="checkbox" id="showMonitorTableSelectAll"></th>
-				<th class="span1">状态</th>
+				<th>状态</th>
 				<th>SV_ID</th>
 				<th>名称</th>
-				<th>描述</th>
+				<th class="span6">描述</th>
 				<th>最后更新时间</th>
 			</tr>
 		</thead>
@@ -14,7 +14,13 @@
 		{{#each getChildrenNodesByIdAndType entityid "submonitor"}}
 			<tr id="{{sv_id}}" title="{{status}}">
 			    <td>
+			        <div>
 			        <input type="checkbox" id="{{sv_id}}">
+			        <div style="display:none;float:right">
+						<i class="icon-trash" id="{{sv_id}}"></i>&nbsp;
+						<i class="icon-edit"  id="{{sv_id}}"></i>
+					</div>
+					</div>
 			    </td>
 				<td>{{status}}</td>
 				<td>{{sv_id}}</td>

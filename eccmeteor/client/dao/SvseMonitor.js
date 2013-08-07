@@ -44,41 +44,6 @@ SvseMonitorDao = {
 	},
 	addMultiMonitor : function(monitors,parentid,fn){
 		for(index in monitors){
-			/*
-			//SvseMonitorDao.addMonitor(monitors[index],parentid)
-			Meteor.call("entityAddMonitor",monitors[index],parentid,function(err,r_monitor){
-				if(err){
-					SystemLogger(err,-1);
-					SystemLogger("监视器：");
-					console.log(monitors[index]);
-					SystemLogger("添加失败");
-					return ;
-				}else{
-					SystemLogger("添加成功"+r_monitor["sv_id"]);
-				}
-				var selfId = r_monitor["sv_id"];
-				SvseTree.insert(r_monitor,function(err,r_id){
-					if(err){
-						fn(err,selfId);						
-						return;
-					}
-					SystemLogger("插入数据到SvseTree成功");
-					//3 插入到父节点（更新父节点）
-					var parentNode = Svse.findOne({sv_id:parentid});
-					SystemLogger("找到的父节点是");
-					SystemLogger(parentNode);
-					Svse.update(parentNode._id,{$push:{submonitor:selfId}},function(err){
-						if(err){
-							SystemLogger("更新父节点失败，错误是：");
-							fn(err,selfId);
-							return;
-						}
-						SystemLogger("根据树结构的父节点成功");
-						fn(undefined,selfId);
-					});
-				});
-			});
-			*/
 			Meteor.call(SvseMonitorDao.AGENT,"addMultiMonitor",[monitors,parentid],function(err,result){
 				if(err){
 				SystemLogger(err);
@@ -123,6 +88,21 @@ SvseMonitorDao = {
 	deleteMonitor : function(monitorid,parentid,fn){
 		fn = Utils.checkReCallFunction(fn);
 		Meteor.call(SvseMonitorDao.AGENT,"deleteMonitor",[monitorid,parentid],function (err,result){
+			if(err){
+				console.log(err);
+				fn({status:false,msg:err})
+			}else{
+				if(result && !reult[status]){ // 无权限
+					console.log(result.msg);
+					fn(result);
+				}else{
+					fn({status:true})
+				}
+			}
+		});
+	},
+	deleteMultMonitors : function(monitorIds,parentid,fn){
+		Meteor.call(SvseMonitorDao.AGENT,"deleteMultMonitors",[monitorIds,parentid],function (err,result){
 			if(err){
 				console.log(err);
 				fn({status:false,msg:err})

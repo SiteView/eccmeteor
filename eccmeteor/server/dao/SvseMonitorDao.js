@@ -81,6 +81,11 @@ SvseMonitorDaoOnServer = {
 		for(index in monitors){
 			SvseMonitorDaoOnServer.addMonitor(monitors[index],parentid);
 		}
+	},
+	deleteMultMonitors : function(monitorids,parentid){
+		for(index in monitorids){
+			SvseMonitorDaoOnServer.deleteMonitor(monitorids[index],parentid);
+		}
 	}
 }
 

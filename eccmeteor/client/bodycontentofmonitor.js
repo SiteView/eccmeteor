@@ -137,6 +137,7 @@ Template.operateNode.events ={
 		SwithcView.view(MONITORVIEW.MONITOREDIT);
 	},
 	"click a#deleteMonitor" : function(){
+		/*
 		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;
 		var monitorid = Session.get("checkedMonitorId")["id"];
 		var parentid  = Session.get("checkedTreeNode")["id"];
@@ -145,6 +146,18 @@ Template.operateNode.events ={
 			SystemLogger("a#deleteMonitor");
 			SystemLogger(result);
 		});
+		*/
+		var monitorIds =  ClientUtils.tableGetSelectedAll("showMonitorList");
+		var parentid  = Session.get("checkedTreeNode")["id"];
+		console.log("delete monitorids:");
+		console.log(monitorIds);
+		SvseMonitorDao.deleteMultMonitors(monitorIds,parentid,function(result){
+			if(result.status){
+				console.log("删除成功");
+			}else{
+				console.log("删除失败");
+			}
+		})
 	},
 	"click a#forbidMonitor" : function(e){
 		

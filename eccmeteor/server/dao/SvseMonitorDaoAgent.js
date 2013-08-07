@@ -14,6 +14,9 @@ SvseMonitorDaoAgent = {
 			case "addMultiMonitor":
 				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">addMonitor");
 				break;
+			case "deleteMultMonitors":
+				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">deleteMonitor");
+				break;
 			default : flag = true;
 		}
 		if(!SvseMonitorDaoOnServer[fn]){
