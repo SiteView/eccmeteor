@@ -7,8 +7,8 @@ MONITORVIEW = {
 	ENTITYEDIT : "showEditEntity",
 //	GROUPADD : "showGroupAdd", //添加组信息视图
 	GROUPEDIT : "showGroupEdit", //修改组信息
-	MONITORTEMPLATES : "showMonitorTemplate", //设备的监视器列表
-	MONITORADD : "showMonitorInfo", //监视器的增加
+//	MONITORTEMPLATES : "showMonitorTemplate", //设备的监视器列表
+//	MONITORADD : "showMonitorInfo", //监视器的增加
 	MONITOREDIT:"showMonitorEditInfo", //监视器的修改
 	QUICKLYADDMONITY:"showQuickMonityTemplate",//快速添加监视器
 	MONITORDETAIL:"detailSvg"//监视器的详细信息

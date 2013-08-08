@@ -141,8 +141,8 @@
 			</form>
 		</div>
 		<div class="modal-footer" align="right">
-			<button class="btn btn-large" id="emailbasicsettingofaddresscancelbtn">取消</button>
-			<button class="btn btn-primary btn-large" id="emailbasicsettingofaddresssavebtn">保存</button>
+			<button class="btn btn-primary" id="emailbasicsettingofaddresssavebtn">保存</button>
+			<button class="btn" id="emailbasicsettingofaddresscancelbtn">取消</button>
 		</div>
 	</div>
 </Template>
@@ -150,7 +150,10 @@
 
 <Template name="emailbasicsettingofaddressedit">
 	<div id="emailaddresssettingdivedit" class="modal hide fade">
-		<div class="modal-header">邮件地址设置</div>
+		<div class="modal-header">			
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<label class="label label-info">邮件地址设置</label>
+		</div>
 		<div class="modal-body">
 			{{#with emailbasicsettingofaddressbasciinfoeditform}}
 			<form class="well form-horizontal form-inline" id="emailbasicsettingofaddressbasciinfoedit">

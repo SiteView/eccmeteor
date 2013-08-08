@@ -49,7 +49,10 @@
 
 <Template name="usersettingadd">
 	<div id="usersettingadddiv" class="modal hide fade">
-		<div class="modal-header">添加用户</div>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<label class="label label-info">添加用户</label>
+		</div>
 		<div class="modal-body">
 		<form id="usersettingaddform" class="well form-horizontal" submit="return fasle;">
 			<fieldset>
@@ -90,7 +93,10 @@
 
 <Template name="usersettingedit">
 	<div id="usersettingeditdiv" class="modal hide fade">
-		<div class="modal-header">编辑用户</div>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<label class="label label-info">编辑用户</label>
+		</div>
 		<div class="modal-body">
 		<form id="usersettingeditform" class="well form-horizontal" submit="return fasle;">
 			<fieldset>
@@ -127,7 +133,7 @@
 	</div>
 </Template>
 
-<Template name="userPromissionSetting"> <!--用户授权 --->
+<Template name="userPromissionSetting"> <!--用户授权 -->
 	<div id="userPromissionSettingDiv" class="modal hide fade">
 		<div class="modal-header">
 			用户授权<span class="badge badge-info" id="promissionUsername"></span>

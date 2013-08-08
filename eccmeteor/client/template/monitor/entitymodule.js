@@ -79,7 +79,7 @@ Template.showMonitor.rendered = function(){ //默认选中第一个监视进行�
     });
 	//选中变色
 	$(function(){
-		$("tbody tr").click(function(){
+		$("#showMonitorList tr").click(function(){
 			var checkbox = $(this).find(":checkbox:first");
 			checkbox[0].checked = !checkbox[0].checked;
 			$(this).siblings(".success").each(function(){
@@ -91,7 +91,7 @@ Template.showMonitor.rendered = function(){ //默认选中第一个监视进行�
 			$(this).removeClass().addClass("success");
 
 		});
-		$("tr :checkbox").click(function(event){
+		$("#showMonitorList:checkbox").click(function(event){
 			event.stopPropagation();
 			if(this.checked){
 				if(!$(this).closest("tr").hasClass("success")){

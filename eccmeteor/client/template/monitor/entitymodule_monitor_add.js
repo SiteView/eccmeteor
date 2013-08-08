@@ -1,35 +1,51 @@
-Template.showMonitorTemplate.monities = function(){
+Template.ChooseMonitorTemplate.monities = function(){
 	var id = Session.get("checkedTreeNode")["id"];
 	var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);
 	return SvseEntityTemplateDao.getEntityMontityByDevicetype(devicetype);
 }
-Template.showMonitorTemplate.events = {
+Template.ChooseMonitorTemplate.events = {
 	"click tr a":function(e){
-		SwithcView.view(MONITORVIEW.MONITORADD);//设置视图状态 选择监视器模板的视图
+	//	SwithcView.view(MONITORVIEW.MONITORADD);//设置视图状态 选择监视器模板的视图
 		Session.set("monityTemplateId",e.target.id);
 	//	var  checkedMonityTemolate = SvseMonitorTemplateDao.getTemplateById(e.target.id);
 	//	Session.set("checkedMonityTemolate",checkedMonityTemolate);//存储选中的监视器模板信息
+		$("#chooseMonitorTemplateDiv").modal('hide');
+		$("#showMonitorInfoDiv").modal('show');
 	} 
 }
 
 Template.showMonitorInfo.getMonityTemplateParameters = function(){
-	return SvseMonitorTemplateDao.getMonityTemplateParametersById(Session.get("monityTemplateId"));
+	return Session.get("monityTemplateId") 
+			? SvseMonitorTemplateDao.getMonityTemplateParametersById(Session.get("monityTemplateId"))
+			: {}
 }
 
 Template.showMonitorInfo.getMonityTemplateAdvanceParameters = function(){
-	return SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(Session.get("monityTemplateId"));
+	return Session.get("monityTemplateId") 
+			? SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(Session.get("monityTemplateId"))
+			: {}
+//	return SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(Session.get("monityTemplateId"));
 }
 
 Template.monitorTemplateStatus.getMonityTemplateReturnItemsById = function(){
-	return SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("monityTemplateId"));
+	return Session.get("monityTemplateId") 
+			? SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"))
+			: {}
+//	return SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("monityTemplateId"));
 }
 
 Template.showMonitorInfo.getMonityTemplateStates = function(){
-	return SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"));
+	return Session.get("monityTemplateId") 
+			? SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"))
+			: {}
+//	return SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"));
 }
 
 Template.showMonitorInfo.getMonityTemplateStatesByStatus = function(status){
-	return SvseMonitorTemplateDao.getMonityTemplateStatesByIdAndStatus(Session.get("monityTemplateId"),status);
+	return Session.get("monityTemplateId") 
+			? SvseMonitorTemplateDao.getMonityTemplateStatesByIdAndStatus(Session.get("monityTemplateId"),status)
+			: {}
+//	return SvseMonitorTemplateDao.getMonityTemplateStatesByIdAndStatus(Session.get("monityTemplateId"),status);
 }
 
 Template.showMonitorInfo.devicename = function(){
@@ -37,7 +53,10 @@ Template.showMonitorInfo.devicename = function(){
 }
 
 Template.showMonitorInfo.events = {
-	"click #addMonitor":function(){
+	"submit form":function(){
+		return false;
+	},
+	"click #monityTemplateFormsSavelBtn":function(){
 		var monityTemplateParameter = ClientUtils.formArrayToObject($("#monityTemplateParameter").serializeArray());
 	//	var monityTemplateStates = ClientUtils.formArrayToObject($("#monityTemplateStates").serializeArray());
 		var monityTemplateAdvanceParameters = ClientUtils.formArrayToObject($("#monityTemplateAdvanceParameters").serializeArray());
@@ -105,56 +124,28 @@ Template.showMonitorInfo.events = {
 			});
 		}
 	},
-	"click #errorsStatusDiv a.btn":function(){
-		var inputs = $("#errorsStatusDiv > form:first").serializeArray();
-		var sv_conditioncount = $("#errorsStatusForm > .sv_conditioncount:first");
-		var count = sv_conditioncount.val();
-		count = +count;
-		count = count+1;
-		sv_conditioncount.val(count);
-		for(index in inputs){
-			var input = ClientUtils.createInputHiddenDom(inputs[index].name+count,inputs[index].value);
-			$("#errorsStatusForm").append(input);
-		}
-		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
-		tr.attr("id","tr"+count);
-		var td = $("<td></td>").append($("<input type='checkbox'>"));
-		tr.prepend(td);
-		$("#errorsStatusTable").prepend(tr);
+	"click #monityTemplateFormsCancelBtn":function(){
+		$("#showMonitorInfoDiv").modal('hide');
 	},
-	"click #warningStatusDiv a.btn":function(){
-		var inputs = $("#warningStatusDiv > form:first").serializeArray();
-		var sv_conditioncount = $("#warningStatusForm > .sv_conditioncount:first");
-		var count = sv_conditioncount.val();
-		count = +count;
-		count = count+1;
-		sv_conditioncount.val(count);
-		for(index in inputs){
-			var input = ClientUtils.createInputHiddenDom(inputs[index].name+count,inputs[index].value);
-			$("#warningStatusForm").append(input);
-		}
-		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
-		tr.attr("id","tr"+count);
-		var td = $("<td></td>").append($("<input type='checkbox'>"));
-		tr.prepend(td);
-		$("#warnigStatusTable").prepend(tr);
-	},
-	"click #goodStatusDiv a.btn":function(){
-		var inputs = $("#goodStatusDiv > form:first").serializeArray();
-		var sv_conditioncount = $("#goodStatusForm > .sv_conditioncount:first");
-		var count = sv_conditioncount.val();
-		count = +count;
-		count = count+1;
-		sv_conditioncount.val(count);
-		for(index in inputs){
-			var input = ClientUtils.createInputHiddenDom(inputs[index].name+count,inputs[index].value);
-			$("#goodStatusForm").append(input);
-		}
-		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
-		tr.attr("id","tr"+count);
-		var td = $("<td></td>").append($("<input type='checkbox'>"));
-		tr.prepend(td);
-		$("#goodStatusTable").prepend(tr);
+	"click i.icon-trash":function(e){
+		var i = $(e.target); //转Jquery对象
+		i.closest("table").children("tbody:first").find(":checkbox").each(function(){
+			if(this.checked){
+				var tr = $(this).closest("tr");
+				var id = tr.attr("id").substr(2);
+				console.log("delete id :"+id);
+				tr.closest("div[id]").find("form[id]:first :hidden").each(function(){
+					var name = $(this).attr("name");
+					if(name.indexOf(id) == -1)
+						return;
+					var reg=eval("/"+id+"/");
+					if(!$(this).attr("name").replace(reg,"").match(/\d+/g))
+						$(this).remove();
+				});
+				tr.remove();
+			}
+		});
+		i.parent().children(":checkbox")[0].checked = false;
 	}
 }
 Template.showMonitorInfo.rendered = function(){
@@ -167,26 +158,6 @@ Template.showMonitorInfo.rendered = function(){
 				var flag = this.checked; 
 				$(this).closest("table").find("tbody :checkbox").each(function(){
 					this.checked = flag//$(this).attr("checked",flag);该写法有bug无法再界面上显示钩
-				});
-			});
-		});
-		//删除条件
-		$("button[name='deleteConditionBtn']").each(function(){
-			$(this).click(function(){
-				$(this).parent("div[id]").find("tbody :checkbox").each(function(){
-					if(this.checked){
-						var tr = $(this).closest("tr");
-					    var id = tr.attr("id").substr(2);
-						tr.closest("div[id]").find("form[id]:first :hidden").each(function(){
-							var name = $(this).attr("name");
-							if(name.indexOf(id) == -1)return;
-							var reg=eval("/"+id+"/");
-							if(!$(this).attr("name").replace(reg,"").match(/\d+/g)){
-								$(this).remove();
-							}
-						});
-						tr.remove();
-					}
 				});
 			});
 		});
@@ -212,9 +183,50 @@ Template.showMonitorInfo.rendered = function(){
 			})();
 		}
 	});
-	
-		
+	//初始化弹窗
+	$(function(){
+		$('#showMonitorInfoDiv').modal({
+			backdrop:true,
+			keyboard:true,
+			show:false
+		}).css({
+			width: '800',
+			'margin-left': function () {
+				return -(($(this).width() / 2)+ 50);
+			},
+		});
+	});
 }
 Template.showMonitorInfo.getAllTaskNames = function(){
 	return SvseTaskDao.getAllTaskNames();
 }
+
+Template.monitorTemplateStatus.events({
+	//添加报警条件
+	"click button":function(e){ 
+		//防止误操作
+		if(e.target.id !== "monitorTemplateStatusAddConditions")
+			return;
+		var btn = $(e.target);
+		var form = btn.parent("form");
+		var div =  form.parent("div");
+		var tbody = div.children("table").children("tbody");
+		var hiddenform = div.children("form:eq(1)");
+		var inputs = form.serializeArray();
+		var sv_conditioncount = hiddenform.children(".sv_conditioncount:first");
+		var count = sv_conditioncount.val();
+		count = +count;
+		count = count+1;
+		sv_conditioncount.val(count);
+		for(index in inputs){
+			var input = ClientUtils.createInputHiddenDom(inputs[index].name+count,inputs[index].value);
+			hiddenform.append(input);
+		}
+		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
+		tr.attr("id","tr"+count);
+		var td = $("<td></td>").append($("<input type='checkbox'>"));
+		tr.prepend(td);
+		tbody.prepend(tr);
+
+	}
+});
