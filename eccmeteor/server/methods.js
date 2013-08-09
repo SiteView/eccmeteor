@@ -11,7 +11,7 @@
 //  "getMonitorInfoById" :SvseMonitorDaoOnServer.getMonitorInfoById,
   "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
 //  "deleteMonitor":SvseMonitorDaoOnServer.deleteMonitor,
-  "svGetDynamicData":svGetDynamicData,
+//  "svGetDynamicData":svGetEntityDynamicPropertyData,
 //  "svDisableForever":svForbidNodeForever,
 //  "svEnable":svAllowNode,
 //  "svDisableTemporary":svDisableTemporary,
@@ -34,7 +34,8 @@
   "svseMonitorDaoAgent":SvseMonitorDaoAgent.agent,
   "svseEmailDaoAgent":SvseEmailDaoAgent.agent,
   "svseEntityTemplateDaoAgent":SvseEntityTemplateDaoAgent.agent,
-  "svseWarnerRuleDaoAgent":SvseWarnerRuleDaoAgent.agent
+  "svseWarnerRuleDaoAgent":SvseWarnerRuleDaoAgent.agent,
+  "svseMonitorTemplateDaoAgent":SvseMonitorTemplateDaoAgent.agent
 });//给客户端调用的
 
 //给服务端调用的。//调用 /lib/svdb.js中定义的方法
@@ -50,6 +51,7 @@ SvseMethodsOnServer = {
 	"svRefreshMonitors":svRefreshMonitors,
 	"svGetRefreshed":svGetRefreshed,
 	"svGetMonitor":svGetMonitor,
+	"svGetEntityDynamicPropertyData":svGetEntityDynamicPropertyData,
 	"svDeleteMonitor" : svDeleteMonitor,
 	"svGetEmailList" : svGetEmailList,
 	"svGetWarnerRule" :svGetWarnerRule,

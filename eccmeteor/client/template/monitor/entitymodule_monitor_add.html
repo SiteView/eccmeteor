@@ -9,7 +9,7 @@
 				<thead>
 					<tr>   
 						<th>监视器类型</th>
-						<th>说明</th>
+						<th>描述</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -53,9 +53,18 @@
 			<hr />
 			<span class="label label-info">报警条件</span><br /> <br />
 			<div id="errorsStatusDiv">
-				<span class="label label-important">错误条件：</span><br /> <br />
+				<div class="row-fluid">
+					<div class ="span2"><span class="label label-important">错误条件：</span></div>
+					<div class="span8 well well-large" style="clear:left">
+						{{#with getMonityTemplateStatesByStatus "error"}}
+								{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
+						{{/with}}
+					</div>
+					<div class="span2">
+						<button class="btn statusmodaldiv">...</button>
+					</div>
+				</div>
 				{{> monitorTemplateStatus}}
-				<!--<button class="btn" name="deleteConditionBtn">删除</button>-->
 				<table class="table table-striped table-bordered table-condensed">
 					<thead>
 						<tr>
@@ -67,22 +76,31 @@
 						</tr>
 					</thead>
 					<tbody id="warnigStatusTable">
-					{{#with getMonityTemplateStatesByStatus "error"}}
-						{{> monitorTemplateInitStatusTableTr}}
-					{{/with}}
+						{{#with getMonityTemplateStatesByStatus "error"}}
+							{{> monitorTemplateInitStatusTableTr}}
+						{{/with}}
 					</tbody>
 				</table>
 				<form id="errorsStatusForm">
-				<input type="hidden" class="sv_conditioncount" name="sv_conditioncount" value="1">
+					<input type="hidden" class="sv_conditioncount" name="sv_conditioncount" value="1">
 					{{#with getMonityTemplateStatesByStatus "error"}}
 						{{> monitorTemplateInitStatusInputHidden}}
 					{{/with}}
 				</form>
 			</div>
 			<div id="warningStatusDiv">
-				<span class="label label-warning">危险条件：</span><br /> <br />
+				<div class="row-fluid">
+					<div class ="span2"><span class="label label-warning">危险条件：</span></div>
+					<div class="span8 well well-large" style="clear:left">
+						{{#with getMonityTemplateStatesByStatus "warning"}}
+								{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
+						{{/with}}
+					</div>
+					<div class="span2">
+						<button class="btn statusmodaldiv">...</button>
+					</div>
+				</div>
 				{{> monitorTemplateStatus}}
-				<!--<button class="btn" name="deleteConditionBtn">删除</button>-->
 				<table class="table table-striped table-bordered table-condensed">
 					<thead>
 						<tr>
@@ -107,9 +125,18 @@
 				</form>
 			</div>
 			<div id="goodStatusDiv">
-				<span class="label label-success">正常条件：</span><br /> <br />
+				<div class="row-fluid">
+					<div class ="span2"><span class="label label-success">正常条件：</span></div>
+					<div class="span8 well well-large" style="clear:left">
+						{{#with getMonityTemplateStatesByStatus "good"}}
+								{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
+						{{/with}}
+					</div>
+					<div class="span2">
+						<button class="btn statusmodaldiv">...</button>
+					</div>
+				</div>
 				{{> monitorTemplateStatus}}
-				<!--<button class="btn" name="deleteConditionBtn">删除</button>-->
 				<table  class="table table-striped table-bordered table-condensed">
 					<thead>
 						<tr>

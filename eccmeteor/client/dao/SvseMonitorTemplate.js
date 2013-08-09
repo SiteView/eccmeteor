@@ -1,5 +1,6 @@
 //监视器模板属性
 SvseMonitorTemplateDao ={
+	AGENT:"svseMonitorTemplateDaoAgent",
 	getTemplateById:function(id){//根据id获取模板
 		return SvseMonitorTemplate.findOne({"return.id" : id});
 	},
@@ -84,5 +85,20 @@ SvseMonitorTemplateDao ={
 			if(template[item]["sv_name"] === name)
 				return template[item]["sv_label"];
 		}
+	},
+	getMonityDynamicPropertyData:function(panrentid,templateMonitoryId,fn){
+		Meteor.call(
+			SvseMonitorTemplateDao.AGENT,
+			"getMonityDynamicPropertyData",
+			[panrentid,templateMonitoryId],
+			function(err,result){
+				if(err){
+					SystemLogger(err);
+					fn(false,err)
+				}else{
+					fn(true,result);
+				}
+			}
+		);
 	}
 }

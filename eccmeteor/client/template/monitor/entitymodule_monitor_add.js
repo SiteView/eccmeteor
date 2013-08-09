@@ -146,6 +146,10 @@ Template.showMonitorInfo.events = {
 			}
 		});
 		i.parent().children(":checkbox")[0].checked = false;
+	},
+	"click button.statusmodaldiv":function(e){
+	//	$(e.target).parent().parent(".row-fluid").siblings(".modal").modal('show');
+		//console.log(div);
 	}
 }
 Template.showMonitorInfo.rendered = function(){
@@ -161,7 +165,8 @@ Template.showMonitorInfo.rendered = function(){
 				});
 			});
 		});
-		if($("select.dll:first")){
+		//在HelperRegister.js中createDomeByPropertyHelper 创建监视器属性时，可能出现dll类型属性，此时需要重新处理该属性对应的Dom元素
+		if($("select.dll:first").length){
 			(function(){		
 				var panrentid = Session.get("checkedTreeNode")["id"];
 				var monitorstatus = ($("#monitorstatus").val() === "true" || $("#monitorstatus").val() === true) ;
@@ -172,8 +177,12 @@ Template.showMonitorInfo.rendered = function(){
 					templateMonitoryId = Session.get("monityTemplateId");
 				}			
 				console.log(panrentid+" : "+templateMonitoryId);
-				Meteor.call("svGetDynamicData",panrentid,templateMonitoryId,function(err,result){
-					if(!result) return;
+				//获取某个监视器的动态属性
+				SvseMonitorTemplateDao.getMonityDynamicPropertyData(panrentid,templateMonitoryId,function(status,result){
+					if(!status){
+						SystemLogger(result,-1);
+						return;
+					}
 					var optionObj = result["DynamicData"];
 					for(name in optionObj){
 						var option = $("<option value='"+optionObj[name]+"'>"+name+"</option>");
