@@ -11,10 +11,10 @@ Handlebars.registerHelper('createDomeByTypeAndName', function(type,name,value,se
 	 value =  value ? value :"";
 	switch(type){
 		case "textbox":
-			result = '<input type="input" name="'+name+'" value="'+value+'"/>';
+			result = '<input type="input" class="createInputDomStyle createInputDomStyle-input" name="'+name+'" value="'+value+'"/>';
 			break;
 		case "password":
-			result = '<input type="password" name="'+name+'" value="'+value+'"/>';
+			result = '<input type="password" class="createInputDomStyle createInputDomStyle-input" name="'+name+'" value="'+value+'"/>';
 			break;
 		case "combobox":
 			result = '<select name="'+name+'">';
@@ -29,10 +29,10 @@ Handlebars.registerHelper('createDomeByTypeAndName', function(type,name,value,se
 			result = result + options+"</select>";
 			break;
 		case "textarea":
-			result = '<textarea name="'+name+'">'+value+'</textarea>';
+			result = '<textarea class="createInputDomStyle createInputDomStyle-input" name="'+name+'">'+value+'</textarea>';
 			break;
 		default:
-			result = '<input type="input" name="'+name+'" value="'+value+'"/>';
+			result = '<input type="input" class="createInputDomStyle createInputDomStyle-input" name="'+name+'" value="'+value+'"/>';
 			break;
 	}
  
@@ -48,14 +48,14 @@ Handlebars.registerHelper('createDomeByPropertyHelper', function(obj) {
 	var result;
 	switch(type){
 		case "textbox":
-			result = '<input type="input" name="'+name+'" value="'+value+'" ';
+			result = '<input type="input" class="createInputDomStyle createInputDomStyle-input"  name="'+name+'" value="'+value+'" ';
 			if(readOnly){
 				result	= result + 'readonly='+readOnly;
 			}
 			result =  result + '>'
 			break;
 		case "password":
-			result = '<input type="password" name="'+name+'" value="'+value+'" ';
+			result = '<input type="password" class="createInputDomStyle createInputDomStyle-input" name="'+name+'" value="'+value+'" ';
 			if(readOnly){
 				result	= result + 'readonly='+readOnly;
 			}
@@ -85,7 +85,7 @@ Handlebars.registerHelper('createDomeByPropertyHelper', function(obj) {
 			result = result +'>'+value+'</textarea>';
 			break;
 		default:
-			result = '<input type="input" name="'+name+'" value="'+value+'" ';
+			result = '<input type="input" class="createInputDomStyle createInputDomStyle-input" name="'+name+'" value="'+value+'" ';
 			if(readOnly){
 				result	= result + 'readonly='+readOnly;
 			}

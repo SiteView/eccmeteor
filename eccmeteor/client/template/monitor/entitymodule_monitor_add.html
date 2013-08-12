@@ -31,10 +31,10 @@
 			<label class="label label-info">邮件地址设置</label>
 		</div>
 		<div class="modal-body">
+			<span class="label label-info">基本信息</span><br /><br />
 			<form id="monityTemplateParameter">
 			<table class="table table-striped table-bordered table-condensed">
 				<tbody>
-				<tr><td colspan="3">基本信息</td></tr>
 				<tr>
 					<td>设备名称</td>
 					<td>{{devicename}}</td>
@@ -51,134 +51,153 @@
 			</table>
 			</form>
 			<hr />
-			<span class="label label-info">报警条件</span><br /> <br />
-			<div id="errorsStatusDiv">
-				<div class="row-fluid">
-					<div class ="span2"><span class="label label-important">错误条件：</span></div>
-					<div class="span8 well well-large" style="clear:left">
-						{{#with getMonityTemplateStatesByStatus "error"}}
-								{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
-						{{/with}}
+			<span class="label label-info">报警条件</span><br /><br />
+			<div class="accordion" id="MonitorStatusAccordion">
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<div class="accordion-toggle well" style="margin-bottom:0px" data-toggle="collapse" data-parent="#MonitorStatusAccordion" href="#errorsStatusIndex">
+							<div><span class="label label-important">错误条件：</span></div>
+							<div class="MonitorStatusConditionsDiv">
+								{{#with getMonityTemplateStatesByStatus "error"}}
+									{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
+								{{/with}}
+							</div>
+						</div>
 					</div>
-					<div class="span2">
-						<button class="btn statusmodaldiv">...</button>
-					</div>
-				</div>
-				{{> monitorTemplateStatus}}
-				<table class="table table-striped table-bordered table-condensed">
-					<thead>
-						<tr>
-							<th class="span1"><input type="checkbox"/>&nbsp;<i class="icon-trash"></i></th>
-							<th>项目</th>
-							<th>操作符</th>
-							<th>值</th>
-							<th>关系</th>
-						</tr>
-					</thead>
-					<tbody id="warnigStatusTable">
-						{{#with getMonityTemplateStatesByStatus "error"}}
-							{{> monitorTemplateInitStatusTableTr}}
-						{{/with}}
-					</tbody>
-				</table>
-				<form id="errorsStatusForm">
-					<input type="hidden" class="sv_conditioncount" name="sv_conditioncount" value="1">
-					{{#with getMonityTemplateStatesByStatus "error"}}
-						{{> monitorTemplateInitStatusInputHidden}}
-					{{/with}}
-				</form>
-			</div>
-			<div id="warningStatusDiv">
-				<div class="row-fluid">
-					<div class ="span2"><span class="label label-warning">危险条件：</span></div>
-					<div class="span8 well well-large" style="clear:left">
-						{{#with getMonityTemplateStatesByStatus "warning"}}
-								{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
-						{{/with}}
-					</div>
-					<div class="span2">
-						<button class="btn statusmodaldiv">...</button>
+					<div id="errorsStatusIndex" class="accordion-body collapse">
+						<div class="accordion-inner" id="errorsStatusDiv">
+							{{> monitorTemplateStatus}}
+							<table class="table table-striped table-bordered table-condensed">
+								<thead>
+									<tr>
+										<th class="span1">
+											<input type="checkbox"/>&nbsp;<i class="icon-trash"></i>
+										</th>
+										<th>项目</th>
+										<th>操作符</th>
+										<th>值</th>
+										<th>关系</th>
+									</tr>
+								</thead>
+								<tbody id="warnigStatusTable">
+									{{#with getMonityTemplateStatesByStatus "error"}}
+										{{> monitorTemplateInitStatusTableTr}}
+									{{/with}}
+								</tbody>
+							</table>
+							<form id="errorsStatusForm">
+								<input type="hidden" class="sv_conditioncount" name="sv_conditioncount" value="1">
+								{{#with getMonityTemplateStatesByStatus "error"}}
+									{{> monitorTemplateInitStatusInputHidden}}
+								{{/with}}
+							</form>
+						</div>
 					</div>
 				</div>
-				{{> monitorTemplateStatus}}
-				<table class="table table-striped table-bordered table-condensed">
-					<thead>
-						<tr>
-							<th class="span1"><input type="checkbox"/>&nbsp;<i class="icon-trash"></i></th>
-							<th>项目</th>
-							<th>操作符</th>
-							<th>值</th>
-							<th>关系</th>
-						</tr>
-					</thead>
-					<tbody id="warningStatusTable">
-					{{#with getMonityTemplateStatesByStatus "warning"}}
-						{{> monitorTemplateInitStatusTableTr}}
-					{{/with}}
-					</tbody>
-				</table>
-				<form id="warningStatusForm">
-					<input type="hidden" class="sv_conditioncount" name="sv_conditioncount" value="1">
-					{{#with getMonityTemplateStatesByStatus "warning"}}
-						{{> monitorTemplateInitStatusInputHidden}}
-					{{/with}}
-				</form>
-			</div>
-			<div id="goodStatusDiv">
-				<div class="row-fluid">
-					<div class ="span2"><span class="label label-success">正常条件：</span></div>
-					<div class="span8 well well-large" style="clear:left">
-						{{#with getMonityTemplateStatesByStatus "good"}}
-								{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
-						{{/with}}
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<div class="accordion-toggle well" style="margin-bottom:0px" data-toggle="collapse" data-parent="#MonitorStatusAccordion" href="#warningStatusIndex">
+							<div><span class="label label-warning">危险条件：</span></div>
+							<div>
+								{{#with getMonityTemplateStatesByStatus "warning"}}
+									{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
+								{{/with}}
+							</div>
+						</div>
 					</div>
-					<div class="span2">
-						<button class="btn statusmodaldiv">...</button>
+					<div id="warningStatusIndex" class="accordion-body collapse">
+						<div class="accordion-inner" id="warningStatusDiv">
+							{{> monitorTemplateStatus}}
+							<table class="table table-striped table-bordered table-condensed">
+								<thead>
+									<tr>
+										<th class="span1">
+											<input type="checkbox"/>&nbsp;<i class="icon-trash"></i>
+										</th>
+										<th>项目</th>
+										<th>操作符</th>
+										<th>值</th>
+										<th>关系</th>
+									</tr>
+								</thead>
+								<tbody id="warningStatusTable">
+									{{#with getMonityTemplateStatesByStatus "warning"}}
+										{{> monitorTemplateInitStatusTableTr}}
+									{{/with}}
+								</tbody>
+							</table>
+							<form id="warningStatusForm">
+								<input type="hidden" class="sv_conditioncount" name="sv_conditioncount" value="1">
+								{{#with getMonityTemplateStatesByStatus "warning"}}
+									{{> monitorTemplateInitStatusInputHidden}}
+								{{/with}}
+							</form>
+						</div>
 					</div>
 				</div>
-				{{> monitorTemplateStatus}}
-				<table  class="table table-striped table-bordered table-condensed">
-					<thead>
-						<tr>
-							<th class="span1"><input type="checkbox"/>&nbsp;<i class="icon-trash"></i></th>
-							<th>项目</th>
-							<th>操作符</th>
-							<th>值</th>
-							<th>关系</th>
-						<tr>
-					</thead>
-					<tbody id="goodStatusTable">
-						{{#with getMonityTemplateStatesByStatus "good"}}
-							{{> monitorTemplateInitStatusTableTr}}
-						{{/with}}
-					</tbody>
-				</table>
-				<form id="goodStatusForm">
-					<input type="hidden" class="sv_conditioncount" name="sv_conditioncount" value="1">
-					{{#with getMonityTemplateStatesByStatus "good"}}
-						{{> monitorTemplateInitStatusInputHidden}}
-					{{/with}}
-				</form>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<div class="accordion-toggle well" style="margin-bottom:0px" data-toggle="collapse" data-parent="#MonitorStatusAccordion" href="#goodStatusIndex">
+							<div>
+								<span class="label label-success">正常条件：</span>
+							</div>
+							<div>
+								{{#with getMonityTemplateStatesByStatus "good"}}
+									{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
+								{{/with}}
+							</div>
+						</div>
+					</div>
+					<div id="goodStatusIndex" class="accordion-body collapse">
+						<div class="accordion-inner" id="goodStatusDiv">
+							{{> monitorTemplateStatus}}
+							<table  class="table table-striped table-bordered table-condensed">
+								<thead>
+									<tr>
+										<th class="span1">
+											<input type="checkbox"/>&nbsp;<i class="icon-trash"></i>
+										</th>
+										<th>项目</th>
+										<th>操作符</th>
+										<th>值</th>
+										<th>关系</th>
+									<tr>
+								</thead>
+								<tbody id="goodStatusTable">
+									{{#with getMonityTemplateStatesByStatus "good"}}
+										{{> monitorTemplateInitStatusTableTr}}
+									{{/with}}
+								</tbody>
+							</table>
+							<form id="goodStatusForm">
+								<input type="hidden" class="sv_conditioncount" name="sv_conditioncount" value="1">
+								{{#with getMonityTemplateStatesByStatus "good"}}
+									{{> monitorTemplateInitStatusInputHidden}}
+								{{/with}}
+							</form>
+						</div>
+					</div>
+				</div>
 			</div>
 			<hr />
-			<form id="monityTemplateAdvanceParameters">
+			<span class="label label-info">高级选项</span><br /><br />
+			<form id="monityTemplateAdvanceParameters" class="table table-striped table-bordered table-condensed">
 			<table>
 				<tbody>
-					<tr><td colspan="3">高级选项</td></tr>
 					{{#each getMonityTemplateAdvanceParameters}}
-						<tr>
-							<td>
-							{{sv_label}}:
-							</td>
-							<td>
-							{{createDomeByPropertyHelper this}}
-							</td>
-						</tr>
+					<tr>
+						<td>
+						{{sv_label}}:
+						</td>
+						<td>
+						{{createDomeByPropertyHelper this}}
+						</td>
+					</tr>
 					{{/each}}
 				<tbody>
 			</table>
 			</form>
-			<form id="monityTemplateCommonParameters" class="well">
+			<form id="monityTemplateCommonParameters" class="table table-striped table-bordered table-condensed">
 				<table>
 					<tr>
 						<td>

@@ -217,11 +217,12 @@ Template.monitorTemplateStatus.events({
 		if(e.target.id !== "monitorTemplateStatusAddConditions")
 			return;
 		var btn = $(e.target);
-		var form = btn.parent("form");
-		var div =  form.parent("div");
+		var form = btn.parent("form");//当前用户输入的表单
+		var div =  form.parent("div");//直接父类
 		var tbody = div.children("table").children("tbody");
 		var hiddenform = div.children("form:eq(1)");
 		var inputs = form.serializeArray();
+		//对隐藏字段的表格进行操作
 		var sv_conditioncount = hiddenform.children(".sv_conditioncount:first");
 		var count = sv_conditioncount.val();
 		count = +count;
@@ -231,11 +232,14 @@ Template.monitorTemplateStatus.events({
 			var input = ClientUtils.createInputHiddenDom(inputs[index].name+count,inputs[index].value);
 			hiddenform.append(input);
 		}
+		//对条件表格的操作
 		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
 		tr.attr("id","tr"+count);
 		var td = $("<td></td>").append($("<input type='checkbox'>"));
 		tr.prepend(td);
 		tbody.prepend(tr);
 
+		//对象显示内容的div的操作
+		console.log(div.parents(".accordion-group"));
 	}
 });
