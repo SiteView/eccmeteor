@@ -98,7 +98,7 @@
 					<div class="accordion-heading">
 						<div class="accordion-toggle well" style="margin-bottom:0px" data-toggle="collapse" data-parent="#MonitorStatusAccordion" href="#warningStatusIndex">
 							<div><span class="label label-warning">危险条件：</span></div>
-							<div>
+							<div class="MonitorStatusConditionsDiv">
 								{{#with getMonityTemplateStatesByStatus "warning"}}
 									{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
 								{{/with}}
@@ -141,7 +141,7 @@
 							<div>
 								<span class="label label-success">正常条件：</span>
 							</div>
-							<div>
+							<div class="MonitorStatusConditionsDiv">
 								{{#with getMonityTemplateStatesByStatus "good"}}
 									{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
 								{{/with}}

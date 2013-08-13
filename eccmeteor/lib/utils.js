@@ -1,6 +1,6 @@
 ﻿ClientUtils = {
 	"formArrayToObject":function(arr){
-		if(!arr ||arr.length == 0)return{};
+		if(!arr ||arr.length == 0)return {};
 		var property ={};
 		for(index in arr){
 			property[arr[index]["name"]] = arr[index]["value"];

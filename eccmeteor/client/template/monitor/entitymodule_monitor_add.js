@@ -129,23 +129,44 @@ Template.showMonitorInfo.events = {
 	},
 	"click i.icon-trash":function(e){
 		var i = $(e.target); //转Jquery对象
+		if(i.parents("table").find("tr").length === 1){
+			console.log("none tr");
+			return;
+		}
 		i.closest("table").children("tbody:first").find(":checkbox").each(function(){
-			if(this.checked){
-				var tr = $(this).closest("tr");
-				var id = tr.attr("id").substr(2);
-				console.log("delete id :"+id);
-				tr.closest("div[id]").find("form[id]:first :hidden").each(function(){
-					var name = $(this).attr("name");
-					if(name.indexOf(id) == -1)
-						return;
-					var reg=eval("/"+id+"/");
-					if(!$(this).attr("name").replace(reg,"").match(/\d+/g))
-						$(this).remove();
-				});
-				tr.remove();
-			}
+			if(!this.checked)
+				return;
+			var tr = $(this).closest("tr");
+			var id = tr.attr("id").substr(2);
+			tr.closest("div[id]").find("form[id]:first :hidden").each(function(){
+				var name = $(this).attr("name");
+				if(name.indexOf(id) == -1)
+					return;
+				var reg=eval("/"+id+"/");
+				if(!$(this).attr("name").replace(reg,"").match(/\d+/g))
+					$(this).remove();
+			});
+			tr.remove();
 		});
 		i.parent().children(":checkbox")[0].checked = false;
+
+		//div 内容更新
+		var condition = "";
+		i.parents("table").find("tr").each(function(j){
+			var oneCon = "[ "
+			$(this).children("td").each(function(i){
+				if(i == 0) return;
+				if(i == 4){
+					oneCon = oneCon + " ] "+ $(this).text();
+					return ;
+				}
+				oneCon = oneCon + " " +$(this).text();
+			});
+			condition = condition + " " +oneCon;
+		});
+		i.parents(".accordion-group")
+			.find(".MonitorStatusConditionsDiv")
+			.text(condition.replace(/\[  \[/g,"\[").replace(/(or|and|contain)$/,"").replace(/^ \[ $/,"无条件限制"));
 	},
 	"click button.statusmodaldiv":function(e){
 	//	$(e.target).parent().parent(".row-fluid").siblings(".modal").modal('show');
@@ -240,6 +261,21 @@ Template.monitorTemplateStatus.events({
 		tbody.prepend(tr);
 
 		//对象显示内容的div的操作
-		console.log(div.parents(".accordion-group"));
+		var ConditionsDiv = div.parents(".accordion-group").find(".MonitorStatusConditionsDiv");
+		var condition = "";
+		//此处可能出现bug，造成原因each的回调函数 造成 条件拼接不完整
+		tbody.children("tr").each(function(j){
+			var oneCon = "[ "
+			$(this).children("td").each(function(i){
+				if(i == 0) return;
+				if(i == 4){
+					oneCon = oneCon + " ] "+ $(this).text();
+					return ;
+				}
+				oneCon = oneCon + " " +$(this).text();
+			});
+			condition = condition + " " +oneCon;
+		});
+		ConditionsDiv.text(condition.replace(/(or|and|contain)$/,""));
 	}
 });
