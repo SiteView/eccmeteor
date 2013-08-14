@@ -29,7 +29,7 @@ Template.showMonitorInfo.getMonityTemplateAdvanceParameters = function(){
 
 Template.monitorTemplateStatus.getMonityTemplateReturnItemsById = function(){
 	return Session.get("monityTemplateId") 
-			? SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"))
+			? SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("monityTemplateId"))
 			: {}
 //	return SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("monityTemplateId"));
 }
@@ -52,7 +52,7 @@ Template.showMonitorInfo.devicename = function(){
 	 return Session.get("checkedTreeNode").name;
 }
 
-Template.showMonitorInfo.events = {
+Template.showMonitorInfo.events({
 	"submit form":function(){
 		return false;
 	},
@@ -164,15 +164,21 @@ Template.showMonitorInfo.events = {
 			});
 			condition = condition + " " +oneCon;
 		});
+		condition = condition.replace(/^ \[ $/,"无条件限制")
+								.replace(/\[  \[/g,"\[")
+								.replace(/(or|and)$/,"")
+								.replace(/\b(or|and)\b/g,function($0){return {or:"或",de:"与"}[$0]});
 		i.parents(".accordion-group")
 			.find(".MonitorStatusConditionsDiv")
-			.text(condition.replace(/\[  \[/g,"\[").replace(/(or|and|contain)$/,"").replace(/^ \[ $/,"无条件限制"));
+			.text(condition);
+		//condition.replace(/\[  \[/g,"\[").replace(/(or|and)$/,"").replace(/^ \[ $/,"无条件限制")
 	},
 	"click button.statusmodaldiv":function(e){
 	//	$(e.target).parent().parent(".row-fluid").siblings(".modal").modal('show');
 		//console.log(div);
 	}
-}
+});
+
 Template.showMonitorInfo.rendered = function(){
 	if(!this._rendered) {
 			this._rendered = true;
@@ -254,11 +260,14 @@ Template.monitorTemplateStatus.events({
 			hiddenform.append(input);
 		}
 		//对条件表格的操作
+		var tdShowLabel = form.children("select[name='sv_paramname']").children("option[selected]").text();
 		var tr = ClientUtils.creatTrDom(inputs,{label:"value"});
 		tr.attr("id","tr"+count);
 		var td = $("<td></td>").append($("<input type='checkbox'>"));
 		tr.prepend(td);
+		tr.children("td:eq(1)").html(tdShowLabel);
 		tbody.prepend(tr);
+		
 
 		//对象显示内容的div的操作
 		var ConditionsDiv = div.parents(".accordion-group").find(".MonitorStatusConditionsDiv");
@@ -276,6 +285,8 @@ Template.monitorTemplateStatus.events({
 			});
 			condition = condition + " " +oneCon;
 		});
-		ConditionsDiv.text(condition.replace(/(or|and|contain)$/,""));
+		condition = condition.replace(/(or|and)$/,"")
+								.replace(/\b(or|and)\b/g,function($0){return {or:"或",and:"与"}[$0]});
+		ConditionsDiv.text(condition);
 	}
 });

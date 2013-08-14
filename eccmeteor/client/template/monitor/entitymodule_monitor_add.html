@@ -59,7 +59,7 @@
 							<div><span class="label label-important">错误条件：</span></div>
 							<div class="MonitorStatusConditionsDiv">
 								{{#with getMonityTemplateStatesByStatus "error"}}
-									{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
+									{{sv_value}}
 								{{/with}}
 							</div>
 						</div>
@@ -100,7 +100,7 @@
 							<div><span class="label label-warning">危险条件：</span></div>
 							<div class="MonitorStatusConditionsDiv">
 								{{#with getMonityTemplateStatesByStatus "warning"}}
-									{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
+									{{sv_value}}
 								{{/with}}
 							</div>
 						</div>
@@ -143,7 +143,7 @@
 							</div>
 							<div class="MonitorStatusConditionsDiv">
 								{{#with getMonityTemplateStatesByStatus "good"}}
-									{{sv_paramname1}}{{sv_operate1}}{{sv_paramvalue1}}{{sv_relation1}}
+									{{sv_value}}
 								{{/with}}
 							</div>
 						</div>
