@@ -4,109 +4,113 @@ Handlebars.registerHelper('equal', function(arg1,arg2) {
 	}
 	return false;
 });
+Handlebars.registerHelper('unequal', function(arg1,arg2) {
+	if(arg1 === arg2){
+		return false;
+	}
+	return true;
+});
 
 Handlebars.registerHelper('createDomeByTypeAndName', function(type,name,value,selects) {
 	//textbox,password ,combobox
-	 var result;
-	 value =  value ? value :"";
+	var result;
+	value =  value ? value :"";
+	var factory = new DomCreateFactory();
 	switch(type){
 		case "textbox":
-			result = '<input type="input" class="createInputDomStyle createInputDomStyle-input" name="'+name+'" value="'+value+'"/>';
+			result = factory.getInput(name,value);
 			break;
 		case "password":
-			result = '<input type="password" class="createInputDomStyle createInputDomStyle-input" name="'+name+'" value="'+value+'"/>';
+			result = factory.getPasswd(name,value);
 			break;
 		case "combobox":
-			result = '<select name="'+name+'">';
-			options = "";
-			for(index in selects){
-				if(value === selects[index]["value"]){
-					options = options + "<option selected='selected' value='"+selects[index]["value"]+"'>"+selects[index]["key"]+"</option>";
-					continue;
-				}
-				options = options + "<option value='"+selects[index]["value"]+"'>"+selects[index]["key"]+"</option>";
-			}
-			result = result + options+"</select>";
+			result = factory.getSelect(name,value,selects);
 			break;
 		case "textarea":
-			result = '<textarea class="createInputDomStyle createInputDomStyle-input" name="'+name+'">'+value+'</textarea>';
+			result = factory.getTextArea(name,value);
 			break;
 		default:
-			result = '<input type="input" class="createInputDomStyle createInputDomStyle-input" name="'+name+'" value="'+value+'"/>';
+			result =factory.getInput(name,value);
 			break;
 	}
  
   return new Handlebars.SafeString(result);
 });
 
+var DomCreateFactory = function(){
+	this.getInput = function(name,value,readonly){
+		var result = '<input type="input" class="createInputDomStyle createInputDomStyle-input"  name="'+name+'" value="'+value+'" ';
+		if(readonly){
+			result	= result + 'readonly='+readonly;
+		}
+		result =  result + '>'
+		return result
+	};
+	this.getPasswd = function(name,value,readonly){
+		var result = '<input type="password" class="createInputDomStyle createInputDomStyle-input" name="'+name+'" value="'+value+'" ';
+		if(readonly){
+			result	= result + 'readonly='+readonly;
+		}
+		result =  result + '>'
+		return result;
+	};
+	this.getSelect = function(name,value,selects,clazz){
+		var result = "";
+		if(clazz){
+			result = '<select name="'+name+'" class="'+clazz+'">';
+		}else{
+			result = '<select name="'+name+'">';
+		}
+		options = "";
+		for(index in selects){
+			if(value === selects[index]["value"]){
+				options = options + "<option selected='selected' value='"+selects[index]["value"]+"'>"+selects[index]["key"]+"</option>";
+				continue;
+			}
+			options = options + "<option value='"+selects[index]["value"]+"'>"+selects[index]["key"]+"</option>";
+		}
+		result = result + options+"</select>";
+		return result;
+	};
+	this.getTextArea = function(name,value,readonly){
+		var result = '<textarea name="'+name+'" ';
+		if(readonly){
+			result	= result + 'readonly='+readonly;
+		}
+		result = result +'>'+value+'</textarea>';
+		return result;
+	}
+}
 Handlebars.registerHelper('createDomeByPropertyHelper', function(obj) {
-    var type = obj["sv_type"] ||obj["type"]|| "";
+	var type = obj["sv_type"] ||obj["type"]|| "";
 	var name = obj["sv_name"] ||obj["name"]|| "";
 	var value = obj["sv_value"] ||obj["value"]||"";
 	var selects = obj["selects"] ||obj["select"]|| [];
-	var readOnly = (obj["sv_isreadonly"] === 'true')||obj["readonly"] || false;
-	var result;
+	var readonly = (obj["sv_isreadonly"] === 'true')||obj["readonly"] || false;
+	var factory = new DomCreateFactory();
+	var result ="";
 	switch(type){
 		case "textbox":
-			result = '<input type="input" class="createInputDomStyle createInputDomStyle-input"  name="'+name+'" value="'+value+'" ';
-			if(readOnly){
-				result	= result + 'readonly='+readOnly;
-			}
-			result =  result + '>'
+			result = factory.getInput(name,value,readonly);
 			break;
 		case "password":
-			result = '<input type="password" class="createInputDomStyle createInputDomStyle-input" name="'+name+'" value="'+value+'" ';
-			if(readOnly){
-				result	= result + 'readonly='+readOnly;
-			}
-			result =  result + '>'
+			result = factory.getPasswd(name,value,readonly);
 			break;
 		case "combobox":
-			if(obj["sv_dll"]){
-				result = '<select name="'+name+'" class="dll"></select>';
-				break;
-			}
-			result = '<select name="'+name+'">';
-			options = "";
-			for(index in selects){
-				if(value === selects[index]["value"]){
-					options = options + "<option selected='selected' value='"+selects[index]["value"]+"'>"+selects[index]["key"]+"</option>";
-					continue;
-				}
-				options = options + "<option value='"+selects[index]["value"]+"'>"+selects[index]["key"]+"</option>";
-			}
-			result = result + options+"</select>";
+			var clazz = obj["sv_dll"] ? "dll" : undefined;
+			result = factory.getSelect(name,value,selects,clazz);
 			break;
 		case "textarea":
-			result = '<textarea name="'+name+'" ';
-			if(readOnly){
-				result	= result + 'readonly='+readOnly;
-			}
-			result = result +'>'+value+'</textarea>';
+			result = factory.getTextArea(name,value,readonly);
 			break;
 		default:
-			result = '<input type="input" class="createInputDomStyle createInputDomStyle-input" name="'+name+'" value="'+value+'" ';
-			if(readOnly){
-				result	= result + 'readonly='+readOnly;
-			}
-			result =  result + '>'
+			result = factory.getInput(name,value,readonly);
 			break;
 	}
- 
-  return new Handlebars.SafeString(result);
+	return new Handlebars.SafeString(result);
 });
-
 /**
 	国际化助手
-*/
-/*
-Handlebars.registerHelper('language',function(arg){
-	var lang = Language.findOne();
-	var defaultLang = lang["default"];
-	//console.log("default language is "+ defaultLang);
-	var language = lang["language"][defaultLang];
-	return language[arg] ? language[arg] : arg;
-});
 */
 Handlebars.registerHelper('language',function(){
 	return Language.findOne({name:Session.get("language")}).value;

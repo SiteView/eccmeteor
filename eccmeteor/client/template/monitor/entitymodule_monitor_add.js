@@ -52,6 +52,18 @@ Template.showMonitorInfo.devicename = function(){
 	 return Session.get("checkedTreeNode").name;
 }
 
+Template.showMonitorInfo.monitorType = function(){
+	return Session.get("monityTemplateId") 
+			? SvseMonitorTemplateDao.getTemplateTypeById(Session.get("monityTemplateId"))
+			: ""
+}
+//获取监视频率的Label标签
+Template.showMonitorInfo.getMonityFrequencyLabel = function(){
+	Session.get("monityTemplateId") 
+			? SvseMonitorTemplateDao.getMonityTemplateParameterByName(Session.get("monityTemplateId"),"_frequency")
+			: ""
+}
+
 Template.showMonitorInfo.events({
 	"submit form":function(){
 		return false;

@@ -4,7 +4,10 @@ SvseMonitorTemplateDao ={
 	getTemplateById:function(id){//根据id获取模板
 		return SvseMonitorTemplate.findOne({"return.id" : id});
 	},
-	getMonityTemplateParametersById:function(id){//根据id获取监视器模板参数
+	getTemplateTypeById:function(id){
+		return SvseMonitorTemplate.findOne({"return.id" : id}).property.sv_label;
+	},
+	getMonityTemplateParameters:function(id){//根据id获取监视器模板参数
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});
 		var parameters = [];
 		for(item in template){
@@ -29,6 +32,26 @@ SvseMonitorTemplateDao ={
 			parameters.push(temp);
 		}
 		return parameters;
+	},
+	getMonityTemplateParametersById:function(id){//根据id获取监视器模板参数 (除了 监视频率和监视单位以外)
+		var parameters = SvseMonitorTemplateDao.getMonityTemplateParameters(id);
+		var newparameters = [];
+		for(index in parameters){
+			if(!!parameters[index].sv_name.match(/^(_frequency|_frequencyUnit)$/)){
+				continue;
+			}
+			newparameters.push(parameters[index]);
+		}
+		return newparameters;
+	},
+	getMonityTemplateParameterByName : function(id,name){
+		var parameters = SvseMonitorTemplateDao.getMonityTemplateParameters(id);
+		for(index in parameters){
+			if(parameters[index].sv_name === name){
+				return parameters[index];
+			}
+		}
+		return {};
 	},
 	getMonityTemplateStatesById : function(id){//根据id获取监视器模板参数
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});
