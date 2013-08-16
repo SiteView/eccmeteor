@@ -18,14 +18,14 @@ Template.showMonitor.events={
 	},
 	"mouseenter tbody tr":function(e){
     	var target = $(e.target);
-    	target.find("td:first").width(target.find("td:first").width()+35);
+    	target.find("td:first").width(target.find("td:first").width()+40);
     	target.find("div:eq(1)").css("display","block");
 
     },
     "mouseleave tbody tr":function(e){
 		var target = $(e.target);
 		target.find("div:eq(1)").css("display","none");
-        target.find("td:first").width(target.find("td:first").width()-35);
+        target.find("td:first").width(target.find("td:first").width()-40);
     },
      "click #showMonitorList i.icon-trash":function(e){
 		var id = e.target.id;

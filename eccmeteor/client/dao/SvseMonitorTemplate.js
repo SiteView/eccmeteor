@@ -44,14 +44,24 @@ SvseMonitorTemplateDao ={
 		}
 		return newparameters;
 	},
+	//获取监视频率参数对象
+	getMonityTemplateFrequencyParameters : function(id){
+		var parameters = SvseMonitorTemplateDao.getMonityTemplateParameters(id);
+		var arr = [];
+		for(index in parameters){
+			if(!!parameters[index].sv_name.match(/^(_frequency|_frequencyUnit)$/)){
+				arr.push(parameters[index]);
+			}
+		}
+		return arr;
+	},
 	getMonityTemplateParameterByName : function(id,name){
 		var parameters = SvseMonitorTemplateDao.getMonityTemplateParameters(id);
 		for(index in parameters){
 			if(parameters[index].sv_name === name){
-				return parameters[index];
+				return parameters[index]
 			}
 		}
-		return {};
 	},
 	getMonityTemplateStatesById : function(id){//根据id获取监视器模板参数
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});

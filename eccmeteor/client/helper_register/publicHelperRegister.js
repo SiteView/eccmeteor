@@ -37,75 +37,23 @@ Handlebars.registerHelper('createDomeByTypeAndName', function(type,name,value,se
   return new Handlebars.SafeString(result);
 });
 
-var DomCreateFactory = function(){
-	this.getInput = function(name,value,readonly){
-		var result = '<input type="input" class="createInputDomStyle createInputDomStyle-input"  name="'+name+'" value="'+value+'" ';
-		if(readonly){
-			result	= result + 'readonly='+readonly;
-		}
-		result =  result + '>'
-		return result
-	};
-	this.getPasswd = function(name,value,readonly){
-		var result = '<input type="password" class="createInputDomStyle createInputDomStyle-input" name="'+name+'" value="'+value+'" ';
-		if(readonly){
-			result	= result + 'readonly='+readonly;
-		}
-		result =  result + '>'
-		return result;
-	};
-	this.getSelect = function(name,value,selects,clazz){
-		var result = "";
-		if(clazz){
-			result = '<select name="'+name+'" class="'+clazz+'">';
-		}else{
-			result = '<select name="'+name+'">';
-		}
-		options = "";
-		for(index in selects){
-			if(value === selects[index]["value"]){
-				options = options + "<option selected='selected' value='"+selects[index]["value"]+"'>"+selects[index]["key"]+"</option>";
-				continue;
-			}
-			options = options + "<option value='"+selects[index]["value"]+"'>"+selects[index]["key"]+"</option>";
-		}
-		result = result + options+"</select>";
-		return result;
-	};
-	this.getTextArea = function(name,value,readonly){
-		var result = '<textarea name="'+name+'" ';
-		if(readonly){
-			result	= result + 'readonly='+readonly;
-		}
-		result = result +'>'+value+'</textarea>';
-		return result;
-	}
-}
+
 Handlebars.registerHelper('createDomeByPropertyHelper', function(obj) {
-	var type = obj["sv_type"] ||obj["type"]|| "";
-	var name = obj["sv_name"] ||obj["name"]|| "";
-	var value = obj["sv_value"] ||obj["value"]||"";
-	var selects = obj["selects"] ||obj["select"]|| [];
-	var readonly = (obj["sv_isreadonly"] === 'true')||obj["readonly"] || false;
 	var factory = new DomCreateFactory();
-	var result ="";
-	switch(type){
-		case "textbox":
-			result = factory.getInput(name,value,readonly);
-			break;
-		case "password":
-			result = factory.getPasswd(name,value,readonly);
-			break;
-		case "combobox":
-			var clazz = obj["sv_dll"] ? "dll" : undefined;
-			result = factory.getSelect(name,value,selects,clazz);
-			break;
-		case "textarea":
-			result = factory.getTextArea(name,value,readonly);
-			break;
-		default:
-			result = factory.getInput(name,value,readonly);
-			break;
+	var result = factory.get(LocalObjectConverter.convertMonityTemplateParameter(obj));
+	return new Handlebars.SafeString(result);
+});
+
+
+
+Handlebars.registerHelper('createDomByObjListHelper',function(list){
+	if(!list | !list.length)
+		return;
+	var result = "";
+	var length = list.length;
+	var factory = new DomCreateFactory();
+	for(x = 0; x < length; x++){
+		result = result +"&nbsp;"+ factory.get(LocalObjectConverter.convertMonityTemplateParameter(list[x]));
 	}
 	return new Handlebars.SafeString(result);
 });

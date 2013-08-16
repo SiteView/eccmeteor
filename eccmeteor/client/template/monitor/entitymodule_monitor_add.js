@@ -59,9 +59,16 @@ Template.showMonitorInfo.monitorType = function(){
 }
 //获取监视频率的Label标签
 Template.showMonitorInfo.getMonityFrequencyLabel = function(){
-	Session.get("monityTemplateId") 
-			? SvseMonitorTemplateDao.getMonityTemplateParameterByName(Session.get("monityTemplateId"),"_frequency")
+	return  Session.get("monityTemplateId") 
+			? SvseMonitorTemplateDao.getMonityTemplateParameterByName(Session.get("monityTemplateId"),"_frequency").sv_label
 			: ""
+}
+
+//获取监视频率的Dom元素
+Template.showMonitorInfo.getMonityFrequencyDom = function(){
+	return  Session.get("monityTemplateId") 
+			? SvseMonitorTemplateDao.getMonityTemplateFrequencyParameters(Session.get("monityTemplateId"))
+			: []
 }
 
 Template.showMonitorInfo.events({

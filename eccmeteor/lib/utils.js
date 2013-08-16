@@ -196,7 +196,8 @@ Utils = {
 		return fn;
 	},
 	"compareArray" : function (original,target) {//比较两个数组，如果数组相同返回false;如果不同，返回数组变化情况。以对象描述
-		if(typeof original === "undefined" && typeof target === "undefined") return false;
+		if(typeof original === "undefined" && typeof target === "undefined") 
+			return false;
 		var changeObj =  {};
 		if(!original && target){
 			changeObj["push"] = target;
