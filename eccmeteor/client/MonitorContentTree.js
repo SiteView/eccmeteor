@@ -50,7 +50,9 @@ var drawSvseTree = function(){
 				checkedTreeNode.id = id;
 				checkedTreeNode.type=type;
 				checkedTreeNode.name = treeNode.name;
-				Session.set("checkedTreeNode",checkedTreeNode);//记录点击的节点。根据该节点获取 编辑增加设备时的基本信息;
+			//	Session.set("checkedTreeNode",checkedTreeNode);
+				//记录点击的节点。根据该节点获取 编辑增加设备时的基本信息;
+				SessionManage.setCheckedTreeNode(checkedTreeNode);
 				if(type !== "entity"){
 				    //设置视图状态
 					SwithcView.view(MONITORVIEW.GROUPANDENTITY); 

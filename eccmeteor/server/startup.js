@@ -18,5 +18,5 @@ function initAllDateStartUp(status){
 }
 Meteor.startup(function(){
 	process.sv_init();
-	initAllDateStartUp();	
+	initAllDateStartUp(1);	
 });

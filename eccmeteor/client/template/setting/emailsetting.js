@@ -44,31 +44,6 @@ Template.emailsetting.events  = {
 	},
 	"click #emailhelpmessage" : function(){
  
-	},
-	"click #emailbasicsettingapplybtn" : function(){
-		var emailbasicsetting = ClientUtils.formArrayToObject($("#emailbasicsetting").serializeArray());
-		console.log(emailbasicsetting);
-		SvseEmailDao.setEmailBasicSetting(emailbasicsetting,function(result){
-			console.log(result);
-			console.log("成功！");
-		});
-	},
-	"click #emailbasicsettingtestbtn" : function(){
-	
-	},
-	"click td .btn":function(e){
-		console.log(e.target.id);
-		var result = SvseEmailDao.getEmailById(e.target.id);
-		var template = result["Template"];
-		var bCheck = result["bCheck"];
-		$("#emailbasicsettingofaddressemailtemplatelistedit option").each(function(){
-			if($(this).val() == template) this.checked = true;
-		});
-		$(":radio[name='bCheck']").each(function(){
-			if($(this).val() == bCheck) this.checked = true;
-		});
-		Session.set("emailbasicsettingofaddressbasciinfoeditform",result);
-		$('#emailaddresssettingdivedit').modal('toggle');
 	}
 }
 
@@ -99,17 +74,51 @@ Template.emailsetting.rendered = function(){
 	$(function(){
 	    ClientUtils.tableSelectAll("emailsettingtableselectall");       
 	});
+		//选中变色
+	$(function(){
+		$("#emailSettingList tr").click(function(){
+			var checkbox = $(this).find(":checkbox:first");
+			checkbox[0].checked = !checkbox[0].checked;
+			$(this).siblings(".success").each(function(){
+				$(this).removeClass("success");
+				if($(this).find(":checkbox:first")[0].checked){
+					$(this).addClass("error");
+				}
+			});
+			$(this).removeClass().addClass("success");
+
+		});
+		$("#emailSettingList :checkbox").click(function(e){
+			e.stopPropagation();
+			if(this.checked){
+				if(!$(this).closest("tr").hasClass("success")){
+					$(this).closest("tr").addClass("error");
+				}
+			}else{
+				$(this).closest("tr").removeClass("error");
+			}
+		});
+	});
 }
 
 Template.emailbasicsettingofaddress.rendered = function(){
-		//邮件模板下拉列表
-		Meteor.call("svGetEmailTemplates",function(err,result){
-			for(name in result){
-		//		console.log(name);
-				var option = $("<option value="+name+"></option>").html(name)
-				$("#emailbasicsettingofaddressemailtemplatelist").append(option);
-			}
-		});
+	//邮件模板下拉列表
+	/*
+	Meteor.call("svGetEmailTemplates",function(err,result){
+		for(name in result){
+	//		console.log(name);
+			var option = $("<option value="+name+"></option>").html(name)
+			$("#emailbasicsettingofaddressemailtemplatelist").append(option);
+		}
+	});
+	*/
+	SvseEmailDao.getEmailTemplates(function(err,result){
+		for(name in result){
+	//		console.log(name);
+			var option = $("<option value="+name+"></option>").html(name)
+			$("#emailbasicsettingofaddressemailtemplatelist").append(option);
+		}
+	});
 }
 
 Template.emailbasicsettingofaddress.events = {
@@ -128,10 +137,6 @@ Template.emailbasicsettingofaddress.events = {
 			$('#emailaddresssettingdiv').modal('toggle');
 		});
 	}
-}
-
-Template.emailsetting.emaillist = function(){
-	return SvseEmailDao.getEmailList();
 }
 
 Template.emailbasicsettingofaddressedit.emailbasicsettingofaddressbasciinfoeditform = function(){
@@ -156,11 +161,55 @@ Template.emailbasicsettingofaddressedit.events = {
 
 Template.emailbasicsettingofaddressedit.rendered = function(){
 		//邮件模板下拉列表
+		/*
 		Meteor.call("svGetEmailTemplates",function(err,result){
 			for(name in result){
 			//	console.log(name);
 				var option = $("<option value="+name+"></option>").html(name)
 				$("#emailbasicsettingofaddressemailtemplatelistedit").append(option);
 			}
-		});
+		});*/
+		SvseEmailDao.getEmailTemplates(function(err,result){
+		for(name in result){
+	//		console.log(name);
+			var option = $("<option value="+name+"></option>").html(name)
+			$("#emailbasicsettingofaddressemailtemplatelistedit").append(option);
+		}
+	});
 }
+
+Template.emailsettingList.events({
+	"click td .btn":function(e){
+		console.log(e.target.id);
+		var result = SvseEmailDao.getEmailById(e.target.id);
+		var template = result["Template"];
+		var bCheck = result["bCheck"];
+		$("#emailbasicsettingofaddressemailtemplatelistedit option").each(function(){
+			if($(this).val() == template) this.checked = true;
+		});
+		$(":radio[name='bCheck']").each(function(){
+			if($(this).val() == bCheck) this.checked = true;
+		});
+		Session.set("emailbasicsettingofaddressbasciinfoeditform",result);
+		$('#emailaddresssettingdivedit').modal('toggle');
+	}
+});
+
+Template.emailsettingList.emaillist = function(){
+	console.log(SvseEmailDao.getEmailList());
+	return SvseEmailDao.getEmailList();
+}
+
+Template.emailbasicsettingForm.events({
+	"click #emailbasicsettingapplybtn" : function(){
+		var emailbasicsetting = ClientUtils.formArrayToObject($("#emailbasicsetting").serializeArray());
+		console.log(emailbasicsetting);
+		SvseEmailDao.setEmailBasicSetting(emailbasicsetting,function(result){
+			console.log(result);
+			console.log("成功！");
+		});
+	},
+	"click #emailbasicsettingtestbtn" : function(){
+	
+	}
+});

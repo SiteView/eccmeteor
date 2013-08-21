@@ -10,10 +10,10 @@ Template.showMonitor.events={
 			return;
 		var status = e.currentTarget.title;
 		if(!id || id=="") return;
-		var ID = {id:id,type:"monitor"}
-		Session.set("checkedMonitorId",ID);//存储选中监视器的id
+	//	var ID = {id:id,type:"monitor"}
+	//	Session.set("checkedMonitorId",ID);//存储选中监视器的id
 		//用此方法代替上面的存储方式
-		SessionManage.setCheckedMonitroId(id);
+		SessionManage.setCheckedMonitorId(id);
 		drawImage(id);
 	},
 	"mouseenter tbody tr":function(e){
@@ -30,17 +30,22 @@ Template.showMonitor.events={
      "click #showMonitorList i.icon-trash":function(e){
 		var id = e.target.id;
 		console.log("删除监视器id:"+id);
-		var parentid  = Session.get("checkedTreeNode")["id"];
+	//	var parentid  = Session.get("checkedTreeNode")["id"];
+		var parentid  = SessionManage.getCheckedTreeNode("id");
 		SvseMonitorDao.deleteMonitor(id,parentid,function(result){
 			SystemLogger(result);
 		});
     },
     "click #showMonitorList i.icon-edit":function(e){
         var id = e.target.id;
-        Session.set("showGroupAndEntityEditGroupId",id);
         console.log("编辑监视器id:"+id);
-        return;
-        $("#showGroupEditdiv").modal('show');
+        SessionManage.setCheckedMonitorId(id);
+        var monitorTemplateId = SvseMonitorDao.getMonitorTemplateIdByMonitorId(id);
+        //设置监视器模板id
+        Session.set("monityTemplateId",monitorTemplateId);
+        Session.set("monitorStatus","编辑");
+    //    console.log(SvseMonitorTemplateDao.getTemplateById(monitorTemplateId))
+        $("#showMonitorInfoDiv").modal('show');
     }
 }
 
@@ -62,10 +67,10 @@ Template.showMonitor.rendered = function(){ //默认选中第一个监视进行�
 			return;
 		}
 		$("#showSvg").css("display","block");
-		var ID = {id:id,type:"monitor"}
-		Session.set("checkedMonitorId",ID);//存储选中监视器的id
+	//	var ID = {id:id,type:"monitor"}
+	//	Session.set("checkedMonitorId",ID);//存储选中监视器的id
 		//用此方法代替上面的存储方式
-		SessionManage.setCheckedMonitroId(id);
+		SessionManage.setCheckedMonitorId(id);
 		drawImage(id);
 	});
 
@@ -91,8 +96,8 @@ Template.showMonitor.rendered = function(){ //默认选中第一个监视进行�
 			$(this).removeClass().addClass("success");
 
 		});
-		$("#showMonitorList:checkbox").click(function(event){
-			event.stopPropagation();
+		$("#showMonitorList :checkbox").click(function(e){
+			e.stopPropagation();
 			if(this.checked){
 				if(!$(this).closest("tr").hasClass("success")){
 					$(this).closest("tr").addClass("error");

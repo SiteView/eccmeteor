@@ -1,5 +1,6 @@
 Template.ChooseMonitorTemplate.monities = function(){
-	var id = Session.get("checkedTreeNode")["id"];
+//	var id = Session.get("checkedTreeNode")["id"];
+	var id = SessionManage.getCheckedTreeNode("id");
 	var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);
 	return SvseEntityTemplateDao.getEntityMontityByDevicetype(devicetype);
 }
@@ -9,9 +10,14 @@ Template.ChooseMonitorTemplate.events = {
 		Session.set("monityTemplateId",e.target.id);
 	//	var  checkedMonityTemolate = SvseMonitorTemplateDao.getTemplateById(e.target.id);
 	//	Session.set("checkedMonityTemolate",checkedMonityTemolate);//存储选中的监视器模板信息
+		Session.set("monitorStatus","添加");
 		$("#chooseMonitorTemplateDiv").modal('hide');
 		$("#showMonitorInfoDiv").modal('show');
 	} 
+}
+
+Template.showMonitorInfo.monitorStatus = function(){
+	return Session.get("monitorStatus") ? Session.get("monitorStatus") : "";
 }
 
 Template.showMonitorInfo.getMonityTemplateParameters = function(){
@@ -49,7 +55,8 @@ Template.showMonitorInfo.getMonityTemplateStatesByStatus = function(status){
 }
 
 Template.showMonitorInfo.devicename = function(){
-	 return Session.get("checkedTreeNode").name;
+	// return Session.get("checkedTreeNode").name;
+	return SessionManage.getCheckedTreeNode("name");
 }
 
 Template.showMonitorInfo.monitorType = function(){
@@ -114,13 +121,16 @@ Template.showMonitorInfo.events({
 			parameter : monityParameter,
 			property : property
 		};
-		var monitorstatus = ($("#monitorstatus").val() === "true" || $("#monitorstatus").val() === true) ;//获取当前编辑状态 是添加还是修改。true为修改状态。在entitymonitoredit.js中初始化
+		//获取当前编辑状态 是添加还是修改。true为修改状态。在entitymonitoredit.js中初始化
+		var monitorstatus = Session.get("monitorStatus") === "添加";
 		//获取父节点id
-		var parentid = Session.get("checkedTreeNode")["id"];
+	//	var parentid = Session.get("checkedTreeNode")["id"];
+		var parentid = SessionManage.getCheckedTreeNode("id");
 		SystemLogger("获取到的结果是:");
 		console.log(monitor);
 		SystemLogger("正在刷新监视器....");
-		if(!monitorstatus){ //如果是添加监视器
+		//如果是添加监视器
+		if(monitorstatus){ 
 			SvseMonitorDao.addMonitor(monitor,parentid,function(result){
 				if(result && !result.status){
 					SystemLogger(result.msg,-1);
@@ -128,10 +138,14 @@ Template.showMonitorInfo.events({
 				else{
 					SystemLogger("刷新监视器完成....");
 				}
-				Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
+			//	Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
+				$("#showMonitorInfoDiv").modal('hide');
 			});
-		}else{//如果编辑监视器
-			monitor["return"] = {id : Session.get("checkedMonitorId").id,return : true};
+		//如果编辑监视器
+		}else{
+		//	monitor["return"] = {id : Session.get("checkedMonitorId").id,return : true};
+			monitor["return"] = {id : SessionManage.setCheckedMonitorId(),return : true};
+		
 			console.log(monitor);
 			SvseMonitorDao.editMonitor(monitor,parentid,function(result){
 				if(!result.status){
@@ -139,7 +153,8 @@ Template.showMonitorInfo.events({
 				}else{
 					SystemLogger("刷新监视器完成....");
 				}
-				Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
+			//	Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
+				$("#showMonitorInfoDiv").modal('hide');
 			});
 		}
 	},
@@ -214,10 +229,12 @@ Template.showMonitorInfo.rendered = function(){
 		//在HelperRegister.js中createDomeByPropertyHelper 创建监视器属性时，可能出现dll类型属性，此时需要重新处理该属性对应的Dom元素
 		if($("select.dll:first").length){
 			(function(){		
-				var panrentid = Session.get("checkedTreeNode")["id"];
+			//	var panrentid = Session.get("checkedTreeNode")["id"];
+				var panrentid = SessionManage.getCheckedTreeNode("id");
 				var monitorstatus = ($("#monitorstatus").val() === "true" || $("#monitorstatus").val() === true) ;
 				if(monitorstatus){ //编辑状态
-					var monitorid = Session.get("checkedMonitorId")["id"];
+				//	var monitorid = Session.get("checkedMonitorId")["id"];
+					var monitorid = SessionManage.setCheckedMonitorId();
 					var templateMonitoryId = SvseTreeDao.getMonitorTypeById(monitorid); //获取需编辑监视器的模板id
 				}else{
 					templateMonitoryId = Session.get("monityTemplateId");

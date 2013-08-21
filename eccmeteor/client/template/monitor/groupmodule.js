@@ -72,7 +72,8 @@ Template.showGroupAndEntity.rendered = function(){
 				$(this).removeClass("error");
 			}
 		});
-		$("tr :checkbox").click(function(){
+		$("tr :checkbox").click(function(e){
+            e.stopPropagation();
 			if(this.checked){
 				$(this).closest("tr").addClass("error");
 			}else{

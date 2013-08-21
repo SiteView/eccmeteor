@@ -4,6 +4,7 @@ SvseMonitorTemplateDao ={
 	getTemplateById:function(id){//根据id获取模板
 		return SvseMonitorTemplate.findOne({"return.id" : id});
 	},
+	//获取监视器模板名称 如：CPU ，ping等
 	getTemplateTypeById:function(id){
 		return SvseMonitorTemplate.findOne({"return.id" : id}).property.sv_label;
 	},

@@ -169,6 +169,11 @@
 			var flag = this.checked; 
 			$(this).closest("table").find("tbody :checkbox").each(function(){
 				this.checked = flag;
+				if(flag){
+					$(this).parents("tr:first").addClass("error");
+				}else{
+					$(this).parents("tr:first").removeClass("error");
+				}
 			});
 		});
 	},

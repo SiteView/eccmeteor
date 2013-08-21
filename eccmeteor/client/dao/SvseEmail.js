@@ -1,7 +1,7 @@
 SvseEmailDao = {
 	"AGENT":"svseEmailDaoAgent",
 	"getEmailList" : function(){
-		return SvseEmailList.find({}).fetch();
+		return SvseEmailList.find({nIndex:{$exists:true}}).fetch()
 	},
 	"addEmailAddress":function(addressname,address,fn){
 		Meteor.call(SvseEmailDao.AGENT,'addEmailAddress',[addressname,address],function(err,result){
@@ -70,5 +70,8 @@ SvseEmailDao = {
 	},
 	"sync" : function(){
 		Meteor.call(SvseEmailDao.AGENT,"sync");
+	},
+	getEmailTemplates : function(fn){
+		Meteor.call(SvseEmailDao.AGENT,"getEmailTemplates",[],fn);
 	}
 }

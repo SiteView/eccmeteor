@@ -29,7 +29,8 @@ Template.showEntity.showEntityId = function(){
 
 Template.showEntity.events = {
 	"click #showEntityFormSaveBtn":function(){
-		var checkedTreeNode =  Session.get("checkedTreeNode");//该node为父节点
+	//	var checkedTreeNode =  Session.get("checkedTreeNode");//该node为父节点
+		var checkedTreeNode = SessionManage.getCheckedTreeNode();
 		var arr = $("#showEntityForm").serializeArray();
 		var property = {};
 		for(index in arr){
@@ -89,7 +90,8 @@ Template.showEditEntity.getItemsAndDefaultValueBySvIdAndDevicetype = function(){
 
 Template.showEditEntity.events = {
 	"click #showEditEntityFormSaveBtn":function(){
-		var checkedTreeNode =  Session.get("checkedTreeNode");//该node为设备节点本身
+	//	var checkedTreeNode =  Session.get("checkedTreeNode");//该node为设备节点本身
+		var checkedTreeNode =SessionManage.getCheckedTreeNode();
 		var arr = $("#showEditEntityForm").serializeArray();
 		var property = ClientUtils.formArrayToObject(arr);
 		

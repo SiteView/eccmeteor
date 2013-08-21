@@ -6,12 +6,14 @@ Template.BodyContentOfMonitor.rendered = function(){
 
 
 Template.operateNode.sv_name = function(){
-	if(Session.get("checkedTreeNode"))return Session.get("checkedTreeNode").name;
-	return false;
+	//if(Session.get("checkedTreeNode"))return Session.get("checkedTreeNode").name;
+	//return false;
+	return SessionManage.getCheckedTreeNode() ? SessionManage.getCheckedTreeNode("name") :false;
 }
 
 Template.operateNode.type = function(){
-	return Session.get("checkedTreeNode") ? Session.get("checkedTreeNode")["type"] : "";
+//	return Session.get("checkedTreeNode") ? Session.get("checkedTreeNode")["type"] : "";
+	return SessionManage.getCheckedTreeNode() ? SessionManage.getCheckedTreeNode("type") :"";
 }
 
 //增删改操作Template
@@ -66,8 +68,10 @@ Template.operateNode.events ={
 		SwithcView.render(MONITORVIEW.ENTITYGROUP,LAYOUTVIEW.NOTOPERATION);
 	},
 	"click .btn#editEntity":function(){
-		if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
-		SystemLogger(Session.get("checkedTreeNode"));
+	//	if(!Session.get("checkedTreeNode")||Session.get("checkedTreeNode")["type"] !== "entity") return;
+	//	SystemLogger(Session.get("checkedTreeNode"));
+		if(!SessionManage.getCheckedTreeNode() || SessionManage.getCheckedTreeNode("type") !== "entity")
+			return;
 		SwithcView.view(MONITORVIEW.ENTITYEDIT);//设置视图状态
 	},
 	"click a#forbidEntity" : function(e){
@@ -112,7 +116,8 @@ Template.operateNode.events ={
 		//删除子节点
 		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
 		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
-		var parentid  = Session.get("checkedTreeNode").id;
+	//	var parentid  = Session.get("checkedTreeNode").id;
+		var parentid  = SessionManage.getCheckedTreeNode("id");
 		var ids = entityIds.concat(groupsIds);
 		if (!ids.length)
 			return;
@@ -150,7 +155,8 @@ Template.operateNode.events ={
 		});
 		*/
 		var monitorIds =  ClientUtils.tableGetSelectedAll("showMonitorList");
-		var parentid  = Session.get("checkedTreeNode")["id"];
+	//	var parentid  = Session.get("checkedTreeNode")["id"];
+		var parentid = SessionManage.getCheckedTreeNode("id");
 		console.log("delete monitorids:");
 		console.log(monitorIds);
 		SvseMonitorDao.deleteMultMonitors(monitorIds,parentid,function(result){

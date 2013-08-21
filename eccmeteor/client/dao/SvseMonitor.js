@@ -115,5 +115,9 @@ SvseMonitorDao = {
 				}
 			}
 		});
+	},
+	//根据监视器id 获取该监视器相应的模板id
+	getMonitorTemplateIdByMonitorId : function(id){
+		return SvseTree.findOne({sv_id:id}).sv_monitortype;
 	}
 }

@@ -4,7 +4,8 @@ Template.showGroupAdd.events ={
 		var property = ClientUtils.formArrayToObject(arr);
 		if(!property["sv_dependson"])
 			property["sv_dependson"] = "";
-		var parentid = Session.get("checkedTreeNode")["id"];
+	//	var parentid = Session.get("checkedTreeNode")["id"];
+		var parentid = SessionManage.getCheckedTreeNode("id");
 		var group = {'property':property};
 		SvseDao.addGroup(group,parentid,function(result){
 			if(!result.status){

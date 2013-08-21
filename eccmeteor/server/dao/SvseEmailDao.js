@@ -78,5 +78,8 @@ SvseEmailDaoOnServer = {
 			}
 		}
 		return SvseEmailDaoOnServer.getReturn(true,1);
+	},
+	"getEmailTemplates" : function(){
+		return SvseMethodsOnServer.svGetEmailTemplates();
 	}
 }

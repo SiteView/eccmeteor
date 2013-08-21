@@ -15,10 +15,19 @@
 	</div>
 </div>
 <br />
-<table class="table table-striped table-bordered table-condensed">
+{{> emailsettingList}}
+{{> emailbasicsettingForm}}
+{{> emailbasicsettingofaddress}}
+{{> emailbasicsettingofaddressedit}}
+</Template>
+
+<Template name="emailsettingList">
+	<!--邮件列表表格展示-->
+	<table class="table table-striped table-bordered table-condensed table-hover">
 		<thead>
 			<tr>
-				<th><input type="checkbox" id="emailsettingtableselectall">   {{language.nameTh}}</th>
+				<th><input type="checkbox" id="emailsettingtableselectall"></th>
+				<th>{{language.nameTh}}</th>
 				<th>{{language.statusTh}}</th>
 				<th>{{language.emailTh}}</th>
 				<th>{{language.optionTh}}</th>
@@ -27,54 +36,57 @@
 		<tbody id="emailSettingList">
 			{{#each emaillist}}
 			<tr>
-				<td><input type="checkbox" id="{{nIndex}}">  {{Name}}</td>
+				<td><input type="checkbox" id="{{nIndex}}"></td>
+				<td>{{Name}}</td>
 				<td>{{bCheck}}</td><td>{{MailList}}</td>
 				<td><button id="{{nIndex}}" class="btn"><i class="icon-edit"></i> {{language.emailsettingmodel.editbtn}}</button></td>
 			</tr>
 			{{/each}}
 		</tbody>
-</table>
+	</table>
+</Template>
+
+<Template name="emailbasicsettingForm">
+	<!--邮件设置---基础数据设置表单-->
 <form id="emailbasicsetting" class="well form-horizontal" onsubmit="return false;">
- <fieldset>
-    <legend>{{language.basicsettiontilte}}</legend>
-    <div class="control-group">
-      <label class="control-label">{{language.emailsettingmodel.sendserverSMTPlab}}:</label>
-      <div class="controls">
-        <input type="text" class="span4" name="server">
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label">{{language.emailsettingmodel.sendemailAddresslab}}:</label>
-      <div class="controls">
-        <input type="text" class="span4" name="from">
-      </div>
-	</div>
-	<div class="control-group">
-      <label class="control-label">{{language.emailsettingmodel.sendbackupserverlab}}:</label>
-      <div class="controls">
-        <input type="text" class="span4" name="backupserver">
-      </div>
-    </div>
-	<div class="control-group">
-      <label class="control-label">{{language.emailsettingmodel.usernamelab}}:</label>
-      <div class="controls">
-        <input type="text" class="span4" name="user">
-      </div>
-    </div>
-	<div class="control-group">
-      <label class="control-label" >{{language.emailsettingmodel.passwordlab}}:</label>
-      <div class="controls">
-        <input type="password" class="span4" name="password">
-      </div>
-    </div>
-	<div class="form-actions">
-		<button class="btn btn-primary" id="emailbasicsettingapplybtn">{{language.emailsettingmodel.applybtn}}</button>
-		<button class="btn" id="emailbasicsettingtestbtn">{{language.emailsettingmodel.testbtn}}</button>
-	</div>
-  </fieldset>
+ 	<fieldset>
+	    <legend>{{language.basicsettiontilte}}</legend>
+	    <div class="control-group">
+	      <label class="control-label">{{language.emailsettingmodel.sendserverSMTPlab}}:</label>
+	      <div class="controls">
+	        <input type="text" class="span4" name="server">
+	      </div>
+	    </div>
+	    <div class="control-group">
+	      <label class="control-label">{{language.emailsettingmodel.sendemailAddresslab}}:</label>
+	      <div class="controls">
+	        <input type="text" class="span4" name="from">
+	      </div>
+		</div>
+		<div class="control-group">
+	      <label class="control-label">{{language.emailsettingmodel.sendbackupserverlab}}:</label>
+	      <div class="controls">
+	        <input type="text" class="span4" name="backupserver">
+	      </div>
+	    </div>
+		<div class="control-group">
+	      <label class="control-label">{{language.emailsettingmodel.usernamelab}}:</label>
+	      <div class="controls">
+	        <input type="text" class="span4" name="user">
+	      </div>
+	    </div>
+		<div class="control-group">
+	      <label class="control-label" >{{language.emailsettingmodel.passwordlab}}:</label>
+	      <div class="controls">
+	        <input type="password" class="span4" name="password">
+	      </div>
+	    </div>
+		<div class="form-actions">
+			<button class="btn btn-primary" id="emailbasicsettingapplybtn">{{language.emailsettingmodel.applybtn}}</button>
+			<button class="btn" id="emailbasicsettingtestbtn">{{language.emailsettingmodel.testbtn}}</button>
+		</div>
+  	</fieldset>
 </form>
-{{> emailbasicsettingofaddress}}
-{{> emailbasicsettingofaddressedit}}
 </Template>
 
 <Template name="emailbasicsettingofaddress">
