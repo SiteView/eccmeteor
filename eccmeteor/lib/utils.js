@@ -185,6 +185,56 @@
 			ids.push($(checks[i]).attr("id"));
 		}
 		return ids;
+	},
+	/*
+	*表格行选中变色 接收一个表格id参数
+	*/
+	"trOfTableClickedChangeColor":function(id){
+		$("#"+id+" tr").click(function(){
+			var checkbox = $(this).find(":checkbox:first");
+			checkbox[0].checked = !checkbox[0].checked;
+			$(this).siblings(".success").each(function(){
+				$(this).removeClass("success");
+				if($(this).find(":checkbox:first")[0].checked){
+					$(this).addClass("error");
+				}
+			});
+			$(this).removeClass().addClass("success");
+
+		});
+		$("#"+id+" :checkbox").click(function(e){
+			e.stopPropagation();
+			if(this.checked){
+				if(!$(this).closest("tr").hasClass("success")){
+					$(this).closest("tr").addClass("error");
+				}
+			}else{
+				$(this).closest("tr").removeClass("error");
+			}
+		});
+	},
+	/*
+	*隐藏所有操作按钮
+	*接收一个tbdoy的id 参数
+	*/
+	"hideOperateBtnInTd":function(id){
+		$("#"+id+" tr").each(function(){
+			$(this).children("td:last").children(".btn-group").css("visibility","hidden");
+		})
+	},
+	/*
+	*鼠标悬停显示操作按钮
+	*接收一个tbdoy的id 参数
+	*/
+	"showOperateBtnInTd":function(id){
+		$("#"+id+" tr").mouseenter(function(){
+			$(this).children("td:last").children(".btn-group").css("visibility","visible");
+			$(this).siblings("tr").each(function(){
+				$(this).children("td:last").children(".btn-group").css("visibility","hidden");
+			});
+		}).mouseleave(function(){
+			$(this).children("td:last").children(".btn-group").css("visibility","hidden");
+		});
 	}
 }
 

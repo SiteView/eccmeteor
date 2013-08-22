@@ -1,10 +1,5 @@
 var getWarnerRuleListSelectAll = function(){
-	var checks = $("#warnerrulelist :checkbox[checked]");
-	var ids = [];
-	for(var i = 0 ; i < checks.length; i++){
-		ids.push($(checks[i]).attr("id"));
-	}
-	return ids;
+	return ClientUtils.tableGetSelectedAll("warnerrulelist");
 }
 Template.warnerrule.events = {
 	"click #emailwarner":function(e){
@@ -164,13 +159,16 @@ Template.warnerrulelist.rulelist = function(){
 Template.warnerrulelist.rendered = function(){
 	//初始化checkbox选项
 	$(function(){
-		$("#warnerrulelistselectall").click(function(){
-			var flag = this.checked; 
-			$(this).closest("table").find("tbody :checkbox").each(function(){
-				this.checked = flag;
-			});
-		});
+		//隐藏所有操作按钮
+		ClientUtils.hideOperateBtnInTd("warnerrulelist");
+		//初始化 checkbox事件
+		ClientUtils.tableSelectAll("warnerrulelistselectall");
+		//初始化tr点击变色效果
+		ClientUtils.trOfTableClickedChangeColor("warnerrulelist");
+		//tr 鼠标悬停显示操作按钮效果
+		ClientUtils.showOperateBtnInTd("warnerrulelist");
 	});
+
 }
 Template.warnerrulelist.events = {
 	"click td .btn":function(e){

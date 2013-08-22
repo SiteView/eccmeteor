@@ -1,25 +1,35 @@
 <Template name="warnerrule">
 <div class="form-horizontal">
-	<div class="btn-group">
-		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-			{{language.addbtn}}
-		<span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu">	
-			<li id="emailwarner"><a tabindex="-1" href="#"><i class="icon-envelope"></i> {{language.warnerrulemodel.emailwarner}}</a></li>
-			<li id="messagewarner"><a tabindex="-1" href="#" ><i class="icon-signal"></i> {{language.warnerrulemodel.messagewarner}}</a></li>
-			<li id="scriptwarner"><a tabindex="-1" href="#"><i class="icon-list-alt"></i> {{language.warnerrulemodel.scriptwarner}}</a></li>
-			<li id="scriptwarner"><a tabindex="-1" href="#" id="soundwarner"><i class="icon-volume-up"></i> {{language.warnerrulemodel.soundwarner}}</a></li>
-		</ul>
-		<button class="btn" id="delwarnerrule">{{language.delbtn}}</button>
-	</div>
-	<div class="btn-group">
-		<button class="btn" id="allowewarnerrule">{{language.allowbtn}}</button>
-		<button class="btn" id="forbidwarnerrule">{{language.forbidbtn}}</button>
-		<button class="btn" id="refreshwarnerrule">{{language.refreshbtn}}</button>
-	</div>
-	<div class="btn-group">
-		<button class="btn" id="warnerrulehelpmessage">{{language.helpmessagebtn}}</button>
+	<span class="label label-info">报警规则</span>
+	<div class="btn-toolbar">
+		<div class="btn-group">
+			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				{{language.addbtn}}
+			<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">	
+				<li id="emailwarner"><a tabindex="-1" href="#"><i class="icon-envelope"></i> {{language.warnerrulemodel.emailwarner}}</a></li>
+				<li id="messagewarner"><a tabindex="-1" href="#" ><i class="icon-signal"></i> {{language.warnerrulemodel.messagewarner}}</a></li>
+				<li id="scriptwarner"><a tabindex="-1" href="#"><i class="icon-list-alt"></i> {{language.warnerrulemodel.scriptwarner}}</a></li>
+				<li id="scriptwarner"><a tabindex="-1" href="#" id="soundwarner"><i class="icon-volume-up"></i> {{language.warnerrulemodel.soundwarner}}</a></li>
+			</ul>
+			<button class="btn" id="delwarnerrule">{{language.delbtn}}</button>
+		</div>
+		<div class="btn-group">
+			<button class="btn" id="allowewarnerrule">{{language.allowbtn}}</button>
+			<button class="btn" id="forbidwarnerrule">{{language.forbidbtn}}</button>
+
+			<button class="btn">更多</button>
+			<button class="btn dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu pull-right">	
+				<li><a href="#" id="refreshwarnerrule">{{language.refreshbtn}}</a></li>
+				<li><a href="#" id="warnerrulehelpmessage">{{language.helpmessagebtn}}</a></li>
+				<li class="divider"></li>
+				<li><a href="#" id="helpmessage">{{language.helpmessagebtn}}</a></li>
+			</ul>
+		</div>
 	</div>
 </div>
 {{> warnerrulelist}}
@@ -28,20 +38,30 @@
 </Template>
 
 <Template name="warnerrulelist">
-	<table class="table table-striped table-bordered table-condensed">
+	<table class="table table-striped table-condensed table-hover">
 		<thead>
 			<tr>
-				<th><input type="checkbox" id="warnerrulelistselectall"/>名称</th><th>报警类型</th><th>报警状态</th><th>启动/禁止</th><th>操作</th>
+				<th><input type="checkbox" id="warnerrulelistselectall"/></th>
+				<th>名称</th>
+				<th>报警类型</th>
+				<th>报警状态</th>
+				<th>启动/禁止</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody id="warnerrulelist">
 			{{#each rulelist}}
 			<tr>
-				<td><input type="checkbox" id="{{nIndex}}"/>{{AlertName}}</td>
+				<td><input type="checkbox" id="{{nIndex}}"/></td>
+				<td>{{AlertName}}</td>
 				<td>{{AlertType}}</td>
 				<td>{{AlertCategory}}</td>
 				<td>{{AlertState}}</td>
-				<td><button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button></td>
+				<td>
+					<div class="btn-group">
+						<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+					</div>
+				</td>
 			</tr>
 			{{/each}}
 		</tbody>

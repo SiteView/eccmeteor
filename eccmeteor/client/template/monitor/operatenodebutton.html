@@ -1,0 +1,45 @@
+<Template name="operateNode"><!--增删改操作 -->
+	<div class="form-horizontal">
+		{{#if sv_name}}
+		<span class="label label-info">{{sv_name}}</span>
+		<div class="btn-toolbar">
+			{{#if equal type "entity"}}
+			<div class="btn-group">
+				<button class="btn" id="addMonitor">添加监视器</button>
+				<button class="btn" id="editMonitor">编辑监视器</button>
+				<button class="btn">更多</button>
+				<button class="btn dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu pull-right">	
+				    <li><a href="#" id="allowMonitor">启用</a></li>
+					<li><a href="#" id="forbidMonitor">禁用</a></li>
+					<li class="divider"></li>
+					<li><a href="#" id="deleteMonitor">删除监视器</a></li>
+				</ul>
+			</div>
+			{{else}}
+			    <div class="btn-group">
+				<button class="btn" id="addGroup">增加组</button>
+				<button class="btn" id="addEntity">增加设备</button>
+				<button class="btn">更多</button>
+				<button class="btn dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu pull-right">
+					<li><a href="#" id="allowGroup">启用</a></li>
+					<li><a href="#" id="forbidGroup">禁用</a></li>
+					<li class="divider"></li>
+					<li><a href="#" id="removeNodes">删除</a></li>
+				</ul>
+			</div>
+			{{/if}}
+			
+			<div class="btn-group">
+				<button class="btn" id="refresh">刷新</button>
+			</div>
+			
+		</div>
+		{{/if}}
+	</div>
+</Template>

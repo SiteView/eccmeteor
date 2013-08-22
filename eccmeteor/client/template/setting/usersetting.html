@@ -1,15 +1,21 @@
 <Template name="usersetting">
 <div class="form-horizontal">
-	<div class="btn-group">
-		<button class="btn" id="addusersetting">{{language.addbtn}}</button>
-		<button class="btn" id="delusersetting">{{language.delbtn}}</button>
-	</div>
-	<div class="btn-group">
-		<button class="btn" id="allowusersetting">{{language.allowbtn}}</button>
-		<button class="btn" id="forbidusersetting">{{language.forbidbtn}}</button>
-	</div>
-	<div class="btn-group">
-		<button class="btn" id="helpmessage">{{language.helpmessagebtn}}</button>
+	<span class="label label-info">用户设置</span>
+	<div class="btn-toolbar">
+		<div class="btn-group">
+			<button class="btn" id="addusersetting">{{language.addbtn}}</button>
+			<button class="btn" id="delusersetting">{{language.delbtn}}</button>
+			<button class="btn">更多</button>
+			<button class="btn dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu pull-right">	
+				<li><a href="#" id="allowusersetting">{{language.allowbtn}}</a></li>
+				<li><a href="#" id="forbidusersetting">{{language.forbidbtn}}</a></li>
+				<li class="divider"></li>
+				<li><a href="#" id="helpmessage">{{language.helpmessagebtn}}</a></li>
+			</ul>
+		</div>
 	</div>
 </div>
 
@@ -21,7 +27,7 @@
 </Template>
 
 <Template name="usersettingListTable">
-<table class="table table-striped table-bordered table-condensed">
+<table class="table table-striped table-condensed table-hover">
 		<thead>
 			<tr>
 				<th><input type="checkbox" id="usersettingtableselectall"></th>
@@ -29,7 +35,7 @@
 				<th>用户名</th>
 				<th>用户状态</th>
 				<th>用户类型</th>
-				<th>操作</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody id="userSettingList">
@@ -41,199 +47,13 @@
 				<td>{{profile.accountstatus}}</td>
 				<td>{{profile.accounttype}}</td>
 				<td>
-					<button id="{{_id}}" class="btn" name="edit"><i class="icon-edit"></i>编辑</button>
-					<button id="{{_id}}" class="btn" name="promission"><i class="icon-edit"></i>授权</button>
+					<div class="btn-group">
+						<button id="{{_id}}" class="btn" name="edit"><i class="icon-edit"></i>编辑</button>
+						<button id="{{_id}}" class="btn" name="promission"><i class="icon-edit"></i>授权</button>
+					</div>
 				</td>
 			</tr>
 			{{/each}}
 		</tbody>
 </table>
-</Template>
-
-<Template name="userPromissionSetting"> <!--用户授权 -->
-	<div id="userPromissionSettingDiv" class="modal hide fade">
-		<div class="modal-header">
-			用户授权<span class="badge badge-info" id="promissionUsername"></span>
-			<input type="hidden" id="promissionUserId">
-		</div>
-		<div class="modal-body" style="height:400px">
-			<div class="row-fluid">
-				<div class="span6 well" style="overflow:auto">
-					{{> userPromissionSettingTree}}
-				</div>
-				<div class="span6" style="overflow:auto">
-					{{> userPromissViewControle}}
-				</div>
-			</div>
-		</div>
-		<div class="modal-footer">
-			<button class="btn btn-large" id="userPromissionSettingSetNodesBtn">授予节点</button>
-			<button class="btn btn-primary btn-large" id="userPromissionSettingCloseBtn">关闭</button>
-		</div>
-	</div>
-</Template>
-
-<Template name="userPromissionSettingTree">
-	<ul id="svse_tree_promission_check" class="ztree"></ul>
-	<ul id="svse_other_promission_check" class="ztree"></ul>
-</Template>
-
-<Template name="userPromissViewControle">
-	{{#if equal userpromissViewType "svse"}}
-		{{> userPromissionSettingGroupControl}}
-	{{/if}}
-	{{#if equal userpromissViewType 'warner'}}
-		{{> userPromissionSettingWarnerControl}}
-	{{/if}}
-	{{#if equal userpromissViewType 'setting'}}
-		{{> userPromissionSettingSettingControl}}
-	{{/if}}
-</Template>
-
-<Template name="userPromissionSettingGroupControl">
-	<form class="well form-horizontal" submit="return fasle;" id="userPromissionSettingGroupControlForm">
-		{{#if equal type  "group"}}
-		<span class="badge">组权限</span>
-		<ul class="nav nav-list">
-			<li>
-				<input type="checkbox" name="addEntity">
-				<i class="icon-book"></i> 增加设备
-			</li>
-			<li>
-				<input type="checkbox" name="addGroup">
-				<i class="icon-book"></i> 增加组
-			</li>
-			<li>
-				<input type="checkbox" name="edit">
-				<i class="icon-book"></i> 编辑组
-			</li>
-			<li>
-				<input type="checkbox" name="delete">
-				<i class="icon-book"></i> 删除组
-			</li>
-			<li>
-				<input type="checkbox" name="refresh">
-				<i class="icon-book"></i>刷新组
-			</li>
-		</ul>
-		<br>
-		{{/if}}
-		{{#if equal type "entity"}}
-		<span class="badge">设备权限</span>
-		<ul class="nav nav-list">
-			<li>
-				<input type="checkbox" name="addMonitor">
-				<i class="icon-book"></i> 增加监视器
-			</li>
-			<li>
-				<input type="checkbox" name="edit">
-				<i class="icon-book"></i> 编辑设备
-			</li>
-			<li>
-				<input type="checkbox" name="delete">
-				<i class="icon-book"></i> 删除设备
-			</li>
-			<li>
-				<input type="checkbox" name="refresh">
-				<i class="icon-book"></i> 刷新设备
-			</li>
-		</ul>
-		<br>
-		<span class="badge">监视器权限权限</span>
-		<ul class="nav nav-list">
-			<li>
-				<input type="checkbox" name="editMonitor">
-				<i class="icon-book"></i> 编辑监视器
-			</li>
-			<li>
-				<input type="checkbox" name="deleteMonitor">
-				<i class="icon-book"></i> 删除监视器
-			</li>
-			<li>
-				<input type="checkbox" name="refreshMonitor">
-				<i class="icon-book"></i> 刷新监视器
-			</li>
-		</ul>
-		{{/if}}
-	</form>
-</Template>
-
-<Template name="userPromissionSettingWarnerControl">
-	<form class="well form-horizontal" submit="return fasle;" id="userPromissionSettingWarnerControlForm">
-	{{#if equal type "warner"}}
-	
-	{{/if}}
-	{{#if equal type "warnerrule"}}
-		<span class="badge">报警规则操作权限</span>
-		<ul class="nav nav-list">
-			<li>
-				<input type="checkbox" name="add">
-				<i class="icon-book"></i> 添加
-			</li>
-			<li>
-				<input type="checkbox" name="update">
-				<i class="icon-book"></i> 编辑
-			</li>
-			<li>
-				<input type="checkbox" name="delete">
-				<i class="icon-book"></i> 删除
-			</li>
-		</ul>
-	{{/if}}
-	{{#if equal type "warnerlog"}}
-	
-	{{/if}}
-	{{#if equal type "warnerplan"}}
-	
-	{{/if}}
-	</form>
-</Template>
-
-<Template name="userPromissionSettingSettingControl">
-	<form class="well form-horizontal" submit="return fasle;" id="userPromissionSettingSettingControlForm">
-	{{#if equal type "basicsetting"}}
-	
-	{{/if}}
-	{{#if equal type "emailsetting"}}
-		<span class="badge">邮件操作权限</span>
-		<ul class="nav nav-list">
-			<li>
-				<input type="checkbox" name="add">
-				<i class="icon-book"></i> 添加邮件
-			</li>
-			<li>
-				<input type="checkbox" name="update">
-				<i class="icon-book"></i> 编辑邮件
-			</li>
-			<li>
-				<input type="checkbox" name="delete">
-				<i class="icon-book"></i> 删除邮件
-			</li>
-		</ul>
-	{{/if}}
-	{{#if equal type "messagesetting"}}
-	
-	{{/if}}
-	{{#if equal type "usersetting"}}
-		<span class="badge">用户操作权限</span>
-		<ul class="nav nav-list">
-			<li>
-				<input type="checkbox" name="add">
-				<i class="icon-book"></i> 添加用户
-			</li>
-			<li>
-				<input type="checkbox" name="updateStatus">
-				<i class="icon-book"></i> 更改用户状态
-			</li>
-			<li>
-				<input type="checkbox" name="updatePassword">
-				<i class="icon-book"></i> 重置密码
-			</li>
-			<li>
-				<input type="checkbox" name="updatePermission">
-				<i class="icon-book"></i> 授权管理
-			</li>
-		</ul>
-	{{/if}}
-	</form>
 </Template>
