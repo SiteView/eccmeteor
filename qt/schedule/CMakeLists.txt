@@ -18,4 +18,4 @@ LINK_DIRECTORIES("../bin")
 SET(EXECUTABLE_OUTPUT_PATH "../bin") 
 ADD_EXECUTABLE(MonitorSchedule ${DIR_SRCS})
 
-TARGET_LINK_LIBRARIES(MonitorSchedule dl pthread libaddon.a libccgnu2.a libutil.a )
+TARGET_LINK_LIBRARIES(MonitorSchedule ${CMAKE_DL_LIBS} dl pthread libaddon.a libccgnu2.a libutil.a )
