@@ -16,18 +16,7 @@ Template.showMonitor.events={
 		SessionManage.setCheckedMonitorId(id);
 		drawImage(id);
 	},
-	"mouseenter tbody tr":function(e){
-    	var target = $(e.target);
-    	target.find("td:first").width(target.find("td:first").width()+40);
-    	target.find("div:eq(1)").css("display","block");
-
-    },
-    "mouseleave tbody tr":function(e){
-		var target = $(e.target);
-		target.find("div:eq(1)").css("display","none");
-        target.find("td:first").width(target.find("td:first").width()-40);
-    },
-     "click #showMonitorList i.icon-trash":function(e){
+    "click #showMonitorList button[name='trash']":function(e){
 		var id = e.target.id;
 		console.log("删除监视器id:"+id);
 	//	var parentid  = Session.get("checkedTreeNode")["id"];
@@ -36,7 +25,7 @@ Template.showMonitor.events={
 			SystemLogger(result);
 		});
     },
-    "click #showMonitorList i.icon-edit":function(e){
+ 	"click #showMonitorList button[name='edit']":function(e){
         var id = e.target.id;
         console.log("编辑监视器id:"+id);
         SessionManage.setCheckedMonitorId(id);
@@ -52,9 +41,16 @@ Template.showMonitor.events={
 Template.showMonitor.rendered = function(){ //默认选中第一个监视进行绘图
 	//初始化checkbox全选效果
 	$(function(){
-        ClientUtils.tableSelectAll("showMonitorTableSelectAll");
+        //隐藏所有操作按钮
+		ClientUtils.hideOperateBtnInTd("showMonitorList");
+		//初始化 checkbox事件
+		ClientUtils.tableSelectAll("showMonitorTableSelectAll");
+		//初始化tr点击变色效果
+		ClientUtils.trOfTableClickedChangeColor("showMonitorList");
+		//tr 鼠标悬停显示操作按钮效果
+		ClientUtils.showOperateBtnInTd("showMonitorList");
     });
-	
+	//默认选中第一个监视器，展示数据
 	$(function(){
 		var tr = $("#showMonitorList tr:first").addClass("success");
 		if(!tr){
@@ -72,40 +68,6 @@ Template.showMonitor.rendered = function(){ //默认选中第一个监视进行�
 		//用此方法代替上面的存储方式
 		SessionManage.setCheckedMonitorId(id);
 		drawImage(id);
-	});
-
-	 //光标手状
-    $(function(){
-        $("tbody i").mouseenter(function(){
-        	$(this).css("cursor","pointer");
-        }).mouseleave(function(){
-        	$(this).css("cursor","auto");
-        });
-    });
-	//选中变色
-	$(function(){
-		$("#showMonitorList tr").click(function(){
-			var checkbox = $(this).find(":checkbox:first");
-			checkbox[0].checked = !checkbox[0].checked;
-			$(this).siblings(".success").each(function(){
-				$(this).removeClass("success");
-				if($(this).find(":checkbox:first")[0].checked){
-					$(this).addClass("error");
-				}
-			});
-			$(this).removeClass().addClass("success");
-
-		});
-		$("#showMonitorList :checkbox").click(function(e){
-			e.stopPropagation();
-			if(this.checked){
-				if(!$(this).closest("tr").hasClass("success")){
-					$(this).closest("tr").addClass("error");
-				}
-			}else{
-				$(this).closest("tr").removeClass("error");
-			}
-		});
 	});
 }
 Template.recordsData.recordsData = function(){

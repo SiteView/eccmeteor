@@ -3,7 +3,7 @@ Template.showGroupAndEntity.svid = function () {
 }
 
 Template.showGroupAndEntity.events({
-    "click #showGroupAndEntityTableGroupList i.icon-trash":function(e){
+     "click #showGroupAndEntityTableGroupList button[name='trash']":function(e){
 		var id = e.target.id;
 		console.log("删除组id:"+id);
 		SvseDao.removeNodesById(id,function(result){
@@ -12,13 +12,13 @@ Template.showGroupAndEntity.events({
 			}
 		});
     },
-     "click #showGroupAndEntityTableGroupList i.icon-edit":function(e){
+    "click #showGroupAndEntityTableGroupList button[name='edit']":function(e){
         var id = e.target.id;
         Session.set("showGroupAndEntityEditGroupId",id);
         console.log("编辑组id:"+id);
         $("#showGroupEditdiv").modal('show');
     },
-    "click #showGroupAndEntityTableEntityList i.icon-trash":function(e){
+    "click #showGroupAndEntityTableEntityList button[name='trash']":function(e){
 		var id = e.target.id;
 		console.log("删除设备id:"+id);
 		SvseDao.removeNodesById(id,function(result){
@@ -27,59 +27,33 @@ Template.showGroupAndEntity.events({
 			}
 		});
     },
-     "click #showGroupAndEntityTableEntityList i.icon-edit":function(e){
+    "click #showGroupAndEntityTableEntityList button[name='edit']":function(e){
         var id = e.target.id;
         console.log("编辑设备id:"+id);
         Session.set("showGroupAndEntityEditEntityId",id);
         $("#showEditEntityDiv").modal('show');
     },
-    "mouseenter tbody tr":function(e){
-    	var target = $(e.target);
-    	target.find("td:first").width(target.find("td:first").width()+35);
-    	target.find("div:eq(1)").css("display","block");
-
-    },
-    "mouseleave tbody tr":function(e){
-		var target = $(e.target);
-		target.find("div:eq(1)").css("display","none");
-        target.find("td:first").width(target.find("td:first").width()-35);
-    }
 });
 
 
 Template.showGroupAndEntity.rendered = function(){
-    //初始化checkbox全选效果
     $(function(){
+        //隐藏所有操作按钮
+        ClientUtils.hideOperateBtnInTd("showGroupAndEntityTableGroupList");
+        //初始化 checkbox事件
         ClientUtils.tableSelectAll("showGroupAndEntityTableGroupSelectAll");
+        //初始化tr点击变色效果
+        ClientUtils.trOfTableClickedChangeColor("showGroupAndEntityTableGroupList");
+        //tr 鼠标悬停显示操作按钮效果
+        ClientUtils.showOperateBtnInTd("showGroupAndEntityTableGroupList");
+        // -------------------------------------------------------------
+        //隐藏所有操作按钮
+        ClientUtils.hideOperateBtnInTd("showGroupAndEntityTableEntityList");
+        //初始化 checkbox事件
         ClientUtils.tableSelectAll("showGroupAndEntityTableEntitySelectAll");
+        //初始化tr点击变色效果
+        ClientUtils.trOfTableClickedChangeColor("showGroupAndEntityTableEntityList");
+        //tr 鼠标悬停显示操作按钮效果
+        ClientUtils.showOperateBtnInTd("showGroupAndEntityTableEntityList");
     });
-    //光标手状
-    $(function(){
-        $("tbody i").mouseenter(function(){
-        	$(this).css("cursor","pointer");
-        }).mouseleave(function(){
-        	$(this).css("cursor","auto");
-        });
-    });
-	//选中变色
-	$(function(){
-		$("tbody tr").click(function(){
-			var checkbox = $(this).find(":checkbox:first");
-			checkbox[0].checked = !checkbox[0].checked;
-			if(checkbox[0].checked){
-				$(this).addClass("error");
-			}else{
-				$(this).removeClass("error");
-			}
-		});
-		$("tr :checkbox").click(function(e){
-            e.stopPropagation();
-			if(this.checked){
-				$(this).closest("tr").addClass("error");
-			}else{
-				$(this).closest("tr").removeClass("error");
-			}
-		});
-	});
-    
 }
