@@ -11,37 +11,24 @@ SvseDao = {
 	getNodesByRootId:function(rootId){
 		return Svse.find({parentid:rootId}).fetch();
 	},
-	getTree:function(parentid){ //不包含监视器 复杂数据类型
-		var branch =[];
-		var root = Svse.find({parentid:parentid}).fetch();
-		for(index in root){
-			var node ={}
-			node["id"] = root[index]["sv_id"];
-			node["name"]= SvseTree.findOne({sv_id:root[index]["sv_id"]})["sv_name"];
-			node["type"] = root[index]["type"];
-			if(root[index]["type"] !== "entity" && root[index]["has_son"]){
-				node["children"]= this.getTree(node["id"]);
-			}
-			if(root[index] && root[index]["type"] !== "entity"){
-				node["isParent"] = true;
-			}
-			if(parentid === "0") node["open"] = true;
-			branch.push(node);
-		}
-		return branch;
-	},
 	getTreeSimple:function(){//不包含监视器 简单数据类型
 		var nodes = Svse.find().fetch();
 		var branch = [];
 		for(index in nodes){
 			var obj = nodes[index];
 			var branchNode = {};
+			var treeNode = SvseTree.findOne({sv_id:obj["sv_id"]})
 			branchNode["id"] = obj["sv_id"];
 			branchNode["pId"] = obj["parentid"];
 			branchNode["type"] = obj["type"];
-			branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]})["sv_name"];
+			branchNode["name"] = treeNode["sv_name"];
 			branchNode["isParent"] = true;
-			if(branchNode["pId"] === "0") branchNode["open"] = true;
+			branchNode["icon"] = "imag/status/"+obj["type"]+(treeNode["status"]?treeNode["status"]:"")+".png";
+			if(branchNode["pId"] === "0"){
+				branchNode["open"] = true;
+				//记住这个节点
+				TreeNodeRemenber.remenber(obj["sv_id"])
+			}
 			if(obj["type"] === "entity"){
 				branchNode["isParent"] = false;
 			}
@@ -49,7 +36,6 @@ SvseDao = {
 		}
 		return branch;
 	},
-	
 	getDetailTree:function(){ //包含监视器	
 		var nodes = Svse.find().fetch();
 		var branch = [];
@@ -171,7 +157,6 @@ SvseDao = {
 		});
 	},
 	enableNode : function(ids,fn){
-		fn = Utils.checkReCallFunction(fn);
 		Meteor.call(SvseDao.AGENT,'allowNode',[ids],function(err,result){
 			if(err){
 				console.log(err);

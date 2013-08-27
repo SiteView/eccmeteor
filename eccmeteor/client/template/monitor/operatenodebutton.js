@@ -85,7 +85,6 @@ Template.operateNode.events ={
 	        return;
 	    console.log("禁用的设备是：");
 	    console.log(entityIds);
-	    return;
 	    SvseDao.forbidNodeForever(entityIds,function(result){
 			if(!result.status){
 				console.log(result.msg)
@@ -98,7 +97,6 @@ Template.operateNode.events ={
 	        return;
 	    console.log("启用的设备是：");
 	    console.log(entityIds);
-	    return;
 	    SvseDao.enableNode(entityIds,function(result){
 			if(!result.status){
 				console.log(result.msg)
@@ -192,9 +190,6 @@ Template.operateNode.events ={
 		var montitorsids = ClientUtils.tableGetSelectedAll("showMonitorList");
 	    if(!montitorsids.length)
 	        return;
-	    console.log("启用的监视器是：");
-	    console.log(montitorsids);
-	    return;
 	    SvseDao.enableNode(montitorsids,function(result){
 			if(!result.status){
 				console.log(result.msg)

@@ -3,12 +3,14 @@
 		<div class="container-fluid">
 			<div class="row-fluid">
 				<div class="span3">
-					<div class="well" style="overflow:auto">
+					<div class="well" id="moitorContentTree" style="overflow:auto">
 						{{> moitorContentTree}}
 					</div>
 				</div>
 				<div class="span9">
-					{{> layout}}
+					<div style="overflow:auto" id="ContentLayout">		
+						{{> layout}}
+					</div>
 				</div>
 			</div>
 		</div>	

@@ -63,3 +63,19 @@ hr{
 .createInputDomStyle-textarea{
 	 height: auto;
 }
+.table.table-hover thead th {
+  text-align: center;
+}
+.table.table-hover tbody td {
+  text-align: center;
+}
+
+body{
+	height: 100%;
+}
+#ContentLayout{
+	
+}
+#moitorContentTree{
+	padding-left: 0px;
+}

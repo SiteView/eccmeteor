@@ -1,5 +1,4 @@
 Language = new Meteor.Collection();
-Session.setDefault("language",navigator.language.toLocaleUpperCase())
 Deps.autorun(function (c) {
 	var language = [
 		{

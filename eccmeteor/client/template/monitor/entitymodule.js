@@ -1,6 +1,7 @@
 
 Template.showMonitor.entityid = function () {
-	return Session.get("entityid");
+	//return Session.get("entityid");
+	return SessionManage.getEntityId();
 }
 
 Template.showMonitor.events={

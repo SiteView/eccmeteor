@@ -27,7 +27,6 @@ Template.showGroupEdit.getGroup = function(){
 	//var id = Session.get("checkedTreeNode")["id"];
 	var id = Session.get("showGroupAndEntityEditGroupId");
 	var group = SvseDao.getGroup(id);
-	console.log(group)
 	return group;
 }
 

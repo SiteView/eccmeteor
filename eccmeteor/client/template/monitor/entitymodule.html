@@ -1,21 +1,23 @@
 <Template name="showMonitor"><!--展示监视器信息 -->
 	<table class="table table-striped table-condensed table-hover">
 		<thead>
+			<tr></tr>
 			<tr>
 			    <th><input type="checkbox" id="showMonitorTableSelectAll"></th>
-				<th>状态</th>
-				<th>SV_ID</th>
-				<th>名称</th>
+				<th class="span1">状态</th>
+				<th class="span1">ID</th>
+				<th class="span1">名称</th>
 				<th>描述</th>
-				<th>最后更新时间</th>
+				<th>更新</th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody id="showMonitorList">
+		{{#if getChildrenNodesByIdAndType entityid "submonitor"}}
 		{{#each getChildrenNodesByIdAndType entityid "submonitor"}}
 			<tr id="{{sv_id}}" title="{{status}}">
 			    <td><input type="checkbox" id="{{sv_id}}"></td>
-				<td>{{status}}</td>
+				<td><img src="imag/status/{{status}}.png"/></td>
 				<td>{{sv_id}}</td>
 				<td>{{sv_name}}</td>
 				<td>{{dstr}}</td>
@@ -32,6 +34,9 @@
 				</td>
 			</tr>
 		{{/each}}
+		{{else}}
+			<tr><td  colspan=7>暂无数据</td></tr>
+		{{/if}}
 		</tbody>
 	</table>
 </Template>

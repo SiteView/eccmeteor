@@ -1,5 +1,6 @@
 Template.showGroupAndEntity.svid = function () {
-	return Session.get("svid");
+//	return Session.get("svid");
+    return SessionManage.getSvseId();
 }
 
 Template.showGroupAndEntity.events({
