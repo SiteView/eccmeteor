@@ -20,6 +20,7 @@ var drawSvseSettingTree = function(){
 			    SwithcView.layout(LAYOUTVIEW.SETTING);
 			    //引用 navsetting.js中的函数
 				NavigationSettionTree.execute(treeNode.action);
+				SessionManage.clear();//清空一些Session值
 			}
 		}
 	};
@@ -74,6 +75,7 @@ var drawSvseSimpleTree = function(){
 				    //设置视图状态
 					SwithcView.view(MONITORVIEW.GROUPANDENTITY); 
 					SessionManage.setSvseId(id);
+					SessionManage.clearMonitorRuntimeDate();//清空一些监视数据session
 					return;
 				}
 				SwithcView.view(MODULEVIEW.ENTITYMODULE);

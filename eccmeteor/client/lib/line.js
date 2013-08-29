@@ -1,7 +1,25 @@
-DrawLine = function(data,key,label){
-	this.svgDomId = "svg#line";
-	this.key = key;
-	this.label = label;
+/*
+*画折线统计图
+*Parameter:
+
+*data : 画图数据数组 Needed
+
+*setting:画图的一些属性设置 
+	*key : 指定画图数据对象的画图属性 Needed
+	*label :指定显示的标签	Needed
+	*width : 图像的宽度	No Needed Default:650
+	*height：图像的高度	No Needed Default:300
+
+*selector:Dom 选择器 （类似jquery的选择器） Needed
+*/
+//DrawLine = function(data,key,label,selector){
+//	this.svgDomId = "svg#line";
+DrawLine = function(data,setting,selector){
+	this.svgDomId = selector;
+	this.key = setting.key;
+	this.label = setting.label;
+	this.width = setting.width  ? setting.width :650;
+	this.height = setting.height ? setting.height : 300;
 	this.data = data;
 	this.dateformate = "%H:%M";
 	this.drawLine = function(){ //折线统计图
@@ -12,8 +30,8 @@ DrawLine = function(data,key,label){
 			bottom : 30,
 			left : 60
 		};
-		var width = 650 - margin.left - margin.right;
-		var height = 300 - margin.top - margin.bottom
+		var width = this.width - margin.left - margin.right;
+		var height = this.height - margin.top - margin.bottom
 		
 		var x = d3.time.scale()
 			.range([0, width]);
@@ -49,7 +67,6 @@ DrawLine = function(data,key,label){
 			.attr("height", height + margin.top + margin.bottom)
 			.append("g")
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-		var testObj={};
 		
 		x.domain(d3.extent(this.data, function (d) {
 				return d.creat_time;
