@@ -1,4 +1,4 @@
 Template.BodyContentOfMonitor.rendered = function(){
-//	if(!Session.get("moitorContentRendered"))
-//		Session.set("moitorContentRendered",true); //渲染完毕
+	$("#moitorContentTree").css("height",screen.height-250);
+	$("#ContentLayout").css("height",screen.height-220);
 }

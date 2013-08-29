@@ -2,8 +2,6 @@
 Template.moitorContentTree.rendered = function(){
 	drawSvseSettingTree();
 	Session.set("MoitorContentTreeRendered",true);
-	$("#moitorContentTree").css("height",screen.height-245);
-	$("#ContentLayout").css("height",screen.height-220);
 }
 
 /*

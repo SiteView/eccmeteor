@@ -130,7 +130,7 @@ svGetEntity = function (id){
 	return robj.fmap(0);
 }
 //获取监视器一段时间内的状态记录
-getQueryRecords = function(id,count){
+svGetMonitorRuntimeRecords = function(id,count){
 	var dowhat ={'dowhat':'QueryRecordsByCount','id':id,'count':count};
 	var robj = process.sv_forest(dowhat, 0);
 	if(!robj.isok(0)){

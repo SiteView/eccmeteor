@@ -86,6 +86,9 @@ SvseMonitorDaoOnServer = {
 		for(index in monitorids){
 			SvseMonitorDaoOnServer.deleteMonitor(monitorids[index],parentid);
 		}
+	},
+	getMonitorRuntimeRecords : function(monitorid,count){
+		return SvseMethodsOnServer.svGetMonitorRuntimeRecords(monitorid,count);
 	}
 }
 

@@ -1,7 +1,7 @@
 ﻿Meteor.methods({
   "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
   "meteorSvForest":meteorSvForest,
-  "getQueryRecords":getQueryRecords,
+//  "svGetMonitorRuntimeRecords":svGetMonitorRuntimeRecords,
 //  "removeNodesById":SvseDaoOnServer.removeNodesById,
 //  "svSubmitGroup":svSubmitGroup,
 //  "svDelChildren":svDelChildren,
@@ -42,9 +42,9 @@
 SvseMethodsOnServer = {
 	"GetAllEntityGroups":GetAllEntityGroups,
 	"GetEntityTemplet":GetEntityTemplet,
-	"meteorSvUniv":meteorSvUniv,
-	"meteorSvForest":meteorSvForest,
-	"svForest":svForest,
+//	"meteorSvUniv":meteorSvUniv,
+//	"meteorSvForest":meteorSvForest,
+//	"svForest":svForest,
 	"svGetEntity":svGetEntity,
 	"svGetAllTask":svGetAllTask,
 	"svSubmitMonitor":svSubmitMonitor,
@@ -57,6 +57,7 @@ SvseMethodsOnServer = {
 	"svGetWarnerRule" :svGetWarnerRule,
 	"svGetAllMonitorTempletInfo":svGetAllMonitorTempletInfo,
 	"svGetMonitorTemplet":svGetMonitorTemplet,
+	"svGetMonitorRuntimeRecords":svGetMonitorRuntimeRecords,
 	"svGetTreeData":svGetTreeData,
 	"svGetDefaultTreeData" : svGetDefaultTreeData,
 	"svGetTreeDataChildrenNodes":svGetTreeDataChildrenNodes,

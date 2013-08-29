@@ -119,5 +119,19 @@ SvseMonitorDao = {
 	//根据监视器id 获取该监视器相应的模板id
 	getMonitorTemplateIdByMonitorId : function(id){
 		return SvseTree.findOne({sv_id:id}).sv_monitortype;
+	},
+	//获取监视器的实时数据
+	getMonitorRuntimeRecords : function(id,count,fn){
+		if(SvseTree.findOne({sv_id:id}).status !== "ok"){
+			fn({status:false,msg:"监视器非正常状态,无法获取相关数据"});
+			return;
+		}
+		Meteor.call(SvseMonitorDao.AGENT,"getMonitorRuntimeRecords",[id,count],function (err,result){
+			if(err){
+				fn({status:false,msg:err})
+				return;
+			}
+			fn({status:true,content:result});
+		});
 	}
 }

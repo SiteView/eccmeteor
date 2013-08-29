@@ -1,4 +1,3 @@
-
 Template.showMonitor.entityid = function () {
 	//return Session.get("entityid");
 	return SessionManage.getEntityId();
@@ -72,7 +71,7 @@ Template.showMonitor.rendered = function(){ //默认选中第一个监视进行�
 	});
 }
 Template.recordsData.recordsData = function(){
-	return Session.get("recordsData");
+	return SessionManage.getMonitorRuntimeTableData();
 }
 Template.recordsData.events = {
 	"click .btn#monitorDetail" :  function(){
@@ -82,14 +81,16 @@ Template.recordsData.events = {
 
 //画图前 获取相关数据
 function drawImage(id,count){
-	if(!count) var count = 200;
+	if(!count) 
+		var count = 200;
 	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
 	if(!foreigkeys){
 		SystemLogger("监视器"+id+"不能获取画图数据");
 		return;
 	}
+	/*
 	//获取画图数据
-	Meteor.call("getQueryRecords",id,count, function (err, result) {
+	Meteor.call("svGetMonitorRuntimeRecords",id,count, function (err, result) {
 		if(err){
 			SystemLogger(err);
 			return;
@@ -104,5 +105,22 @@ function drawImage(id,count){
 		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图
 		Session.set("recordsData",recordsData);
 	});
-
+	*/
+	SvseMonitorDao.getMonitorRuntimeRecords(id,count,function(result){
+		if(!result.status){
+			SystemLogger(result.msg);
+			return;
+		}
+		var records = result.content;
+		var dataProcess = new DataProcess(records,foreigkeys["monitorForeignKeys"]);
+		var resultData = dataProcess.getData();
+		var recordsData = dataProcess.getRecordsDate();
+		var keys = dataProcess.getDataKey();
+		var table = new DrawTable();//调用 client/lib 下的table.js 中的drawLine函数画图
+		table.drawTable(keys,"#tableData");
+		var line = new DrawLine(resultData,foreigkeys["monitorPrimary"],foreigkeys["monitorDescript"]);
+		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图
+	//	Session.set("recordsData",recordsData);
+		SessionManage.setMonitorRuntimeTableData(recordsData);
+	});
 }
