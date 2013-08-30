@@ -64,6 +64,17 @@ Handlebars.registerHelper('language',function(){
 	return Language.findOne({name:Session.get("language")}).value;
 });
 
+Handlebars.registerHelper('getLanguage',function(key){
+	if(!key)
+		return "";
+	if(key.length-1 > key.replace(/\./g,"").length)
+		return "";
+	if(key.indexOf("\.") === -1)
+		return Language.findOne({name:Session.get("language")})["value"][key];
+	var arr = key.split('\.');
+	return Language.findOne({name:Session.get("language")})["value"][arr[0]][arr[1]];
+});
+
 /*当前用户名*/
 Handlebars.registerHelper('currentUsername',function(){
     return Meteor.user()  ? Meteor.user().profile.aliasname : "Cryptonym"

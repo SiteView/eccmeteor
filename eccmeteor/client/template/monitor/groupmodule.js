@@ -34,6 +34,18 @@ Template.showGroupAndEntity.events({
         Session.set("showGroupAndEntityEditEntityId",id);
         $("#showEditEntityDiv").modal('show');
     },
+    "mouseenter #showGroupAndEntityTableGroupList img":function(e){
+        $(e.target).popover('show');
+    },
+    "mouseleave #showGroupAndEntityTableGroupList img":function(e){
+        $(e.target).popover('hide');
+    },
+    "mouseenter #showGroupAndEntityTableEntityList img":function(e){
+        $(e.target).popover('show');
+    },
+    "mouseleave #showGroupAndEntityTableEntityList img":function(e){
+        $(e.target).popover('hide');
+    }
 });
 
 

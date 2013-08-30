@@ -30,6 +30,12 @@ Deps.autorun(function (c) {
 				emailTh:'Email',
 				optionTh:'Option',
 				basicsettiontilte:"Basic Setting",
+				status:"Status",
+				ok:"OK",
+				bad:"Bad",
+				disable:"Disable",
+				warning:"Warning",
+				error:"Error",
 				emailsettingmodel:{
 					sendserverSMTPlab:"Server SMTP",
 					sendemailAddresslab:"Email",
@@ -86,6 +92,12 @@ Deps.autorun(function (c) {
 				emailTh:'邮箱',
 				optionTh:'操作',
 				basicsettiontilte:"基本设置",
+				status:"状态",
+				ok:"正常",
+				bad:"错误",
+				error:"错误",
+				disable:"禁用",
+				warning:"警告",
 				emailsettingmodel:{
 					sendserverSMTPlab:"发送服务器SMTP",
 					sendemailAddresslab:"发送方Email地址",
@@ -126,9 +138,13 @@ Deps.autorun(function (c) {
 /**
 使用
 LanguageModel.getLanguage().link
+接收一个参数,制定需要调用二级模块. 默认为不设置.
+	Demo: LanguageModel.getLanguage("warnerrulemodel").emailwarner
 */
 LanguageModel = {
-	getLanaguage : function(){
-		return Language.findOne({name:Session.get("language")})["value"];
+	getLanaguage : function(modul){
+		if(!modul)
+			return Language.findOne({name:Session.get("language")})["value"];
+		return Language.findOne({name:Session.get("language")})["value"][modul];
 	}
 }

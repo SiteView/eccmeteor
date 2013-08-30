@@ -30,6 +30,12 @@ Template.showMonitor.events={
         Session.set("monityTemplateId",monitorTemplateId);
         Session.set("monitorStatus","编辑");
         $("#showMonitorInfoDiv").modal('show');
+    },
+    "mouseenter #showMonitorList img":function(e){
+    	$(e.target).popover('show');
+    },
+    "mouseleave #showMonitorList img":function(e){
+    	$(e.target).popover('hide');
     }
 }
 
@@ -49,15 +55,15 @@ Template.showMonitor.rendered = function(){ //默认选中第一个监视进行�
 	$(function(){
 		var tr = $("#showMonitorList tr:first").addClass("success");
 		if(!tr){
-			$("#showSvg").css("display","none");
+		//	$("#showSvg").css("display","none");
 			return;//如果没有监视器则不画图
 		}
 		var id = tr.attr("id");
 		if(!id || id=="") {
-			$("#showSvg").css("display","none");
+		//	$("#showSvg").css("display","none");
 			return;
 		}
-		$("#showSvg").css("display","block");
+	//	$("#showSvg").css("display","block");
 		//存储选中监视器的id
 		SessionManage.setCheckedMonitorId(id);
 		drawImage(id);
@@ -98,10 +104,7 @@ function drawImage(id,count){
 		var resultData = dataProcess.getData();
 		var recordsData = dataProcess.getRecordsDate();
 		var keys = dataProcess.getDataKey();
-	//	var table = new DrawTable();//调用 client/lib 下的table.js 中的drawLine函数画图
-	//	table.drawTable(keys,"#tableData");
 		SessionManage.setMonitorStatisticalDetailTableData(keys);
-		SystemLogger(keys);
 		var line = new DrawLine(
 							resultData,
 							{

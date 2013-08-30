@@ -35,8 +35,14 @@ hr{
 }
 .table.table-hover tbody td {
   text-align: center;
+  vertical-align:middle;
+  height: 39px;
+  overflow: hidden;
 }
-
+.table.table-hover tbody tr{
+  height: 39px;
+  overflow: hidden;
+}
 body{
 	height: 100%;
 }

@@ -24,7 +24,18 @@
 			    <td>
 			        <input type="checkbox" id="{{sv_id}}">
 			    </td>
-				<td><img src="imag/status/{{status}}.png"/></td>
+				<td>
+					<img src="imag/status/{{status}}.png"
+						data-toggle="popover" 
+						data-placement="bottom"
+						data-html=true
+						data-content="
+						{{language.status}}:{{getLanguage status}}
+						<br />
+						信息:{{sv_description}}"
+						title="" 
+						data-original-title="{{sv_name}}"/>
+				</td>
 				<td>{{sv_id}}</td>
 				<td>{{sv_name}}</td>
 				<td>{{sub_entity_sum}}</td>
@@ -82,7 +93,21 @@
 					</div>
 					</div>
 			    </td>	
-				<td><img src="imag/status/{{status}}.png"/></td>
+				<td>
+					<img src="imag/status/{{status}}.png"
+						data-toggle="popover" 
+						data-placement="bottom"
+						data-html=true
+						data-content="
+						{{language.status}}:{{getLanguage status}}
+						<br />
+						IP地址：{{_MachineName}}
+						<br />
+						设备类型:{{sv_devicetype}}
+						"
+						title="" 
+						data-original-title="{{sv_name}}"/>
+				</td>
 				<td>{{sv_id}}</td>
 				<td>{{sv_name}}</td>
 				<td>{{sub_monitor_sum}}</td>

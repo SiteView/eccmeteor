@@ -17,7 +17,16 @@
 		{{#each getChildrenNodesByIdAndType entityid "submonitor"}}
 			<tr id="{{sv_id}}" title="{{status}}">
 			    <td><input type="checkbox" id="{{sv_id}}"></td>
-				<td><img src="imag/status/{{status}}.png"/></td>
+				<td>
+					<img src="imag/status/{{status}}.png"
+						data-toggle="popover" 
+						data-placement="top"
+						data-html=true
+						data-content="{{language.status}}:{{getLanguage status}}<br />{{dstr}}"
+						title="" 
+						data-original-title="{{sv_name}}"
+					/>
+				</td>
 				<td>{{sv_id}}</td>
 				<td>{{sv_name}}</td>
 				<td>{{dstr}}</td>
@@ -42,13 +51,15 @@
 </Template>
 
 <Template name="svg"><!-- svg 图像展示-->
-	<div id="showSvg">
-		<div class="well">
+	<div id="showSvg" class="row-fluid">
+		<div class="well span8" style="padding:14px;">
 			<svg id="line"></svg>
 		</div>
-		{{>MonitorStatisticalDetailData}}
-		{{>MonitorStatisticalSimpleData}}
+		<div class="span4">{{>MonitorStatisticalSimpleData}}</div>
 	</div>
+	<div class="row-fluid" style="height:50px;overflow:auto">
+	{{>MonitorStatisticalDetailData}}
+	<div>
 </Template>
 	
 <Template name="MonitorStatisticalDetailData">
@@ -73,13 +84,33 @@
 	<table class="table table-striped table-bordered table-condensed">
 		<tbody>
 			{{#with recordsData}}
-			<tr><td colspan=3></td><td><button class="btn" id="monitorDetail">详细信息</button></td></tr>
-			<tr><td>正常</td><td>{{ok}}</td><td>危险</td><td>{{warning}}</td></tr>
-			<tr><td>错误</td><td>{{error}}</td><td>禁止</td><td>{{disable}}</td></tr>
-			<tr><td>阀值</td><td colspan=3>测试条件</td></tr>
-			<tr><td>时间段</td><td colspan=3></td></tr>
-			<tr><td>从</td><td colspan=3>{{starttime}}</td></tr>
-			<tr><td>到</td><td colspan=3>{{endtime}}</td></tr>
+			<tr>
+				<td colspan=3></td>
+				<td><button class="btn" id="monitorDetail">详细信息</button></td>
+			</tr>
+			<tr>
+				<td>正常</td>
+				<td><span class="badge badge-success">{{ok}}</span></td>
+				<td>危险</td>
+				<td><span class="badge badge-warning">{{warning}}</span></td>
+			</tr>
+			<tr>
+				<td>错误</td>
+				<td><span class="badge badge-important">{{error}}</span></td>
+				<td>禁止</td>
+				<td><span class="badge">{{disable}}</span></td>
+			</tr>
+			<tr>
+				<td>阀值</td>
+				<td colspan="3">测试条件</td>
+			</tr>
+			<tr>
+				<td rowspan="2">时间段</td>
+				<td colspan="3">{{starttime}}</td>
+			</tr>
+			<tr>
+				<td colspan="3">{{endtime}}</td>
+			</tr>
 			{{/with}}
 		</tbody>
 	</table>
@@ -87,10 +118,12 @@
 </Template>
 
 <Template name="EntityModule">
-	{{> showMonitor}}
+	<div class="row-fluid" style="height:350px;overflow:auto">
+		{{> showMonitor}}
+	</div>
 	{{> svg}}
 	<!-- 选择监视器类型弹窗-->
 	{{> ChooseMonitorTemplate}}
-	<!-- 监视器信息填写-->
+	<!-- 监视器信息弹窗填写-->
 	{{> showMonitorInfo}}
 </Template>
