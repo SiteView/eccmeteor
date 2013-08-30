@@ -1,5 +1,4 @@
 /.meteor
 /public/css/images
-smart.json
-smart.lock
 /log
+/lib/configure.js
