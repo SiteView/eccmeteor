@@ -67,7 +67,6 @@ protected:
 
 private:
 	CTime m_StartTime;
-	void ProcessResultV70(void);
 	void AppendResultV70(void);
 	int ParserExpression(CString strExpression, CStringList &lstOperator, CStringList &lstID);
 	BOOL Judge(const char *szSource, const char *szDestination, const char *szRelation);
@@ -77,14 +76,14 @@ private:
 	BOOL CheckStateByType(int Type);
 	void ParserMonitorState(void);
 	CString m_strDisplay;
-	bool BulidStringMap(STRINGMAP &map,const char *buf);
+	bool BulidStringMap(STRINGMAP &map,const char *buf, int datalen);
 	BOOL GetProperty(const char *szProperty, const CString strSource, int &nRet);
 	BOOL GetProperty(const char *szProperty, const CString strSource, float &fRet);
 	BOOL GetProperty(const char *szProperty, const CString strSource, char *psret);
 	BOOL GetProperty(const char *szProperty, const CString strSource, CString &strRet);
 	int MakeInBuf();
 	int m_MonitorState;
-	BOOL PaserResultV70(void);
+	BOOL PaserResultV70(int datalen);
 	void InitData(void);
 	CReturnValueList m_RetValueList;
 	char m_RetBuf[RETBUFCOUNT];

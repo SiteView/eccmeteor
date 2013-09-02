@@ -3,6 +3,10 @@
 #include "DispatchThread.h"
 #include <stlini.h>
 
+#ifndef WIN32
+#include <dlfcn.h>
+#endif
+
 extern SUtil *putil;
 extern CString g_strRootPath;
 extern string g_ServerHost;
@@ -48,11 +52,6 @@ BOOL SchMain::Init()
 
 	g_ServerHost = m_pOption->m_ServerAddress;
 	m_lc.m_pOption = m_pOption;
-
-	LoadPreLibrary();
-
-	bool flag = false;
-
 	m_lc.LoadAll();
 
 	m_pSub = new Subsequent;
@@ -66,6 +65,8 @@ BOOL SchMain::Init()
 
 	if (m_MonitorList.size() == 0)
 		throw MSException("Monitors list is empty");
+
+	LoadPreLibrary();
 
 	m_DispatchThread = new DispatchThread(this);
 	if (m_DispatchThread == NULL)
@@ -374,7 +375,7 @@ bool SchMain::AddMonitorV70(string monitorid, bool isEdit)
 		puts("Create monitor failed");
 
 		delete pItem;
-		strError.Format("Create monitor failed while update config", monitorid.c_str());
+		strError.Format("Create monitor:%s failed while update config", monitorid.c_str());
 		throw MSException(strError);
 	}
 
@@ -487,7 +488,7 @@ bool SchMain::AddEntityV70(string entityid, bool isEdit)
 	if (!m_lc.CreateSingleEntity(pItem, entityid.c_str()))
 	{
 		delete pItem;
-		strError.Format("Create entity failed while update config", entityid.c_str());
+		strError.Format("Create entity:%s failed while update config", entityid.c_str());
 		throw MSException(strError);
 
 	}
@@ -602,7 +603,7 @@ bool SchMain::AddGroupV70(string groupid, bool isEdit)
 	if (!m_lc.CreateSingleGroup(pItem, groupid.c_str()))
 	{
 		delete pItem;
-		strError.Format("Create group failed while update config", groupid.c_str());
+		strError.Format("Create group:%s failed while update config", groupid.c_str());
 		throw MSException(strError);
 	}
 	CGroupsItemList &GroupsList = m_pGroups->GetGroupsList();
@@ -710,37 +711,36 @@ bool SchMain::ProcessConfigChange(string opt, string id)
 
 bool SchMain::LoadPreLibrary(void)
 {
-	if (m_pOption->m_PreLoadLibrary.empty())
+	if (m_pOption->m_PreLibs.empty())
 		return true;
 
-	char filepath[1024] = { 0 };
-
-	int pos = m_pOption->m_PreLoadLibrary.find(',');
-	string str;
-	if (pos < 0)
-		return true;
-	int tpos = 0;
-	while (pos >= 0)
+	for (std::set<std::string>::iterator it = m_pOption->m_PreLibs.begin(); it != m_pOption->m_PreLibs.end(); it++)
 	{
-		str = m_pOption->m_PreLoadLibrary.substr(tpos, pos - tpos);
-		tpos = pos + 1;
-		pos = m_pOption->m_PreLoadLibrary.find(',', tpos);
-		if (str.empty())
+		string str = *it;
+		if(str.empty())
 			continue;
+
+		char filepath[1024] = { 0 };
 		sprintf(filepath, "%s/fcgi-bin/%s", g_strRootPath.getText(), str.c_str());
-		printf("to preLoad:%s\n", filepath);
+		printf("to preLoad: %s\n", filepath);
 		try
 		{
 #ifdef WIN32
 			HMODULE hm=::LoadLibrary(filepath);
 			if(!hm)
 			{
-				printf("Failed to preload library: %s, error:%d\n",(char *)filepath, GetLastError());
+				printf("Failed to preload library: %s, error:%d\n",filepath, GetLastError());
 			}
 #else
+			void *dp = dlopen(filepath, RTLD_LAZY);
+			if (dp == NULL)
+			{
+				printf("Failed to pre-dlopen library: %s,Error:%s\n", filepath, dlerror());
+			}
 #endif
 		} catch (...)
 		{
+			printf("Eexception happended to preLoad: %s \n", filepath);
 			continue;
 		}
 	}

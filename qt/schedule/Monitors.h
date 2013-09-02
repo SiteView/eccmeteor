@@ -79,10 +79,32 @@ public:
 	}
 
 	void SetMonitorType(int type){ m_MonitorType=type; }
-	void SetLibrary(CString strLibrary){ m_Library=strLibrary;}
+
+	void SetDllToSo()
+	{
+#ifndef WIN32
+		if(!m_Library.IsEmpty())
+		{
+			std::string sDll= m_Library.getText();
+			int posd= sDll.find(".dll");
+			if ( posd!= std::string::npos)
+				sDll= sDll.substr(0,posd) + ".so";
+			if (sDll.find("lib") != 0)
+				sDll = "lib" + sDll;
+			m_Library= sDll.c_str();
+		}
+//		puts("m_Library:%s\n",m_Library.getText());
+#endif
+	}
+	void SetLibrary(CString strLibrary)
+	{
+		m_Library=strLibrary;
+		SetDllToSo();
+	}
 	void SetLibrary(const char *pLibrary){
 		if(pLibrary)
 			m_Library=pLibrary;
+		SetDllToSo();
 	}
 	void SetProcess(CString strProcess){ m_Process=strProcess;}
 	void SetProcess(const char *pProcess){ m_Process=pProcess;}

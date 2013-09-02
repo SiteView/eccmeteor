@@ -6,6 +6,7 @@ AUX_SOURCE_DIRECTORY(. DIR_SRCS)
 ADD_DEFINITIONS( -D_USE_32BIT_TIME_T )
 SET(CMAKE_BUILD_TYPE Release)
 
+
 if(WIN32)
 INCLUDE_DIRECTORIES("." "../addon" "../libutil" "../ccgnu2/w32" "../ccgnu2/inc" "../ccgnu2/src")
 else()

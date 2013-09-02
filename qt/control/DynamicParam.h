@@ -3,6 +3,7 @@
 
 #include "ThreadEx.h"
 #include "COption.h"
+#include "CUtil.h"
 
 #include <string.h>
 using std::string;
@@ -23,6 +24,7 @@ public:
 	virtual ~DynamicParam();
 
 	void toExit();
+	ost::Mutex	m_DemoDllMutex;
 
 private:
 	bool m_toExit;
@@ -31,7 +33,7 @@ private:
 
 	bool RunRefresh(string queuename, string label);
 	int getDynamicParam(const char * queueInit);
-	void ReadParamFromQueue(const string &qname, string &sDll, string &sFunc, string &sParam);
+	void ReadParamFromQueue(const string &qname, string &sDll, string &sFunc, char * &sParam);
 	bool runDynamicParamDll(const char *pszDll, const char *pszFunc, const char *pszParam, char * pBuffer, int &nSize);
 };
 

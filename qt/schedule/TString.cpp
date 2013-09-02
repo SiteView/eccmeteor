@@ -11,7 +11,7 @@ TString::~TString(void)
 int TString::Format(const char * format, ...)
 {
 	clear();
-	int chars = 10;
+	int chars = 32;
 	va_list args;
 	va_start(args, format);
 	while (true)
@@ -23,7 +23,7 @@ int TString::Format(const char * format, ...)
 		if (ptr == NULL)
 			return 0;
 		int n = vsnprintf(ptr, chars, format, args);
-		if (n > -1)
+		if (n > -1 && n < chars)
 		{
 			set(ptr, strlen(ptr));
 			setLength(strlen(getText()));

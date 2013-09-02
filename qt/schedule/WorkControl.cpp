@@ -425,7 +425,7 @@ void WorkControl::ExecuteMonitor(Monitors *pMonitor)
 	}
 	pMonitor->m_isRefresh = true;
 
-	puts("*****Start monitor...*****");
+	printf("*****Start monitor...*****\n");
 	pThread->ToRunMonitor(pMonitor);
 
 	int i = 0;
@@ -436,9 +436,9 @@ void WorkControl::ExecuteMonitor(Monitors *pMonitor)
 	}
 
 	if (pMonitor->GetRunning())
-		puts("*****Timeout*****");
+		printf("*****Timeout*****\n");
 	else
-		puts("*****Success*****");
+		printf("*****Success*****\n");
 
 }
 

@@ -84,7 +84,11 @@ void WorkThread::run()
 					char errlog[2048] = { 0 };
 					sprintf(errlog, "=== %s,%s,MonitorID:%s, SkipCount:%d. ", this->GetThreadName(), e.GetDescription(),
 							m_Monitor->GetMonitorID(), m_Monitor->GetSkipCount());
-					putil->ErrorLog(errlog);
+					string strex = e.GetDescription();
+					if ( strex.find("dlopen library failed")==std::string::npos)
+						putil->ErrorLog(errlog);
+					else
+						printf("%s\n", errlog);
 				}
 			} catch (...)
 			{
@@ -147,68 +151,65 @@ void WorkThread::RunMonitor()
 	if (m_Monitor == NULL)
 		throw MSException("Monitors is NULL");
 
-	CString strDLLName = "", strFuncName = "";
+	char strDLLName[1024] = { 0 };
+	char strFuncName[1024] = { 0 };
 
 	if (m_pWorkControl->m_pOption->m_isDemo)
 	{
-		puts("=================Demo mode=========================");
-		strDLLName.Format("%s/fcgi-bin/%s", (char *) g_strRootPath, m_pWorkControl->m_pOption->m_DemoDLL.c_str());
-		strFuncName = m_pWorkControl->m_pOption->m_DemoFunction.c_str();
-
+		sprintf(strDLLName, "%s/fcgi-bin/%s", g_strRootPath.getText(), m_pWorkControl->m_pOption->m_DemoDLL.c_str());
+		strcpy(strFuncName, m_pWorkControl->m_pOption->m_DemoFunction.c_str());
+		CString test;
+		test.Format("%s/fcgi-bin/%s", g_strRootPath.getText(), m_pWorkControl->m_pOption->m_DemoDLL.c_str());
+		printf("=== Demo mode,Library:%s, Function:%s ===\n", test.getText(), strFuncName);
 	}
 	else
 	{
-		strDLLName.Format("%s/fcgi-bin/%s", (char *) g_strRootPath, (char *) m_Monitor->GetLibrary());
-		strFuncName = m_Monitor->GetProcess();
+		sprintf(strDLLName, "%s/fcgi-bin/%s", g_strRootPath.getText(), m_Monitor->GetLibrary().getText());
+		strcpy(strFuncName, m_Monitor->GetProcess().c_str());
 	}
 
-	if (strFuncName.empty())
+	if (strlen(strFuncName) == 0)
 	{
 		throw MSException("RunMonitor-Function name is empty");
 	}
 
 	if (m_Monitor->m_isRefresh)
 	{
-		puts("-----------------Load library-------------------------");
-		printf("Library name:%s\n", (char *) strDLLName);
-		printf("Function name:%s\n", (char *) strFuncName);
-		puts("-----------------End load library---------------------");
-		puts("\n-----------------Input parameter----------------------");
+		printf("--- Load Library:%s, Function:%s ---\n", strDLLName, strFuncName);
+		printf("-----------------Input parameter----------------------\n");
 
 		CStringList&lst = m_Monitor->GetParameterList();
-
-		CStringList::iterator it;
-		for (it = lst.begin(); it != lst.end(); it++)
+		for (CStringList::iterator it = lst.begin(); it != lst.end(); it++)
 			printf("%s\n", (*it).c_str());
 
-		puts("----------------End input parameter-------------------");
+		printf("----------------End input parameter-------------------\n");
 	}
+	printf("--- to run monitor:%s ,Load Library:%s, Function:%s ---\n", m_Monitor->GetMonitorID(), strDLLName, strFuncName);
+
+	int iLen = MakeInBuf();
+	int buflen = RETBUFCOUNT;
 
 #ifdef	WIN32
 
 	HMODULE hm=::LoadLibrary(strDLLName);
 	if(!hm)
 	{
-		strError.Format("RunMonitor-Load library failed,DLL name:%s, error:%d",(char *)strDLLName, GetLastError());
+		strError.Format("RunMonitor-Load library failed,DLL name:%s, error:%d",strDLLName, GetLastError());
 		throw MSException((LPCSTR)strError);
 	}
 
-	LPFUNC pfunc = (LPFUNC)GetProcAddress(hm,(LPCSTR)strFuncName);
+	LPFUNC pfunc = (LPFUNC)GetProcAddress(hm,strFuncName);
 	if(!pfunc)
 	{
 		::FreeLibrary(hm);
 		throw MSException("RunMonitor-GetProcAddress failed");
 
 	}
-
-	int iLen=MakeInBuf();
-	int buflen=RETBUFCOUNT;
-
 	try
 	{
 		if(m_pWorkControl->m_pOption->m_isDemo)
 		{
-			MutexLock lock(m_pWorkControl->m_pSchMain->m_DemoDllMutex);
+			MutexLock lock(m_pWorkControl->m_DemoDllMutex);
 //			puts("===== call demo function ... ======\n");
 			(*pfunc)(m_InBuf,m_RetBuf,buflen);
 		}
@@ -237,48 +238,55 @@ void WorkThread::RunMonitor()
 	if (dp == NULL)
 	{
 		error = dlerror();
-		strError.Format("RunMonitor-Load library failed,DLL name:%s,Error:%s", (char *) strDLLName, error);
+		strError.Format("dlopen library failed,DLL name:%s,Error:%s", strDLLName, error);
 		throw MSException((LPCSTR) strError);
 	}
-
-	GatherData *pGetData = (GatherData*) dlsym(dp, strFuncName);
+//	bool (*pfunc)(const char *, char *, int &);
+//	pfunc = (bool (*)(const char *, char *, int &)) dlsym(dp, strFuncName);
+	LPFUNC pfunc = (LPFUNC) dlsym(dp, strFuncName);
 
 	error = dlerror();
-
-	if (error)
+	if (error != NULL)
 	{
 		dlclose(dp);
-		throw MSException("RunMonitor-GetProcAddress failed");
+		strError.Format("dlsym(GetProcAddress) failed,DLL name:%s,Error:%s", strDLLName, error);
+		throw MSException((LPCSTR) strError);
 	}
 
 	try
 	{
-		CStringList&lstParam = m_Monitor->GetParameterList();
+//		CStringList&lstParam = m_Monitor->GetParameterList();
+//
+//		CStringList::const_iterator it;
+//		it = lstParam.begin();
+//		while (it != lstParam.end())
+//		{
+//			cout << it->c_str() << endl;
+//			*it++;
+//		}
+//
+//		(*pGetData)(lstParam, m_RetBuf);
 
-		CStringList::const_iterator it;
-		it = lstParam.begin();
-		while (it != lstParam.end())
+		if (m_pWorkControl->m_pOption->m_isDemo)
 		{
-			cout << it->c_str() << endl;
-			*it++;
+			MutexLock lock(m_pWorkControl->m_DemoDllMutex);
+			(*pfunc)(m_InBuf, m_RetBuf, buflen);
 		}
-
-		(*pGetData)(lstParam, m_RetBuf);
+		else
+			(*pfunc)(m_InBuf, m_RetBuf, buflen);
 
 	} catch (...)
 	{
-		//	::FreeLibrary(hm);
 		dlclose(dp);
 		throw MSException("RunMonitor happened exception_3");
 	}
-	//puts(m_RetBuf);
 	dlclose(dp);
 
 #endif
 
 	try
 	{
-		PaserResultV70();
+		PaserResultV70(buflen);
 	} catch (...)
 	{
 		m_MonitorState = Monitors::STATUS_BAD;
@@ -384,12 +392,12 @@ void WorkThread::InitData()
 	}
 
 }
-BOOL WorkThread::PaserResultV70(void)
+BOOL WorkThread::PaserResultV70(int datalen)
 {
 	m_RVmap.clear();
 
 //	puts("\n------------------------PaserResult-----------------------");
-	if (!BulidStringMap(m_RVmap, m_RetBuf))
+	if (!BulidStringMap(m_RVmap, m_RetBuf, datalen))
 	{
 		throw MSException("Build return data failed");
 		return false;
@@ -397,13 +405,13 @@ BOOL WorkThread::PaserResultV70(void)
 
 	if (m_Monitor->m_isRefresh)
 	{
-		puts("\n------------------------Return value-----------------------");
+		printf("\n------------------------Return value-----------------------\n");
 
 		STRINGMAP::iterator itm;
 		while (m_RVmap.findnext(itm))
 			printf("%s=%s\n", (*itm).getkey().getword(), (*itm).getvalue().getword());
 
-		puts("-------------------------End return value--------------------");
+		printf("-------------------------End return value--------------------\n");
 	}
 
 	if (m_RVmap.size() == 0)
@@ -928,7 +936,7 @@ int WorkThread::ParserExpression(CString strExpression, CStringList &lstOperator
 	return n;
 
 }
-bool WorkThread::BulidStringMap(STRINGMAP &map, const char *buf)
+bool WorkThread::BulidStringMap(STRINGMAP &map, const char *buf, int datalen)
 {
 	if (buf == NULL)
 		return false;
@@ -951,6 +959,8 @@ bool WorkThread::BulidStringMap(STRINGMAP &map, const char *buf)
 		map[name] = value;
 
 		pt += str.size() + 1;
+		if ((pt - buf) >= datalen)
+			return true;
 	} while (pt[0] != '\0');
 
 	return true;
@@ -1011,8 +1021,13 @@ void WorkThread::AppendResultV70(void)
 	strcpy(pt, (char *) m_strDisplay);
 	dlen += strlen((char *) m_strDisplay) + 1;
 
+#ifdef WIN32
 	printf("MonitorId:%s,MonitorType:%d,state:%d,dstr:%s\n", m_Monitor->GetMonitorID(), m_Monitor->GetMonitorType(),
 			m_MonitorState, (char *) m_strDisplay);
+#else
+	printf("MonitorId:%s,MonitorType:%d,state:%d,dstr:%s\n", m_Monitor->GetMonitorID(), m_Monitor->GetMonitorType(),
+			m_MonitorState, SUtil::GBKToUTF8(m_strDisplay.getText()).c_str());
+#endif
 
 	ClearResult();
 	if (m_Monitor->isDelete)

@@ -9,7 +9,8 @@
 #include <list>
 
 #ifndef	WIN32
-typedef char PROCESS_INFORMATION;
+#include <unistd.h>
+typedef pid_t PROCESS_INFORMATION;
 #endif
 
 #ifdef	CCXX_NAMESPACES
@@ -17,9 +18,11 @@ using namespace ost;
 #endif
 
 void CErrorLog(CString strError);
-bool svCreateProcess(PROCESS_INFORMATION * pi, CString ProcessName, CString parameter="", bool islocal = false);
 
-
+long getServicePid(string pname);
+// parameter are no use for unix,
+// argv is no use for windows
+bool svCreateProcess(CString parameter, char * const argv[], PROCESS_INFORMATION * pi, CString ProcessName,	bool islocal = false);
 
 class CUtil
 {

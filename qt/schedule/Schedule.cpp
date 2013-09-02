@@ -266,8 +266,8 @@ void stopService()
 	}
 	long pnumber;
 	pnumber = strtol(buf, NULL, 10);
-	printf("stop MonitorSchedule by: kill -HUP %ld\n", pnumber);
-	kill(pnumber, SIGHUP);
+	printf("stop MonitorSchedule by: kill -QUIT %ld\n", pnumber);
+	kill(pnumber, SIGQUIT);
 }
 #endif
 
@@ -683,7 +683,7 @@ int main(int argc, char *argv[])
 		}
 #endif
 
-		puts("Begin refresh");
+		printf("Begin refresh\n");
 		BOOL isRefresh = FALSE;
 		g_strRootPath = putil->GetRootPath();
 

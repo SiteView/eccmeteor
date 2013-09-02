@@ -110,6 +110,7 @@ bool Monitors::CalculateNextRunTime(CTime time)
 	m_NextRunTime = time;
 	m_NextRunTime += stime;
 
+//	printf("=== monitor: %s runtime: %s\n", m_MonitorID, m_NextRunTime.Format().c_str());
 	return true;
 }
 
@@ -124,7 +125,10 @@ bool Monitors::CalculateNextRunTime()
 
 	CTime curTime = CTime::GetCurrentTimeEx();
 	if (m_NextRunTime > curTime)
+	{
+//		printf("=== monitor: %s runtime: %s\n",m_MonitorID,m_NextRunTime.Format().c_str());
 		return false;
+	}
 
 	CTimeSpan stime(0, 0, nFre, 0);
 	m_NextRunTime += stime;
@@ -132,6 +136,7 @@ bool Monitors::CalculateNextRunTime()
 	while (m_NextRunTime <= curTime)
 		m_NextRunTime += stime;
 
+//	printf("=== monitor: %s runtime: %s\n",m_MonitorID,m_NextRunTime.Format().c_str());
 	return true;
 }
 void Monitors::CalculateErrorFrequency(bool ise)

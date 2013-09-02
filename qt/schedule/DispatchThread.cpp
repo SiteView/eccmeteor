@@ -1,5 +1,6 @@
 #include "DispatchThread.h"
 #include "MakeRecord.h"
+#include <map>
 
 extern SUtil *putil;
 extern CString g_strRootPath;

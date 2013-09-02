@@ -35,7 +35,6 @@ public:
 	bool ProcessConfigChange(string opt,string id);
 
 	ost::Mutex	m_MonitorListMutex;
-	ost::Mutex	m_DemoDllMutex;
 	Option *m_pOption;
 
 	bool m_bDataChange;

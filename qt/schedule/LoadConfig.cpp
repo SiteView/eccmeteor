@@ -329,6 +329,7 @@ BOOL LoadConfig::GetParamList(Monitors *pM, string strMonitorID, string strParen
 		throw MSException(strError.c_str());
 	}
 	pM->SetLibrary(strDLL.c_str());
+	m_pOption->m_PreLibs.insert(pM->GetLibrary().getText());
 	bRet = m_MonitorLibrary->GetMLValue(strMT, strFuncName, strFunc);
 	if (!bRet)
 	{

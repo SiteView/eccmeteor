@@ -38,6 +38,9 @@ public:
 
 	static int AppendThenClearAllRecords(std::list<SingelRecord> & inrcd);
 
+	static string GBKToUTF8(string intext);
+	static string UTF8ToGBK(string intext);
+
 private:
 //	HMODULE m_hResLibrary;
 

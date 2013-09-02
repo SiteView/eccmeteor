@@ -6,6 +6,10 @@
 #include "COption.h"
 #include "TString.h"
 
+#ifndef WIN32
+#include <dlfcn.h>
+#endif
+
 extern bool g_bool_watch_AlertServer;
 extern bool g_bool_watch_ReportGenerate;
 extern bool g_bool_watch_Monitorshedule;

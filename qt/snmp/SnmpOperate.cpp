@@ -169,9 +169,12 @@ int GetPrivateProfileString1(const char * m_AppName, const char * m_KeyName, con
 	if (inif.empty())
 	{
 		printf("File is empty or not exist: %s\n", szPath);
-		return size;
+		svalue = m_default;
 	}
-	svalue = GetIniSetting(inif, m_AppName, m_KeyName, m_default);
+	else
+	{
+		svalue = GetIniSetting(inif, m_AppName, m_KeyName, m_default);
+	}
 
 	int cpsize = svalue.length();
 	if (cpsize > size)
@@ -631,7 +634,7 @@ bool CSnmpOperate::GetResult(char* chReturn, int & nSize)
 		{ //得到每一个oid的结果
 			char chOID[MAX_BUFF_LEN] = { 0 };
 			char strLog[1024] = { 0 };
-			if (pOidList[i].nType == 1)// 变量的类型 0 简单变量 1 表格变量
+			if (pOidList[i].nType == 1) // 变量的类型 0 简单变量 1 表格变量
 			{
 				if (strlen(pOidList[i].chOIDIndex) == 0)
 				{
@@ -1004,7 +1007,8 @@ bool CSnmpOperate::GetResult(char* chReturn, int & nSize)
 							int retlen1 = static_cast<int>(strlen(chTemp1));
 							memcpy(chReturn + retlen, chTemp1, retlen1);
 							retlen += (retlen1 + 1);
-							WriteLog(strFile, "--------Failed to calculate result, Divisor is zero. (除数为零) -----------");
+							WriteLog(strFile,
+									"--------Failed to calculate result, Divisor is zero. (除数为零) -----------");
 							WriteLog(strFile, chTemp1);
 							nSize = retlen;
 						}

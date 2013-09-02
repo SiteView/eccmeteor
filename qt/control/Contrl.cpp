@@ -100,8 +100,8 @@ void WINAPI SVS_ServiceCtrlHandler(DWORD opcode)
 		SVS_ServiceStatus.dwWaitHint = 0;
 
 		g_SubProcessState=false;
-		ThreadEx::sleep(1000);
 		ToExit();
+		ThreadEx::sleep(1000);
 
 		if(!SetServiceStatus(SVS_ServiceStatusHandle, &SVS_ServiceStatus))
 		{
@@ -523,18 +523,18 @@ void stopService()
 	if (fd < 0)
 	{
 		sprintf(text, "stopService() can't open .pid:%s , %s", LOCKFILE, strerror(errno));
-		error_quit(buf);
+		error_quit(text);
 	}
 	int io = ::read(fd, buf, 30);
 	if (io < 0)
 	{
 		sprintf(text, "stopService() can't read .pid:%s , %s", LOCKFILE, strerror(errno));
-		error_quit(buf);
+		error_quit(text);
 	}
 	long pnumber;
 	pnumber = strtol(buf, NULL, 10);
-	printf("stop MonitorContrl by: kill -HUP %ld\n", pnumber);
-	kill(pnumber, SIGHUP);
+	printf("stop MonitorContrl by: kill -QUIT %ld\n", pnumber);
+	kill(pnumber, SIGQUIT);
 }
 #endif
 

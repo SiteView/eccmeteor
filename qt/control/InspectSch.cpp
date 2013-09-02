@@ -27,7 +27,7 @@ InspectSch::InspectSch()
 {
 	m_toExit = false;
 
-	m_RestartTime = 240;    //重启 schedule 的间隔时间(分钟);
+	m_RestartTime = 340;    //重启 schedule 的间隔时间(分钟);
 	m_MaxMemory = 600;      //许可内存占用大小（MB）
 	m_ExitTimeOut = 1000;   //终止子进程时要等待的时间(毫秒);
 	m_CheckTime = 5;        //尝试跟 schedule 通讯的时间间隔(分钟)
@@ -116,9 +116,18 @@ void InspectSch::toStopSch()
 		CErrorLog("Force to TerminateProcess MonitorSchedule!");
 		::TerminateProcess(m_pi->hProcess, 2);
 	}
+#else
+	long pid = getServicePid(m_pName);
+	if (pid == 0)
+		printf("Failed to getServicePid for %s\n", m_pName.c_str());
+	else
+	{
+		int ret = kill(pid, SIGQUIT);
+		printf("stop %s by: kill -QUIT %ld , ret:%d\n", m_pName.c_str(), pid, ret);
+		ThreadEx::sleep(m_ExitTimeOut);
+		kill(pid, SIGKILL);
+	}
 #endif
-
-	ThreadEx::sleep(10 * 1000);
 }
 
 void InspectSch::run()
@@ -143,15 +152,16 @@ void InspectSch::run()
 				first = false;
 #ifdef	WIN32
 				int size = GetProcessMemSize(m_pi->dwProcessId);
+				printf("MonitorSchedule memory size: %dMB at %s ... \n", size, curtime.Format().c_str());
 #else
 				int size = 0;
 #endif
-				printf("MonitorSchedule memory size: %dMB at %s ... \n", size, curtime.Format().c_str());
 
 				lastchecktime = curtime;
 				if (size > m_MaxMemory)
 				{
-					CErrorLog("MonitorSchedule 内存过高，将退出");
+					CErrorLog("--- MonitorSchedule will restart for over-memory.");
+					puts("\n");
 					toStopSch();
 					startupTime = curtime;
 					continue;
@@ -162,7 +172,7 @@ void InspectSch::run()
 
 			if ((curtime - startupTime).GetTotalMinutes() >= m_RestartTime)
 			{
-				CErrorLog("MonitorSchedule 到达设定重启时间");
+				puts("--- MonitorSchedule RestartTime's up\n");
 				toStopSch();
 				startupTime = curtime;
 				continue;

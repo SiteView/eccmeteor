@@ -2,6 +2,7 @@
 #include "CUtil.h"
 
 #ifndef	WIN32
+#include <dlfcn.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
@@ -25,7 +26,7 @@ DynamicParam::DynamicParam(COption * option)
 {
 	m_toExit = false;
 	m_option = option;
-	m_pi = NULL;  //no use in linux
+	m_pi = NULL;
 }
 
 DynamicParam::~DynamicParam()
@@ -33,12 +34,12 @@ DynamicParam::~DynamicParam()
 
 }
 
-void DynamicParam::ReadParamFromQueue(const string &qname, string &sDll, string &sFunc, string &sParam)
+void DynamicParam::ReadParamFromQueue(const string &qname, string &sDll, string &sFunc, char * &sParam)
 {
 	MQRECORD mrd = PopMessage(qname, 1000, "default");
 	if (mrd == INVALID_VALUE)
 	{
-		ThreadEx::sleep(300);
+		ThreadEx::sleep(1000);
 		return;
 	}
 
@@ -50,30 +51,45 @@ void DynamicParam::ReadParamFromQueue(const string &qname, string &sDll, string 
 		::CloseMQRecord(mrd);
 		return;
 	}
-	if (dlen > 510)
+	if (label == "PARAMS")
 	{
-		::CloseMQRecord(mrd);
-		return;
+		if(sParam)
+			delete [] sParam;
+		sParam = new char[dlen];
+        if(sParam)
+        {
+        	if (!::GetMessageData(mrd, label, ct, sParam, dlen))
+            {
+                delete [] sParam;
+                sParam = NULL;
+                ::CloseMQRecord(mrd);
+            }
+        }
+        ::CloseMQRecord(mrd);
 	}
-	char text[512] = { 0 };
-	if (!::GetMessageData(mrd, label, ct, text, dlen))
+	else
 	{
+		if (dlen > 510)
+		{
+			::CloseMQRecord(mrd);
+			return;
+		}
+		char text[512] = { 0 };
+		if (!::GetMessageData(mrd, label, ct, text, dlen))
+		{
+			::CloseMQRecord(mrd);
+			return;
+		}
 		::CloseMQRecord(mrd);
-		return;
-	}
-	::CloseMQRecord(mrd);
 
-	if (label == "DLL")
-	{
-		sDll = text;
-	}
-	else if (label == "FUNC")
-	{
-		sFunc = text;
-	}
-	else if (label == "PARAMS")
-	{
-		sParam = text;
+		if (label == "DLL")
+		{
+			sDll = text;
+		}
+		else if (label == "FUNC")
+		{
+			sFunc = text;
+		}
 	}
 }
 
@@ -87,7 +103,8 @@ bool DynamicParam::runDynamicParamDll(const char *pszDll, const char *pszFunc, c
 	{
 		szDllName = GetSiteViewRootPath() + "/fcgi-bin/";
 		szDllName += m_option->m_DemoDLL;
-		szFunc = m_option->m_DemoFunction;
+		szFunc = pszFunc;
+		cout << "--- demo mode, library: " << szDllName.c_str() << " , func: " << szFunc.c_str() << endl;
 	}
 	else
 	{
@@ -95,8 +112,6 @@ bool DynamicParam::runDynamicParamDll(const char *pszDll, const char *pszFunc, c
 		szDllName += pszDll;
 		szFunc = pszFunc;
 	}
-
-	cout << "load library name : " << szDllName.c_str() << endl;
 
 #ifdef WIN32
 	HINSTANCE hDll = LoadLibrary(szDllName.c_str());
@@ -117,6 +132,7 @@ bool DynamicParam::runDynamicParamDll(const char *pszDll, const char *pszFunc, c
 		}
 		catch(...)
 		{
+			sprintf(pBuffer, "error=exception happend in:%s, func:%s", szDllName.c_str(), szFunc.c_str());
 			::FreeLibrary(hDll);
 			cout<<"exception happend in runDynamicParamDll"<<endl;
 		}
@@ -128,7 +144,39 @@ bool DynamicParam::runDynamicParamDll(const char *pszDll, const char *pszFunc, c
 		cout << "load dll failed" << endl;
 	}
 #else
+	void *dp;
+	char *error;
 
+	dp = dlopen(szDllName.c_str(), RTLD_LAZY);
+
+	if (dp == NULL)
+	{
+		sprintf(pBuffer, "error=dlopen(LoadLibrary) Failed(%s)", szDllName.c_str());
+		error = dlerror();
+		cout << "load " << szDllName.c_str() << " failed, " << error << endl;
+		return false;
+	}
+	try
+	{
+		ListDevice* func = (ListDevice*) dlsym(dp, szFunc.c_str());
+		error = dlerror();
+		if (error == NULL || func != NULL)
+		{
+			MutexLock lock(m_DemoDllMutex);
+			bRet = (*func)(pszParam, pBuffer, nSize);
+		}
+		else
+		{
+			sprintf(pBuffer, "error=Get Proc's address failed(%s)", szFunc.c_str());
+			cout << "dlsym(GetProcAddress): " << szFunc.c_str() << " failed " << error << endl;
+		}
+	} catch (...)
+	{
+		sprintf(pBuffer, "error=exception happend in:%s, func:%s", szDllName.c_str(), szFunc.c_str());
+		dlclose(dp);
+		cout << "exception happend in runDynamicParamDll" << endl;
+	}
+	dlclose(dp);
 #endif
 	return bRet;
 }
@@ -144,22 +192,33 @@ int DynamicParam::getDynamicParam(const char * queueInit)
 	qwrite += "_W";
 
 	int nTimes = 0;
-	string sDll, sFunc, sParam;
-	while (sDll.empty() || sFunc.empty() || sParam.empty())
+	string sDll, sFunc;
+	char * sParam=NULL;
+	while (sDll.empty() || sFunc.empty() || sParam==NULL )
 	{
-		if (nTimes >= 20)
+		if (nTimes >= 40)
 			break;
 		ReadParamFromQueue(qread, sDll, sFunc, sParam);
 		nTimes++;
 	}
-	cout << "getDynamicParam, Dll name is :" << sDll.c_str() << endl;
-	cout << "getDynamicParam, Func name is : " << sFunc.c_str() << endl;
-	cout << "getDynamicParam, Param is : " << sParam.c_str() << endl;
-	if (sDll.empty() || sFunc.empty() || sParam.empty())
+#ifndef WIN32
+	if (!sDll.empty())
+	{
+		int posd = sDll.find(".dll");
+		if (posd != std::string::npos)
+			sDll = sDll.substr(0, posd) + ".so";
+		if (sDll.find("lib") != 0)
+			sDll = "lib" + sDll;
+	}
+#endif
+	if (sDll.empty() || sFunc.empty() || sParam==NULL)
 	{
 		cout << "Can not to getDynamicParam, because Dll or Func or Param is empty." << endl;
 		return 0;
 	}
+	cout << "getDynamicParam, Dll name is :" << sDll.c_str() << endl;
+	cout << "getDynamicParam, Func name is :" << sFunc.c_str() << endl;
+	cout << "getDynamicParam, Param is :" << sParam << endl;
 
 	DeleteQueue(qread, "default");
 
@@ -168,12 +227,17 @@ int DynamicParam::getDynamicParam(const char * queueInit)
 	bool isok = true;
 	try
 	{
-		isok = runDynamicParamDll(sDll.c_str(), sFunc.c_str(), sParam.c_str(), szBuffer, nSize);
+		isok = runDynamicParamDll(sDll.c_str(), sFunc.c_str(), sParam, szBuffer, nSize);
 	} catch (...)
 	{
 		printf("getDynamicParam, calling library exception happend. \n");
 	}
 
+	if(sParam)
+	{
+		delete [] sParam;
+		sParam = NULL;
+	}
 	if (isok)
 	{
 		if (!PushMessage(qwrite, "DYNPARAM", szBuffer, nSize, "default"))
@@ -192,9 +256,21 @@ int DynamicParam::getDynamicParam(const char * queueInit)
 
 bool DynamicParam::RunRefresh(string queuename, string label)
 {
-	CString arg;
-	arg.Format(" %s %s %s", queuename.c_str(), label.c_str(), GetSvdbAddr().c_str());
-	return svCreateProcess(m_pi, g_ScheduleProcessName, arg);
+	CString win_arg;
+	win_arg.Format(" %s %s %s", queuename.c_str(), label.c_str(), GetSvdbAddr().c_str());
+
+	char a0[1024] = { 0 };
+	char a1[256] = { 0 };
+	char a2[256] = { 0 };
+	char a3[256] = { 0 };
+	strcpy(a0, g_ScheduleProcessName.getText());
+	strcpy(a1, queuename.c_str());
+	strcpy(a2, label.c_str());
+	strcpy(a3, GetSvdbAddr().c_str());
+
+	char * unix_argv[] = { a0, a1, a2, a3, NULL };
+
+	return svCreateProcess(win_arg, unix_argv, m_pi, g_ScheduleProcessName);
 }
 
 void DynamicParam::toExit()
@@ -214,6 +290,39 @@ void DynamicParam::run()
 	::CreateQueue(g_strRefreshQueueName.GetBuffer(0), 1, "default");
 	::ClearQueueMessage(g_strRefreshQueueName.GetBuffer(0), "default");
 
+	OBJECT objMonitor = GetMonitorTemplet(1);
+	if (objMonitor != INVALID_VALUE)
+		CloseMonitorTemplet(objMonitor);
+	objMonitor = Cache_GetMonitorTemplet(1);
+	if (objMonitor != INVALID_VALUE)
+		CloseMonitorTemplet(objMonitor);
+
+	if (m_option->m_isDemo)
+	{
+		String DllName = GetSiteViewRootPath() + "/fcgi-bin/";
+		DllName += m_option->m_DemoDLL;
+		printf("to preLoad demo library: %s\n", DllName.c_str());
+		try
+		{
+#ifdef WIN32
+			HMODULE hm=::LoadLibrary(DllName.c_str());
+			if(!hm)
+			{
+				printf("Failed to preload library: %s, error:%d\n",DllName.c_str(), GetLastError());
+			}
+#else
+			void *dp = dlopen(DllName.c_str(), RTLD_LAZY);
+			if (dp == NULL)
+			{
+				printf("Failed to pre-dlopen library: %s,Error:%s", DllName.c_str(), dlerror());
+			}
+#endif
+		} catch (...)
+		{
+			printf("Eexception happended to preLoad: %s \n", DllName.c_str());
+		}
+	}
+
 	PROCESS_INFORMATION pi;
 	m_pi = &pi;
 	while (true)
@@ -223,6 +332,8 @@ void DynamicParam::run()
 
 		try
 		{
+			ThreadEx::sleep(3 * 1000);   //delay
+
 			MQRECORD mrd = ::BlockPeekMQMessage(g_strRefreshQueueName.GetBuffer(0), "default");
 			if (mrd == INVALID_VALUE)
 			{
@@ -239,7 +350,6 @@ void DynamicParam::run()
 			}
 			if (label.compare("DYNPARAM") == 0)
 			{
-				puts("to get DYNPARAM ...");
 				svutil::buffer buf;
 				if (!buf.checksize(len))
 				{
@@ -247,7 +357,7 @@ void DynamicParam::run()
 					continue;
 				}
 
-				if (!::GetMessageData(mrd, label, ct, buf, len))
+				if (!::GetMessageData(mrd, label, ct, buf.getbuffer(), len))
 				{
 
 					::CloseMQRecord(mrd);
@@ -256,7 +366,8 @@ void DynamicParam::run()
 
 				::CloseMQRecord(mrd);
 
-				getDynamicParam(buf);
+				printf("to get DYNPARAM, %s\n",buf.getbuffer());
+				getDynamicParam(buf.getbuffer());
 
 				MQRECORD mddd = ::PopMessage(g_strRefreshQueueName.getText(), 0, "default");
 				if (mddd != INVALID_VALUE)
@@ -285,7 +396,7 @@ void DynamicParam::run()
 
 			if (!RunRefresh(g_strRefreshQueueName.getText(), label))
 			{
-				puts("RunRefresh failed");
+				puts("RunRefresh failed\n");
 				char buf[256] = { 0 };
 				sprintf(buf, "Start %s failed", g_ScheduleProcessName.getText());
 				::PushMessage(label, "Refresh_ERROR", buf, strlen(buf) + 1, "default");
@@ -295,8 +406,6 @@ void DynamicParam::run()
 				puts("RunRefresh done!\n");
 
 			oldlabel = label;
-
-			ThreadEx::sleep(3 * 1000);   //delay
 
 		} catch (...)
 		{

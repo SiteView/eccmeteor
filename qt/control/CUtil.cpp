@@ -4,6 +4,12 @@
 #include <util.h>
 #include <cc++/file.h>
 
+#ifndef	WIN32
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+#endif
+
 static ost::Mutex g_ErrorLoglock;
 static ost::Mutex g_EventLoglock;
 
@@ -28,9 +34,9 @@ std::string getCtonrolProcessId()
 #ifdef	WIN32
 	DWORD pid= GetCurrentProcessId();
 #else
-	DWORD pid= getpid();
+	DWORD pid = getpid();
 #endif
-	char buf[32]={0};
+	char buf[32] = { 0 };
 	sprintf(buf, "%d", pid);
 	return buf;
 }
@@ -59,7 +65,41 @@ void CErrorLog(CString strError)
 	CLog(strError, strPath.getText());
 }
 
-bool svCreateProcess(PROCESS_INFORMATION * pi, CString ProcessName, CString parameter, bool islocal)
+long getServicePid(string pname)
+{
+#ifdef	WIN32
+	return 0;
+#else
+	string pidfname = "/var/run/";
+	pidfname += pname;
+	pidfname += ".pid";
+
+	int fd;
+	char buf[32] = { 0 };
+	char text[128] = { 0 };
+	fd = open(pidfname.c_str(), O_RDWR, S_IRUSR | S_IWUSR);
+	if (fd < 0)
+	{
+		sprintf(text, "stopService() can't open .pid:%s , %s", pidfname.c_str(), strerror(errno));
+		printf("%s\n", text);
+		return 0;
+	}
+	int io = ::read(fd, buf, 30);
+	if (io < 0)
+	{
+		sprintf(text, "stopService() can't read .pid:%s , %s", pidfname.c_str(), strerror(errno));
+		printf("%s\n", text);
+		return 0;
+	}
+	long pnumber = strtol(buf, NULL, 10);
+	return pnumber;
+#endif
+}
+
+// parameter are no use for unix,
+// argv is no use for windows
+bool svCreateProcess(CString parameter, char * const argv[], PROCESS_INFORMATION * pi, CString ProcessName,
+		bool islocal)
 {
 #ifdef	WIN32
 	CString strCommandLine;
@@ -107,7 +147,24 @@ bool svCreateProcess(PROCESS_INFORMATION * pi, CString ProcessName, CString para
 
 	return bRet;
 #else
+
+	char pname[1024] = { 0 };
+	sprintf(pname, "%s/fcgi-bin/%s", g_rootpath.c_str(), ProcessName.getText());
+	printf("svCreateProcess to run: %s\n", pname);
+
+//	pid_t pi;
+	if (pi == NULL)
+		return false;
+
+	*pi = fork();
+	if (*pi == 0)
+	{
+		execv(pname, argv);
+		printf("svCreateProcess:%s failed, error:%s\n", ProcessName.getText(), strerror(errno));
+		//reach here for error
+	}
 	return true;
+
 #endif
 }
 

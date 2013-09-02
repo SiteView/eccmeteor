@@ -4,6 +4,7 @@
 #ifndef	WIN32
 #include <sys/types.h>
 #include <sys/stat.h>
+#include<sys/wait.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,7 +18,7 @@
 WatchProcess::WatchProcess()
 {
 	m_toExit = false;
-	m_pi = NULL;  //no use in linux
+	m_pi = NULL;
 }
 
 WatchProcess::~WatchProcess()
@@ -36,6 +37,15 @@ void WatchProcess::toTerminateProcess()
 	}
 	::CloseHandle(m_pi->hProcess);
 	::CloseHandle(m_pi->hThread);
+#else
+	long pid = getServicePid(m_pName);
+	if (pid == 0)
+		printf("Failed to getServicePid for %s\n", m_pName.c_str());
+	else
+	{
+		int ret = kill(pid, SIGKILL);
+		printf("stop %s by: kill -KILL %ld , ret:%d\n", m_pName.c_str(), pid, ret);
+	}
 #endif
 }
 
@@ -47,19 +57,25 @@ void WatchProcess::toExit()
 	{
 		::PostThreadMessage(m_pi->dwThreadId,WM_QUIT,0,0);
 	}
+#else
+	long pid = getServicePid(m_pName);
+	if (pid == 0)
+		printf("Failed to getServicePid for %s\n", m_pName.c_str());
+	else
+	{
+		int ret = kill(pid, SIGQUIT);
+		printf("stop %s by: kill -QUIT %ld , ret:%d\n", m_pName.c_str(), pid, ret);
+	}
 #endif
-	ThreadEx::sleep(100);
+	ThreadEx::sleep(500);
 	this->exit();
 }
 
-
 bool WatchProcess::init(PROCESS_INFORMATION * pi, string pname)
 {
-#ifdef	WIN32
-	if(pi==NULL)
-	return false;
-	m_pi = pi; //no use in linux
-#endif
+	if (pi == NULL)
+		return false;
+	m_pi = pi;
 	m_pName = pname;
 	return true;
 }
@@ -73,7 +89,7 @@ bool WatchProcess::runProcess()
 	if(m_pi==NULL)
 	return false;
 	ZeroMemory(m_pi, sizeof(PROCESS_INFORMATION));
-	if (!::svCreateProcess(m_pi, m_pName.c_str(), "", true))
+	if (!::svCreateProcess("", NULL, m_pi, m_pName.c_str(), true))
 	{
 		string error= "Failed to run process: " + m_pName;
 		CErrorLog(error.c_str());
@@ -88,7 +104,34 @@ bool WatchProcess::runProcess()
 
 #else
 
-	ThreadEx::sleep(3600 * 1000);
+	char a0[1024] = { 0 };
+	strcpy(a0, m_pName.c_str());
+	char * unix_argv[] = { a0, NULL };
+
+	//	char a1[32] = { 0 };
+	//	strcpy(a1, "-service");
+	//	char * unix_argv[] = { a0, a1, NULL };
+
+	if (m_pi)
+	{
+		svCreateProcess("", unix_argv, m_pi, m_pName);
+		ThreadEx::sleep(2000);
+		pid_t pid = getServicePid(m_pName);
+		if (pid == 0)
+			printf("Failed to getServicePid for %s\n", m_pName.c_str());
+		else
+		{
+			while (true)
+			{
+				pid_t pret = waitpid(pid, NULL, 0);   //parent wait child process to return
+				printf("waitpid for %s , ret: %d (%s)\n", m_pName.c_str(), pret, strerror(errno));
+				if (pret = pid)
+					return true;
+				ThreadEx::sleep(1000);
+			}
+		}
+	}
+
 #endif
 
 	return true;

@@ -55,6 +55,9 @@ public:
 
 	Option *m_pOption;
 	SchMain *m_pSchMain;
+
+	ost::Mutex	m_DemoDllMutex;
+
 private:
 	void AddQueue(Monitors *pMonitor);
 	QueuesManager *m_pTaskQueueManager;

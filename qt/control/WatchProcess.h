@@ -30,7 +30,7 @@ private:
 
 	string m_pName;
 	bool m_toExit;
-	PROCESS_INFORMATION * m_pi;  //no use in linux
+	PROCESS_INFORMATION * m_pi;
 
 };
 
