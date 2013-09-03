@@ -1,3 +1,8 @@
+Handlebars.registerHelper('getChildrenNodesByIdAndType', function(id,subtype) {
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,subtype);
+    return SvseTreeDao.getNodesByIds(childrenIds);
+});
+
 Handlebars.registerHelper('equal', function(arg1,arg2) {
 	if(arg1 === arg2){
 		return true;

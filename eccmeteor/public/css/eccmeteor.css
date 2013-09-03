@@ -36,12 +36,27 @@ hr{
 .table.table-hover tbody td {
   text-align: center;
   vertical-align:middle;
-  height: 39px;
+  height: 21px;
+  font-size: 12px;
   overflow: hidden;
+  moz-user-select: -moz-none;
+  -moz-user-select: none;
+  -o-user-select:none;
+  -khtml-user-select:none; /* you could also put this in a class */
+  -webkit-user-select:none;/* and add the CSS class here instead */
+  -ms-user-select:none;
+  user-select:none;/**禁止选中文字*/
 }
 .table.table-hover tbody tr{
-  height: 39px;
+  height: 29px;
   overflow: hidden;
+  moz-user-select: -moz-none;
+  -moz-user-select: none;
+  -o-user-select:none;
+  -khtml-user-select:none; /* you could also put this in a class */
+  -webkit-user-select:none;/* and add the CSS class here instead */
+  -ms-user-select:none;
+  user-select:none;/**禁止选中文字*/
 }
 body{
 	height: 100%;
@@ -50,6 +65,11 @@ body{
 #moitorContentTree{
 	padding-left: 0px;
 }
-/*!
-body.html
-*/
+
+.select-checkbox{
+  width: 15px;
+}
+
+.imag-status{
+  width: 30px;
+}

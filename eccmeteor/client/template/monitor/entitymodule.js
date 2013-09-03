@@ -54,19 +54,13 @@ Template.showMonitor.rendered = function(){ //默认选中第一个监视进行�
 	//默认选中第一个监视器，展示数据
 	$(function(){
 		var tr = $("#showMonitorList tr:first").addClass("success");
-		if(!tr){
-		//	$("#showSvg").css("display","none");
-			return;//如果没有监视器则不画图
-		}
 		var id = tr.attr("id");
-		if(!id || id=="") {
-		//	$("#showSvg").css("display","none");
-			return;
+		if(id && id !=""){
+			SessionManage.setCheckedMonitorId(id);
+			drawImage(id);
+		}else{
+			emptyImage();
 		}
-	//	$("#showSvg").css("display","block");
-		//存储选中监视器的id
-		SessionManage.setCheckedMonitorId(id);
-		drawImage(id);
 	});
 }
 
@@ -118,4 +112,25 @@ function drawImage(id,count){
 		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图;
 		SessionManage.setMonitorRuntimeTableData(recordsData);
 	});
+}
+function emptyImage(){
+	SessionManage.setMonitorStatisticalDetailTableData(null);
+	SessionManage.setMonitorRuntimeTableData({
+		ok:0,
+		warning:0,
+		error:0,
+		disable:0,
+		starttime:"---",
+		endtime:"---"
+	});
+	$("svg#line").empty();	
+	d3.select("svg#line")
+		.attr("height",150)
+		.append("g")
+		.append("text")
+		.attr("x","50%")
+		.attr("y","50%")
+		.text("暂无数据")
+		.style("text-anchor", "middle");
+			
 }

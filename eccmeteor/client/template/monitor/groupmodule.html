@@ -4,23 +4,23 @@
 		<thead>
 			<tr></tr>
 			<tr>
-			    <th><input type="checkbox" id="showGroupAndEntityTableGroupSelectAll"></th>
-				<th>状态</th>
-				<th>SV_ID</th>
-				<th>名称</th>
-				<th>设备</th>
-				<th>监控器</th>
-				<th>禁止</th>
-				<th>错误</th>
-				<th>危险</th>
-				<!--<th>描述信息</th><th>依靠</th>-->
+			    <th class="select-checkbox"><input type="checkbox" id="showGroupAndEntityTableGroupSelectAll"></th>
+				<th class="imag-status">状态</th>
+			<!--	<th>SV_ID</th> <th>依靠</th>-->
+				<th class="span2">名称</th>
+				<th class="span1">设备</th>
+				<th class="span2">监控器</th>
+				<th class="span1">禁止</th>
+				<th class="span1">错误</th>
+				<th class="span1">危险</th>
+				<th>描述信息</th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody id="showGroupAndEntityTableGroupList">
 		{{#if getChildrenNodesByIdAndType svid "subgroup"}}
 		{{#each getChildrenNodesByIdAndType svid "subgroup"}}
-			<tr>
+			<tr id="{{sv_id}}">
 			    <td>
 			        <input type="checkbox" id="{{sv_id}}">
 			    </td>
@@ -36,21 +36,21 @@
 						title="" 
 						data-original-title="{{sv_name}}"/>
 				</td>
-				<td>{{sv_id}}</td>
+			<!--	<td>{{sv_id}}</td> -->
 				<td>{{sv_name}}</td>
 				<td>{{sub_entity_sum}}</td>
 				<td>{{sub_monitor_sum}}</td>
 				<td>{{sub_monitor_disable_sum}}</td>
 				<td>{{sub_monitor_error_sum}}</td>
 				<td>{{sub_monitor_warning_sum}}</td>
-			<!--	{{!-- <td>{{sv_description}}</td> --}} -->
+				<td>{{sv_description}}</td> {{!----}} <!---->
 			<!--	{{!-- <td>{{sv_dependson}}</td> --}}-->
 				<td>
 					<div class="btn-group">
-						<button id="{{sv_id}}" class="btn" name="trash">
+						<button id="{{sv_id}}" class="btn btn-small" name="trash">
 							<i class="icon-trash"></i>删除
 						</button>
-						<button id="{{sv_id}}" class="btn" name="edit">
+						<button id="{{sv_id}}" class="btn btn-small" name="edit">
 							<i class="icon-edit"></i>编辑
 						</button>
 					</div>
@@ -67,9 +67,9 @@
 		<thead>
 			<tr></tr>
 			<tr>
-			    <th><input type="checkbox" id="showGroupAndEntityTableEntitySelectAll"></th>
-				<th>状态</th>
-				<th>SV_ID</th>
+			    <th  class="select-checkbox"><input type="checkbox" id="showGroupAndEntityTableEntitySelectAll"></th>
+				<th class="imag-status">状态</th>
+			<!--	<th>SV_ID</th> !-->
 				<th>名称</th>
 				<th>监控器</th>
 				<th>禁止</th>
@@ -83,7 +83,7 @@
 		<tbody id="showGroupAndEntityTableEntityList">
 		{{#if getChildrenNodesByIdAndType svid "subentity"}}
 		{{#each getChildrenNodesByIdAndType svid "subentity"}}
-			<tr>
+			<tr id="{{sv_id}}">
 			    <td>
 			       <div>
 			        <input type="checkbox" id="{{sv_id}}">
@@ -108,20 +108,20 @@
 						title="" 
 						data-original-title="{{sv_name}}"/>
 				</td>
-				<td>{{sv_id}}</td>
+			<!--	<td>{{sv_id}}</td> -->
 				<td>{{sv_name}}</td>
 				<td>{{sub_monitor_sum}}</td>
 				<td>{{sub_monitor_disable_sum}}</td>
 				<td>{{sub_monitor_error_sum}}</td>
 				<td>{{sub_monitor_warning_sum}}</td>
 				<td>{{_MachineName}}</td>
-				<td>{{sv_devicetype}}</td>
+				<td>{{getEntityTemplateNameByType sv_devicetype}}</td>
 				<td>
 					<div class="btn-group">
-						<button id="{{sv_id}}" class="btn" name="trash">
+						<button id="{{sv_id}}" class="btn btn-small" name="trash">
 							<i class="icon-trash"></i>删除
 						</button>
-						<button id="{{sv_id}}" class="btn" name="edit">
+						<button id="{{sv_id}}" class="btn btn-small" name="edit">
 							<i class="icon-edit"></i>编辑
 						</button>
 					</div>
@@ -129,7 +129,7 @@
 			</tr>
 		{{/each}}
 		{{else}}
-			<tr><td  colspan=11>暂无数据</td></tr>
+			<tr><td  colspan=11 style="text-align:center">暂无数据</td></tr>
 		{{/if}}
 		</tbody>
 	</table>

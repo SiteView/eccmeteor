@@ -3,9 +3,9 @@
 		<thead>
 			<tr></tr>
 			<tr>
-			    <th><input type="checkbox" id="showMonitorTableSelectAll"></th>
-				<th class="span1">状态</th>
-				<th class="span1">ID</th>
+			    <th class="select-checkbox"><input type="checkbox" id="showMonitorTableSelectAll"></th>
+				<th class="imag-status">状态</th>
+				<!--<th class="span1">ID</th>-->
 				<th class="span1">名称</th>
 				<th>描述</th>
 				<th>更新</th>
@@ -27,16 +27,20 @@
 						data-original-title="{{sv_name}}"
 					/>
 				</td>
-				<td>{{sv_id}}</td>
+				<!--<td>{{sv_id}}</td>-->
 				<td>{{sv_name}}</td>
-				<td>{{dstr}}</td>
-				<td>{{creat_time}}</td>
+				<td>
+					{{dstr}}
+				</td>
+				<td>
+					{{creat_time}}
+				</td>
 				<td>
 					<div class="btn-group">
-						<button id="{{sv_id}}" class="btn" name="trash">
+						<button id="{{sv_id}}" class="btn btn-small" name="trash">
 							<i class="icon-trash"></i>删除
 						</button>
-						<button id="{{sv_id}}" class="btn" name="edit">
+						<button id="{{sv_id}}" class="btn btn-small" name="edit">
 							<i class="icon-edit"></i>编辑
 						</button>
 					</div>
@@ -44,7 +48,7 @@
 			</tr>
 		{{/each}}
 		{{else}}
-			<tr><td  colspan=7>暂无数据</td></tr>
+			<tr><td  colspan=7 style="text-align:center">暂无数据</td></tr>
 		{{/if}}
 		</tbody>
 	</table>
@@ -80,7 +84,8 @@
 	</table>
 </Template>
 
-<Template name="MonitorStatisticalSimpleData"> <!-- 记录统计 -->
+<Template name="MonitorStatisticalSimpleData">
+	<!-- 记录统计 -->
 	<table class="table table-striped table-bordered table-condensed">
 		<tbody>
 			{{#with recordsData}}
@@ -114,7 +119,6 @@
 			{{/with}}
 		</tbody>
 	</table>
-
 </Template>
 
 <Template name="EntityModule">
