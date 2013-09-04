@@ -5,7 +5,10 @@ SvseEntityTemplateDao = {
 	},
 	//获取设备模板的属性  ,若第二个属性name存在,则获取模板的属性值
 	getEntityPropertyById:function(id,name){
-		var property = SvseEntityTemplet.findOne({"return.id":id}).property;
+		var entityTemplate = SvseEntityTemplet.findOne({"return.id":id})
+		if(!entityTemplate)
+			return {};
+		var property = entityTemplate.property;
 		if(!name)
 			return property;
 		return property[name];

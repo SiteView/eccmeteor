@@ -129,5 +129,19 @@ Template.operateNode.events ={
 	},
 	"click .btn#refresh" : function(){
 		SvseDao.refreshTreeData();
+	},
+	"click .btn#backLayer" : function(){
+		//获取当前节点信息
+		var currentId = SessionManage.getCheckedTreeNode("id");
+		var upLayoutId = currentId.substr(0,currentId.lastIndexOf("\.")) 
+		var upLayoutNode = SvseTreeDao.getNodeById(upLayoutId);
+		var checkedTreeNode = {
+			id:upLayoutId,
+			type:upLayoutNode["type"],
+			name:upLayoutNode["sv_name"]
+		}
+		SessionManage.setCheckedTreeNode(checkedTreeNode);
+		if(MONITORVIEW.GROUPANDENTITY !== "group")
+			SwithcView.view(MONITORVIEW.GROUPANDENTITY);
 	}
 }

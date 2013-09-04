@@ -44,7 +44,6 @@ SwithcView = {
 		Session.set("layout",layoutname);
 		Session.set("viewstatus",viewName);
 	}
-
 }
 
 

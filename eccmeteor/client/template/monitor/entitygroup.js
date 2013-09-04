@@ -62,20 +62,7 @@ Template.showEntity.events = {
 		$("#showEntityDiv").modal("hide");
 	}
 };
-/*
-Template.showEditEntity.entityId = function(){
-	return Session.get("checkedTreeNode").id;
-}
 
-Template.showEditEntity.property=function(id){
-	return SvseEntityTemplateDao.getItemsAndDefaultValueBySvId(id);
-}
-
-Template.showEditEntity.getItemsAndDefaultValueBySvIdAndDevicetype = function(sv_id){
-	var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(sv_id);//根据SvseTree中的sv_id获取获取设备类型（即SvseEntityTempalate中的return.id）;
-	return SvseEntityTemplateDao.getItemsAndDefaultValueBySvIdAndDevicetype(sv_id,devicetype);
-}
-*/
 Template.showEditEntity.getItemsAndDefaultValue=function(){
 	var id = Session.get("showGroupAndEntityEditEntityId");
 	if(!id) return;

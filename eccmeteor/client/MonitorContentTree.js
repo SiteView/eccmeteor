@@ -1,9 +1,9 @@
 //树的渲染
 Template.moitorContentTree.rendered = function(){
+	console.log("asasd");
 	drawSvseSettingTree();
 	Session.set("MoitorContentTreeRendered",true);
 }
-
 /*
 *构建设置树
 */
@@ -21,10 +21,22 @@ var drawSvseSettingTree = function(){
 			    //引用 navsetting.js中的函数
 				NavigationSettionTree.execute(treeNode.action);
 				SessionManage.clear();//清空一些Session值
+			},
+			/*
+			*节点展开事件
+			*/
+			onExpand:function(event, treeId, treeNode){
+				SettingNodeRemenber.remenber(treeNode.id); //记住展开节点	
+			},
+			/*
+			*节点折叠事件
+			*/
+			onCollapse:function(event, treeId, treeNode){
+				SettingNodeRemenber.forget(treeNode.id); //删除展开节点
 			}
-		}
+		},
 	};
-	$.fn.zTree.init($("#setting_tree"), setting, NavigationSettionTree.getTreeData());
+	$.fn.zTree.init($("#setting_tree"), setting, expandSimpleTreeNode(NavigationSettionTree.getTreeData(),SettingNodeRemenber.get()));
 }
 
 /*
@@ -74,12 +86,12 @@ var drawSvseSimpleTree = function(){
 				if(type !== "entity"){
 				    //设置视图状态
 					SwithcView.view(MONITORVIEW.GROUPANDENTITY); 
-					SessionManage.setSvseId(id);
+				//	SessionManage.setSvseId(id);
 					SessionManage.clearMonitorRuntimeDate();//清空一些监视数据session
 					return;
 				}
 				SwithcView.view(MODULEVIEW.ENTITYMODULE);
-				SessionManage.setEntityId(id);
+			//	SessionManage.setEntityId(id);
 			},
 			/*
 			*节点展开事件
@@ -90,7 +102,7 @@ var drawSvseSimpleTree = function(){
 			/*
 			*节点折叠事件
 			*/
-			onCollapse:function(event, treeId, treeNode){
+			onCollapse:function(event, treeId, treeNode){	
 				TreeNodeRemenber.forget(treeNode.id); //删除展开节点
 			}
 		}
@@ -104,5 +116,25 @@ var drawSvseSimpleTree = function(){
 Deps.autorun(function(c){
 	if(Session.get(SessionManage.CONLLECTIONMAP.SVSECOMPLETE)&&Session.get("MoitorContentTreeRendered")){
 		drawSvseSimpleTree();
+		/*
+		try{
+			drawSvseSimpleTree();
+		}catch(error){
+			console.log("I'm autorun drawSvseSimpleTree error!");
+		}
+		*/
 	}
 });
+
+Deps.autorun(function(c){
+	var language = Session.get("language");
+	if(language){
+		drawSvseSettingTree();
+		/*
+		try{
+			drawSvseSettingTree();
+		}catch(error){
+			console.log("I'm autorun drawSvseSettingTree error!");
+		}*/
+	}
+})

@@ -12,6 +12,8 @@ SvseDao = {
 		return Svse.find({parentid:rootId}).fetch();
 	},
 	getTreeSimple:function(){//不包含监视器 简单数据类型
+		if(typeof Svse === "undefined")
+			return [];
 		var nodes = Svse.find().fetch();
 		var branch = [];
 		for(index in nodes){

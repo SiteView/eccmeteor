@@ -13,11 +13,6 @@ Deps.autorun(function (c) {
 				link : "LINK",
 				startTime : 'Start Time',
 				endTime : 'End Time',
-				warner : 'Warner',
-				warnerrule : 'Warner Rules',
-				warnerlog : 'Warner Log',
-				warnerplan : 'Warner Plan',
-				setting : 'Setting',
 				addbtn:"Add",
 				delbtn:"Delete",
 				allowbtn:"Allow",
@@ -56,10 +51,29 @@ Deps.autorun(function (c) {
 					cancelemailwarnerrulesettingbtn:"Cancel"
 				},
 				othersetting:{
+					setting : 'Setting',
 					basicsetting : 'Basic Setting',
 					emailsetting : 'Email Setting',
 					messagesetting : 'Message Setting',
 					usersetting:'User Setting'
+				},
+				ReportModel:{
+					Report:"Report",
+					statistical:"Statistical Report",
+					trend:"Trend Report",
+					topN:"Top N Report",
+					statusStatistical:"Status Statistical Report",
+					contrast:"Contrast Report",
+					operationAndMaintenance:"Operation And Maintenance",
+					time:"Time Contrast Report",
+					monitorInfo:"Monitor Infomation Report",
+					SysLogQuery:"System Log Query"
+				},
+				AlertModel:{
+					Alert : 'Alert',
+					Alertrule : 'Alert Rules',
+					Alertlog : 'Alert Log',
+					Alertplan : 'Alert Plan'
 				}
 			}
 		},
@@ -74,12 +88,7 @@ Deps.autorun(function (c) {
 				home : "首页",
 				link : "链接",
 				startTime : '开始时间',
-				endTime : '结束时间',
-				warner : '报警',
-				warnerrule : '报警规则',
-				warnerlog : '报警日志',
-				warnerplan : '报警策略',
-				setting : '设置',
+				endTime : '结束时间',	
 				addbtn:"添加",
 				delbtn:"删除",
 				allowbtn:"允许",
@@ -118,10 +127,29 @@ Deps.autorun(function (c) {
 					cancelemailwarnerrulesettingbtn:"取消"
 				},
 				othersetting:{
+					setting : '设置',
 					basicsetting : '基础设置',
 					emailsetting : '邮件设置',
 					messagesetting : '短信设置',
 					usersetting:'用户设置'
+				},
+				ReportModel:{
+					Report:"报表",
+					statistical:"统计报告",
+					trend:"趋势报告",
+					topN:"TopN报告",
+					statusStatistical:"状态统计报告",
+					contrast:"对比报告",
+					operationAndMaintenance:"运维统计报告",
+					time:"时段对比报告",
+					monitorInfo:"监测器信息报告",
+					SysLogQuery:"系统日志查询"
+				},
+				AlertModel:{
+					Alert : '报警',
+					Alertrule : '报警规则',
+					Alertlog : '报警日志',
+					Alertplan : '报警策略',
 				}
 				
 			}

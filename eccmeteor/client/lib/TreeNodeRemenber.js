@@ -1,51 +1,57 @@
 /*
 *记住树展开的节点
 */
-TreeNodeRemenber = {
-	getCookie:function(){
-		var str = $.cookie("expandnode");
+var NodeRemenber = function(key){
+	this.key = key;
+	this.getCookie = function(){
+		var str = $.cookie(this.key);
 		if(!str || !str.length)
 			return false;
 		return str;
-	},
-	setCookie:function(value){
-		$.cookie("expandnode",value);
-	},
-	remenber:function(id){
-		var str = TreeNodeRemenber.getCookie();
+	};
+	this.setCookie=function(value){
+		$.cookie(this.key,value);
+	};
+	this.remenber=function(id){
+		var str = this.getCookie();
 		if(!str){
-			TreeNodeRemenber.setCookie(id+"");
+			this.setCookie(id+"");
 			return;
 		}
 		//可用正则表达式替换 判断是否已经存在
 		var arr = str.split(",");
 		for(i = 0;i < arr.length ; i++){
-			if(arr[i] === id){
+			if(arr[i] == id){
 				return;
 			}
 		}
 		str = str + "," + id
-		TreeNodeRemenber.setCookie(str);
-	},
-	forget : function(id){
-		var str = TreeNodeRemenber.getCookie();
+		this.setCookie(str);
+	};
+	this.forget = function(id){
+		var str = this.getCookie();
 		if(!str)
 			return;
 		//可用正则表达式替换
 		var arr = str.split(",");
 		var newstr = "";
 		for(i = 0;i < arr.length ; i++){
-			if(arr[i] !== id){
+			if(arr[i] != id){
 				newstr = newstr + arr[i] + ","
 			}
 		}
 		newstr = newstr.substr(0,newstr.length-1);
-		TreeNodeRemenber.setCookie(newstr);
-	},
-	get : function(){
-		var str = TreeNodeRemenber.getCookie();
+		this.setCookie(newstr);
+	};
+	this.get = function(){
+		var str = this.getCookie();
 		if(!str)
 			return [];
 		return str.split(",")
+	};
+	this.forgetAll = function(){
+		this.setCookie("");
 	}
 }
+TreeNodeRemenber = new NodeRemenber("expandnode");
+SettingNodeRemenber = new NodeRemenber("expandsettingnode");

@@ -1,6 +1,5 @@
 Template.showGroupAndEntity.svid = function () {
-//	return Session.get("svid");
-    return SessionManage.getSvseId();
+ return SessionManage.getCheckedTreeNode("id");
 }
 
 Template.showGroupAndEntity.getEntityTemplateNameByType = function(type){
@@ -54,10 +53,8 @@ Template.showGroupAndEntity.events({
         SessionManage.setCheckedTreeNode(checkedTreeNode);
         if(node.type === "group"){
             SwithcView.view(MONITORVIEW.GROUPANDENTITY); 
-            SessionManage.setSvseId(id);
         }else{
             SwithcView.view(MODULEVIEW.ENTITYMODULE);
-            SessionManage.setEntityId(id);
         }
     },
     "mouseenter #showGroupAndEntityTableGroupList img":function(e){

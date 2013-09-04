@@ -7,7 +7,7 @@ initTreeDataAtStartup = function(debug){
 	}
 	var result = SvseMethodsOnServer.svGetTreeData();
 	if(!result){
-		SystemLogger.log("initTreeDataAtStartup failed，svGetTreeData exists errors",-1);
+		SystemLogger("initTreeDataAtStartup failed，svGetTreeData exists errors",-1);
 		return;
 	}
 	for(son in result){

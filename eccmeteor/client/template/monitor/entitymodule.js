@@ -1,5 +1,5 @@
 Template.showMonitor.entityid = function () {
-	return SessionManage.getEntityId();
+	return SessionManage.getCheckedTreeNode("id");
 }
 
 Template.showMonitor.events={

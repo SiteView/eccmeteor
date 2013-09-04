@@ -174,7 +174,7 @@
 	"trOfTableClickedChangeColor":function(id){
 		$("#"+id+" tr").click(function(){
 			var checkbox = $(this).find(":checkbox:first");
-			checkbox[0].checked = !checkbox[0].checked;
+		//	checkbox[0].checked = !checkbox[0].checked;
 			$(this).siblings(".success").each(function(){
 				$(this).removeClass("success");
 				if($(this).find(":checkbox:first")[0].checked){

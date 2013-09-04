@@ -12,10 +12,21 @@
 				<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu pull-right">	
-				    <li><a href="#" id="allowMonitor">启用</a></li>
-					<li><a href="#" id="forbidMonitor">禁用</a></li>
+				    <li>
+				    	<a href="#" id="allowMonitor">
+				    		<i class="icon-ok"></i>启用</a>
+				    </li>
+					<li>
+						<a href="#" id="forbidMonitor">
+							<i class="icon-remove"></i>禁用
+						</a>
+					</li>
 					<li class="divider"></li>
-					<li><a href="#" id="deleteMonitor">删除监视器</a></li>
+					<li>
+						<a href="#" id="deleteMonitor">
+							<i class="icon-trash"></i>删除监视器
+						</a>
+					</li>
 				</ul>
 			</div>
 			{{else}}
@@ -27,16 +38,32 @@
 				<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu pull-right">
-					<li><a href="#" id="allowGroup">启用</a></li>
-					<li><a href="#" id="forbidGroup">禁用</a></li>
+					<li>
+						<a href="#" id="allowGroup">
+							<i class="icon-ok"></i>启用
+						</a>
+					</li>
+					<li>
+						<a href="#" id="forbidGroup">
+							<i class="icon-remove"></i>禁用</a>
+						</li>
 					<li class="divider"></li>
-					<li><a href="#" id="removeNodes">删除</a></li>
+					<li>
+						<a href="#" id="removeNodes">
+							<i class="icon-trash"></i>删除
+						</a>
+					</li>
 				</ul>
 			</div>
 			{{/if}}
 			
 			<div class="btn-group">
-				<button class="btn" id="refresh">刷新</button>
+				<button class="btn" id="refresh">
+					<i class="icon-refresh"></i>刷新
+				</button>
+				<button class="btn" id="backLayer">
+					<i class=" icon-arrow-up"></i>上一层
+				</button>
 			</div>
 			
 		</div>
