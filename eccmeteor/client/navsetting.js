@@ -27,8 +27,8 @@ NavigationSettionTree = {
 	getTreeData:function(){
 		return [
 			{id:1,pId:0,name:LanguageModel.getLanaguage("AlertModel").Alert,action:"warner",type:"warner",icon:"imag/setting/warner.png"},
-			{id:2,pId:0,name:LanguageModel.getLanaguage("othersetting").setting,action:"setting",type:"setting",icon:"imag/setting/setting.png"},
 			{id:3,pId:0,name:LanguageModel.getLanaguage("ReportModel").Report,action:"report",type:"report",icon:"imag/setting/Report.png"},
+			{id:2,pId:0,name:LanguageModel.getLanaguage("othersetting").setting,action:"setting",type:"setting",icon:"imag/setting/setting.png"},	
 			{id:11,pId:1,name:LanguageModel.getLanaguage("AlertModel").Alertrule,action:"warnerrule",type:"warner",icon:"imag/setting/warnerrule.png"},
 			{id:12,pId:1,name:LanguageModel.getLanaguage("AlertModel").Alertlog,action:"warnerlog",type:"warner",icon:"imag/setting/warnerlog.png"},
 			{id:13,pId:1,name:LanguageModel.getLanaguage("AlertModel").Alertplan,action:"warnerplan",type:"warner",icon:"imag/setting/warnerplan.png"},

@@ -5,7 +5,21 @@ Template.operateNode.sv_name = function(){
 Template.operateNode.type = function(){
 	return SessionManage.getCheckedTreeNode() ? SessionManage.getCheckedTreeNode("type") :"";
 }
-
+Template.operateNode.statisticalData = function(){
+	var data  = {
+		entity:0,
+		monitor:0,
+		ok:0,
+		error:0,
+		warning:0,
+		disable:0
+	}
+	var checkedNode = SessionManage.getCheckedTreeNode();
+	if(!checkedNode)
+		return data;
+	var id = checkedNode.id;
+	return SvseDao.getChildrenStatusById(id)
+}
 //增删改操作Template
 Template.operateNode.events ={
 	"click .btn#addGroup":function(){
@@ -130,6 +144,7 @@ Template.operateNode.events ={
 	"click .btn#refresh" : function(){
 		SvseDao.refreshTreeData();
 	},
+	//上一层
 	"click .btn#backLayer" : function(){
 		//获取当前节点信息
 		var currentId = SessionManage.getCheckedTreeNode("id");
@@ -143,5 +158,13 @@ Template.operateNode.events ={
 		SessionManage.setCheckedTreeNode(checkedTreeNode);
 		if(MONITORVIEW.GROUPANDENTITY !== "group")
 			SwithcView.view(MONITORVIEW.GROUPANDENTITY);
+	},
+	"click .unstyled.inline a":function(e){
+		var status = $(e.currentTarget).attr("title");
+		console.log(status + ":"+ typeof status);
+		if(status == "false"){
+			SessionManage.setEntityListFilter(false);
+		}
+		SessionManage.setEntityListFilter(status);
 	}
 }

@@ -7,8 +7,13 @@ SvseTreeDao = {
 		}
 		return SvseTree.findOne({sv_id:id});
 	},
-	getNodesByIds:function(ids){
-		return SvseTree.find({sv_id:{$in:ids}}).fetch();
+	/*
+	*根据ids数组和状态获取
+	*/
+	getNodesByIds:function(ids,status){
+		if(!status)
+			return SvseTree.find({sv_id:{$in:ids}}).fetch();
+		return SvseTree.find({sv_id:{$in:ids},status:status}).fetch();
 	},
 	getMonitorTypeById :function(id){
 		var node = SvseTree.findOne({sv_id:id});

@@ -1,10 +1,46 @@
 <Template name="operateNode"><!--增删改操作 -->
 	<div class="form-horizontal">
 		{{#if sv_name}}
-		<span class="label label-info">{{sv_name}}</span>
+		<div class="row-fluid" style="height:20px">
+			<div class="span3">
+				<span class="label label-info">{{sv_name}}</span>
+			</div>
+			{{#with statisticalData}}
+			<div class="span6 pull-right">
+			 	<ul class="unstyled inline">
+					<li>
+						<img src="imag/status/entity.png"/>设备()
+					</li>
+					<li>
+						<img src="imag/status/monitor.png"/>
+						<a href="#" title="false">监视器()</a>
+					</li>
+					<li>
+						<img src="imag/status/ok.png"/>
+						<a href="#" title="ok">正常({{ok}})</a>
+					</li>
+					<li>
+						<img src="imag/status/error.png"/>
+						<a href="#" title="error">错误({{error}})</a>
+					</li>
+					<li>
+						<img src="imag/status/warning.png"/>
+						<a href="#" title="warning">危险({{warning}})</a>
+					</li>
+					<li>
+						<img src="imag/status/disable.png"/>
+						<a href="#" title="disable">禁止({{disable}})</a>
+					</li>
+				</ul>
+			</div>
+			{{/with}}
+		</div>
 		<div class="btn-toolbar">
-			{{#if equal type "entity"}}
 			<div class="btn-group">
+				<button class="btn" id="backLayer">
+					<i class=" icon-arrow-up"></i>上一层
+				</button>
+			{{#if equal type "entity"}}
 				<button class="btn" id="addMonitor">添加监视器</button>
 				<button class="btn" id="editMonitor">编辑监视器</button>
 				<button class="btn">更多</button>
@@ -28,9 +64,7 @@
 						</a>
 					</li>
 				</ul>
-			</div>
 			{{else}}
-			    <div class="btn-group">
 				<button class="btn" id="addGroup">增加组</button>
 				<button class="btn" id="addEntity">增加设备</button>
 				<button class="btn">更多</button>
@@ -54,18 +88,13 @@
 						</a>
 					</li>
 				</ul>
-			</div>
 			{{/if}}
-			
+			</div>
 			<div class="btn-group">
 				<button class="btn" id="refresh">
 					<i class="icon-refresh"></i>刷新
 				</button>
-				<button class="btn" id="backLayer">
-					<i class=" icon-arrow-up"></i>上一层
-				</button>
 			</div>
-			
 		</div>
 		{{/if}}
 	</div>

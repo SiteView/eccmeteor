@@ -178,5 +178,53 @@ SvseDao = {
 		Meteor.call(SvseDao.AGENT,[ids,starttime,endtime],function(err,result){
 			fn(result)
 		});
+	},
+	getChildrenStatusById:function(id,data){
+		var node = Svse.findOne({sv_id:id});
+		var status = {
+			ok:0,
+			error:0,
+			warning:0,
+			disable:0
+		}
+		if(!node) return status;
+		//判断组或设备
+		var subIds = [];
+		if(node.type === "entity"){
+			subIds = node["submonitor"];
+		}else{
+			subIds = node["subentity"].concat(node["subgroup"]);
+		}
+		console.log(subIds);
+		if(!subIds.length)return status;
+		var subs = SvseTree.find({sv_id:{$in:subIds}}).fetch();
+		for(var i = 0; i < subs.length ; i++){
+			var f = subs[i]["status"]
+			status[f] = status[f] + 1
+		}
+		return status;
+		/**/
+		/*
+		var data = {
+			ok:0,
+			error:0,
+			warning:0,
+			disable:0,
+			monitor:0,
+			entity:0
+		}
+		var nodes = Svse.find({parentid:id}).fetch();
+		var branch = [];
+		for(index in nodes){
+			var obj = nodes[index];
+			id = obj.sv_id;
+			var status = SvseTree.findOne({sv_id:id}).status;
+			data[status]= data[status]+1;
+			if(obj["type"] == "entity"){
+				data["monitor"] = data["monitor"] + obj["submonitor"].length;
+			}else if(obj["type"] == "group"){
+				data["entity"] = data["entity"]+ obj["subentity"].length;
+			}
+		}*/
 	}
 }

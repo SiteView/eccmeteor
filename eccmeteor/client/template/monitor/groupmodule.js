@@ -1,9 +1,15 @@
 Template.showGroupAndEntity.svid = function () {
- return SessionManage.getCheckedTreeNode("id");
+    return SessionManage.getCheckedTreeNode("id");
 }
 
 Template.showGroupAndEntity.getEntityTemplateNameByType = function(type){
     return SvseEntityTemplateDao.getEntityPropertyById(type,"sv_name");
+}
+
+Template.showGroupAndEntity.getChildrenNodesByIdAndType = function(id,subtype){
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,subtype);
+    var status = SessionManage.getEntityListFilter();
+    return status ? SvseTreeDao.getNodesByIds(childrenIds,status) : SvseTreeDao.getNodesByIds(childrenIds);
 }
 
 Template.showGroupAndEntity.events({

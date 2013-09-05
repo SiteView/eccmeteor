@@ -73,3 +73,7 @@ body{
 .imag-status{
   width: 30px;
 }
+.unstyled.inline li{
+  vertical-align:middle;
+  height: 30px;
+}

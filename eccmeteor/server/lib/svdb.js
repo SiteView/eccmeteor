@@ -29,7 +29,7 @@ svGetAllMonitorTempletInfo = function(){
 	var dowhat ={'dowhat':'GetAllMonitorTempletInfo'};
 	var robj = process.sv_univ(dowhat, 0);	
 	if(!robj.isok(0)){
-		SystemLogger.log(robj.estr(0),-1);
+		SystemLogger(robj.estr(0),-1);
 		return false;
 	}
 	var fmap = robj.fmap(0);
@@ -148,7 +148,7 @@ svGetMonitorTemplet = function(id){
 	var dowhat ={'dowhat':'GetMonitorTemplet',id:id};
 	var robj= process.sv_univ(dowhat, 0);
 	if(!robj.isok(0)){
-		SystemLogger.log(robj.estr(0),-1);
+		SystemLogger(robj.estr(0),-1);
 		return false;
 	}
 	var fmap = robj.fmap(0);

@@ -114,7 +114,7 @@ var drawSvseSimpleTree = function(){
 *构建树
 **/
 Deps.autorun(function(c){
-	if(Session.get(SessionManage.CONLLECTIONMAP.SVSECOMPLETE)&&Session.get("MoitorContentTreeRendered")){
+	if(SessionManage.isCollectionCompleted(CONLLECTIONMAP.SVSE)&&Session.get("MoitorContentTreeRendered")){
 		drawSvseSimpleTree();
 		/*
 		try{

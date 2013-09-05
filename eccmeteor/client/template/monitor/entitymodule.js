@@ -2,6 +2,11 @@ Template.showMonitor.entityid = function () {
 	return SessionManage.getCheckedTreeNode("id");
 }
 
+Template.showMonitor.getChildrenNodesByIdAndType = function(id,subtype){
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,subtype);
+    return SvseTreeDao.getNodesByIds(childrenIds);
+}
+
 Template.showMonitor.events={
 	"click tbody tr":function(e){
 		var id  = e.currentTarget.id;
