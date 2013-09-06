@@ -148,6 +148,8 @@ Template.operateNode.events ={
 	"click .btn#backLayer" : function(){
 		//获取当前节点信息
 		var currentId = SessionManage.getCheckedTreeNode("id");
+		if(currentId.indexOf("\.") == -1) //根节点
+			return;
 		var upLayoutId = currentId.substr(0,currentId.lastIndexOf("\.")) 
 		var upLayoutNode = SvseTreeDao.getNodeById(upLayoutId);
 		var checkedTreeNode = {
@@ -164,6 +166,7 @@ Template.operateNode.events ={
 		console.log(status + ":"+ typeof status);
 		if(status == "false"){
 			SessionManage.setEntityListFilter(false);
+			return;
 		}
 		SessionManage.setEntityListFilter(status);
 	}

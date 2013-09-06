@@ -6,7 +6,7 @@
 			    <th class="select-checkbox"><input type="checkbox" id="showMonitorTableSelectAll"></th>
 				<th class="imag-status">状态</th>
 				<!--<th class="span1">ID</th>-->
-				<th class="span1">名称</th>
+				<th class="span2">名称</th>
 				<th>描述</th>
 				<th>更新</th>
 				<th></th>
@@ -15,7 +15,7 @@
 		<tbody id="showMonitorList">
 		{{#if getChildrenNodesByIdAndType entityid "submonitor"}}
 		{{#each getChildrenNodesByIdAndType entityid "submonitor"}}
-			<tr id="{{sv_id}}" title="{{status}}">
+			<tr id="{{sv_id}}" data-status="{{status}}">
 			    <td><input type="checkbox" id="{{sv_id}}"></td>
 				<td>
 					<img src="imag/status/{{status}}.png"
@@ -24,13 +24,27 @@
 						data-html=true
 						data-content="{{language.status}}:{{getLanguage status}}<br />{{dstr}}"
 						title="" 
-						data-original-title="{{sv_name}}"
-					/>
+						data-original-title="{{sv_name}}"/>
 				</td>
 				<!--<td>{{sv_id}}</td>-->
-				<td>{{sv_name}}</td>
 				<td>
-					{{dstr}}
+					<div class="descriptTd"
+							data-toggle="tooltip"
+							data-placement="right" 
+							title='{{sv_name}}'
+							trigger="hover">
+						{{sv_name}}]
+					</div>
+				</td>
+				<td>
+					<div class="descriptTd"
+							data-toggle="tooltip"
+							data-placement="bottom" 
+							title='{{dstr}}'
+							trigger="hover"
+					>
+						{{dstr}}
+					</div>
 				</td>
 				<td>
 					{{creat_time}}

@@ -1,6 +1,5 @@
 //树的渲染
 Template.moitorContentTree.rendered = function(){
-	console.log("asasd");
 	drawSvseSettingTree();
 	Session.set("MoitorContentTreeRendered",true);
 }
@@ -36,7 +35,8 @@ var drawSvseSettingTree = function(){
 			}
 		},
 	};
-	$.fn.zTree.init($("#setting_tree"), setting, expandSimpleTreeNode(NavigationSettionTree.getTreeData(),SettingNodeRemenber.get()));
+	if($.fn.zTree)
+		$.fn.zTree.init($("#setting_tree"), setting, expandSimpleTreeNode(NavigationSettionTree.getTreeData(),SettingNodeRemenber.get()));
 }
 
 /*
@@ -107,7 +107,8 @@ var drawSvseSimpleTree = function(){
 			}
 		}
 	}
-	$.fn.zTree.init($("#svse_tree"), setting,expandSimpleTreeNode(data,TreeNodeRemenber.get()));
+	if($.fn.zTree)
+		$.fn.zTree.init($("#svse_tree"), setting,expandSimpleTreeNode(data,TreeNodeRemenber.get()));
 }
 
 /**

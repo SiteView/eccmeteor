@@ -19,7 +19,9 @@ SvseDao = {
 		for(index in nodes){
 			var obj = nodes[index];
 			var branchNode = {};
-			var treeNode = SvseTree.findOne({sv_id:obj["sv_id"]})
+			var treeNode = SvseTree.findOne({sv_id:obj["sv_id"]});
+			if(!treeNode)
+				treeNode = {sv_name:"",status:"ok"}
 			branchNode["id"] = obj["sv_id"];
 			branchNode["pId"] = obj["parentid"];
 			branchNode["type"] = obj["type"];
@@ -179,32 +181,14 @@ SvseDao = {
 			fn(result)
 		});
 	},
-	getChildrenStatusById:function(id,data){
-		var node = Svse.findOne({sv_id:id});
-		var status = {
-			ok:0,
-			error:0,
-			warning:0,
-			disable:0
+	getChildrenStatusById:function(id){
+		var type = Svse.findOne({sv_id:id}).type;
+		if(type === "entity"){
+			return SvseDao.testGetEntityStatus(id);
 		}
-		if(!node) return status;
-		//判断组或设备
-		var subIds = [];
-		if(node.type === "entity"){
-			subIds = node["submonitor"];
-		}else{
-			subIds = node["subentity"].concat(node["subgroup"]);
-		}
-		console.log(subIds);
-		if(!subIds.length)return status;
-		var subs = SvseTree.find({sv_id:{$in:subIds}}).fetch();
-		for(var i = 0; i < subs.length ; i++){
-			var f = subs[i]["status"]
-			status[f] = status[f] + 1
-		}
-		return status;
-		/**/
-		/*
+		return SvseDao.testGetGroupStatus(id);
+	},
+	testGetGroupStatus:function(id){
 		var data = {
 			ok:0,
 			error:0,
@@ -214,17 +198,45 @@ SvseDao = {
 			entity:0
 		}
 		var nodes = Svse.find({parentid:id}).fetch();
-		var branch = [];
 		for(index in nodes){
 			var obj = nodes[index];
-			id = obj.sv_id;
-			var status = SvseTree.findOne({sv_id:id}).status;
+			var nodeId = obj.sv_id;
+			var status = SvseTree.findOne({sv_id:nodeId}).status;
 			data[status]= data[status]+1;
 			if(obj["type"] == "entity"){
 				data["monitor"] = data["monitor"] + obj["submonitor"].length;
+				for(i in obj["submonitor"]){
+					var ms = SvseTree.findOne({sv_id:obj["submonitor"][i]}).status;
+					data[ms] = data[ms] +1;
+				}
 			}else if(obj["type"] == "group"){
 				data["entity"] = data["entity"]+ obj["subentity"].length;
+				var sondata = this.testGetGroupStatus(nodeId);
+				for(x in data){
+					data[x] = data[x] + sondata[x]
+				}
 			}
-		}*/
+		}
+		return data;
+	},
+	testGetEntityStatus:function(id){
+		var data = {
+			ok:0,
+			error:0,
+			warning:0,
+			disable:0,
+			monitor:0
+		}
+		var node = Svse.findOne({sv_id:id});
+		if(!node)
+			return 
+		var sub = node["submonitor"];
+		data["monitor"] = sub.length;
+		for(i in sub){
+			var ms = SvseTree.findOne({sv_id:sub[i]}).status;
+			data[ms] = data[ms] +1;
+		}
+		return data;
 	}
+
 }

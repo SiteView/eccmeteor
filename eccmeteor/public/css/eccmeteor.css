@@ -38,7 +38,6 @@ hr{
   vertical-align:middle;
   height: 21px;
   font-size: 12px;
-  overflow: hidden;
   moz-user-select: -moz-none;
   -moz-user-select: none;
   -o-user-select:none;
@@ -49,7 +48,6 @@ hr{
 }
 .table.table-hover tbody tr{
   height: 29px;
-  overflow: hidden;
   moz-user-select: -moz-none;
   -moz-user-select: none;
   -o-user-select:none;
@@ -76,4 +74,9 @@ body{
 .unstyled.inline li{
   vertical-align:middle;
   height: 30px;
+}
+.descriptTd{
+   overflow: hidden;
+   max-height: 21px;
+   max-width: 745px;
 }

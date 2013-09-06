@@ -1,13 +1,17 @@
-Template.showGroupAndEntity.svid = function () {
-    return SessionManage.getCheckedTreeNode("id");
-}
-
 Template.showGroupAndEntity.getEntityTemplateNameByType = function(type){
     return SvseEntityTemplateDao.getEntityPropertyById(type,"sv_name");
 }
 
-Template.showGroupAndEntity.getChildrenNodesByIdAndType = function(id,subtype){
-    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,subtype);
+Template.showGroupAndEntity.subgroup = function(){
+    var id = SessionManage.getCheckedTreeNode("id");
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subgroup");
+    var status = SessionManage.getEntityListFilter();
+     return status ? SvseTreeDao.getNodesByIds(childrenIds,status) : SvseTreeDao.getNodesByIds(childrenIds);
+}
+
+Template.showGroupAndEntity.subentity = function(){
+    var id = SessionManage.getCheckedTreeNode("id");
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subentity");
     var status = SessionManage.getEntityListFilter();
     return status ? SvseTreeDao.getNodesByIds(childrenIds,status) : SvseTreeDao.getNodesByIds(childrenIds);
 }

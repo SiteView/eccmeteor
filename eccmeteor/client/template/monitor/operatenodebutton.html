@@ -6,14 +6,16 @@
 				<span class="label label-info">{{sv_name}}</span>
 			</div>
 			{{#with statisticalData}}
-			<div class="span6 pull-right">
+			<div class="span6 pull-right"  style="text-align:right">
 			 	<ul class="unstyled inline">
+			 		{{#unless isNull entity}}
 					<li>
-						<img src="imag/status/entity.png"/>设备()
+						<img src="imag/status/entity.png"/>设备({{entity}})
 					</li>
+					{{/unless}}
 					<li>
 						<img src="imag/status/monitor.png"/>
-						<a href="#" title="false">监视器()</a>
+						<a href="#" title="false">监视器({{monitor}})</a>
 					</li>
 					<li>
 						<img src="imag/status/ok.png"/>

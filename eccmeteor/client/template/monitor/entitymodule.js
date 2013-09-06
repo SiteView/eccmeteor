@@ -12,14 +12,14 @@ Template.showMonitor.events={
 		var id  = e.currentTarget.id;
 		if(SessionManage.getCheckedMonitorId() === id)
 			return;
-		var status = e.currentTarget.title;
+	//	var status = $(e.currentTarget).attr("data-status");
 		if(!id || id=="") return;
 		//存储选中监视器的id
 		SessionManage.setCheckedMonitorId(id);
 		drawImage(id);
 	},
     "click #showMonitorList button[name='trash']":function(e){
-		var id = e.target.id;
+		var id = e.currentTarget.id;
 		console.log("删除监视器id:"+id);
 		var parentid  = SessionManage.getCheckedTreeNode("id");
 		SvseMonitorDao.deleteMonitor(id,parentid,function(result){
@@ -27,7 +27,7 @@ Template.showMonitor.events={
 		});
     },
  	"click #showMonitorList button[name='edit']":function(e){
-        var id = e.target.id;
+        var id = e.currentTarget.id;
         console.log("编辑监视器id:"+id);
         SessionManage.setCheckedMonitorId(id);
         var monitorTemplateId = SvseMonitorDao.getMonitorTemplateIdByMonitorId(id);
@@ -37,11 +37,20 @@ Template.showMonitor.events={
         $("#showMonitorInfoDiv").modal('show');
     },
     "mouseenter #showMonitorList img":function(e){
-    	$(e.target).popover('show');
+    	$(e.currentTarget).popover('show');
     },
     "mouseleave #showMonitorList img":function(e){
-    	$(e.target).popover('hide');
+    	$(e.currentTarget).popover('hide');
     }
+    /*,
+    "mouseenter #showMonitorList div.descriptTd":function(e){
+    	
+    	$(e.currentTarget).tooltip('show');
+    },
+    "mouseleave #showMonitorList div.descriptTd":function(e){
+
+    	$(e.currentTarget).tooltip('hide');
+    }*/
 }
 
 Template.showMonitor.rendered = function(){ //默认选中第一个监视进行绘图
