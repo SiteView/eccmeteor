@@ -42,15 +42,6 @@ Template.showMonitor.events={
     "mouseleave #showMonitorList img":function(e){
     	$(e.currentTarget).popover('hide');
     }
-    /*,
-    "mouseenter #showMonitorList div.descriptTd":function(e){
-    	
-    	$(e.currentTarget).tooltip('show');
-    },
-    "mouseleave #showMonitorList div.descriptTd":function(e){
-
-    	$(e.currentTarget).tooltip('hide');
-    }*/
 }
 
 Template.showMonitor.rendered = function(){ //默认选中第一个监视进行绘图
