@@ -1,0 +1,61 @@
+* 工程目录分为 
+ * /client   工程目录为客户端代码，只会在客户端进行加载（后面省略）
+ * /lib  主要为一些配置功能和ecc重要的函数  客户端和服务端 
+ * /log  为日志存的目录（此目录不会进行同步）服务端
+ * /packages 这是eccmeteor框架的依赖包  服务端
+ * /public  这是静态资源目录，主要放置图片，css，js等 客户端
+ * /server 这个是服务端代码 服务端
+  model.js 数据集的声明  客户端和服务端 
+  
+* 下面将对上面每个目录的内容进行声明
+ * /client
+    * /dao 放置对客户端对数据集的操作，由每个Template对应的js 调用
+      ** svse.js 主要是 整体设备的关系 数据的操作（重要）
+      ** SvseEmail.js 对邮件的相关数据集的操作 （不重要）
+      ** SvseEntityTemplate.js 相关设备模板数据集操作 （重要，这部分对应的数据集基本是不会改变的）
+      ** SvseMonitor.js  监视器实时数据保存数据集操作（定时同步后台，重要）
+      ** SvseMonitorTemplate.js 监视器模板数据集操作（重要）
+      ** SvseTask.js 任务相关数据操作，（不重要，这部分对应的数据集基本是不会改变的）
+      ** SvseTree.js 设备节点数据操作（重要）
+      ** SvseUser.js 用户数据集操作（重要）
+      
+    * /lib  客户端重要函数和预先加载的函数
+        ** /helper_register  模板助手 （重要）
+        ** DataProcess.js 监视器实时数据的相关处理（为画svg做前置处理）
+        ** language.js 国际化处理
+        ** line.js 画折线图
+        ** SessionManage.js  （很重要）。一些跨页面变量使用此文件进行管理（注意 当前代码中还有一小部分没有通过此类进行管理，需要修改）
+        ** SwitchView.js 视图渲染管理 重要，它管理页面那些视图在什么时候进行显示
+        ** table.js  已废弃 待删除
+        ** TreeNodeRemeber.js 功能函数，记住树的展开状态等。
+    
+    * /template 重要，主要的视图，管理视图的一些逻辑，每个视图对应一个js       
+      * /monitor 主要的视图文件 重要
+          ** entitygroup.html  添加设备时，展示设备分组，设备添加表单等
+          ** entitymdule.html  设备相关的页面。主要展示设备的监视器列表信息，某个监视器信息等。
+          ** entitymdule_monitor_add 监视器添加
+          ** entitymdule_monitor_add 监视器修改
+          ** group  设备分组管理，添加，修改组等
+          ** groupmodule  设备组信息的分组显示
+          ** monitordetial  监视器详细信息展示
+          ** operanodebutton  显示每个页面上的操作按钮组，及相关操作
+          ** quicklyAddMonity 监视器快速添加（添加一个设备后应该显示的内容，命名错误，待修改，此部分代码有很大的问题，带修改）
+      * /setting 设置相关的模块
+      * /warner 报警相关模板
+      * /util  相关工具类
+          DomCreateFactory.js Dom元素的动态创建
+          LocalObjectCoverter 本地对象转换器
+      * 404.html 404页面
+      * body.html 主体页面框架部分
+      * bodycontentofmonitor.html 设备监视器主体框架部分
+      * bodyheader.js  页面最顶部显示的内容
+      * index  首页
+      * login  登陆页面
+      * main 最后加载的一些默认参数
+      * monitorContentTree 左侧的设备树
+      * navsetting 设置，警告部分的树节点的操作逻辑
+      * subscript 数据集的订阅   
+          
+          
+    
+ 
