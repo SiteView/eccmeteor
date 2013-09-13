@@ -47,11 +47,3 @@ eccmeteor
       * 通过mrt run -p 8888 >~/ecc.log 2>&1 &   将日志输出到指定文件，这里是输出到home目录下的ecc.log 文件。
       * 可以通过jobs 来查看mrt 后台运行的代号，通过命令 fb 代号  如：fb 1 将终端调度到mrt进程中,进行终止mrt进程
   
-
-
-* 关于svlog.js：
-  * \Meteor\eccmeteor\server\lib\svlog.js 的功能是：自动增量导入log到mongodb
-  * 该功能默认是关闭的，若要打开请到 svlog.js 的第3行设置 can_run 为 true
-  * 因为ecc的log数据量巨大，首次启动该功能时请耐心等待数据迁移完成，后续的运行是增量的，比较快；数据全部在 mongodb 的 meteor 数据库的 svlog 表中
-  * 如果因为该功能的数据对 meteor 其他功能产生了影响，请先设置 can_run 为 false 关闭该功能，然后运行 meteor reset 清空所有数据
-  
