@@ -80,3 +80,10 @@ body{
    max-height: 21px;
    max-width: 745px;
 }
+
+/*
+*监视器状态过滤背景色
+*/
+.monitor_status_filter{
+  background-color: #84C909
+}
