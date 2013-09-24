@@ -47,7 +47,8 @@ Template.showGroupAndEntity.events({
         Session.set("showGroupAndEntityEditEntityId",id);
         $("#showEditEntityDiv").modal('show');
     },
-    "dblclick tbody tr":function(e){
+    "dblclick tbody tr, click tbody tr td a":function(e){
+        console.log(1);
         e.stopPropagation();
         var id = e.currentTarget.id;
         console.log(id);
