@@ -87,3 +87,11 @@ body{
 .monitor_status_filter{
   background-color: #84C909
 }
+
+/*监视器详细信息 时间段样式*/
+.breadcrumb li{
+  margin-left: 20px;
+}
+.breadcrumb{
+  margin-bottom: 0px;
+}

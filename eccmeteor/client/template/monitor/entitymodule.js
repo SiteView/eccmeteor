@@ -75,7 +75,8 @@ Template.MonitorStatisticalSimpleData.recordsData = function(){
 
 Template.MonitorStatisticalSimpleData.events({
 	"click .btn#monitorDetail" :  function(){
-		SwithcView.view(MONITORVIEW.MONITORDETAIL);//设置视图状态为监视器详细信息
+	//	SwithcView.view(MONITORVIEW.MONITORDETAIL);//设置视图状态为监视器详细信息
+		$("#showMonitorDetailSvgDiv").modal('show');
 	}
 })
 

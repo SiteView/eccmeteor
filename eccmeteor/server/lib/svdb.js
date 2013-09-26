@@ -143,6 +143,23 @@ svGetMonitorRuntimeRecords = function(id,count){
 	}
 	return runtiomeRecords;
 }
+
+//通过时间段获取记录数据
+svGetMonitorRuntimeRecordsByTime = function(id,beginDate,endDate){
+		var robj = process.sv_forest({
+			'dowhat':'QueryRecordsByTime',
+			id:id, 
+			begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
+			end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
+		}, 0);
+		var fmap = robj.fmap(0);
+		var runtiomeRecords = [];
+		for(r in fmap){
+			runtiomeRecords.push(fmap[r]);
+		}
+		return runtiomeRecords;
+}
+
 //获取监视器模板
 svGetMonitorTemplet = function(id){
 	var dowhat ={'dowhat':'GetMonitorTemplet',id:id};
@@ -248,22 +265,6 @@ svGetEntityDynamicPropertyData = function(entityId,monitorTplId){
 	}
 	var fmap= robj.fmap(0);
 	return fmap;	
-}
-
-//通过时间段获取记录数据
-svQueryRecordsByTime = function(id,beginDate,endDate){
-		var robj = process.sv_forest({
-			'dowhat':'QueryRecordsByTime',
-			id:id, 
-			begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
-			end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
-		}, 0);
-		var fmap = robj.fmap(0);
-		var runtiomeRecords = [];
-		for(r in fmap){
-			runtiomeRecords.push(fmap[r]);
-		}
-		return runtiomeRecords;
 }
 
 //获取邮件列表
