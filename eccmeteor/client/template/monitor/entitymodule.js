@@ -104,15 +104,16 @@ function drawImage(id,count){
 		var recordsData = dataProcess.getRecordsDate();
 		var keys = dataProcess.getDataKey();
 		SessionManage.setMonitorStatisticalDetailTableData(keys);
+		var selector = "svg#line";
 		var line = new DrawLine(
 							resultData,
 							{
 								key:foreigkeys["monitorPrimary"],
 								label:foreigkeys["monitorDescript"],
-								width:$("svg#line").parent().width(),
-								height:150
+								width:$(selector).parent().width(),
+								height:$(selector).parent().height()
 							},
-							"svg#line");
+							selector);
 
 		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图;
 		SessionManage.setMonitorRuntimeTableData(recordsData);

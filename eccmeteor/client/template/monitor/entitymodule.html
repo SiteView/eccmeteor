@@ -70,7 +70,7 @@
 
 <Template name="svg"><!-- svg 图像展示-->
 	<div id="showSvg" class="row-fluid">
-		<div class="well span8" style="padding:14px;">
+		<div class="well span8" style="padding:0px;height:187px">
 			<svg id="line"></svg>
 		</div>
 		<div class="span4">{{>MonitorStatisticalSimpleData}}</div>
@@ -100,7 +100,7 @@
 
 <Template name="MonitorStatisticalSimpleData">
 	<!-- 记录统计 -->
-	<table class="table table-striped table-bordered table-condensed">
+	<table class="table table-striped table-bordered table-condensed" style="height:187px">
 		<tbody>
 			{{#with recordsData}}
 			<tr>
