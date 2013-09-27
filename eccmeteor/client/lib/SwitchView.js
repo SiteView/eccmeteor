@@ -32,6 +32,13 @@ LAYOUTVIEW = {
 	NOTOPERATION:"notOperationNodeLayout" //无操作按钮的节点布局
 }
 
+
+//报表
+  ReportView = {
+    statistical:"statistical"
+  
+  }
+
 //视图切换
 SwithcView = {
 	view:function(viewName){

@@ -21,6 +21,9 @@ var NavigationSettionTreeEvents = {
 	},
 	"usersetting":function(){
 		SwithcView.view(SETTINGVIEW.USERSETTING);
+	},
+	"statistical":function(){
+	SwithcView.view(ReportView.statistical);
 	}
 }
 NavigationSettionTree = {
