@@ -1,6 +1,6 @@
 <Template name="showGroupAdd">
 <div id="showGroupAdddiv" class="modal hide fade">
-    <div class="modal-header">添加组</div>
+    <div class="modal-header">添加组 {{ide "showGroupAdd"}} </div>
 	<div class="modal-body">
         <form id="showGroupAddForm" class="well form-horizontal">
 	        <label>*组名称</label>
@@ -26,7 +26,7 @@
 
 <Template name="showGroupEdit">
 <div id="showGroupEditdiv" class="modal hide fade">
-    <div class="modal-header">添加组</div>
+    <div class="modal-header">添加组{{ide "showGroupAdd"}}</div>
 	<div class="modal-body">
         <form id="showGroupEditForm">
 	        {{#with getGroup}}

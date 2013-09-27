@@ -1,6 +1,6 @@
 <Template name="emailsetting">
 <div class="form-horizontal">
-	<span class="label label-info">邮件设置</span>
+	<span class="label label-info">邮件设置</span>{{ide "emailsetting"}}
 	<div  class="btn-toolbar">
 		<div class="btn-group">
 			<button class="btn" id="addemailsetting">{{language.addbtn}}</button>
@@ -104,7 +104,7 @@
 
 <Template name="emailbasicsettingofaddress">
 	<div id="emailaddresssettingdiv" class="modal hide fade">
-		<div class="modal-header">邮件地址设置</div>
+		<div class="modal-header">邮件地址设置{{ide "emailsetting"}}</div>
 		<div class="modal-body">
 			<form class="well form-horizontal form-inline" id="emailbasicsettingofaddressbasciinfo">
 				<fieldset>
@@ -177,7 +177,7 @@
 	<div id="emailaddresssettingdivedit" class="modal hide fade">
 		<div class="modal-header">			
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<label class="label label-info">邮件地址设置</label>
+			<label class="label label-info">邮件地址设置</label>{{ide "emailsetting"}}
 		</div>
 		<div class="modal-body">
 			{{#with emailbasicsettingofaddressbasciinfoeditform}}
