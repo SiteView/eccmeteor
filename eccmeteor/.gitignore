@@ -3,3 +3,4 @@
 /log
 /lib/configure.js
 svapi.ini
+/client/util/ide.js
