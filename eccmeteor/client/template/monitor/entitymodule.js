@@ -117,7 +117,17 @@ function drawImage(id,count){
 							selector);
 
 		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图;
-		SessionManage.setMonitorRuntimeTableData(recordsData);
+	/*	SessionManage.setMonitorRuntimeTableData(recordsData);
+		var selectorPie = "svg#monitorStatisticalPieSvg";
+		var pie = new DrawPie(
+				recordsData,
+				selectorPie,
+				{}
+			)
+		pie.draw();
+
+	*/
+	drawDie(recordsData,"svg#monitorStatisticalPieSvg");
 	});
 }
 function emptyImage(){
