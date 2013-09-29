@@ -1,6 +1,6 @@
 ﻿<Template name="showEntityGroup">
 	<div class="width:auto">
-		<label class="label label-info">选择设备类型</label>
+		<label class="label label-info">选择设备类型</label>{{ide "showEntityGroup"}}
 		<button class="btn pull-right" id="showEntityGroupBackBtn"><i class="icon-arrow-left"></i>返回</button>
 	</div>
 	<br>
@@ -20,7 +20,7 @@
 							{{#each entityTemplateId}}
 							<tr id="{{this}}">
 								{{#with getEntityPropertyById this}}
-								<td>{{sv_name}}</td><td>{{sv_description}}</td>
+								<td><a href="#">{{sv_name}}</a></td><td>{{sv_description}}</td>
 								{{/with}}
 							</tr>
 							{{/each}}
@@ -40,7 +40,7 @@
 <div id="showEntityDiv" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<span class="label label-info">设备信息</span>
+		<span class="label label-info">设备信息</span>{{ide "showEntityGroup"}}
 	</div>
 	<div class="modal-body">
 		<form id="showEntityForm" class="well form-horizontal" submit="return fasle;">
@@ -102,7 +102,7 @@
 	<div id="showEditEntityDiv" class="modal hide fade">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<span class="label label-info">设备信息</span>
+		<span class="label label-info">设备信息</span>{{ide "showEntityGroup"}}
 	</div>
 	<div class="modal-body">
 		<form id="showEditEntityForm" class="well form-horizontal" submit="return fasle;">

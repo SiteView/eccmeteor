@@ -162,7 +162,9 @@ Template.operateNode.events ={
 			SwithcView.view(MONITORVIEW.GROUPANDENTITY);
 	},
 	"click .unstyled.inline a":function(e){
-		var status = $(e.currentTarget).attr("title");
+		/**样式操作*/
+		$(e.currentTarget).parents('ul').find("a.monitor_status_filter").removeClass("monitor_status_filter");
+		var status = $(e.currentTarget).addClass("monitor_status_filter").attr("title");
 		console.log(status + ":"+ typeof status);
 		if(status == "false"){
 			SessionManage.setEntityListFilter(false);

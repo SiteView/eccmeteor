@@ -3,7 +3,7 @@
 		{{#if sv_name}}
 		<div class="row-fluid" style="height:20px">
 			<div class="span3">
-				<span class="label label-info">{{sv_name}}</span>
+				<span class="label label-info">{{sv_name}}</span>{{ide "operateNode"}}
 			</div>
 			{{#with statisticalData}}
 			<div class="span6 pull-right"  style="text-align:right">
@@ -43,8 +43,8 @@
 					<i class=" icon-arrow-up"></i>上一层
 				</button>
 			{{#if equal type "entity"}}
-				<button class="btn" id="addMonitor">添加监视器</button>
-				<button class="btn" id="editMonitor">编辑监视器</button>
+				<button class="btn" id="addMonitor"><i class="icon-plus"></i>添加监视器</button>
+			<!--	<button class="btn" id="editMonitor">编辑监视器</button> -->
 				<button class="btn">更多</button>
 				<button class="btn dropdown-toggle" data-toggle="dropdown">
 				<span class="caret"></span>
@@ -67,8 +67,9 @@
 					</li>
 				</ul>
 			{{else}}
-				<button class="btn" id="addGroup">增加组</button>
-				<button class="btn" id="addEntity">增加设备</button>
+				<button class="btn" id="addGroup"><i class="icon-plus"></i>增加组
+				</button>
+				<button class="btn" id="addEntity"><i class="icon-plus"></i>增加设备</button>
 				<button class="btn">更多</button>
 				<button class="btn dropdown-toggle" data-toggle="dropdown">
 				<span class="caret"></span>

@@ -80,3 +80,18 @@ body{
    max-height: 21px;
    max-width: 745px;
 }
+
+/*
+*监视器状态过滤背景色
+*/
+.monitor_status_filter{
+  background-color: #84C909
+}
+
+/*监视器详细信息 时间段样式*/
+.breadcrumb li{
+  margin-left: 20px;
+}
+.breadcrumb{
+  margin-bottom: 0px;
+}

@@ -42,6 +42,12 @@ Meteor.publish("svse_warnerrule",function(){
 
 //用户信息
 Meteor.publish("userData",function(){
-	return Meteor.users.find(	{},
-								{fields: {'profile': 1,username:1}});
+	if(!this.userId)
+		return;
+	var user = Meteor.users.findOne(this.userId);
+	if(!user)
+		return;
+	if(user.profile.accounttype === "admin")
+		return Meteor.users.find({},{fields: {'profile': 1,username:1}});
+	return Meteor.users.find(this.userId);
 });
