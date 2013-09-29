@@ -143,7 +143,9 @@ Deps.autorun(function (c) {
 					operationAndMaintenance:"运维统计报告",
 					time:"时段对比报告",
 					monitorInfo:"监测器信息报告",
-					SysLogQuery:"系统日志查询"
+					SysLogQuery:"系统日志查询"，
+					filtrate:"筛选"，
+					Exreport:"导出报表"
 				},
 				AlertModel:{
 					Alert : '报警',

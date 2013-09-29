@@ -24,6 +24,9 @@ var NavigationSettionTreeEvents = {
 	},
 	"statistical":function(){
 	SwithcView.view(ReportView.statistical);
+	},
+	"monitorInfo":function(){
+	SwithcView.view(ReportView.monitorInfo);
 	}
 }
 NavigationSettionTree = {

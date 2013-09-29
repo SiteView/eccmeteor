@@ -35,8 +35,9 @@ LAYOUTVIEW = {
 
 //报表
   ReportView = {
-    statistical:"statistical"
-  
+    statistical:"statistical",
+    monitorInfo:"monitorInfo"
+    
   }
 
 //视图切换
