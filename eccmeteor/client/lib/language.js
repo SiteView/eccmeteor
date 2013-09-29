@@ -149,7 +149,17 @@ Deps.autorun(function (c) {
 					Alert : '报警',
 					Alertrule : '报警规则',
 					Alertlog : '报警日志',
-					Alertplan : '报警策略',
+					Alertplan : '报警策略'
+				},
+				TopNModel:{
+				    datereport:"日报",
+				    weekreport:"周报",
+				    monthreport:"月报"
+				},
+				statisticalModel:{
+					datereport:"日报",
+				    weekreport:"周报",
+				    monthreport:"月报"
 				}
 				
 			}
