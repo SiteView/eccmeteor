@@ -18,6 +18,7 @@ MONITORVIEW = {
 SETTINGVIEW = {
 	EMAILSETTING:"emailsetting", //邮箱设置
 	WARNERRULE :"warnerrule", // 报警
+	MESSAGESETTING:"messagesetting",//短信设置
 	USERSETTING:"usersetting" //用户设置
 }
 //整体模块视图

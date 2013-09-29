@@ -1,4 +1,4 @@
-﻿//TreeDate的数据集
+//TreeDate的数据集
 Meteor.publish("svse_tree", function (fieldsObj) {
       //,fields:fieldsObj
 	return SvseTree.find({},{sort:[["sv_id","asc"]]});
@@ -33,6 +33,11 @@ Meteor.publish("svse_task",function(){
 //邮件
 Meteor.publish("svse_emaillist",function(){
 	return SvseEmailList.find();
+});
+
+//短信
+Meteor.publish("svse_messagelist",function(){
+	return SvseMessageList.find();
 });
 
 //报警规则

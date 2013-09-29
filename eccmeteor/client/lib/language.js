@@ -23,6 +23,7 @@ Deps.autorun(function (c) {
 				nameTh:"Name",
 				statusTh : 'Status',
 				emailTh:'Email',
+				phoneTh:'Phone',
 				optionTh:'Option',
 				basicsettiontilte:"Basic Setting",
 				status:"Status",
@@ -99,6 +100,7 @@ Deps.autorun(function (c) {
 				nameTh:"名称",
 				statusTh : '状态',
 				emailTh:'邮箱',
+				phoneTh:'手机号码',
 				optionTh:'操作',
 				basicsettiontilte:"基本设置",
 				status:"状态",
@@ -115,6 +117,9 @@ Deps.autorun(function (c) {
 					passwordlab:"身份验证密码",
 					applybtn:"应用",
 					testbtn:"测试",
+					editbtn:"编辑"
+				},
+				messagesettingmodel:{
 					editbtn:"编辑"
 				},
 				warnerrulemodel:{

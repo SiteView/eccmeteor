@@ -17,7 +17,7 @@ var NavigationSettionTreeEvents = {
 		SwithcView.view(SETTINGVIEW.EMAILSETTING);
 	},
 	"messagesetting":function(){
-		console.log("执行了 messagesetting");
+		SwithcView.view(SETTINGVIEW.MESSAGESETTING);
 	},
 	"usersetting":function(){
 		SwithcView.view(SETTINGVIEW.USERSETTING);
