@@ -75,6 +75,15 @@ Deps.autorun(function (c) {
 					Alertrule : 'Alert Rules',
 					Alertlog : 'Alert Log',
 					Alertplan : 'Alert Plan'
+				},
+				BasicModel:{
+					applybtn:"Apply",
+					againgetbtn:"AgainGet",
+					previewbtn:"Preview",
+					recoverdefaultbtn:"RecoverDefault",
+					helpbtn:"Help",
+					bordercolor:"BorderColor",
+					borderwidth:"BorderWidth"
 				}
 			}
 		},
@@ -165,8 +174,16 @@ Deps.autorun(function (c) {
 					datereport:"日报",
 				    weekreport:"周报",
 				    monthreport:"月报"
+				},
+				BasicModel:{
+					applybtn:"应用",
+					againgetbtn:"重新获得",
+					previewbtn:"预览",
+					recoverdefaultbtn:"恢复默认",
+					helpbtn:"帮助",
+					bordercolor:"边框颜色",
+					borderwidth:"边框宽度"
 				}
-				
 			}
 		}
 	];
