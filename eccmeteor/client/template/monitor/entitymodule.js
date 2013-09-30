@@ -73,8 +73,8 @@ Template.MonitorStatisticalSimpleData.recordsData = function(){
 	return SessionManage.getMonitorRuntimeTableData();
 }
 
-Template.MonitorStatisticalSimpleData.events({
-	"click .btn#monitorDetail" :  function(){
+Template.svg.events({
+	"click .btn#monitoryDetailBtn" :  function(){
 	//	SwithcView.view(MONITORVIEW.MONITORDETAIL);//设置视图状态为监视器详细信息
 		$("#showMonitorDetailSvgDiv").modal('show');
 	}

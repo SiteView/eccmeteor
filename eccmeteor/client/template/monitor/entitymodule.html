@@ -75,7 +75,27 @@
 			<svg id="line"></svg>
 		</div>
 		<div class="span4">
-			<svg id="monitorStatisticalPieSvg" height="187"></svg>
+			<svg id="monitorStatisticalPieSvg" height="187" width="290">
+				<g width="60" height="157" class="desrSvg">
+					<g transform="translate(0,0)">
+						<rect width="15" height="15" style="fill: #468847;"></rect>
+						<text x="22" y="8" dy=".35em" font-size="12">正常</text>
+					</g>
+					<g transform="translate(0,17)">
+						<rect width="15" height="15" style="fill: #f89406;"></rect>
+						<text x="22" y="8" dy=".35em" font-size="12">危险</text>
+					</g>
+					<g transform="translate(0,34)">
+						<rect width="15" height="15" style="fill: #b94a48"></rect>
+						<text x="22" y="8" dy=".35em" font-size="12">错误</text>
+					</g>
+					<g transform="translate(0,51)">
+						<rect width="15" height="15" style="fill: #999999;"></rect>
+						<text x="22" y="8" dy=".35em" font-size="12">禁止</text>
+					</g>
+				</g>
+			</svg>
+			<button id="monitoryDetailBtn" class="btn">详细</button>
 		</div>
 	</div>
 	<div class="row-fluid" style="height:50px;overflow:auto">
