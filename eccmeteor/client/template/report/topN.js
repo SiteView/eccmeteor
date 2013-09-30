@@ -33,4 +33,4 @@ Template.warnerrule.events = {
 		console.log("warnerrulehelpmessage");
 	},
 
-}
+} 

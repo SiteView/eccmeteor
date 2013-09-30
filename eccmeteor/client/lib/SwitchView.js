@@ -14,7 +14,7 @@ MONITORVIEW = {
 	MONITORDETAIL:"detailSvg"//监视器的详细信息
 	
 };
-//设置视图
+//设置视图 
 SETTINGVIEW = {
 	EMAILSETTING:"emailsetting", //邮箱设置
 	WARNERRULE :"warnerrule", // 报警
