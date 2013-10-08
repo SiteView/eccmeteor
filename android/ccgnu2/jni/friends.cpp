@@ -120,9 +120,7 @@ void    Thread::sleep(timeout_t timeout)
 	Cancel old = Thread::enterCancel();
 
 	ts.tv_sec = timeout / 1000;
-#ifndef ANDROID	
 	ts.tv_usec = (timeout % 1000) * 1000000;
-#endif	
 #ifdef	HAVE_PTHREAD_DELAY
 	pthread_delay(&ts);
 #else
