@@ -1,0 +1,2 @@
+set solib-search-path ./obj/local/armeabi
+directory /root/ndk-r9/platforms/android-9/arch-arm/usr/include jni /root/ndk-r9/sources/cxx-stl/gnu-libstdc++ jni/../../ccgnu2/inc jni/../../ccgnu2/jni jni/../../libutil/jni jni/../../addon/jni /root/ndk-r9/sources/cxx-stl/gnu-libstdc++/4.6/include /root/ndk-r9/sources/cxx-stl/gnu-libstdc++/4.6/libs/armeabi/include /root/ndk-r9/sources/cxx-stl/gnu-libstdc++/4.6/include/backward

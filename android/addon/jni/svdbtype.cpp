@@ -275,3 +275,4 @@ clock_t DisplayDebugTime(string tag, clock_t time1)
 	printf("%s,  %.3f seconds\n\n", tag.c_str(), needtime1);
 	return time2;
 }
+
