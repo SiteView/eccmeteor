@@ -177,12 +177,12 @@ public class HelloJni extends Activity
 		StringBuilder estr = new StringBuilder();
 		
 		Map<String, String> property = new HashMap<String, String>();
-		putMapIgnorNull(property, "sv_name", "≤‚ ‘…Ë±∏");
-		putMapIgnorNull(property, "sv_description", "≤‚ ‘…Ë±∏");
+		putMapIgnorNull(property, "sv_name", "android≤‚ ‘");
+		putMapIgnorNull(property, "sv_description", "android≤‚ ‘");
 		fmap.put("property", property);
 
 		Map<String, String> retdata = new HashMap<String, String>();
-		putMapIgnorNull(retdata, "id", "1.36");
+//		putMapIgnorNull(retdata, "id", "1.36");
 		fmap.put("return", retdata);
 		
 		ndata.put("dowhat", "SubmitGroup");
