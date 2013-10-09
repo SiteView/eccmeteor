@@ -29,12 +29,9 @@ Template.messagebasicsettingofaddedit.events = {
 		$('#addmessagesettingdiv').modal('toggle');
 	},
 	"click #messagebasicsettingofsavebtn":function(){
-		
+		$('#addmessagesettingdiv').modal('toggle');
 	}
 }
 
+
 //获取messagelist的集合
-Template.messagesetinglist.messagesetting=function(){
-	console.log(SvseMessageDao.getMessageList());
-	return SvseMessageDao.getMessageList();
-}
