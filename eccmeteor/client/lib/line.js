@@ -8,7 +8,7 @@
 	*key : 指定画图数据对象的画图属性 Needed
 	*label :指定显示的标签	Needed
 	*width : 图像的宽度	No Needed Default:650
-	*height：图像的高度	No Needed Default:300
+	*height：图像的高度	No Needed Default:350
 
 *selector:Dom 选择器 （类似jquery的选择器） Needed
 */
@@ -18,9 +18,11 @@ DrawLine = function(data,setting,selector){
 	this.svgDomId = selector;
 	this.key = setting.key;
 	this.label = setting.label;
-	this.width = setting.width  ? setting.width :650;
-	this.height = setting.height ? setting.height : 300;
+	this.width = setting.width  ? setting.width :750;
+	this.height = setting.height ? setting.height : 380;
 	this.dateformate = setting.dateformate ? setting.dateformate :"%H:%M";
+	this.xAxisRotate = setting.dateformate ? 15 : 0; //x轴 坐标标签旋转角度
+	this.xAxisAnchor =  setting.dateformate ? "start" : "middle";//x轴 坐标标签对齐方式
 	this.data = data;
 	this.drawLine = function(){ //折线统计图
 		var primary = this.key;
@@ -28,7 +30,7 @@ DrawLine = function(data,setting,selector){
 			top : 20,
 			right : 20,
 			bottom : 30,
-			left : 60
+			left : 40
 		};
 		var width = this.width - margin.left - margin.right;
 		var height = this.height - margin.top - margin.bottom
@@ -41,8 +43,7 @@ DrawLine = function(data,setting,selector){
 			.attr("height", height + margin.top + margin.bottom)
 			.append("g")
 				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-			
-
+				
 		var xScale = d3.time.scale()
 			.domain(d3.extent(this.data, function (d) {
 				return d.creat_time;
@@ -72,6 +73,20 @@ DrawLine = function(data,setting,selector){
 			.orient("left");
 
 
+		
+
+		svg.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + height + ")")
+		.call(xAxis)
+		.selectAll("text")
+			.attr('transform','rotate('+this.xAxisRotate+')')
+     		.style("text-anchor", this.xAxisAnchor)
+     				
+		svg.append("g")
+		.attr("class", "axis")
+		.call(yAxis);
+
 		var line = d3.svg.line()
 			.x(function (d) {
 				return xScale(d.creat_time);
@@ -79,15 +94,6 @@ DrawLine = function(data,setting,selector){
 			.y(function (d) {
 				return yScale(d[primary]);
 			});
-
-		svg.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + height + ")")
-		.call(xAxis);
-		
-		svg.append("g")
-		.attr("class", "axis")
-		.call(yAxis);
 
 		svg.append("path")
 			.datum(this.data)

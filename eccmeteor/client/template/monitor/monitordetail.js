@@ -62,6 +62,7 @@ Template.showMonitorDetailSvg.rendered = function(){
 			show:false
 		}).css({
 			width: '800',
+			height:'600',
 			'margin-left': function () {
 				return -(($(this).width() / 2)+ 50);
 			},
@@ -87,12 +88,17 @@ var drawDetailLine =  function(startDate,endDate){
 		var dataProcess = new DataProcess(result.content,foreigkeys["monitorForeignKeys"]);
 		var resultData = dataProcess.getData();
 		var selector = "svg#detailLine" ;
+		console.log($(selector).parent());
+		console.log($(selector).parent().width());
+		console.log($(selector).parent().height());
 		var line = new DrawLine(
 							resultData,
 							{
 								key:foreigkeys["monitorPrimary"],
 								label:foreigkeys["monitorDescript"],
-								dateformate:"%m-%d %H:%M"
+								dateformate:"%m-%d %H:%M",
+								width:$(selector).parent().width(),
+								height:$(selector).parent().height()
 							},
 							selector);
 		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图

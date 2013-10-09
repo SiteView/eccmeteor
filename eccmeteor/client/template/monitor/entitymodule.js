@@ -127,7 +127,7 @@ function drawImage(id,count){
 		pie.draw();
 
 	*/
-	drawDie(recordsData,"svg#monitorStatisticalPieSvg");
+		drawDie(recordsData,"svg#monitorStatisticalPieSvg");
 	});
 }
 function emptyImage(){
@@ -148,6 +148,5 @@ function emptyImage(){
 		.attr("x","50%")
 		.attr("y","50%")
 		.text("暂无数据")
-		.style("text-anchor", "middle");
-			
+		.style("text-anchor", "middle");	
 }
