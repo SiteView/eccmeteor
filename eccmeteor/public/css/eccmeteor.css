@@ -110,3 +110,7 @@ body{
 #monitoryDetailBtn{
   float: right;
 }
+/**折线统计图的字体大小*/
+.axis text{
+  font-size:10px;
+}

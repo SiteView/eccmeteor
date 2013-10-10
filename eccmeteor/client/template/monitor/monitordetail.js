@@ -1,8 +1,6 @@
 Template.showMonitorDetailSvg.events = {
 	"click #queryDetailLineData" : function(){
-		var startDate   =  $('#datetimepickerStartDate').data('datetimepicker').getDate();
-		var enddate   =  $('#datetimepickerEndDate').data('datetimepicker').getDate();
-		drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(enddate));
+		drawDetailLineAgain();
 	},
 	"click ul li a":function(e){
 		var str = e.target.name;
@@ -70,16 +68,17 @@ Template.showMonitorDetailSvg.rendered = function(){
 }
 
 var drawDetailLine =  function(startDate,endDate){
-	console.log("==================================");
-	console.log(startDate);
-	console.log(endDate);
-	console.log("==================================");
 	var id = SessionManage.getCheckedMonitorId();
 	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
 	if(!foreigkeys){
 		SystemLogger("监视器"+id+"不能获取画图数据");
 		return;
 	}
+	var selector = "svg#detailLine";
+	if($(selector).length == 0)
+		return;
+	var dateDifference = ClientUtils.getDateDifferenceHour(ClientUtils.objectToDate(startDate),ClientUtils.objectToDate(endDate))
+	var dateformate = dateDifference > 48 ? "%m-%d %H:%M" : "%H:%M";
 	SvseMonitorDao.getMonitorRuntimeRecordsByTime(id,startDate,endDate,function(result){
 		if(!result.status){
 			SystemLogger(result.msg);
@@ -87,22 +86,29 @@ var drawDetailLine =  function(startDate,endDate){
 		}
 		var dataProcess = new DataProcess(result.content,foreigkeys["monitorForeignKeys"]);
 		var resultData = dataProcess.getData();
-		var selector = "svg#detailLine" ;
-		console.log($(selector).parent());
-		console.log($(selector).parent().width());
-		console.log($(selector).parent().height());
 		var line = new DrawLine(
 							resultData,
 							{
-								key:foreigkeys["monitorPrimary"],
-								label:foreigkeys["monitorDescript"],
-								dateformate:"%m-%d %H:%M",
-								width:$(selector).parent().width(),
-								height:$(selector).parent().height()
+								'key':foreigkeys["monitorPrimary"],
+								'label':foreigkeys["monitorDescript"],
+								'dateformate':dateformate
 							},
 							selector);
 		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图
 	})
-
-
 }
+
+var drawDetailLineAgain = function(){
+	if($('#datetimepickerStartDate').length === 0) //判断是否具有时间选择器
+		return;
+	var startDate   =  $('#datetimepickerStartDate').data('datetimepicker').getDate();
+	var enddate   =  $('#datetimepickerEndDate').data('datetimepicker').getDate();
+	drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(enddate));
+}
+//公布一个对象给其他Template调用该Template中的方法 或者检查活性数据源？  重新绘制详细曲线图哪个更合理？
+Deps.autorun(function(){
+	var id = SessionManage.getCheckedMonitorId();
+	if(!id)
+		return;
+	drawDetailLineAgain();
+});
