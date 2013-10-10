@@ -1,4 +1,4 @@
-﻿//TreeDate的数据集
+//TreeDate的数据集
 Meteor.publish("svse_tree", function (fieldsObj) {
       //,fields:fieldsObj
 	return SvseTree.find({},{sort:[["sv_id","asc"]]});
@@ -35,11 +35,20 @@ Meteor.publish("svse_emaillist",function(){
 	return SvseEmailList.find();
 });
 
+//短信
+Meteor.publish("svse_messagelist",function(){
+	return SvseMessageList.find();
+});
+
 //报警规则
 Meteor.publish("svse_warnerrule",function(){
 	return SvseWarnerRule.find();
 });
+//TOPN报告
 
+Meteor.publish("svse_TopNlist",function(){
+	return SvseTopNList.find();
+});
 //用户信息
 Meteor.publish("userData",function(){
 	if(!this.userId)

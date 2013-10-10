@@ -23,6 +23,7 @@ Deps.autorun(function (c) {
 				nameTh:"Name",
 				statusTh : 'Status',
 				emailTh:'Email',
+				phoneTh:'Phone',
 				optionTh:'Option',
 				basicsettiontilte:"Basic Setting",
 				status:"Status",
@@ -99,6 +100,7 @@ Deps.autorun(function (c) {
 				nameTh:"名称",
 				statusTh : '状态',
 				emailTh:'邮箱',
+				phoneTh:'手机号码',
 				optionTh:'操作',
 				basicsettiontilte:"基本设置",
 				status:"状态",
@@ -115,6 +117,9 @@ Deps.autorun(function (c) {
 					passwordlab:"身份验证密码",
 					applybtn:"应用",
 					testbtn:"测试",
+					editbtn:"编辑"
+				},
+				messagesettingmodel:{
 					editbtn:"编辑"
 				},
 				warnerrulemodel:{
@@ -143,15 +148,31 @@ Deps.autorun(function (c) {
 					operationAndMaintenance:"运维统计报告",
 					time:"时段对比报告",
 					monitorInfo:"监测器信息报告",
+<<<<<<< HEAD
 					SysLogQuery:"系统日志查询"，
 					filtrate:"筛选"，
 					Exreport:"导出报表"
+=======
+					SysLogQuery:"系统日志查询"
+					 
+>>>>>>> ed1d573f8e8fc1120eed21a97727b64691cf2c3a
 				},
 				AlertModel:{
 					Alert : '报警',
 					Alertrule : '报警规则',
 					Alertlog : '报警日志',
-					Alertplan : '报警策略',
+					Alertplan : '报警策略'
+				},
+				TopNModel:{
+				    datereport:"日报",
+				    weekreport:"周报",
+				    monthreport:"月报"
+				   
+				},
+				statisticalModel:{
+					datereport:"日报",
+				    weekreport:"周报",
+				    monthreport:"月报"
 				}
 				
 			}

@@ -17,16 +17,24 @@ var NavigationSettionTreeEvents = {
 		SwithcView.view(SETTINGVIEW.EMAILSETTING);
 	},
 	"messagesetting":function(){
-		console.log("执行了 messagesetting");
+		SwithcView.view(SETTINGVIEW.MESSAGESETTING);
 	},
 	"usersetting":function(){
 		SwithcView.view(SETTINGVIEW.USERSETTING);
 	},
+<<<<<<< HEAD
 	"statistical":function(){
 	SwithcView.view(ReportView.statistical);
 	},
 	"monitorInfo":function(){
 	SwithcView.view(ReportView.monitorInfo);
+=======
+	"topN":function(){
+	SwithcView.view(REPORT.TOPN);
+	},
+	"statistical":function(){
+	SwithcView.view(REPORT.STATISTICAL);
+>>>>>>> ed1d573f8e8fc1120eed21a97727b64691cf2c3a
 	}
 }
 NavigationSettionTree = {

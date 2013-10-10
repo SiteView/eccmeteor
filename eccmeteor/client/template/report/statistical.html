@@ -1,4 +1,5 @@
 <Template name="statistical">
+<<<<<<< HEAD
 <div class="form-horizontal">
 	<span class="label label-info">统计报告</span>
 	<div  class="btn-toolbar">
@@ -19,4 +20,144 @@
 </div>
 
 	{{ide "statistical"}}
+=======
+	{{ide "statistical"}}
+<div class="form-horizontal">
+	<span class="label label-info">统计报告</span>
+	
+	<div class="btn-toolbar">
+		<div class="btn-group">
+			<button class="btn" id="statisticalofadd">{{language.addbtn}}</button>
+			<button class="btn" id="delwarnerrule">{{language.delbtn}}</button>
+		</div>
+		<div class="btn-group">
+			<button class="btn" id="allowewarnerrule">{{language.allowbtn}}</button>
+			<button class="btn" id="forbidwarnerrule">{{language.forbidbtn}}</button>
+
+			<button class="btn">更多</button>
+			<button class="btn dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu pull-right">	
+				<li><a href="#" id="refreshwarnerrule">{{language.refreshbtn}}</a></li>
+				<li><a href="#" id="warnerrulehelpmessage">{{language.helpmessagebtn}}</a></li>
+				<li class="divider"></li>
+				<li><a href="#" id="helpmessage">{{language.helpmessagebtn}}</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+{{> statisticallist}}
+{{> statisticalofadd}}
+
+</Template>
+
+<template name="statisticallist">
+<table class="table table-striped table-condensed table-hover">
+<thead>
+<tr></tr>
+<tr>
+                <th><input type="checkbox" id="statisticallistselectall"/></th>
+				<th>名称</th>
+				<th>描述</th>
+				<th>监测器数</th>
+				<th>时间段</th>
+                <th>定义时间</th>
+                <th>格式</th>
+                <th>状态</th>
+				
+</tr>
+</thead>
+<tbody id="statisticallist">
+{{#each rulelist}}
+			<tr>
+				<td><input type="checkbox" id="{{nIndex}}"/></td>
+				<td>{{AlertName}}</td>
+				<td>{{AlertType}}</td>
+				<td>{{AlertCategory}}</td>
+				<td>{{AlertName}}</td>
+				<td>{{AlertName}}</td>
+				<td>{{AlertName}}</td>
+				<td>{{AlertState}}</td>
+				<td>
+					<div class="btn-group">
+						<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+					</div>
+				</td>
+			</tr>
+			{{/each}}
+
+</tbody>
+</table>
+</template>
+
+<Template name="statisticalofadd">
+	<div id="statisticalofadddiv" class="modal hide fade">
+		<div class="modal-header">邮件地址设置{{ide "emailsetting"}}</div>
+		<div class="modal-body">
+			<form class="well form-horizontal form-inline" id="emailbasicsettingofaddressbasciinfo">
+				<fieldset>
+					<span class="label label-info">基本选项</span><br /><br />
+					<div class="control-group">
+					  <label class="control-label">*名称:</label>
+					  <div class="controls">
+						<input type="text"  name="Name">
+					  </div>
+					</div>
+					<div class="control-group">
+					  <label class="control-label">*接收Email地址:</label>
+					  <div class="controls">
+						<input type="text"  name="MailList">
+					  </div>
+					</div>
+					<div class="control-group">
+					  <label class="control-label">状态:</label>
+					  <div class="controls">
+						<label class="radio">
+							<input type="radio"  name="bCheck" value="0" checked> 允许
+						</label>
+						<label class="radio">
+							<input type="radio"  name="bCheck" value="1"> 禁止
+						</label>
+					  </div>
+					</div>
+					<span class="label label-info">高级选项</span><br /><br />
+					<div class="control-group">
+						<label class="control-label">Email模板:</label>
+						<div class="controls">
+							<select id="emailbasicsettingofaddressemailtemplatelist" name="Template">
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">任务计划类型:</label>
+						<div class="controls">
+							<select name="TaskType">
+								<option value="1" checked>时间段计划</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">任务计划:</label>
+						<div class="controls">
+							<select name="Schedule">
+								<option value="5x8" checked>5x8</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">描述:</label>
+						<div class="controls">
+							<textarea class="input-xlarge" name="Des" rows="3"></textarea>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-primary" id="statisticalofaddsavebtn">保存</button>
+			<button class="btn" id="statisticalofaddcancelbtn">取消</button>
+		</div>
+	</div>
+>>>>>>> ed1d573f8e8fc1120eed21a97727b64691cf2c3a
 </Template>

@@ -1,4 +1,4 @@
-﻿SvseTree = new Meteor.Collection("svse_tree");//TreeDate的数据集  只包含第一级树的信息
+SvseTree = new Meteor.Collection("svse_tree");//TreeDate的数据集  只包含第一级树的信息
 Svse = new Meteor.Collection("svse");//Svse的数据集
 SvseMonitorTemplate = new Meteor.Collection("svse_monitor_template");//监视器模板
 SvseEntityTemplet = new Meteor.Collection("svse_entity_template");//设备模板集
@@ -6,6 +6,7 @@ SvseEntityTempletGroup = new Meteor.Collection("svse_entity_template_group");//�
 SvseEntityInfo = new Meteor.Collection("svse_entity_info");//设备详细信息
 SvseTask = new Meteor.Collection("svse_task"); //计划任务
 SvseEmailList = new Meteor.Collection("svse_emaillist");//邮件列表
+SvseMessageList = new Meteor.Collection("svse_messagelist");//短信列表
 SvseWarnerRule = new Meteor.Collection("svse_warnerrule");//报警规则
 Svse.allow({
 	insert: function (userId, doc) {
@@ -99,6 +100,18 @@ SvseWarnerRule.allow({
 		return true;
 	},
 	update: function (userId, doc, fields, modifier) {
+		return true;
+	},
+	remove: function (userId, doc) {
+		return true;
+	}
+});
+
+SvseMessageList.allow({
+	insert: function(userId, doc){
+		return true;
+	},
+	update: function(userId, doc, fields, modifier){
 		return true;
 	},
 	remove: function (userId, doc) {

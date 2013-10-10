@@ -14,10 +14,11 @@ MONITORVIEW = {
 	MONITORDETAIL:"detailSvg"//监视器的详细信息
 	
 };
-//设置视图
+//设置视图 
 SETTINGVIEW = {
 	EMAILSETTING:"emailsetting", //邮箱设置
 	WARNERRULE :"warnerrule", // 报警
+	MESSAGESETTING:"messagesetting",//短信设置
 	USERSETTING:"usersetting" //用户设置
 }
 //整体模块视图
@@ -31,6 +32,7 @@ LAYOUTVIEW = {
 	NODE:"nodeLayout",//带操作按钮的节点布局
 	NOTOPERATION:"notOperationNodeLayout" //无操作按钮的节点布局
 }
+<<<<<<< HEAD
 
 
 //报表
@@ -40,6 +42,13 @@ LAYOUTVIEW = {
     
   }
 
+=======
+//报表
+REPORT ={
+STATISTICAL:"statistical",
+TOPN:"topN"
+}
+>>>>>>> ed1d573f8e8fc1120eed21a97727b64691cf2c3a
 //视图切换
 SwithcView = {
 	view:function(viewName){
