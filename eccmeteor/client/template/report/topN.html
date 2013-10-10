@@ -1,10 +1,16 @@
+<<<<<<< HEAD
 <template name="topN">
 
 {{ide "topN"}}
+=======
+<Template name="topN">
+{{ide topN}}
+>>>>>>> meteorite-nj003
 <div class="form-horizontal">
 	<span class="label label-info">topN报告</span>	
 	<div class="btn-toolbar">
 		<div class="btn-group">
+<<<<<<< HEAD
 			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 				{{language.addbtn}}
 			<span class="caret"></span>
@@ -15,6 +21,11 @@
 				<li id="monthreport"><a tabindex="-1" href="#"> {{language.TopNModel.monthreport}}</a></li>
 			</ul>
 			<button class="btn" id="delwarnerrule">{{language.delbtn}}</button>
+=======
+		
+			<button class="btn" id="addtopN">{{language.addbtn}}</button>
+			<button class="btn" id="deltopN">{{language.delbtn}}</button>
+>>>>>>> meteorite-nj003
 		</div>
 		<div class="btn-group">
 			<button class="btn" id="allowetopN">{{language.allowbtn}}</button>
@@ -34,8 +45,12 @@
 	</div>
 </div>
 {{> topNlist}}
+<<<<<<< HEAD
 {{> warnerruleofemail}}
 {{> warnerruleofemailedit}}
+=======
+{{> topNofadd}}
+>>>>>>> meteorite-nj003
 </Template>
 
 <template name="topNlist">
@@ -44,6 +59,10 @@
 <tr></tr>
 <tr>
                 <th><input type="checkbox" id="topNlistselectall"/></th>
+<<<<<<< HEAD
+=======
+                
+>>>>>>> meteorite-nj003
 				<th>名称</th>
 				<th>描述</th>
 				<th>时间段</th>
@@ -72,3 +91,144 @@
 </tbody>
 </table>
 </template>
+<<<<<<< HEAD
+=======
+<Template name="topNofadd">‌
+	<div id="topNofadddiv" class="modal hide fade">‌
+		<div class="modal-header">topN报告{{ide "topN"}}</div>‌
+		<div class="modal-body">‌
+			<div class="row-fluid">‌
+				<div class="span4" style="overflow:auto">‌
+					<ul id="svse_tree_check" class="ztree"></ul>‌
+				</div>‌
+				<div class="span8">‌
+					{{> topNofaddform}}‌
+				</div>‌
+			</div>‌
+		</div>‌
+		<div class="modal-footer" align="right">‌
+			<button class="btn btn-large" id="topNofaddcancelbtn">取消</button>
+			<button class="btn btn-primary btn-large" id="topNofaddsavebtn">保存</button>
+		</div>‌
+	</div>‌
+</Template>
+
+<Template name="topNofaddform">
+	<form id="topNofaddform" class="well form-horizontal form-inline">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">报告标题*:</label>
+				<div class="controls">
+					<input type="text" class="span6" name="AlertName">
+				 </div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">报告描述:</label>
+				<div class="controls">
+					<input type="text" class="span6" name="AlertName">
+				 </div>
+			</div>
+			
+			
+			<div class="control-group">
+				<label class="control-label">检测器类型:</label>
+				<div class="controls">
+				<select id="detectorTemplatelist" name="DetectorTemplate">
+				<option value="0" checked>Ping</option>
+				<option value="1" checked>A</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">选择指标:</label>
+				<div class="controls">
+				<select id="choiceindicatorTemplatelist" name="ChoiceIndicatorTemplate">
+				<option value="0" checked>包成功率(%)</option>
+				<option value="1" checked>90%</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >排序方式:</label>
+				<div class="controls">
+					<input type="radio" name="AlertCategory" value="升序">升序</td>
+					<input type="radio" name="AlertCategory" value="降序" checked>降序</td>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >数量:</label>
+				<div class="controls">
+                    <input type="number" name="points" min="1" max="50" />
+				</div>
+			</div>
+			
+
+			<div class="control-group">
+				<label class="control-label">报告类型:</label>
+				<div class="controls">
+					<select id="reporttypetemplatelist" name="ReportTypeTemplate">
+					<option value="0" checked>日报</option>
+				    <option value="1" checked>周报</option>
+				    <option value="2" checked>月报</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >报告文件格式:</label>
+				<div class="controls">
+					<select id="reporttypetemplatelist" name="ReportTypeTemplate">
+					<option value="0" checked>html</option>
+					<option value="1" checked>word</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >取值方式:</label>
+				<div class="controls">
+					<select id="approachestemplatelist" name="ApproachesTemplate">
+					<option value="0" checked>平均</option>
+					<option value="1" checked>最大值</option>
+					<option value="2" checked>最小值</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >报告生成时间:</label>
+				<div class="controls">
+				<input type="time" name="user_date" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >以E-mail方式发送报告:</label>
+				<div class="controls">
+					<input type="email" name="user_email" />
+				</div>
+			</div>
+			<div class="control-group">
+					  <input type="checkbox" name="forbid" />禁止
+					  
+					</div>
+		  <div class="control-group">
+				<label class="control-label" >周报截止时间:</label>
+				<div class="controls">
+					<select id=" weeklydeadlinetemplatelist" name="WeeklyDeadlineTemplate">
+					<option value="0" checked>周日</option>
+					<option value="1" checked>周一</option>
+					<option value="2" checked>周二</option>
+					<option value="3" checked>周三</option>
+					<option value="4" checked>周四</option>
+					<option value="5" checked>周五</option>
+					<option value="6" checked>周六</option>
+					
+					</select>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</Template>
+
+
+
+
+
+>>>>>>> meteorite-nj003

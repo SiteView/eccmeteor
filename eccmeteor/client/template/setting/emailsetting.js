@@ -160,6 +160,9 @@ Template.emailsettingList.events({
 	}
 });
 
+
+
+
 Template.emailsettingList.emaillist = function(){
 	console.log(SvseEmailDao.getEmailList());
 	return SvseEmailDao.getEmailList();

@@ -34,8 +34,8 @@ LAYOUTVIEW = {
 }
 //报表
 REPORT ={
-STATISTICAL:"statistical",
-TOPN:"topN"
+	STATISTICAL:"statistical",
+	TOPN:"topN"
 }
 //视图切换
 SwithcView = {
@@ -50,5 +50,3 @@ SwithcView = {
 		Session.set("viewstatus",viewName);
 	}
 }
-
-

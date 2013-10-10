@@ -23,10 +23,10 @@ var NavigationSettionTreeEvents = {
 		SwithcView.view(SETTINGVIEW.USERSETTING);
 	},
 	"topN":function(){
-	SwithcView.view(REPORT.TOPN);
+		SwithcView.view(REPORT.TOPN);
 	},
 	"statistical":function(){
-	SwithcView.view(REPORT.STATISTICAL);
+		SwithcView.view(REPORT.STATISTICAL);
 	}
 }
 NavigationSettionTree = {
