@@ -125,6 +125,20 @@
 			second:date.getSeconds()
 		}
 	},
+	'objectToDate':function(obj){
+		return  new Date(
+				obj.year,
+				obj.month-1,
+				obj.day,
+				obj.hour,
+				obj.minute,
+				obj.second
+			);
+	},
+	'getDateDifferenceHour':function(date1,date2){
+		var time = date2.getTime() - date1.getTime();
+		return Math.floor(time/(3600*1000));
+	},
 	"formFillValue" : function(formid,obj){
 		$(formid).find("input:text").each(function(){
 			$(this).val(obj[this.name]);

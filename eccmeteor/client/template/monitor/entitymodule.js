@@ -73,8 +73,8 @@ Template.MonitorStatisticalSimpleData.recordsData = function(){
 	return SessionManage.getMonitorRuntimeTableData();
 }
 
-Template.MonitorStatisticalSimpleData.events({
-	"click .btn#monitorDetail" :  function(){
+Template.svg.events({
+	"click .btn#monitoryDetailBtn" :  function(){
 	//	SwithcView.view(MONITORVIEW.MONITORDETAIL);//设置视图状态为监视器详细信息
 		$("#showMonitorDetailSvgDiv").modal('show');
 	}
@@ -117,7 +117,17 @@ function drawImage(id,count){
 							selector);
 
 		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图;
-		SessionManage.setMonitorRuntimeTableData(recordsData);
+	/*	SessionManage.setMonitorRuntimeTableData(recordsData);
+		var selectorPie = "svg#monitorStatisticalPieSvg";
+		var pie = new DrawPie(
+				recordsData,
+				selectorPie,
+				{}
+			)
+		pie.draw();
+
+	*/
+		drawDie(recordsData,"svg#monitorStatisticalPieSvg");
 	});
 }
 function emptyImage(){
@@ -138,6 +148,5 @@ function emptyImage(){
 		.attr("x","50%")
 		.attr("y","50%")
 		.text("暂无数据")
-		.style("text-anchor", "middle");
-			
+		.style("text-anchor", "middle");	
 }
