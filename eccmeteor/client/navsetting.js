@@ -11,7 +11,7 @@ var NavigationSettionTreeEvents = {
 		console.log("执行了 warnerplan");
 	},
 	"basicsetting":function(){
-		console.log("执行了 basicsetting");
+		SwithcView.view(SETTINGVIEW.BASICSETTING);
 	},
 	"emailsetting":function(){
 		SwithcView.view(SETTINGVIEW.EMAILSETTING);

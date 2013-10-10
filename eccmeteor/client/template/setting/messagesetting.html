@@ -25,6 +25,8 @@
 <br/>
 {{> messagesettingList}}
 {{> messagebasicsettingofaddedit}}
+{{> sendingmessagemethods}}
+
 {{ide messagesetting}}
 </Template>
 
@@ -80,10 +82,11 @@
 					  </div>
 					</div>
 					<div class="control-group">
-					  <input type="checkbox" name="forbid" />禁止
-					  
+						<div class="controls">
+					  	<input type="checkbox" name="forbid" /> 禁止
+					  	</div>
 					</div>
-					<span class="label label-info">高级选项</span><br /><br />
+					
 					<div class="control-group">
 						<label class="control-label">模板类型:</label>
 						<div class="controls">
@@ -127,6 +130,34 @@
 	</div>
 
 </Template>
+
+<!--发送短信的方式  标签页 -->
+<Template name="sendingmessagemethods">
+	<ul id="myTab" class="nav nav-tabs">
+		<li class="active"><a href="#home1" data-toggle="tab">以WEB方式发送短信</a></li>
+		<li><a href="#home2" data-toggle="tab">以串口方式发送短信</a></li>
+		<li><a href="#home3" data-toggle="tab">调用动态库中的函数发送</a></li>
+		<li><a href="#home4" data-toggle="tab">数据库存取</a></li>
+	</ul>
+	
+	<div id="mytabcontent" class="tab-content">
+		<div class="tab-pane active" id="home1">
+			<p>home1</p>
+		</div>
+		
+		<div class="tab-pane" id="home2">
+			<p>home2</p>
+		</div>
+		<div class="tab-pane" id="home3">
+			<p>home3</p>
+		</div>
+		<div class="tab-pane" id="home4">
+			<p>home4</p>
+		</div>
+	</div>
+
+</Template>
+
 
 
 

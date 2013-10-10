@@ -16,6 +16,7 @@ MONITORVIEW = {
 };
 //设置视图 
 SETTINGVIEW = {
+	BASICSETTING:"basicsetting",//基本设置
 	EMAILSETTING:"emailsetting", //邮箱设置
 	WARNERRULE :"warnerrule", // 报警
 	MESSAGESETTING:"messagesetting",//短信设置
