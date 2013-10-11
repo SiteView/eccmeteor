@@ -44,7 +44,10 @@ Meteor.publish("svse_messagelist",function(){
 Meteor.publish("svse_warnerrule",function(){
 	return SvseWarnerRule.find();
 });
-
+//TOPN报告
+Meteor.publish("svse_TopNlist",function(){
+	return SvseTopNList.find();
+});
 //用户信息
 Meteor.publish("userData",function(){
 	if(!this.userId)

@@ -14,7 +14,7 @@ MONITORVIEW = {
 	MONITORDETAIL:"detailSvg"//监视器的详细信息
 	
 };
-//设置视图
+//设置视图 
 SETTINGVIEW = {
 	BASICSETTING:"basicsetting",//基本设置
 	EMAILSETTING:"emailsetting", //邮箱设置
@@ -35,8 +35,8 @@ LAYOUTVIEW = {
 }
 //报表
 REPORT ={
-STATISTICAL:"statistical",
-TOPN:"topN"
+	STATISTICAL:"statistical",
+	TOPN:"topN"
 }
 //视图切换
 SwithcView = {
@@ -51,5 +51,3 @@ SwithcView = {
 		Session.set("viewstatus",viewName);
 	}
 }
-
-
