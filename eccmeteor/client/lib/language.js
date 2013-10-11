@@ -42,6 +42,11 @@ Deps.autorun(function (c) {
 					testbtn:"Test",
 					editbtn:"Edit"
 				},
+				messagesettingmodel:{
+					applybtn:"Apply",
+					recoverbtn:"Recover",
+					testbtn:"Test"
+				},
 				warnerrulemodel:{
 					emailwarner :"Emial Warner",
 					messagewarner :"Message Warner",
@@ -129,7 +134,10 @@ Deps.autorun(function (c) {
 					editbtn:"编辑"
 				},
 				messagesettingmodel:{
-					editbtn:"编辑"
+					editbtn:"编辑",
+					applybtn:"应用",
+					recoverbtn:"重新获得",
+					testbtn:"测试"
 				},
 				warnerrulemodel:{
 					emailwarner :"Emial报警",

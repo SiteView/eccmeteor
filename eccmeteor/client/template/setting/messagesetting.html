@@ -142,17 +142,65 @@
 	
 	<div id="mytabcontent" class="tab-content">
 		<div class="tab-pane active" id="home1">
-			<p>home1</p>
+			<div id="methodsendforweb">
+			用户名*：&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  name="name"><br/>
+			密&nbsp;&nbsp;&nbsp;&nbsp;码*：&nbsp;&nbsp;&nbsp;<input type="text"  name="pwd"><br/>
+			信息长度*：<input type="text"  name="messagelong" value="0">
+			<span style="color:#f00">短信最大长度为0</span>
+			</div>
+			<div class="controls" style="padding-left:88px">
+				<button class="btn" id="messagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
+				<button class="btn" id="messagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
+				<button class="btn" id="messagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
+			</div>
 		</div>
 		
 		<div class="tab-pane" id="home2">
-			<p>home2</p>
+			<div id="methodsendforcom">
+			端口号*：&nbsp;&nbsp;&nbsp;
+			<select name="port">
+				<option value="COM1" checked>COM1</option>
+				<option value="COM2">COM2</option>
+				<option value="COM3">COM3</option>
+				<option value="COM4">COM4</option>
+			</select><br/>
+			信息长度*：<input type="text"  name="messagelong" value="0">
+			<span style="color:#f00">短信最大长度为0</span>
+			</div>
+			<div class="controls" style="padding-left:88px">
+				<button class="btn" id="messagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
+				<button class="btn" id="messagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
+				<button class="btn" id="messagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
+			</div>
 		</div>
 		<div class="tab-pane" id="home3">
-			<p>home3</p>
+			<div id="methodsendforcom">
+			动态库名称*：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<select name="libname">
+				<option value="COM1" checked>SMSend(EIC-NS20).dll</option>
+				<option value="COM2">SMSend(万联平台).dll</option>
+				<option value="COM3">TelephoneDll.dll</option>
+				<option value="COM4">smsdll.dll</option>
+			</select><br/>
+			动态库函数参数：<input type="text"  name="libfunctionparam">
+			</div>
+			<div class="controls" style="padding-left:88px">
+				<button class="btn" id="messagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
+				<button class="btn" id="messagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
+				<button class="btn" id="messagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
+			</div>
 		</div>
 		<div class="tab-pane" id="home4">
-			<p>home4</p>
+			<form class="form-horizontal" id="messagesettinginsertmethod">
+				<fieldset>
+					<legend style="font-size:12px">插入方式</legend>
+						<div class="controls" align="left">
+							<input type="radio"  name="insertmethod" value="nomal" checked>常规插入
+							<input type="radio"  name="insertmethod" value="procedure">存储过程插入
+							
+						</div>  
+				</fieldset>
+			</form>
 		</div>
 	</div>
 
