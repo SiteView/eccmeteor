@@ -57,20 +57,6 @@ Template.emailsetting.rendered = function(){
 		$("#emailbasicsetting :text[name=user]").val(setting["user"]);
 		$("#emailbasicsetting :password[name=password]").val(setting["password"]);
 	});
-	//初始化弹窗
-	$(function(){
-		$('#emailaddresssettingdiv').modal({
-			backdrop:true,
-			keyboard:true,
-			show:false
-		}).css({
-			width: '800',
-			'margin-left': function () {
-				return -($(this).width() / 2);
-			},
-		});
-	});
-	
 	$(function(){
 		//隐藏所有操作按钮
 		ClientUtils.hideOperateBtnInTd("emailSettingList");
