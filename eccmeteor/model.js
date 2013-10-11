@@ -8,6 +8,7 @@ SvseTask = new Meteor.Collection("svse_task"); //计划任务
 SvseEmailList = new Meteor.Collection("svse_emaillist");//邮件列表
 SvseMessageList = new Meteor.Collection("svse_messagelist");//短信列表
 SvseWarnerRule = new Meteor.Collection("svse_warnerrule");//报警规则
+SvseTopN = new Meteor.Collection("svse_topN");//topN报告(2011/10/11)
 Svse.allow({
 	insert: function (userId, doc) {
     // the user must be logged in, and the document must be owned by the user
@@ -112,6 +113,18 @@ SvseMessageList.allow({
 		return true;
 	},
 	update: function(userId, doc, fields, modifier){
+		return true;
+	},
+	remove: function (userId, doc) {
+		return true;
+	}
+});
+/*2013/10/11*/
+SvseTopN.allow({
+	insert: function (userId, doc) {
+		return true;
+	},
+	update: function (userId, doc, fields, modifier) {
 		return true;
 	},
 	remove: function (userId, doc) {
