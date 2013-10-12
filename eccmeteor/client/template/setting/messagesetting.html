@@ -145,20 +145,123 @@
 	
 	<div id="mytabcontent" class="tab-content">
 		<div class="tab-pane active" id="home1">
-			<p>home1</p>
+			<div id="methodsendforweb">
+				<div class="controls">
+					<label class="control-label">用户名*：&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="text"  name="name"></label>
+				</div>
+				<div class="controls">
+					<label class="control-label">密&nbsp;&nbsp;&nbsp;&nbsp;码*：&nbsp;&nbsp;&nbsp;
+					<input type="password"  name="pwd"></label>
+				</div>
+				<div class="controls">
+					<label class="control-label">信息长度*：<input type="text"  name="messagelong" value="0">
+					<span style="color:#f00">短信最大长度为0</span></label>
+				</div>
+				<div class="controls" style="padding-left:88px">
+					<button class="btn" id="messagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
+					<button class="btn" id="messagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
+					<button class="btn" id="messagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
+				</div>
+			</div>
 		</div>
 		
 		<div class="tab-pane" id="home2">
-			<p>home2</p>
+			<div id="methodsendforcom">
+				<div class="controls">
+					<label class="control-label">端口号*：&nbsp;&nbsp;&nbsp;
+					<select name="port">
+						<option value="COM1" checked>COM1</option>
+						<option value="COM2">COM2</option>
+						<option value="COM3">COM3</option>
+						<option value="COM4">COM4</option>
+					</select></label>
+				</div>
+				<div class="controls">
+					<label class="control-label">信息长度*：<input type="text"  name="messagelong" value="0">
+					<span style="color:#f00">短信最大长度为0</span></label>
+				</div>
+			</div>
+			<div class="controls" style="padding-left:88px">
+				<button class="btn" id="messagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
+				<button class="btn" id="messagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
+				<button class="btn" id="messagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
+			</div>
 		</div>
 		<div class="tab-pane" id="home3">
-			<p>home3</p>
+			<div id="methodsendforcom">
+				<div class="controls">
+					<label class="control-label">动态库名称*：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<select name="libname">
+						<option value="COM1" checked>SMSend(EIC-NS20).dll</option>
+						<option value="COM2">SMSend(万联平台).dll</option>
+						<option value="COM3">TelephoneDll.dll</option>
+						<option value="COM4">smsdll.dll</option>
+					</select></label>
+				</div>
+				<div>
+					<label class="control-label">动态库函数参数：<input type="text"  name="libfunctionparam"></label>
+				</div>
+			</div>
+			<div class="controls" style="padding-left:120px">
+				<button class="btn" id="messagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
+				<button class="btn" id="messagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
+				<button class="btn" id="messagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
+			</div>
 		</div>
 		<div class="tab-pane" id="home4">
-			<p>home4</p>
+			<form class="form-horizontal" id="messagesettinginsertmethod">
+				<fieldset>
+					<legend style="font-size:14px">插入方式</legend>
+						<div class="controls">
+							<label class="control-label"><input type="radio"  name="insertmethod" value="nomal" checked>常规插入</label>
+							<label class="control-label"><input type="radio"  name="insertmethod" value="procedure">存储过程插入</label>
+						</div>  
+				</fieldset>
+				{{> choosemodelaccordinginsertmethod}}
+				<div class="control-group">
+					<button class="btn" id="messagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
+					<button class="btn" id="messagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
+				</div>
+			</form>
 		</div>
 	</div>
 
+</Template>
+
+<!--根据短信设置插入方式选择功能模块 -->
+<Template name="choosemodelaccordinginsertmethod">
+	<form class="form-horizontal">
+		<fieldset>
+			<legend style="font-size:14px">参数</legend>
+			<div id="choosenormalinsert" class="control-group">
+				<div class="control-group pull-left">
+					<label class="control-label">数据库类型*：</label>
+					<div class="controls">
+						<select name="dbtype">
+							<option value="oracle" checked>Oracle</option>
+							<option value="mysql">Mysql</option>
+							<option value="sqlserver">SqlServer</option>
+							<option value="sybase">Sybase</option>
+							<option value="db2">DB2</option>
+					</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">数据库表名*：</label>
+					<div class="controls">
+						<input type="text" name="dbtablename">
+					</div>
+				</div>
+				
+			</div>
+			
+			<div id="chooseprocedureinsert" class="hide">
+				<p>bbbb</p>
+			</div>
+		</fieldset>
+	</form>
+	
 </Template>
 
 

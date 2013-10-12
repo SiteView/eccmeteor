@@ -5,6 +5,9 @@ Template.warnerrule.events = {
 	"click #emailwarner":function(e){
 		$('#emailwarnerdiv').modal('toggle');
 	},
+	"click #messagewarner":function(e){
+		$('#messagewarnerdiv').modal('toggle');
+	},
 	"click #delwarnerrule" : function(){
 		SvseWarnerRuleDao.deleteWarnerRules(getWarnerRuleListSelectAll());
 	},
