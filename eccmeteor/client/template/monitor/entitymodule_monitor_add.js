@@ -17,45 +17,46 @@ Template.ChooseMonitorTemplate.events = {
 }
 
 Template.showMonitorInfo.monitorStatus = function(){
-	return Session.get("monitorStatus") ? Session.get("monitorStatus") : "";
+	return  Session.get("monitorStatus") ? Session.get("monitorStatus") : "";
 }
 
 Template.showMonitorInfo.getMonityTemplateParameters = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateParametersById(Session.get("monityTemplateId"))
 			: {}
+	
 }
 
 Template.showMonitorInfo.getMonityTemplateAdvanceParameters = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(Session.get("monityTemplateId"))
 			: {}
-//	return SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(Session.get("monityTemplateId"));
+	
 }
 
 Template.monitorTemplateStatus.getMonityTemplateReturnItemsById = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("monityTemplateId"))
 			: {}
-//	return SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("monityTemplateId"));
+	
 }
 
 Template.showMonitorInfo.getMonityTemplateStates = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"))
 			: {}
-//	return SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"));
+	
 }
 
 Template.showMonitorInfo.getMonityTemplateStatesByStatus = function(status){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateStatesByIdAndStatus(Session.get("monityTemplateId"),status)
 			: {}
-//	return SvseMonitorTemplateDao.getMonityTemplateStatesByIdAndStatus(Session.get("monityTemplateId"),status);
+	
+
 }
 
 Template.showMonitorInfo.devicename = function(){
-	// return Session.get("checkedTreeNode").name;
 	return SessionManage.getCheckedTreeNode("name");
 }
 
@@ -63,12 +64,14 @@ Template.showMonitorInfo.monitorType = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getTemplateTypeById(Session.get("monityTemplateId"))
 			: ""
+	
 }
 //获取监视频率的Label标签
 Template.showMonitorInfo.getMonityFrequencyLabel = function(){
 	return  Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateParameterByName(Session.get("monityTemplateId"),"_frequency").sv_label
 			: ""
+	
 }
 
 //获取监视频率的Dom元素
@@ -76,6 +79,7 @@ Template.showMonitorInfo.getMonityFrequencyDom = function(){
 	return  Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateFrequencyParameters(Session.get("monityTemplateId"))
 			: []
+	
 }
 
 Template.showMonitorInfo.events({
@@ -255,19 +259,6 @@ Template.showMonitorInfo.rendered = function(){
 			})();
 		}
 	});
-	//初始化弹窗
-	$(function(){
-		$('#showMonitorInfoDiv').modal({
-			backdrop:true,
-			keyboard:true,
-			show:false
-		}).css({
-			width: '800',
-			'margin-left': function () {
-				return -(($(this).width() / 2)+ 50);
-			},
-		});
-	});
 }
 Template.showMonitorInfo.getAllTaskNames = function(){
 	return SvseTaskDao.getAllTaskNames();
@@ -304,7 +295,6 @@ Template.monitorTemplateStatus.events({
 		tr.children("td:eq(1)").html(tdShowLabel);
 		tbody.prepend(tr);
 		
-
 		//对象显示内容的div的操作
 		var ConditionsDiv = div.parents(".accordion-group").find(".MonitorStatusConditionsDiv");
 		var condition = "";

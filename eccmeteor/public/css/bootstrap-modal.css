@@ -41,7 +41,7 @@
 	outline: none;
 	position: absolute;
 	margin-top: 0;
-	top: 10%;
+	top: 50%;
 	overflow: visible; /* allow content to popup out (i.e tooltips) */
 }
 
@@ -54,7 +54,7 @@
 }
 
 .modal.fade.in {
-	top: 10%;
+	top: 50%;
 }
 
 .modal-body {

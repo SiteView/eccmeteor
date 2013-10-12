@@ -53,18 +53,6 @@ Template.showMonitorDetailSvg.rendered = function(){
 //		});
 		drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate));
 	});
-
-	$('#showMonitorDetailSvgDiv').modal({
-			backdrop:true,
-			keyboard:true,
-			show:false
-		}).css({
-			width: '800',
-			height:'600',
-			'margin-left': function () {
-				return -(($(this).width() / 2)+ 50);
-			},
-		});
 }
 
 var drawDetailLine =  function(startDate,endDate){

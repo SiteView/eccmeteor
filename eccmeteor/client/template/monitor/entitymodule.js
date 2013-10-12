@@ -32,7 +32,7 @@ Template.showMonitor.events={
         SessionManage.setCheckedMonitorId(id);
         var monitorTemplateId = SvseMonitorDao.getMonitorTemplateIdByMonitorId(id);
         //设置监视器模板id
-        Session.set("monityTemplateId",monitorTemplateId);
+    	Session.set("monityTemplateId",monitorTemplateId);
         Session.set("monitorStatus","编辑");
         $("#showMonitorInfoDiv").modal('show');
     },
