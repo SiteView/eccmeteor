@@ -1,8 +1,7 @@
 <Template name="statistical">
-	{{ide "statistical"}}
 <div class="form-horizontal">
 	<span class="label label-info">统计报告</span>
-	
+	{{ide "statistical"}}
 	<div class="btn-toolbar">
 		<div class="btn-group">
 			<button class="btn" id="statisticalofadd">{{language.addbtn}}</button>
@@ -47,7 +46,7 @@
 </tr>
 </thead>
 <tbody id="statisticallist">
-{{#each rulelist}}
+{{#each statisticalresultlist}}
 			<tr>
 				<td><input type="checkbox" id="{{nIndex}}"/></td>
 				<td>{{AlertName}}</td>
@@ -71,7 +70,9 @@
 
 
 <Template name="statisticalofadd">
-	<div id="statisticalofadddiv" class="modal hide fade">
+	<div id="statisticalofadddiv" class="modal hide fade" 
+		data-backdrop="true" data-keyboard="true" data-show="false" 
+		data-maxHeight='500' data-width="800" data-height="600" data-modalOverflow="true">
 		<div class="modal-header">添加报告{{ide "statistical"}}
 		</div>
 		<div class="modal-body">
@@ -116,6 +117,7 @@
 					<option value="1" checked>日报</option>
 				    <option value="2" checked>周报</option>
 				    <option value="3" checked>月报</option>
+				    <option value="4" checked>其他</option>
 					</select>
 				</div>
 			</div>
@@ -123,7 +125,10 @@
 					<label class="control-label">报告选项:</label>
 					<div>
 						<input type="checkbox" name="outputview" />生成图形	
-						<select id="statisticalofaddtypelist" name="type" width="20"></select>			
+						<select id="statisticalofaddtypelist" name="type" width="20">
+							<option value="1" checked>线状图</option>
+				   		    <option value="2" checked>柱状图</option>
+						</select>			
 					</div>
 					<div class="controls">
 						<input type="checkbox" name="outputmerror" />列出错误</br>
@@ -135,7 +140,8 @@
 				<div class="controls">
 					<select id="statisticaloutputtype" name="statisticaloutputtype">
 					     <option value="1" checked>html</option>
-				   		 <option value="2" checked>world</option>
+				   		 <option value="2" checked>pdf</option>
+				   		 <option value="3" checked>Excel</option>
 					</select>
 				</div>
 			</div>

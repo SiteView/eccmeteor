@@ -1,11 +1,11 @@
-
+//单击添加按钮
 Template.statistical.events = {
 	"click #statisticalofadd":function(e){
 		$('#statisticalofadddiv').modal('toggle');
 	}
 
 }
-
+//弹窗初始化
 Template.statistical.rendered = function(){
 
 	$(function(){
@@ -83,4 +83,8 @@ Template.statisticalofaddform.rendered = function(){
 			$("#statisticalofaddtypelist").append(option);
 		}
 	});
+}
+Template.statisticallist.statisticalresultlist = function(){
+console.log(SvseStatisticalDao.getStatisticalresultlist());
+return SvseStatisticalDao.getStatisticalresultlist();
 }
