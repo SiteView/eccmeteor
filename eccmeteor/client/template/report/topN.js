@@ -1,10 +1,45 @@
+var getTopNListSelectAll = function(){
+	return ClientUtils.tableGetSelectedAll("topNlist");
+}
 Template.topN.events = {
     //点击添加按钮弹出框
 	"click #addtopN":function(e){
 		$('#topNofadddiv').modal('toggle');
-	}
+	},
 	
-	}
+	"click #deltopN" : function(){
+		SvseTopNDao.deleteTopNs(getTopNListSelectAll());
+	},
+	"click #allowetopN":function(){
+		SvseTopNDao.updateTopNsStatus(getTopNListSelectAll(),"Enable",function(result){
+			if(result.status){
+				SystemLogger("改变状态"+result.option.count+"条");
+			}
+		});
+	},
+	"click #forbidtopN":function(){
+		SvseTopNDao.updateTopNsStatus(getTopNListSelectAll(),"Disable",function(result){
+			if(result.status){
+				SystemLogger("改变状态"+result.option.count+"条");
+			}
+		});
+	},
+	"click #refreshtopN":function(){
+		SvseTopNDao.sync(function(result){
+			if(result.status){
+				console.log("刷新完成");
+			}else{
+				SystemLogger(result);
+			}
+			
+		});
+	},
+	"click #topNhelpmessage":function(){
+		console.log("topNhelpmessage");
+		$('#topNofadddiv').modal('toggle');
+	},
+	
+}	
 	
 Template.topN.rendered=function(){
 	

@@ -17,7 +17,7 @@ SvseTopNDao = {
 			}
 		});
 	},
-	//批量TopN报告
+	//批量删除TopN报告
 	'deleteTopNs' : function(ids){
 		Meteor.call(SvseTopNDao.AGENT,"deleteTopNs",[ids],function(result){});
 	},
