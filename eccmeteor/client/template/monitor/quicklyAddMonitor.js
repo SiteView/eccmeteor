@@ -1,5 +1,6 @@
 Template.showQuickMonityTemplate.monities = function(){
 	var entityDevicetype =  Session.get("showEntityId");
+	if(!entityDevicetype) return [];
 	SystemLogger("快速添加的设备类型是："+entityDevicetype);
 	return SvseEntityTemplateDao.getEntityMontityByDevicetype(entityDevicetype,true);
 }
