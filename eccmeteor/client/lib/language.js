@@ -42,12 +42,18 @@ Deps.autorun(function (c) {
 					testbtn:"Test",
 					editbtn:"Edit"
 				},
+				messagesettingmodel:{
+					applybtn:"Apply",
+					recoverbtn:"Recover",
+					testbtn:"Test"
+				},
 				warnerrulemodel:{
-					emailwarner :"Emial Warner",
+					emailwarner :"Email Warner",
 					messagewarner :"Message Warner",
 					scriptwarner:"Script Warner",
 					soundwarner:"Sound Warner",
 					addemailwarnerruletitle:"Add Email Warner's rule",
+					addmessagewarnerruletitle:"Add Message Warner's rule",
 					saveemailwarnerrulesettingbtn:"Save",
 					cancelemailwarnerrulesettingbtn:"Cancel"
 				},
@@ -129,14 +135,18 @@ Deps.autorun(function (c) {
 					editbtn:"编辑"
 				},
 				messagesettingmodel:{
-					editbtn:"编辑"
+					editbtn:"编辑",
+					applybtn:"应用",
+					recoverbtn:"重新获得",
+					testbtn:"测试"
 				},
 				warnerrulemodel:{
-					emailwarner :"Emial报警",
+					emailwarner :"Email报警",
 					messagewarner :"短信报警",
 					scriptwarner:"脚本报警",
 					soundwarner:"声音报警",
 					addemailwarnerruletitle:"添加Email报警",
+					addmessagewarnerruletitle:"添加短信报警",
 					saveemailwarnerrulesettingbtn:"保存",
 					cancelemailwarnerrulesettingbtn:"取消"
 				},
