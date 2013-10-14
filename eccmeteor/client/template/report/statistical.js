@@ -73,18 +73,3 @@ Template.statisticalofadd.rendered = function(){
 		$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
 }
-
-Template.statisticalofaddform.rendered = function(){
-	//报告类型下拉列表
-	SvseEmailDao.getEmailTemplates(function(err,result){
-		for(name in result){
-	//		console.log(name);
-			var option = $("<option value="+name+"></option>").html(name)
-			$("#statisticalofaddtypelist").append(option);
-		}
-	});
-}
-Template.statisticallist.statisticalresultlist = function(){
-console.log(SvseStatisticalDao.getStatisticalresultlist());
-return SvseStatisticalDao.getStatisticalresultlist();
-}
