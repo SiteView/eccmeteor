@@ -86,17 +86,6 @@ Template.warnerruleofemail.events = {
 Template.warnerruleofemail.rendered = function(){
 	//监视器选择树
 	$(function(){
-		$('#emailwarnerdiv').modal({
-			backdrop:true,
-			keyboard:true,
-			show:false
-		}).css({
-			width: '800',
-			'margin-left': function () {
-				return -($(this).width() / 2);
-			},
-		//	height:"600"
-		});
 		var data = SvseDao.getDetailTree();
 		var setting = {
 			check:{
@@ -251,20 +240,6 @@ Template.warnerruleofemailedit.rendered = function(){
 		});
 	});
 	
-	//弹窗
-	$(function(){
-		$('#emailwarnerdivedit').modal({
-			backdrop:true,
-			keyboard:true,
-			show:false
-		}).css({
-			width: '800',
-			'margin-left': function () {
-				return -($(this).width() / 2);
-			},
-		//	height:"600"
-		});
-	});
 	//树
 	$(function(){
 		var data = SvseDao.getDetailTree();

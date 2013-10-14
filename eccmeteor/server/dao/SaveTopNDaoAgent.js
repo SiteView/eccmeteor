@@ -8,10 +8,19 @@ SvseTopNeDaoAgent = {
 			case "deleteTopNs":
 				flag = Agent.getPermission("settingOperatePermission>TopN>delete");
 				break;
+			case "updateTopNsStatus":
+				flag = Agent.getPermission("settingOperatePermission>TopN>update");
+				break;
+			case "sync":
+				flag = Agent.getPermission("settingOperatePermission>TopN>sync");
+				break;
+			case "updateTopN":
+				flag = Agent.getPermission("settingOperatePermission>TopN>update");
+				break;
 			
 			default : flag = true;
 		}
-		if(!SvseWarnerRuleDao[fn]){
+		if(!SvseTopNDao[fn]){
 			Agent.error("SvseTopNDao",fn);
 			return Agent.getReturn();
 		}

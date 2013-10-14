@@ -119,16 +119,5 @@ Template.usersettingListTable.events({
 });
 
 Template.userPromissionSetting.rendered = function(){
-	console.log("重复执行");
-	$(function(){
-		$('#userPromissionSettingDiv').modal({
-			backdrop:false,
-			keyboard:false,
-			show:false
-		}).css({
-			height:"545",
-			width:"800"
-		});
-	});
 }
 

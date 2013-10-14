@@ -20,7 +20,7 @@ Template.statistical.rendered = function(){
 			},
 		});
 	});
-
+	
 }
 
 Template.statisticalofadd.events = {
