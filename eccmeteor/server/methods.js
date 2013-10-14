@@ -1,4 +1,4 @@
-﻿Meteor.methods({
+Meteor.methods({
   "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
   "meteorSvForest":meteorSvForest,
   "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
@@ -50,6 +50,9 @@ SvseMethodsOnServer = {
 	"svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
 	"svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
 	"svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
+	
+	"svWriteStatisticalIniFileSectionString":svWriteStatisticalIniFileSectionString,
+	"svGetStatisticalList": svGetStatisticalList,
 }
 
 SvseSyncData = {

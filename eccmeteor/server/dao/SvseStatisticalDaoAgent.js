@@ -10,13 +10,13 @@ SvseStatisticalDaoAgent = {
 				flag = Agent.getPermission("settingOperatePermission>emailsetting>add");
 				break;
 			*/
-			case "updateEmailAddress":
+			case "updateStatistical":
 				flag = Agent.getPermission("settingOperatePermission>emailsetting>update");
 				break;
-			case "deleteEmailAddressByIds":
+			case "deleteStatisticalByIds":
 				flag = Agent.getPermission("settingOperatePermission>emailsetting>delete");
 				break;
-			case "updateEmailAddressStatus":
+			case "updateStatisticalStatus":
 				flag = Agent.getPermission("settingOperatePermission>emailsetting>update");
 				break;
 			/*
@@ -26,10 +26,10 @@ SvseStatisticalDaoAgent = {
 			*/	
 			default : flag = true;
 		}
-		if(!SvseEmailDaoOnServer[fn]){
-			Agent.error("SvseEmailDaoOnServer",fn);
+		if(!SvseStatisticalOnServer[fn]){
+			Agent.error("SvseStatisticalOnServer",fn);
 			return Agent.getReturn();
 		}
-		return flag ? SvseEmailDaoOnServer[fn].apply(undefined,args) : Agent.getReturn();
+		return flag ? SvseStatisticalOnServer[fn].apply(undefined,args) : Agent.getReturn();
 	}
 }

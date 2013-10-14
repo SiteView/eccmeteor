@@ -1,4 +1,4 @@
-SvseEmailDaoOnServer = {
+SvseStatisticalOnServer = {
 	"getReturn":function(status,msg){ //组装返回客户端的信息
 		status = !!status ;
 		if(typeof msg === "undefined" && !status)
@@ -6,17 +6,17 @@ SvseEmailDaoOnServer = {
 		return {status:status,msg:msg};
 	},
 	"sync":function(){
-		SyncFunction.SyncEmailList();
+		SyncFunction.SyncStatisticalList();
 	},
-	"addEmailAddress":function(addressname,address){
-		var result = SvseMethodsOnServer.svWriteEmailAddressIniFileSectionString(addressname,address);
+	"addStatistical":function(addressname,address){
+		var result = SvseMethodsOnServer.svWriteStatisticalIniFileSectionString(addressname,address);
 		if(!result){
-			var msg = "SvseEmailDaoOnServer's addEmailAddress  add " + addressname +" faild";
+			var msg = "SvseStatisticalOnServer's addStatistical  add " + addressname +" faild";
 			SystemLogger.log(msg,-1);
 			throw new Meteor.Error(500,msg);
 		}
 		var addressresult = result[addressname];
-		SvseEmailList.insert(addressresult,function(err,r_id){
+		SvseStatisticalresultlist.insert(addressresult,function(err,r_id){
 			if(err){
 				SystemLogger(err,-1);
 				throw new Meteor.Error(500,err);

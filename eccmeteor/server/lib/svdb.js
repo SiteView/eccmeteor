@@ -277,6 +277,16 @@ svGetEmailList = function(){
 		return fmap;
 }
 
+//获取统计报告列表
+svGetStatisticalList = function(){
+		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"reportset.ini",
+			"user":"default","sections":"default"}, 0);
+		if(!robj.isok(0)){
+		}
+		var fmap= robj.fmap(0);
+		return fmap;
+}
+
 //获取发送邮件的设置
 svGetSendEmailSetting = function(){
 		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",
@@ -495,6 +505,15 @@ svWriteEmailAddressIniFileSectionString = function(addressname,address){
 	return robj.fmap(0);
 }
 
+//统计报告 Statistical.ini写入
+svWriteStatisticalIniFileSectionString =  function(addressname,address){
+	var robj = process.sv_submit(address,{'dowhat': 'WriteIniFileSection','filename':"reportset.ini",'user':"default",'section':addressname},0);
+	if(!robj.isok(0)){
+	SystemLogger(robj.estr(0),-1);
+	return false;
+	}
+	return robj.fmap(0);
+}
 //email.ini写入
 svWriteEmailIniFileSectionString = function(section){
 	console.log(section);

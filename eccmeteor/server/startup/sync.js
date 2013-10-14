@@ -164,6 +164,27 @@ SyncFunction = {
 		}
 		SystemLogger("扫描 SysncEmailList 变动结束。。");
 	},
+	
+	
+	//同步统计报告列表
+	'SyncStatisticalList':function(){
+		SystemLogger("扫描统计报告list开始！");
+		var list = SvseMethodsOnServer.svGetStatisticalList();
+		if(!list){
+		SystemLogger("初始化统计报告列表失败",-1);
+		return;
+		}
+		for(itemname in list){
+		if(itemname.indexof("return")!== -1) continue;
+		var item = list[itemname];
+		var flag = Utils.compareObject(item,SvseStatisticalresultlist.findOne({nIndex:item["nIndex"]}),{_id:true});
+		if(flag) continue;
+		SvseStatisticalresultlist.update({nIndex:item["nIndex"]},item);
+		}
+		SystemLogger("扫描统计报告list结束！");
+	},
+	
+	
 	//同步报警规则
 	'SyncWarnerRules' : function(){
 		SystemLogger("扫描 SyncWarnerRules 变动开始。。");
@@ -188,5 +209,6 @@ SyncFunction = {
 		SyncFunction.SyncEmailList();
 		SyncFunction.SyncWarnerRules();
 		SystemLogger("扫描变动结束。。");
+		SyncFunction.SyncStatisticalList();
 	}
 }
