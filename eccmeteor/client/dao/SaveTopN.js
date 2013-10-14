@@ -5,7 +5,7 @@ SvseTopNDao = {
 		return SvseTopN.findOne({nIndex:id});‌
 	},*/
 	//获取所有topN列表
-	"getTopNList" : function(){
+	/*"getTopNList" : function(){
 		return SvseTopN.find({nIndex:{$exists:true}}).fetch();
 	},
 	"setTopNOfReport":function(sectionname,section,fn){
@@ -14,6 +14,24 @@ SvseTopNDao = {
 				fn({status:false,msg:err});
 			}else{
 				fn(result);
+			}
+		});*/
+	"AGENT":"svseTopNDaoAgent",
+	"getTopNresultlist" : function(){
+		return SvseTopNresultlist.find({nIndex:{$exists:true}}).fetch()
+	},
+	"addTopN":function(addressname,address,fn){
+		Meteor.call(SvseTopNDao.AGENT,'addTopN',[addressname,address],function(err,result){
+			if(err){
+				SystemLogger(err);
+				fn({status:false,msg:err})
+			}else{
+				if(result && !reult[status]){ // 无权限
+					SystemLogger(err);
+					fn(result);
+				}else{
+					fn({status:true})
+				}
 			}
 		});
 	},
@@ -49,6 +67,18 @@ SvseTopNDao = {
 	},
 	//更新TopN报告
 	"updateTopN" : function(nIndex,section,fn){
+	/*
+		Meteor.call("svWriteAlertIniFileSectionString",nIndex,section,function(err,result){
+			var rule = result[nIndex];
+			SvseWarnerRule.update(SvseWarnerRule.findOne({nIndex:nIndex})._id,{$set:rule},function(err){
+				if(err){
+					SystemLogger(err,-1);
+				}else{
+					fn();
+				}	
+			});
+		});
+		*/
 		Meteor.call(SvseTopNDao.AGENT,"updateTopN",[nIndex,section],function(err,result){
 			if(err){
 				fn({status:false,msg:err});

@@ -39,7 +39,49 @@ Template.topN.events = {
 		$('#topNofadddiv').modal('toggle');
 	},
 	
-}	
+}
+
+Template.topNofadd.events = {
+	"click #topNofaddcancelbtn" : function(){
+		$('#topNofadddiv').modal('toggle');
+	},
+	"click #topNofaddsavebtn":function(){
+		var topNofaddform = ClientUtils.formArrayToObject($("#topNofaddform").serializeArray());
+		var topNofaddformsendconditions = ClientUtils.formArrayToObject($("#topNofaddformsendconditions").serializeArray());
+		for(param in topNofaddformsendconditions){
+			topNofaddform[param] = topNofaddformsendconditions[param];
+		}
+		topNofaddform["AlertCond"] = 3;
+		topNofaddform["SelTime1"] = 2;
+		topNofaddform["SelTime2"] = 3;
+		topNofaddform["AlertState"] = "Enable";
+		topNofaddform["AlertType"] = "EmailAlert";
+		topNofaddform["AlwaysTimes"] = 1;
+		topNofaddform["OnlyTimes"] = 1;
+		
+		var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
+		
+		var targets = [];
+		var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
+		for(index in arr){
+			targets.push(arr[index].id);
+		}
+		topNofaddform["AlertTarget"] = targets.join();
+		topNofaddform["nIndex"] = nIndex;
+		console.log(topNofaddform);
+		var section = {};
+		section[nIndex] = topNofaddform;
+		console.log(section);
+		SvseTopNDao.settopNOfAdd(nIndex,section,function(result){
+			if(result.status){
+				$('#topNofadddiv').modal('toggle');
+			}else{
+				SystemLogger(result.msg);
+			}
+			
+		});
+	}
+}
 	
 Template.topN.rendered=function(){
 	

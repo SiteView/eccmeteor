@@ -331,7 +331,7 @@ svGetWarnerRule = function(){
 }
 //获取TopN报告列表(2013/10/11)
 svGetTopN = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"alert.ini",
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"topnreportset.ini",
 			"user":"default","sections":"default"}, 0);
 	return robj.fmap(0);;
 }
@@ -622,18 +622,18 @@ svWriteAlertStatusInitFileSection = function(sectionName,status){
 }
 /*====================SvseTopN==============*/
 //新添加2013/10/11
-//topnrepor.ini文件写入
-svWriteTopNReportsetIniFileSectionString = function(sectionname,section){
-	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"alert.ini",'user':"default",'section':sectionname},0); 
+//topnreportset.ini文件写入
+svWriteTopNsetIniFileSectionString = function(sectionname,section){
+	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"topnreportset.ini",'user':"default",'section':sectionname},0); 
 //	console.log(robj.fmap(0));
 	return robj.fmap(0);
 }
 
-//topnreport.ini 删除
-svDeleteTopNReportInitFileSection = function(ids){
+//topnreportset.ini 删除
+svDeleteTopNtInitFileSection = function(ids){
 	var dowhat = {
 		'dowhat' : 'DeleteIniFileSection',
-		'filename' : "alert.ini",
+		'filename' : "topnreportset.ini",
 		'user' : "default",
 		"sections" : ids
 	};
@@ -643,12 +643,12 @@ svDeleteTopNReportInitFileSection = function(ids){
 }
 
 //改变TopN状态
-svWriteTopNReportStatusInitFileSection = function(sectionName,status){
+svWriteTopNtStatusInitFileSection = function(sectionName,status){
 	var robj = process.sv_univ({
 		'dowhat' : 'WriteIniFileString',
-		'filename' : "alert.ini",
+		'filename' : "topnreportset.ini",
 		'user' : "default",
-		'section' : sectionName,
+		'section' : sectionname,
 		"key" : "AlertState",
 		"value" : status
 	}, 0);

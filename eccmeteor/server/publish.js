@@ -45,8 +45,8 @@ Meteor.publish("svse_warnerrule",function(){
 	return SvseWarnerRule.find();
 });
 //TOPN报告
-Meteor.publish("svse_TopNlist",function(){
-	return SvseTopNList.find();
+Meteor.publish("svse_TopN",function(){
+	return SvseTopN.find();
 });
 //用户信息
 Meteor.publish("userData",function(){

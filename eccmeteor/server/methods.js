@@ -1,4 +1,4 @@
-﻿Meteor.methods({
+Meteor.methods({
   "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
   "meteorSvForest":meteorSvForest,
   "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
@@ -11,7 +11,8 @@
   "svseEmailDaoAgent":SvseEmailDaoAgent.agent,
   "svseEntityTemplateDaoAgent":SvseEntityTemplateDaoAgent.agent,
   "svseWarnerRuleDaoAgent":SvseWarnerRuleDaoAgent.agent,
-  "svseMonitorTemplateDaoAgent":SvseMonitorTemplateDaoAgent.agent
+  "svseMonitorTemplateDaoAgent":SvseMonitorTemplateDaoAgent.agent,
+  //"svseTopNDaoAgent":SvseTopNDaoAgent.agent,
 });//给客户端调用的
 
 //给服务端调用的。//调用 /lib/svdb.js中定义的方法
@@ -28,6 +29,7 @@ SvseMethodsOnServer = {
 	"svDeleteMonitor" : svDeleteMonitor,
 	"svGetEmailList" : svGetEmailList,
 	"svGetWarnerRule" :svGetWarnerRule,
+	"svGetTopN" :svGetTopN,
 	"svGetAllMonitorTempletInfo":svGetAllMonitorTempletInfo,
 	"svGetMonitorTemplet":svGetMonitorTemplet,
 	"svGetMonitorRuntimeRecords":svGetMonitorRuntimeRecords,
@@ -50,6 +52,10 @@ SvseMethodsOnServer = {
 	"svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
 	"svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
 	"svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
+	"svWriteTopNsetIniFileSectionString":svWriteTopNsetIniFileSectionString,
+	"svDeleteTopNtInitFileSection":svDeleteTopNtInitFileSection,
+	"svWriteTopNtStatusInitFileSection":svWriteTopNtStatusInitFileSection,
+	
 }
 
 SvseSyncData = {

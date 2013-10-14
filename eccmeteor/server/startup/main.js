@@ -8,5 +8,6 @@ initDateAtStartUp = {
 	"initTaskAtStartUp":initTaskAtStartUp,
 	"initEmailListAtStartUp":initEmailListAtStartUp,
 	"initWarnerRuleAtStartUp":initWarnerRuleAtStartUp,
+	"initTopNAtStartUp":initTopNAtStartUp,
 	"initAdminAccount":initAdminAccount
 };

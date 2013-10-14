@@ -181,12 +181,30 @@ SyncFunction = {
 		}
 		SystemLogger("扫描 SyncWarnerRules 变动结束。。");
 	},
+	//同步TopN报告
+	'SyncTopNs' : function(){
+		SystemLogger("扫描 SyncTopNs 变动开始。。");
+		var list = SvseMethodsOnServer.svGetTopN();
+		if(!list){
+			SystemLogger("初始化TopN报告失败",-1);
+			return;
+		}
+		for(itemname in list){
+			if(itemname.indexOf("return") !== -1) continue;
+			var item = list[itemname];
+			var flag = Utils.compareObject(item,SvseTopN.findOne({nIndex:item["nIndex"]}),{_id:true});
+			if(flag) continue;
+			SvseTopN.update({nIndex:item["nIndex"]},item);
+		}
+		SystemLogger("扫描 SyncTopNs 变动结束。。");
+	},
 	'sync' : function(){
 		SystemLogger("扫描变动开始。。");
 		SyncFunction.SyncTreeNodeData();
 		SyncFunction.SyncTreeStructure();
 		SyncFunction.SyncEmailList();
 		SyncFunction.SyncWarnerRules();
+		SyncFunction.SyncTopNs();
 		SystemLogger("扫描变动结束。。");
 	}
 }

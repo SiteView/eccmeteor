@@ -1,4 +1,4 @@
-SvseTopNDao = {
+SvseTopNDaoOnServer = {
 	"getReturn":function(status,msg){ //组装返回客户端的信息
 		status = !!status ;
 		if(typeof msg === "undefined" && !status)
@@ -47,6 +47,6 @@ SvseTopNDao = {
 				throw new Meteor.Error(500,"SvseTopNDao.setTopNOfReport SvseTopN.update error");
 			}
 		});
-		return SvseTopNDao.getReturn(true);
+		return SvseTopNDaoOnServer.getReturn(true);
 	}
 }

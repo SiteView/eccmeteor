@@ -36,7 +36,7 @@ LAYOUTVIEW = {
 //报表
 REPORT ={
 	STATISTICAL:"statistical",
-	TOPN:"topN"
+	TOPN:"topN"//topN报告
 }
 //视图切换
 SwithcView = {
