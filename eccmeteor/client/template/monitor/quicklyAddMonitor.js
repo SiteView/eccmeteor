@@ -1,5 +1,5 @@
 Template.showQuickMonityTemplate.monities = function(){
-	var entityDevicetype =  Session.get("showEntityId");
+	var entityDevicetype =  Session.get("_showEntityId");
 	if(!entityDevicetype) return [];
 	SystemLogger("快速添加的设备类型是："+entityDevicetype);
 	return SvseEntityTemplateDao.getEntityMontityByDevicetype(entityDevicetype,true);
@@ -67,7 +67,8 @@ Template.showQuickMonityTemplate.events = {
 	"click #showQuickMonityTemplateSaveBtn" : function () {
 		var checkeds = $("#quickMonitorList :checkbox[checked='checked']");
 		if(!checkeds.length){
-			Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
+		//	Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
+			$("#showQuickMonityTemplatediv").modal("hide");
 			return;
 		}
 		var templates = [];
@@ -84,14 +85,14 @@ Template.showQuickMonityTemplate.events = {
 				SystemLogger(result.msg,-1);
 			}else{
 				SystemLogger("刷新完成...");
-				$("#showQuickMonityTemplatediv").modal("hide");
-				SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
+		//		SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
 			}
+			$("#showQuickMonityTemplatediv").modal("hide");
 		});
 	},
 	"click #showQuickMonityTemplateCancelBtn" : function() {
 		//Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
 		$("#showQuickMonityTemplatediv").modal("hide");
-		SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
+	//	SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
 	}
 }
