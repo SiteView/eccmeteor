@@ -121,6 +121,7 @@ SvseMonitorTemplateDao ={
 		}
 	},
 	getMonityDynamicPropertyData:function(panrentid,templateMonitoryId,fn){
+		console.log("getMonityDynamicPropertyData templateMonitoryId is:"+templateMonitoryId);
 		Meteor.call(
 			SvseMonitorTemplateDao.AGENT,
 			"getMonityDynamicPropertyData",
