@@ -1,8 +1,13 @@
 Template.showQuickMonityTemplate.monities = function(){
-	var entityDevicetype =  Session.get("_showEntityId");
+//	var entityDevicetype =  Session.get("_showEntityId");
+	var entityDevicetype = Session.get(SessionManage.MAP.CHECKEDENTITYTEMPLATEID);
 	if(!entityDevicetype) return [];
 	SystemLogger("快速添加的设备类型是："+entityDevicetype);
-	return SvseEntityTemplateDao.getEntityMontityByDevicetype(entityDevicetype,true);
+	SystemLogger("快速添加的设备ID是："+SessionManage.getAddedEntityId());
+	var monitors = SvseEntityTemplateDao.getEntityMonitorByDevicetype(entityDevicetype,true);
+	SystemLogger("该设备监视器有：");
+	SystemLogger(monitors);
+	return monitors;
 }
 var getQuicklyMonitorsParams = function(id){
 	console.log("getQuicklyMonitorsParams " + id);
