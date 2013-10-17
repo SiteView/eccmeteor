@@ -5,7 +5,7 @@ Template.showQuickMonityTemplate.monities = function(){
 	SystemLogger("快速添加的设备类型是："+entityDevicetype);
 	var addedEntityId = SessionManage.getAddedEntityId();
 	SystemLogger("快速添加的设备ID是："+addedEntityId);
-	var monitors = SvseEntityTemplateDao.getEntityMonitorByDevicetype(entityDevicetype,true);
+	var monitors = SvseEntityTemplateDao.getEntityMonitorByDevicetype(entityDevicetype,true); //true表示获取快速添加的监视器列表
 	SystemLogger("该设备监视器有：");
 	SystemLogger(monitors);
 	return monitors;
@@ -34,7 +34,6 @@ Deps.autorun(function(){
 	var id = Session.get("ADDEDENTITYID");
 	if(!id)
 		return;
-	console.log("hahhahah ")
 	var entityDevicetype = Session.get(SessionManage.MAP.CHECKEDENTITYTEMPLATEID);
 	var monitors = SvseEntityTemplateDao.getEntityMonitorByDevicetype(entityDevicetype,true);
 	getQuicklyMonitorsDynamicParams(SessionManage.getAddedEntityId(),monitors);//"1.26.19"
@@ -43,16 +42,18 @@ Deps.autorun(function(){
 var getQuicklyMonitorsDynamicParams = function(entityId,monitors){
 	if(!monitors || !monitors.length)
 		return;
-	console.log("hahhahah 1")
 	var length = monitors.length;
+	var dynamicMonitors = [];
 	for(var i = 0 ; i < length ; i++){
 		if(!monitors[i]["property"]["sv_extradll"]) //如果没有动态属性
 			continue;
-		console.log("hahhahah 2")
-		SvseMonitorTemplateDao.getMonityDynamicPropertyData(entityId,monitors[i]["return"]["id"],function(status,result){
-			console.log(result);
-		});
+		dynamicMonitors.push(monitors[i]["return"]["id"]);
 	}
+	SvseMonitorTemplateDao.getMonityDynamicPropertyDataArray(entityId,dynamicMonitors,function(status,result){
+		if(!status){
+			
+		}
+	});
 
 }
 
