@@ -4,8 +4,4 @@ Template.AlerBox.rendered = function(){
     })
 };
 
-Template.MessageBoxModal.rendered = function(){
-	$('#MessageBoxModal').on('shown', function () { //延时关闭
-  		// do something…
-	})
-}
+Template.MessageBoxModal.rendered = function(){}

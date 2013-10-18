@@ -1,6 +1,6 @@
 <Template name="MessageTip">
-	<div id="MessageTip" class="alert alert-{{type}}" style="margin-bottom:0px" align="{{align}}">  
-	  	<a class="close" data-dismiss="alert">×</a>
-	 	<strong>{{content}}</strong> 
+	<div {{#if id}}id='{{id}}'{{/if}} class="alert alert-{{type}}" style="margin-bottom:0px" align="{{align}}">  
+	  	{{#if close}}<a class="close" data-dismiss="alert">×</a>{{/if}}
+	 	<p>{{content}}</p> 
 	</div>
 </Template>
