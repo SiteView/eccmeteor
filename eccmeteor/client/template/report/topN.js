@@ -1,88 +1,10 @@
-var getTopNListSelectAll = function(){
-	return ClientUtils.tableGetSelectedAll("topNlist");
-}
 Template.topN.events = {
-    //点击添加按钮弹出框
-	"click #addtopN":function(e){
+    //点击添加按钮弹出框    
+	"click #topNofadd":function(e){
 		$('#topNofadddiv').modal('toggle');
-	},
-	
-	"click #deltopN" : function(){
-		SvseTopNDao.deleteTopNs(getTopNListSelectAll());
-	},
-	"click #allowetopN":function(){
-		SvseTopNDao.updateTopNsStatus(getTopNListSelectAll(),"Enable",function(result){
-			if(result.status){
-				SystemLogger("改变状态"+result.option.count+"条");
-			}
-		});
-	},
-	"click #forbidtopN":function(){
-		SvseTopNDao.updateTopNsStatus(getTopNListSelectAll(),"Disable",function(result){
-			if(result.status){
-				SystemLogger("改变状态"+result.option.count+"条");
-			}
-		});
-	},
-	"click #refreshtopN":function(){
-		SvseTopNDao.sync(function(result){
-			if(result.status){
-				console.log("刷新完成");
-			}else{
-				SystemLogger(result);
-			}
-			
-		});
-	},
-	"click #topNhelpmessage":function(){
-		console.log("topNhelpmessage");
-		$('#topNofadddiv').modal('toggle');
-	},
-	
-}
-
-Template.topNofadd.events = {
-	"click #topNofaddcancelbtn" : function(){
-		$('#topNofadddiv').modal('toggle');
-	},
-	"click #topNofaddsavebtn":function(){
-		var topNofaddform = ClientUtils.formArrayToObject($("#topNofaddform").serializeArray());
-		var topNofaddformsendconditions = ClientUtils.formArrayToObject($("#topNofaddformsendconditions").serializeArray());
-		for(param in topNofaddformsendconditions){
-			topNofaddform[param] = topNofaddformsendconditions[param];
-		}
-		topNofaddform["AlertCond"] = 3;
-		topNofaddform["SelTime1"] = 2;
-		topNofaddform["SelTime2"] = 3;
-		topNofaddform["AlertState"] = "Enable";
-		topNofaddform["AlertType"] = "EmailAlert";
-		topNofaddform["AlwaysTimes"] = 1;
-		topNofaddform["OnlyTimes"] = 1;
-		
-		var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
-		
-		var targets = [];
-		var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
-		for(index in arr){
-			targets.push(arr[index].id);
-		}
-		topNofaddform["AlertTarget"] = targets.join();
-		topNofaddform["nIndex"] = nIndex;
-		console.log(topNofaddform);
-		var section = {};
-		section[nIndex] = topNofaddform;
-		console.log(section);
-		SvseTopNDao.settopNOfAdd(nIndex,section,function(result){
-			if(result.status){
-				$('#topNofadddiv').modal('toggle');
-			}else{
-				SystemLogger(result.msg);
-			}
-			
-		});
 	}
 }
-	
+
 Template.topN.rendered=function(){
 	
 	//初始化弹窗
@@ -106,18 +28,64 @@ Template.topNofadd.events = {
           $('#topNofadddiv').modal('toggle');
                                      },
           "click #topNofaddsavebtn":function(){
-    var basicinfooftopNadd = ClientUtils.formArrayToObject($("basicinfooftopNadd").serializeArray());
+    var basicinfooftopNadd = ClientUtils.formArrayToObject($("#basicinfooftopNadd").serializeArray());
     var nIndex = Utils.getUUID();
         basicinfooftopNadd["nIndex"] = nIndex
+        
+        console.log(basicinfooftopNadd); //控制台打印添加的信息
         var address = {};
           address[nIndex] = basicinfooftopNadd;
+          
+          console.log(address[nIndex]); 
+          console.log("123");
           SvseTopNDao.addTopN(nIndex,address,function(result){
+          console.log("AAA");
          SystemLogger(result);
+            console.log("123");
+			console.log(result); //控制台打印添加的信息
+			console.log("123");	
           $('#topNofadddiv').modal('toggle');
               });
-                     }
-              }
+            }
+       }
               
+
+//获取topNlist的集合
+Template.topNlist.topNresultlist=function(){
+	console.log(SvseTopNDao.getTopNresultlist());
+	return SvseTopNDao.getTopNresultlist();
+}
+Template.topNlist.rendered = function(){
+	    //初始化checkbox选项
+	$(function(){
+		//隐藏所有操作按钮
+		ClientUtils.hideOperateBtnInTd("topNlist");
+		//初始化 checkbox事件
+		ClientUtils.tableSelectAll("topNlistselectall");
+		//初始化tr点击变色效果
+		ClientUtils.trOfTableClickedChangeColor("topNlist");
+		//tr 鼠标悬停显示操作按钮效果
+		ClientUtils.showOperateBtnInTd("topNlist");
+	});
+
+}
+Template.topNlist.events = {
+	"click td .btn":function(e){
+		console.log(e.target.id);
+		var result = SvseTopNDao.getTopNresult(e.target.id);
+		//填充表单
+		$("#topNofadddivedit").find(":text[name='AlertName']:first").val(result.AlertName);
+		$("#topNofadddivedit").find(":text[name='OtherAdress']:first").val(result.OtherAdress);
+		$("#topNofadddivedit").find(":text[name='Upgrade']:first").val(result.Upgrade);
+		$("#topNofadddivedit").find(":text[name='UpgradeTo']:first").val(result.UpgradeTo);
+		$("#topNofadddivedit").find(":text[name='Stop']:first").val(result.Stop);
+		$("#topNofadddivedit").find(":text[name='WatchSheet']:first").val(result.WatchSheet);
+		$("#topNofadddivedit").find(":text[name='UpgradeTo']:first").val(result.Strategy);
+		$("#topNofadddivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
+		
+	}
+
+}
 Template.topNofadd.rendered = function(){
 //监视器选择树
 	$(function(){
@@ -150,67 +118,4 @@ Template.topNofadd.rendered = function(){
 		};
 		$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
-}
-//获取topNlist的集合
-Template.topNlist.topN=function(){
-	console.log(SvseTopNDao.getTopNList());
-	return SvseTopNDao.getTopNList();
-}
-Template.topNlist.rendered = function(){
-	//初始化checkbox选项
-	$(function(){
-		//隐藏所有操作按钮
-		ClientUtils.hideOperateBtnInTd("topNlist");
-		//初始化 checkbox事件
-		ClientUtils.tableSelectAll("topNlistselectall");
-		//初始化tr点击变色效果
-		ClientUtils.trOfTableClickedChangeColor("topNlist");
-		//tr 鼠标悬停显示操作按钮效果
-		ClientUtils.showOperateBtnInTd("topNlist");
-	});
-
-}
-Template.topNlist.events = {
-	"click td .btn":function(e){
-		console.log(e.target.id);
-		var result = SvseTopNDao.getTopN(e.target.id);
-		//填充表单
-		$("#topNofadddivedit").find(":text[name='AlertName']:first").val(result.AlertName);
-		$("#topNofadddivedit").find(":text[name='OtherAdress']:first").val(result.OtherAdress);
-		$("#topNofadddivedit").find(":text[name='Upgrade']:first").val(result.Upgrade);
-		$("#topNofadddivedit").find(":text[name='UpgradeTo']:first").val(result.UpgradeTo);
-		$("#topNofadddivedit").find(":text[name='Stop']:first").val(result.Stop);
-		$("#topNofadddivedit").find(":text[name='WatchSheet']:first").val(result.WatchSheet);
-		$("#topNofadddivedit").find(":text[name='UpgradeTo']:first").val(result.Strategy);
-		$("#topNofadddivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
-		var checkedTopNReport = result["TopNReport"].split(",");
-		for(var eal = 0 ; eal < checkedTopNReport.length ; eal ++){
-			try{
-				$(".topNmultiselectedit").multiselect('select',checkedTopNReport[eal]);
-			}catch(e){}
-		}
-		var checkedEmailTemplate = result["AlertTarget"].split(",");
-		for(var etl = 0 ; etl < checkedTopNTemplate.length; etl ++){
-			$("#topNtemplatelistedit").find("option[name='"+checkedTopNTemplate[etl]+"']:first").attr("selected","selected").prop("selected",true);
-		}
-		var AlertCategory = result.AlertCategory;
-		$("#topNofaddformsendconditionsedit").find(":radio[name='AlertCategory']").each(function(){
-			if($(this).val() === AlertCategory){
-				$(this).attr("checked",true);
-			}
-		});
-		$("#topNofadddivedit").modal('toggle');
-		
-		var checkednodes = result.AlertTarget.split("\,")
-		//左边树的勾选
-		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_edit");
-		treeObj.checkAllNodes(false);//清空上一个用户状态
-		//节点勾选
-		for(var index  = 0; index < checkednodes.length ; index++){
-			treeObj.checkNode(treeObj.getNodesByFilter(function(node){
-				return  node.id  === checkednodes[index];
-			}, true), true);
-		}
-	}
-
 }

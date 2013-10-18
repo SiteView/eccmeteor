@@ -44,9 +44,17 @@ Meteor.publish("svse_messagelist",function(){
 Meteor.publish("svse_warnerrule",function(){
 	return SvseWarnerRule.find();
 });
+/*‌‌
+   Type：  modify ‌‌
+   Author：任杰‌‌
+   Date:2013-10-16 10:40‌‌
+   Content:修改Meteor.publish("svse_TopNresultList",function(){‌
+	return SvseTopNresultList.find();‌
+});‌
+  */
 //TOPN报告
-Meteor.publish("svse_TopN",function(){
-	return SvseTopN.find();
+Meteor.publish("svse_TopNresultlist",function(){
+	return SvseTopNresultlist.find();
 });
 //用户信息
 Meteor.publish("userData",function(){

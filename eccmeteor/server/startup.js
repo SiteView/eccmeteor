@@ -10,7 +10,6 @@ function initAllDateStartUp(status){
 	initDateAtStartUp["initTaskAtStartUp"](0);
 	initDateAtStartUp["initEmailListAtStartUp"](0);
 	initDateAtStartUp["initWarnerRuleAtStartUp"](0);
-	initDateAtStartUp["initTopNAtStartUp"](0);
 	initDateAtStartUp["initAdminAccount"]();
 	SystemLogger("全部数据初始化完毕");
 //	var timeloop = new UnrealThread(SyncFunction.sync,70*1000);

@@ -16,4 +16,4 @@ Meteor.subscribe("svse_emaillist");
 Meteor.subscribe("svse_warnerrule");
 Meteor.subscribe("userData");
 Meteor.subscribe("svse_messagelist");
-Meteor.subscribe("svse_topN");
+Meteor.subscribe("svse_TopNresultlist");

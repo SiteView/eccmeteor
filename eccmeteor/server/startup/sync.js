@@ -181,10 +181,16 @@ SyncFunction = {
 		}
 		SystemLogger("扫描 SyncWarnerRules 变动结束。。");
 	},
-	//同步TopN报告
-	'SyncTopNs' : function(){
-		SystemLogger("扫描 SyncTopNs 变动开始。。");
-		var list = SvseMethodsOnServer.svGetTopN();
+	/*
+Type： add | modify
+Author：任杰
+Date:2013-10-18 09:40
+Content:增加和修改 SyncTopNList
+*/ 
+	//同步TopN报告列表
+	'SyncTopNList' : function(){
+		SystemLogger("扫描 SyncTopNList 变动开始。。");
+		var list = SvseMethodsOnServer.svGetTopNList();
 		if(!list){
 			SystemLogger("初始化TopN报告失败",-1);
 			return;
@@ -192,11 +198,11 @@ SyncFunction = {
 		for(itemname in list){
 			if(itemname.indexOf("return") !== -1) continue;
 			var item = list[itemname];
-			var flag = Utils.compareObject(item,SvseTopN.findOne({nIndex:item["nIndex"]}),{_id:true});
+			var flag = Utils.compareObject(item,SvseTopNresultlist.findOne({nIndex:item["nIndex"]}),{_id:true});
 			if(flag) continue;
-			SvseTopN.update({nIndex:item["nIndex"]},item);
+			SvseTopNresultlist.update({nIndex:item["nIndex"]},item);
 		}
-		SystemLogger("扫描 SyncTopNs 变动结束。。");
+		SystemLogger("扫描 SyncTopNresultlist 变动结束。。");
 	},
 	'sync' : function(){
 		SystemLogger("扫描变动开始。。");
@@ -204,7 +210,7 @@ SyncFunction = {
 		SyncFunction.SyncTreeStructure();
 		SyncFunction.SyncEmailList();
 		SyncFunction.SyncWarnerRules();
-		SyncFunction.SyncTopNs();
+		SyncFunction.SyncTopNList();
 		SystemLogger("扫描变动结束。。");
 	}
 }
