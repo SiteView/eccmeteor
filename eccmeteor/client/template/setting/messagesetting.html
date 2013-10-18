@@ -24,8 +24,9 @@
 </div>
 <br/>
 {{> messagesettingList}}
-{{> messagebasicsettingofaddedit}}
+{{> messagebasicsettingofadd}}
 {{> sendingmessagemethods}}
+{{> editmessagebasicsetting}}
 
 {{ide messagesetting}}
 </Template>
@@ -46,12 +47,12 @@
 		<tbody id="messagesettingList">
 			{{#each messagelist}}
 			<tr>
-				<td><input type="checkbox" id="{{nIndex}}"></td>
-				<td>aa</td>
-				<td>aa</td><td>aaaaa</td>
+				<td><input type="checkbox" id="{{_id}}"></td>
+				<td>{{Name}}</td>
+				<td>{{Status}}</td><td>{{Phone}}</td>
 				<td>
 					<div class="btn-group">
-						<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i> {{language.messagesettingmodel.editbtn}}</button>
+						<button id="{{_id}}" class="btn"><i class="icon-edit"></i> {{language.messagesettingmodel.editbtn}}</button>
 					</div>
 				</td>
 			</tr>
@@ -61,12 +62,11 @@
 
 </Template>
 
-<Template name="messagebasicsettingofaddedit">
+<Template name="messagebasicsettingofadd">
 	<!--添加短信的基本设置 -->
 	<div id="addmessagesettingdiv" class="modal hide fade"
 	data-backdrop="true" data-keyboard="true" data-show="false" 
-	data-width="800" data-modalOverflow="true"
-	>
+	data-width="800" data-modalOverflow="true">
 		<div class="modal-header">添加手机号码设置{{ide "messagesetting"}}</div>
 		<div class="modal-body">
 			<form class="well form-horizontal form-inline" id="messagebasicsettingofbasciinfo">
@@ -75,25 +75,25 @@
 					<div class="control-group">
 					  <label class="control-label">名称*:</label>
 					  <div class="controls">
-						<input type="text"  name="Name">
+						<input type="text"  name="Name" id="name">
 					  </div>
 					</div>
 					<div class="control-group">
 					  <label class="control-label">*接收手机号码:</label>
 					  <div class="controls">
-						<input type="text"  name="phone">
+						<input type="text"  name="Phone">
 					  </div>
 					</div>
 					<div class="control-group">
 						<div class="controls">
-					  	<input type="checkbox" name="forbid" /> 禁止
+					  	<input type="checkbox" name="Status" /> 禁止
 					  	</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">模板类型:</label>
 						<div class="controls">
-							<select id="emailbasicsettingofaddressemailtemplatelist" name="Template">
+							<select name="TemplateType">
 								<option value="1" checked>com</option>
 							</select>
 						</div>
@@ -101,7 +101,7 @@
 					<div class="control-group">
 						<label class="control-label">信息模板:</label>
 						<div class="controls">
-							<select name="TaskType">
+							<select name="Template">
 								<option value="1" checked>Default</option>
 							</select>
 						</div>
@@ -117,7 +117,7 @@
 					<div class="control-group">
 						<label class="control-label">任务计划:</label>
 						<div class="controls">
-							<select name="Schedule">
+							<select name="Plan">
 								<option value="5x8" checked>5x8</option>
 							</select>
 						</div>
@@ -128,7 +128,7 @@
 		</div>
 		<div class="modal-footer" align="right">
 			<button class="btn btn-primary" id="messagebasicsettingofsavebtn">保存</button>
-			<button class="btn" id="messagebasicsettingofcancelbtn">取消</button>
+			<button class="btn" id="messagesettingcancelbtn">取消</button>
 		</div>
 	</div>
 
@@ -159,9 +159,9 @@
 					<span style="color:#f00">短信最大长度为0</span></label>
 				</div>
 				<div class="controls" style="padding-left:88px">
-					<button class="btn" id="messagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
-					<button class="btn" id="messagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
-					<button class="btn" id="messagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
+					<button class="btn" id="webmessagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
+					<button class="btn" id="webmessagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
+					<button class="btn" id="webmessagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
 				</div>
 			</div>
 		</div>
@@ -183,13 +183,13 @@
 				</div>
 			</div>
 			<div class="controls" style="padding-left:88px">
-				<button class="btn" id="messagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
-				<button class="btn" id="messagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
-				<button class="btn" id="messagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
+				<button class="btn" id="commessagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
+				<button class="btn" id="commessagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
+				<button class="btn" id="commessagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
 			</div>
 		</div>
 		<div class="tab-pane" id="home3">
-			<div id="methodsendforcom">
+			<div id="methodsendforlib">
 				<div class="controls">
 					<label class="control-label">动态库名称*：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<select name="libname">
@@ -204,9 +204,9 @@
 				</div>
 			</div>
 			<div class="controls" style="padding-left:120px">
-				<button class="btn" id="messagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
-				<button class="btn" id="messagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
-				<button class="btn" id="messagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
+				<button class="btn" id="libmessagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
+				<button class="btn" id="libmessagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
+				<button class="btn" id="libmessagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
 			</div>
 		</div>
 		<div class="tab-pane" id="home4">
@@ -220,8 +220,8 @@
 				</fieldset>
 				{{> choosemodelaccordinginsertmethod}}
 				<div class="control-group">
-					<button class="btn" id="messagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
-					<button class="btn" id="messagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
+					<button class="btn" id="insertmethodmessagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
+					<button class="btn" id="insertmethodmessagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
 				</div>
 			</form>
 		</div>
@@ -264,6 +264,75 @@
 	
 </Template>
 
+<Template name="editmessagebasicsetting">
+	<!--编辑短信的基本设置 -->
+	<div id="editmessagesettingdiv" class="modal hide fade"
+	data-backdrop="true" data-keyboard="true" data-show="false" 
+	data-width="800" data-modalOverflow="true"
+	>
+		<div class="modal-header">添加手机号码设置{{ide "messagesetting"}}</div>
+		<div class="modal-body">
+			<form class="well form-horizontal form-inline" id="editmessagebasicsettingofbasciinfo">
+				<fieldset>
+					<span class="label label-info">手机号码信息</span><br /><br />
+					<div class="control-group">
+					  <label class="control-label">名称*:</label>
+					  <div class="controls">
+						<input type="text"  name="Name" value="{{Name}}">
+					  </div>
+					</div>
+					<div class="control-group">
+					  <label class="control-label">*接收手机号码:</label>
+					  <div class="controls">
+						<input type="text"  name="Phone" value="{{Phone}}">
+					  </div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+					  	<input type="checkbox" name="Status" /> 禁止
+					  	</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">模板类型:</label>
+						<div class="controls">
+							<select name="TemplateType">
+								<option value="1" checked>com</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">信息模板:</label>
+						<div class="controls">
+							<select name="Template">
+								<option value="1" checked>Default</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">任务计划类型:</label>
+						<div class="controls">
+							<select name="TaskType">
+								<option value="1" checked>时间段计划</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">任务计划:</label>
+						<div class="controls">
+							<select name="Plan">
+								<option value="5x8" checked>5x8</option>
+							</select>
+						</div>
+					</div>
+					
+				</fieldset>
+			</form>
+		</div>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-primary" id="editmessagebasicsettingofsavebtn">保存</button>
+			<button class="btn" id="editmessagebasicsettingofcancelbtn">取消</button>
+		</div>
+	</div>
 
-
-
+</Template>

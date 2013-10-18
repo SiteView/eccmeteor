@@ -647,3 +647,42 @@ svWriteTopNIniFileSectionString = function(sectionname,section){
 	}
 	return robj.fmap(0);
 }
+
+//改变TopN状态
+svWriteTopNReportStatusInitFileSection = function(sectionName,status){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "alert.ini",
+		'user' : "default",
+		'section' : sectionName,
+		"key" : "AlertState",
+		"value" : status
+	}, 0);
+	return robj.fmap(0);
+}
+
+/*
+	Type:add file about message.ini
+	Author:zhuqing
+	Date:2013-10-16  16:47
+	content:SvseMessage使用部分
+**/
+/*============SvseMessage===============*/
+//smsphoneset.ini文件写入
+svWriteMessageIniFileSectionString = function(messagename,message){
+	var robj= process.sv_submit(message,{'dowhat':'WriteIniFileSection','filename':"smsphoneset.ini",'user':"default",'section':messagename},0); 
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	return robj.fmap(0);
+}
+//获取短信列表
+svGetMessageList = function(){
+		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"smsphoneset.ini",
+			"user":"default","sections":"default"}, 0);
+		if(!robj.isok(0)){
+		}
+		var fmap= robj.fmap(0);
+		return fmap;
+}

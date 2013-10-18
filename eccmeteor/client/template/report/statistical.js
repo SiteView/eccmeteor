@@ -64,3 +64,4 @@ Template.statisticallist.statisticalresultlist = function(){
 	console.log(SvseStatisticalDao.getStatisticalresultlist());
 	return SvseStatisticalDao.getStatisticalresultlist();
 }
+

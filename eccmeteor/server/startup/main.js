@@ -1,3 +1,10 @@
+/*
+Type： add | modify
+Author：任杰
+Date:2013-10-18 10:18
+Content:增加 "initTopNListAtStartUp":initTopNListAtStartUp
+*/
+
 //综合./init*.js中的方法，提供统一访问接口
 initDateAtStartUp = {
 	"initTreeDataAtStartup":initTreeDataAtStartup,//初始化所有节点信息
@@ -9,11 +16,6 @@ initDateAtStartUp = {
 	"initEmailListAtStartUp":initEmailListAtStartUp,
 	"initWarnerRuleAtStartUp":initWarnerRuleAtStartUp,
 	"initAdminAccount":initAdminAccount,
-	/*
-Type： add | modify
-Author：任杰
-Date:2013-10-18 10:18
-Content:增加 "initTopNListAtStartUp":initTopNListAtStartUp
-*/ 
 	"initTopNListAtStartUp":initTopNListAtStartUp
+	"initMessageListAtStartUp":initMessageListAtStartUp
 };

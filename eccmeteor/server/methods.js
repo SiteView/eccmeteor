@@ -63,6 +63,9 @@ SvseMethodsOnServer = {
 	"svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
 	"svWriteTopNIniFileSectionString":svWriteTopNIniFileSectionString,
 	"svGetTopNList": svGetTopNList,
+	"svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
+	"svWriteMessageIniFileSectionString":svWriteMessageIniFileSectionString,
+	"svGetMessageList":svGetMessageList,
 }
 
 SvseSyncData = {
