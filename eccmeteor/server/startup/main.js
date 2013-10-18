@@ -16,6 +16,6 @@ initDateAtStartUp = {
 	"initEmailListAtStartUp":initEmailListAtStartUp,
 	"initWarnerRuleAtStartUp":initWarnerRuleAtStartUp,
 	"initAdminAccount":initAdminAccount,
-	"initTopNListAtStartUp":initTopNListAtStartUp
+	"initTopNListAtStartUp":initTopNListAtStartUp,
 	"initMessageListAtStartUp":initMessageListAtStartUp
 };
