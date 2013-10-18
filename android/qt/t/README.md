@@ -12,8 +12,7 @@
 * 编译方法
   1.  安装：Qt 5.1.1 for Android (Windows 32-bit, 716 MB)，android ndk, android sdk, ant
            参考 http://www.cnblogs.com/A-Number--1/p/windows下Qt510配置android环境变量.htm
-  2.  用 Qt Creator 打开工程 /t.pro，构建运行，apk 安装包位于 /android/bin
-		apk起始大小11MB，在手机上安装后是39MB
+  2.  用 Qt Creator 打开工程 /t.pro，构建运行，apk 安装包位于 /android/bin，	apk起始大小11MB，在手机上安装后是39MB
   3.  未解决的bug，本例子中的 QLabel 控件没有搞好，当手机触发重力感应横屏旋转后，页面布局就会乱掉
   
   
