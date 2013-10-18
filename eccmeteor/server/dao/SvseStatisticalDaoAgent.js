@@ -1,9 +1,12 @@
 SvseStatisticalDaoAgent = {
 	"agent" : function(fn , args){
+		Log4js.info("SvseStatisticalDaoAgent");
+		console.log("SvseStatisticalDaoAgent");
 		var flag = false;
 		switch(fn){
 			case "addStatistical": 
-				flag = Agent.getPermission("settingOperatePermission>addStatistical>add");
+				Log4js.info("SvseStatisticalDaoAgent");
+				flag = Agent.getPermission("settingOperatePermission>statistical>add");
 				break;
 			/*
 			case "setEmailBasicSetting": 
@@ -11,13 +14,13 @@ SvseStatisticalDaoAgent = {
 				break;
 			*/
 			case "updateStatistical":
-				flag = Agent.getPermission("settingOperatePermission>emailsetting>update");
+				flag = Agent.getPermission("settingOperatePermission>statistical>update");
 				break;
 			case "deleteStatisticalByIds":
-				flag = Agent.getPermission("settingOperatePermission>emailsetting>delete");
+				flag = Agent.getPermission("settingOperatePermission>statistical>delete");
 				break;
 			case "updateStatisticalStatus":
-				flag = Agent.getPermission("settingOperatePermission>emailsetting>update");
+				flag = Agent.getPermission("settingOperatePermission>statistical>update");
 				break;
 			/*
 			case "sync": 

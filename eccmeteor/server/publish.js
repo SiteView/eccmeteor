@@ -40,6 +40,16 @@ Meteor.publish("svse_messagelist",function(){
 	return SvseMessageList.find();
 });
 
+/*
+Type：add 
+Author：xuqiang
+Date:2013-10-18 09:40
+Content: 统计报告
+*/ 
+Meteor.publish("Svse_Statisticalresultlist",function(){
+	return SvseStatisticalresultlist.find();
+});
+
 //报警规则
 Meteor.publish("svse_warnerrule",function(){
 	return SvseWarnerRule.find();

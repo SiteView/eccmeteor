@@ -11,7 +11,8 @@ Meteor.methods({
   "svseEmailDaoAgent":SvseEmailDaoAgent.agent,
   "svseEntityTemplateDaoAgent":SvseEntityTemplateDaoAgent.agent,
   "svseWarnerRuleDaoAgent":SvseWarnerRuleDaoAgent.agent,
-  "svseMonitorTemplateDaoAgent":SvseMonitorTemplateDaoAgent.agent
+  "svseMonitorTemplateDaoAgent":SvseMonitorTemplateDaoAgent.agent,
+  "SvseStatisticalDaoAgent":SvseStatisticalDaoAgent.agent
 });//给客户端调用的
 
 //给服务端调用的。//调用 /lib/svdb.js中定义的方法
@@ -50,9 +51,15 @@ SvseMethodsOnServer = {
 	"svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
 	"svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
 	"svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
-	
+	/*
+Type： add 
+Author：xuqiang
+Date:2013-10-18 09:40
+Content:增加统计报告部分对svdb.js操作方法的声明
+*/ 
 	"svWriteStatisticalIniFileSectionString":svWriteStatisticalIniFileSectionString,
 	"svGetStatisticalList": svGetStatisticalList,
+	"svDeleteStatisticalIniFileSection":svDeleteStatisticalIniFileSection,
 }
 
 SvseSyncData = {

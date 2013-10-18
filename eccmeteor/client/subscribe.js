@@ -16,3 +16,10 @@ Meteor.subscribe("svse_emaillist");
 Meteor.subscribe("svse_warnerrule");
 Meteor.subscribe("userData");
 Meteor.subscribe("svse_messagelist");
+/*
+Type： add 
+Author：xuqiang
+Date:2013-10-15 
+Content:增加统计报告订阅数据
+*/ 
+Meteor.subscribe("Svse_Statisticalresultlist");

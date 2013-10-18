@@ -278,6 +278,12 @@ svGetEmailList = function(){
 }
 
 //获取统计报告列表
+/*
+Type：   add 
+Author：xuqiagn
+Date:2013-10-18 09:40
+Content:增加svGetStatisticalList的操作，获取统计报告列表
+*/ 
 svGetStatisticalList = function(){
 		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"reportset.ini",
 			"user":"default","sections":"default"}, 0);
@@ -506,6 +512,12 @@ svWriteEmailAddressIniFileSectionString = function(addressname,address){
 }
 
 //统计报告 Statistical.ini写入
+/*
+Type：add
+Author：xuqiang	
+Date:2013-10-18 09:40
+Content:统计报告 Statistical.ini写入
+*/ 
 svWriteStatisticalIniFileSectionString =  function(addressname,address){
 	var robj = process.sv_submit(address,{'dowhat': 'WriteIniFileSection','filename':"reportset.ini",'user':"default",'section':addressname},0);
 	if(!robj.isok(0)){
@@ -540,6 +552,23 @@ svDeleteEmailAddressIniFileSection = function(ids){
 	return robj.fmap(0);
 }
 
+
+/*
+Type：add 
+Author：xuqiang
+Date:2013-10-18 15:00
+Content:删除reportset.ini的section
+*/ 
+svDeleteStatisticalIniFileSection = function(ids){
+	var dowhat = {
+		'dowhat' : 'DeleteIniFileSection',
+		'filename' : "reportset.ini",
+		'user' : "default",
+		"sections" : ids
+	};
+	var robj = process.sv_univ(dowhat,0);
+	return robj.fmap(0);
+}
 
 //更改邮件状态
 svWriteEmailAddressStatusInitFilesection = function(sectionName,status){
