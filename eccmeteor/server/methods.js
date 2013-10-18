@@ -1,4 +1,10 @@
-﻿Meteor.methods({
+/*
+	Type： add
+	Author：renjie
+	Date:2013-10-18 10:40
+	Content:增加SvseTopNDaoAgent 的agent声明
+*/ 
+Meteor.methods({
   "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
   "meteorSvForest":meteorSvForest,
   "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
@@ -11,9 +17,15 @@
   "svseEmailDaoAgent":SvseEmailDaoAgent.agent,
   "svseEntityTemplateDaoAgent":SvseEntityTemplateDaoAgent.agent,
   "svseWarnerRuleDaoAgent":SvseWarnerRuleDaoAgent.agent,
-  "svseMonitorTemplateDaoAgent":SvseMonitorTemplateDaoAgent.agent
+  "svseMonitorTemplateDaoAgent":SvseMonitorTemplateDaoAgent.agent,
+  "SvseTopNDaoAgent":SvseTopNDaoAgent.agent
 });//给客户端调用的
-
+/*
+   Type： add | modify 
+   Author：任杰
+   Date:2013-10-16 10:40
+   Content:修改"svGetTopNList": svGetTopNList,
+ */ 
 //给服务端调用的。//调用 /lib/svdb.js中定义的方法
 SvseMethodsOnServer = {
 	"GetAllEntityGroups":GetAllEntityGroups,
@@ -49,7 +61,8 @@ SvseMethodsOnServer = {
 	"svSubmitEntity":svSubmitEntity,
 	"svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
 	"svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
-	"svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
+	"svWriteTopNIniFileSectionString":svWriteTopNIniFileSectionString,
+	"svGetTopNList": svGetTopNList,
 }
 
 SvseSyncData = {

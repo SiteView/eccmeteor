@@ -1,4 +1,4 @@
-﻿//调用定义在Server/startup/main.js中的方法
+//调用定义在Server/startup/main.js中的方法
 function initAllDateStartUp(status){
 	if(status === 0)
 		return;

@@ -7,7 +7,6 @@ Template.statistical.events = {
 }
 //弹窗初始化
 Template.statistical.rendered = function(){
-
 	$(function(){
 		$('#datereportdiv').modal({
 			backdrop:true,
@@ -24,20 +23,20 @@ Template.statistical.rendered = function(){
 }
 
 Template.statisticalofadd.events = {
-"click #statisticalofaddcancelbtn":function(){
-$('#statisticalofadddiv').modal('toggle');
-},
-"click #statisticalofaddsavebtn":function(){
-var basicinfoofstatisticaladd = ClientUtils.formArrayToObject($("basicinfoofstatisticaladd").serializeArray());
-var nIndex = Utils.getUUID();
-basicinfoofstatisticaladd["nIndex"] = nIndex
-var address = {};
-address[nIndex] = basicinfoofstatisticaladd;
-SvseStatisticalDao.addStatistical(nIndex,address,function(result){
-SystemLogger(result);
-$('#statisticalofadddiv').modal('toggle');
-});
-}
+	"click #statisticalofaddcancelbtn":function(){
+		$('#statisticalofadddiv').modal('toggle');
+	},
+	"click #statisticalofaddsavebtn":function(){
+		var basicinfoofstatisticaladd = ClientUtils.formArrayToObject($("basicinfoofstatisticaladd").serializeArray());
+		var nIndex = Utils.getUUID();
+		basicinfoofstatisticaladd["nIndex"] = nIndex
+		var address = {};
+		address[nIndex] = basicinfoofstatisticaladd;
+		SvseStatisticalDao.addStatistical(nIndex,address,function(result){
+		SystemLogger(result);
+		$('#statisticalofadddiv').modal('toggle');
+		});
+	}
 }
 
 Template.statisticalofadd.rendered = function(){
@@ -73,18 +72,8 @@ Template.statisticalofadd.rendered = function(){
 		$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
 }
-/*
-Template.statisticalofaddform.rendered = function(){
-	//报告类型下拉列表
-	SvseEmailDao.getEmailTemplates(function(err,result){
-		for(name in result){
-	//		console.log(name);
-			var option = $("<option value="+name+"></option>").html(name)
-			$("#statisticalofaddtypelist").append(option);
-		}
-	});
-}*/
+
 Template.statisticallist.statisticalresultlist = function(){
-console.log(SvseStatisticalDao.getStatisticalresultlist());
-return SvseStatisticalDao.getStatisticalresultlist();
+	console.log(SvseStatisticalDao.getStatisticalresultlist());
+	return SvseStatisticalDao.getStatisticalresultlist();
 }

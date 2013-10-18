@@ -8,5 +8,12 @@ initDateAtStartUp = {
 	"initTaskAtStartUp":initTaskAtStartUp,
 	"initEmailListAtStartUp":initEmailListAtStartUp,
 	"initWarnerRuleAtStartUp":initWarnerRuleAtStartUp,
-	"initAdminAccount":initAdminAccount
+	"initAdminAccount":initAdminAccount,
+	/*
+Type： add | modify
+Author：任杰
+Date:2013-10-18 10:18
+Content:增加 "initTopNListAtStartUp":initTopNListAtStartUp
+*/ 
+	"initTopNListAtStartUp":initTopNListAtStartUp
 };
