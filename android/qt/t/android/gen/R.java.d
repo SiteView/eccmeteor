@@ -1,0 +1,24 @@
+Z:\hostg\and\qt\t\android\gen\org\qtproject\example\t\R.java \
+ : Z:\hostg\and\qt\t\android\res\layout\splash.xml \
+Z:\hostg\and\qt\t\android\res\values\libs.xml \
+Z:\hostg\and\qt\t\android\res\values\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-de\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-el\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-es\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-et\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-fa\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-fr\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-id\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-it\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-ja\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-ms\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-nb\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-nl\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-pl\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-pt-rBR\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-ro\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-rs\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-ru\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-zh-rCN\strings.xml \
+Z:\hostg\and\qt\t\android\res\values-zh-rTW\strings.xml \
+Z:\hostg\and\qt\t\android\bin\AndroidManifest.xml \
