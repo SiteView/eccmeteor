@@ -7,19 +7,6 @@ Template.statistical.events = {
 }
 //弹窗初始化
 Template.statistical.rendered = function(){
-	$(function(){
-		$('#datereportdiv').modal({
-			backdrop:true,
-			keyboard:true,
-			show:false
-		}).css({
-			width: '800',
-			'margin-left': function () {
-				return -($(this).width() / 2);
-			},
-		});
-	});
-	
 }
 
 Template.statisticalofadd.events = {
