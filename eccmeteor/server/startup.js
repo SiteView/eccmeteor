@@ -1,4 +1,4 @@
-﻿//调用定义在Server/startup/main.js中的方法
+//调用定义在Server/startup/main.js中的方法
 function initAllDateStartUp(status){
 	if(status === 0)
 		return;
@@ -11,6 +11,7 @@ function initAllDateStartUp(status){
 	initDateAtStartUp["initEmailListAtStartUp"](0);
 	initDateAtStartUp["initWarnerRuleAtStartUp"](0);
 	initDateAtStartUp["initAdminAccount"]();
+	initDateAtStartUp["initMessageListAtStartUp"](0);
 	SystemLogger("全部数据初始化完毕");
 //	var timeloop = new UnrealThread(SyncFunction.sync,70*1000);
 //	timeloop.start();

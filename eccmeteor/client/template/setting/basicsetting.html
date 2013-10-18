@@ -50,13 +50,51 @@
 							<td  align="left">
 							<input value="red" type="text" readonly="readonly">
 							</td>
-							<td align="left"><input style="width:33px;bgcolor:#ff0000" type="color" name="usercolor"/></td>
+							<td align="left"><input style="width:33px" type="color" name="errorcolor" value="#ff0000"/></td>
 						</tr>
 					</tbody>
 				</table>
 				</td>
 				<td>
-					<input type="number" name="points" min="0" max="100" step="1" value="1" />
+					<input type="number" name="points" min="0" max="6" step="1" value="1" />
+				</td>
+				
+			</tr>
+			<tr>
+				<td>危险</td>
+				<td>
+				<table>
+					<tbody>
+						<tr valign="top">
+							<td  align="left">
+							<input value="yellow" type="text" readonly="readonly">
+							</td>
+							<td align="left"><input style="width:33px" type="color" name="warncolor" value="#ffff00"/></td>
+						</tr>
+					</tbody>
+				</table>
+				</td>
+				<td>
+					<input type="number" name="points" min="0" max="6" step="1" value="1" />
+				</td>
+				
+			</tr>
+			<tr>
+				<td>正常</td>
+				<td>
+				<table>
+					<tbody>
+						<tr valign="top">
+							<td  align="left">
+							<input value="green" type="text" readonly="readonly">
+							</td>
+							<td align="left"><input style="width:33px" type="color" name="normalcolor" value="#00ff00"/></td>
+						</tr>
+					</tbody>
+				</table>
+				</td>
+				<td>
+					<input type="number" name="points" min="0" max="6" step="1" value="1" />
 				</td>
 				
 			</tr>

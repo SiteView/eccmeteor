@@ -1,10 +1,12 @@
 <Template name="warnerruleofmessage">
-	<div id="messagewarnerdiv" class="modal hide fade">
+	<div id="messagewarnerdiv" class="modal hide fade" 
+	data-backdrop="true" data-keyboard="true" data-show="false" 
+	data-width="800" data-modalOverflow="true">
 		<div class="modal-header">{{language.warnerrulemodel.addmessagewarnerruletitle}}</div>
 		<div class="modal-body">
 			<div class="row-fluid">
 				<div class="span4" style="overflow:auto">
-					<ul id="svse_tree_check" class="ztree"></ul>
+					<ul id="svse_tree_check_add" class="ztree"></ul>
 				</div>
 				<div class="span8">
 					{{> warnerruleofmessageform}}
@@ -31,9 +33,9 @@
 			<div class="control-group">
 				<label class="control-label">报警接收手机号:</label>
 				<div class="controls">
-					<select class="emailmultiselect" multiple="multiple" name="Phone">
-						{{#each emaillist}}
-							 <option value="{{Name}}">{{Name}}</option>
+					<select class="emailmultiselect" multiple="multiple" name="SmsNumber">
+						{{#each messagelist}}
+							 <option value="{{Phone}}">{{Phone}}</option>
 						{{/each}}
 					</select>
 				</div>
@@ -41,13 +43,13 @@
 			<div class="control-group">
 				<label class="control-label">其他手机号:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="OtherPhone">
+					<input type="text" class="span6" name="OtherNumber">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">短信模板:</label>
 				<div class="controls">
-					<select id="Messagetemplatelist" name="MessageTemplate">
+					<select id="Messagetemplatelist" name="SmsTemplate">
 					</select>
 				</div>
 			</div>
