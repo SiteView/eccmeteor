@@ -638,12 +638,25 @@ Author：renjie
 Date:2013-10-18 13:40
 Content:统计报告 topn.ini写入
 */ 
-svWriteTopNIniFileSectionString = function(sectionname,section){
-	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"topnreportset.ini",'user':"default",'section':addressname},0); 
+svWriteTopNIniFileSectionString = function(addressname,address){
+	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"topnreportset.ini",'user':"default",'section':addressname},0); 
 //	console.log(robj.fmap(0));
 	if(!robj.isok(0)){
 	SystemLogger(robj.estr(0),-1);
 	return false;
 	}
 	return robj.fmap(0);
+}
+
+//topnreport.ini 删除
+svDeleteTopNIniFileSection = function(ids){
+	var dowhat = {
+		'dowhat' : 'DeleteIniFileSection',
+		'filename' : "topnreportset.ini",
+		'user' : "default",
+		"sections" : ids
+	};
+	var robj = process.sv_univ(dowhat,0);
+	return robj.fmap(0);
+	
 }

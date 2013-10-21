@@ -7,7 +7,7 @@ SvseTopNOnServer = {
 	},
 	"sync":function(){
 		SyncFunction.SyncTopNList();
-		},
+	},
 	"addTopN":function(addressname,address){
 		Log4js.info("SvseTopNOnServer addTopN");
 		var result = SvseMethodsOnServer.svWriteTopNIniFileSectionString(addressname,address);
@@ -23,6 +23,19 @@ SvseTopNOnServer = {
 				throw new Meteor.Error(500,err);
 			}
 		})
-	}	
+	},
+	"deleteTopNByIds" : function(ids){
+		var address = ids.join();
+		var result = SvseMethodsOnServer.svDeleteTopNIniFileSection(address);
+		if(!result){
+			var msg = "SvseTopNOnServer's deleteTopNByIds"+ids+" faild";
+			SystemLogger.log(msg,-1);
+			throw new Meteor.Error(500,msg);
+		}
+		for(index in ids){
+			SvseTopNresultlist.remove(SvseTopNresultlist.findOne({nIndex:ids[index]})._id);
+		}
+		return SvseTopNOnServer.getReturn(true);
+	}
 	
 }

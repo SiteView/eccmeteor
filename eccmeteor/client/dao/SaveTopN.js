@@ -1,5 +1,5 @@
 SvseTopNDao = {
-	"Agent":"SvseTopNDaoAgent",
+	"AGENT":"SvseTopNDaoAgent",
 	//根据id获取topN报告
 	"getTopNresult" : function(id){
 	return SvseTopNresultlist.findOne({nIndex:id});
@@ -21,6 +21,19 @@ SvseTopNDao = {
 				}
 			}
 		});
+	},
+	"deleteTopNByIds":function(ids,fn){
+		Meteor.call(SvseTopNDao.AGENT,"deleteTopNByIds",[ids],function(err,result){
+			if(err){
+				SystemLogger(err);
+				fn({status:false,msg:err})
+			}else{
+				fn(result);
+			}
+		});
+	},
+	"getTopNById":function(id){
+	return SvseTopNresultlist.findOne({nIndex:id});
 	}
 }
 	/*"updateTopNAddress":function(addressname,address,fn){

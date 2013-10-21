@@ -2,6 +2,17 @@ Template.topN.events = {
     //点击添加按钮弹出框    
 	"click #topNofadd":function(e){
 		$('#topNofadddiv').modal('toggle');
+	},
+	"click #topNofdel":function(){
+	var checks = $("#topNlist :checkbox[checked]");
+	var ids = [];
+	for(var i = 0; i < checks.length; i++){
+	   ids.push($(checks[i]).attr("id"));
+	}
+	if(ids.length)
+	  SvseTopNDao.deleteTopNByIds(ids,function(result){
+	  	SystemLogger(result);
+	  });
 	}
 }
 

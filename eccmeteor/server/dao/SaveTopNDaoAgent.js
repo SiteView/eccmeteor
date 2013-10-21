@@ -8,7 +8,7 @@ SvseTopNDaoAgent = {
 			Log4js.info("SvseTopNDaoAgent");
 				flag = Agent.getPermission("settingOperatePermission>TopN>add");
 				break;
-			case "deleteTopNlist":
+			case "deleteTopNByIds":
 				flag = Agent.getPermission("settingOperatePermission>TopN>delete");
 				break;
 			case "updateTopNsStatus":
