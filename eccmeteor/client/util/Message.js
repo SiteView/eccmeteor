@@ -20,18 +20,28 @@ Message = {
 			type:type,
 			content:content
 		};
-		if(!setting)
-			return Meteor.render(function(){
+		console.log("1");
+		if(!setting){
+			$("#MessageBoxModal").empty().append(
+				Meteor.render(function(){
 					return Template.AlerBox(obj);
 				})
+			);
+			$("#MessageBoxModal").modal("show");
+			return;
+		}
+			
+		console.log("2");
 		if(typeof(setting.time) === "number")
 			obj.time = setting.time ;
 		if(typeof(setting.align)== "string" && !!setting.align.match("^(left|center|right)$")){
 			obj.align = setting.align
 		}
+			console.log("3");
 		var html = Meteor.render(function(){
 					return Template.AlerBox(obj);
 				})
+			console.log("4");
 		$("#MessageBoxModal").empty().append(html);
 		$("#MessageBoxModal").modal("show");
 		console.log(obj.time);
