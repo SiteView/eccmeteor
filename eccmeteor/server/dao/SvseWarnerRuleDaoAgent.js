@@ -17,6 +17,9 @@ SvseWarnerRuleDaoAgent = {
 			case "updateWarnerRule":
 				flag = Agent.getPermission("settingOperatePermission>warnerrule>update");
 				break;
+			case "setWarnerRuleOfMessage":
+				flag = Agent.getPermission("settingOperatePermission>warnerrule>add");
+				break;
 			default : flag = true;
 		}
 		if(!SvseWarnerRuleDao[fn]){

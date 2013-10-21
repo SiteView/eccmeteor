@@ -42,6 +42,15 @@ Template.messagebasicsettingofadd.events = {
 	}
 }
 
+Template.messagebasicsettingofadd.rendered = function(){
+	$(function(){
+		$("button#messagesettingcancelbtn").click(function(){
+			console.log("hello");
+			$('#addmessagesettingdiv').modal('hide');
+		});
+	});
+}
+
 Template.editmessagebasicsetting.events = {
 	"click #editmessagebasicsettingofcancelbtn":function(){
 		$('#editmessagesettingdiv').modal('toggle');

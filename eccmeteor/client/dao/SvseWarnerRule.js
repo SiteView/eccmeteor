@@ -68,5 +68,18 @@ SvseWarnerRuleDao = {
 				fn(result);
 			}
 		});
+	},
+	/*
+		Author:zhuqing
+		Context:添加短信的报警规则
+	*/
+	"setWarnerRuleOfMesaage":function(sectionname,section,fn){
+		Meteor.call(SvseWarnerRuleDao.AGENT,"setWarnerRuleOfMessage",[sectionname,section],function(err,result){
+			if(err){
+				fn({status:false,msg:err});
+			}else{
+				fn(result);
+			}
+		});
 	}
 }

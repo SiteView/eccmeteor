@@ -48,5 +48,18 @@ SvseWarnerRuleDao = {
 			}
 		});
 		return SvseWarnerRuleDao.getReturn(true);
-	}
+	},
+	//添加短信的报警规则  ----zhuqing
+	"setWarnerRuleOfMessage":function(sectionname,section){
+		var result = SvseMethodsOnServer.svWriteAlertIniFileSectionString(sectionname,section);
+		if(!result){
+			throw new Meteor.Error(500,"SvseWarnerRuleDao.setWarnerRuleOfMessage error");
+		}
+		var rule = result[sectionname];
+		SvseWarnerRule.insert(rule,function(err,r_id){
+			if(err)
+				throw new Meteor.Error(500,"SvseWarnerRuleDao.setWarnerRuleOfMessage SvseWarnerRule.insert error");
+		});
+		return SvseWarnerRuleDao.getReturn(true);
+	},
 }
