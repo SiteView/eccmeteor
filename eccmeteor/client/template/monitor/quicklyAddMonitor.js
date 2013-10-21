@@ -1,4 +1,4 @@
-Template.showQuickMonityTemplate.monities = function(){
+Template.QuickMonitorDynamicService.monities = function(){
 //	var entityDevicetype =  Session.get("_showEntityId");
 	var entityDevicetype = Session.get(SessionManage.MAP.CHECKEDENTITYTEMPLATEID);
 	if(!entityDevicetype) return [];
@@ -36,7 +36,7 @@ Deps.autorun(function(){
 		return;
 	var entityDevicetype = Session.get(SessionManage.MAP.CHECKEDENTITYTEMPLATEID);
 	var monitors = SvseEntityTemplateDao.getEntityMonitorByDevicetype(entityDevicetype,true);
-	getQuicklyMonitorsDynamicParams(SessionManage.getAddedEntityId(),monitors);//"1.26.19"
+	getQuicklyMonitorsDynamicParams("1.26.19",monitors);//"1.26.19" SessionManage.getAddedEntityId() 
 });
 //接收一个设备ID以及该设备相关的一组监视器模板
 var getQuicklyMonitorsDynamicParams = function(entityId,monitors){
@@ -51,10 +51,26 @@ var getQuicklyMonitorsDynamicParams = function(entityId,monitors){
 	}
 	SvseMonitorTemplateDao.getMonityDynamicPropertyDataArray(entityId,dynamicMonitors,function(status,result){
 		if(!status){
-			
+			Messsage.error(result);
+			return;
 		}
+		console.log(result);
+		setQuicklyMonitorsDynamicParamsToDom(result);
 	});
-
+}
+//操作Dom元素
+var setQuicklyMonitorsDynamicParamsToDom = function(monitors){
+	if(!monitors || !monitors.length)
+		return;
+	var length = monitors.length;
+	for(index = 0; index < length; index++){
+		var monitor = monitors[index];
+		var seletor = "div#QuickMonitorDynamicService div#MonitorDynamicProperty"+monitor["temlpateId"];
+		var html = Meteor.render(function(){
+			return Template.QuickMonitorDynamicProperty(monitor);
+		})
+		$(seletor).empty().append(html);
+	}
 }
 
 var getQuicklyMonitorsParams = function(id){

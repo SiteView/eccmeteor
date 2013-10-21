@@ -19,9 +19,15 @@ SvseMonitorTemplateDaoOnServer = {
 			data = SvseMethodsOnServer.svGetEntityDynamicPropertyData(entityId,temlpateId);
 			if(!data || !data["DynamicData"])
 				continue;
+			var DynamicProperties = [];
+			for (x in data["DynamicData"]){
+				DynamicProperties.push(x);
+			}
+
 			array.push({
-				temlpateId:data["DynamicData"]
-			})
+				temlpateId:temlpateId,
+				DynamicProperties:DynamicProperties
+			});
 		}
 		return array;
 	}

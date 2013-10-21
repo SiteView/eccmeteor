@@ -14,13 +14,14 @@
 Message = {
 	//检查设置参数,设置弹窗内容
 	setContent:function(content,type,setting){
+		Log4js[type](content);
+		type = type === "warn" ? "block" : type;//转成相应样式
 		var obj = {
 			align:"left",
 			time:0,
 			type:type,
 			content:content
 		};
-		console.log("1");
 		if(!setting){
 			$("#MessageBoxModal").empty().append(
 				Meteor.render(function(){
@@ -30,14 +31,11 @@ Message = {
 			$("#MessageBoxModal").modal("show");
 			return;
 		}
-			
-		console.log("2");
 		if(typeof(setting.time) === "number")
 			obj.time = setting.time ;
 		if(typeof(setting.align)== "string" && !!setting.align.match("^(left|center|right)$")){
 			obj.align = setting.align
 		}
-			console.log("3");
 		var html = Meteor.render(function(){
 					return Template.AlerBox(obj);
 				})
@@ -53,8 +51,7 @@ Message = {
 		Message.setContent(content,"error",setting);
 	},
 	warn : function(content,setting){
-		//block
-		Message.setContent(content,"block",setting);
+		Message.setContent(content,"warn",setting);
 	},
 	info : function(content,setting){
 		Message.setContent(content,"info",setting);
