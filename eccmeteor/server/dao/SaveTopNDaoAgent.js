@@ -1,11 +1,14 @@
-SvseTopNeDaoAgent = {
+SvseTopNDaoAgent = {
 	"agent" : function(fn , args){
+		Log4js.info("SvseTopNDaoAgent");
+		console.log("SvseTopNDaoAgent");
 		var flag = false;
 		switch(fn){
-			case "setTopNOfReport":
+			case "addTopN":
+			Log4js.info("SvseTopNDaoAgent");
 				flag = Agent.getPermission("settingOperatePermission>TopN>add");
 				break;
-			case "deleteTopNs":
+			case "deleteTopNlist":
 				flag = Agent.getPermission("settingOperatePermission>TopN>delete");
 				break;
 			case "updateTopNsStatus":
@@ -20,10 +23,10 @@ SvseTopNeDaoAgent = {
 			
 			default : flag = true;
 		}
-		if(!SvseTopNDao[fn]){
-			Agent.error("SvseTopNDao",fn);
+		if(!SvseTopNOnServer[fn]){
+			Agent.error("SvseTopNOnServer",fn);
 			return Agent.getReturn();
 		}
-		return flag ? SvseTopNDao[fn].apply(undefined,args) : Agent.getReturn();
+		return flag ? SvseTopNOnServer[fn].apply(undefined,args) : Agent.getReturn();
 	}
 }

@@ -1,4 +1,3 @@
-
 Meteor.subscribe("svse_tree",function(){
 	SystemLogger("重新订阅");
 	SessionManage.collectionCompleted(CONLLECTIONMAP.SVSETREE);
@@ -16,3 +15,12 @@ Meteor.subscribe("svse_emaillist");
 Meteor.subscribe("svse_warnerrule");
 Meteor.subscribe("userData");
 Meteor.subscribe("svse_messagelist");
+Meteor.subscribe("svse_TopNresultlist");
+/*
+Type： add 
+Author：xuqiang
+Date:2013-10-15 
+Content:增加统计报告订阅数据
+*/ 
+Meteor.subscribe("Svse_Statisticalresultlist");
+

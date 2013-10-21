@@ -5,6 +5,9 @@ SvseMonitorTemplateDaoAgent = {
 			case "getMonityDynamicPropertyData": 
 				flag = true;
 				break;
+			case "getMonityDynamicPropertyDataArray":
+				flag = true;
+				break;
 			default : flag = true;
 		}
 		if(!SvseMonitorTemplateDaoOnServer[fn]){

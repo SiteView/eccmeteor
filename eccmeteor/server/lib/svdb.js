@@ -277,6 +277,22 @@ svGetEmailList = function(){
 		return fmap;
 }
 
+//获取统计报告列表
+/*
+Type：   add 
+Author：xuqiagn
+Date:2013-10-18 09:40
+Content:增加svGetStatisticalList的操作，获取统计报告列表
+*/ 
+svGetStatisticalList = function(){
+		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"reportset.ini",
+			"user":"default","sections":"default"}, 0);
+		if(!robj.isok(0)){
+		}
+		var fmap= robj.fmap(0);
+		return fmap;
+}
+
 //获取发送邮件的设置
 svGetSendEmailSetting = function(){
 		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",
@@ -329,11 +345,20 @@ svGetWarnerRule = function(){
 			"user":"default","sections":"default"}, 0);
 	return robj.fmap(0);;
 }
-//获取TopN报告列表(2013/10/11)
-svGetTopN = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"alert.ini",
+//获取TopN报告列表(2013/10/16)
+/*
+Type：   add 
+Author：renjie
+Date:2013-10-18 13:40
+Content:增加svGetTopNList的操作，获取统计报告列表
+*/ 
+svGetTopNList = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"topnreportset.ini",
 			"user":"default","sections":"default"}, 0);
-	return robj.fmap(0);;
+	if(!robj.isok(0)){
+		}
+		var fmap= robj.fmap(0);
+		return fmap;
 }
 //邮件测试
 svEmailTest = function(emailSetting){
@@ -495,6 +520,21 @@ svWriteEmailAddressIniFileSectionString = function(addressname,address){
 	return robj.fmap(0);
 }
 
+//统计报告 Statistical.ini写入
+/*
+Type：add
+Author：xuqiang	
+Date:2013-10-18 09:40
+Content:统计报告 Statistical.ini写入
+*/ 
+svWriteStatisticalIniFileSectionString =  function(addressname,address){
+	var robj = process.sv_submit(address,{'dowhat': 'WriteIniFileSection','filename':"reportset.ini",'user':"default",'section':addressname},0);
+	if(!robj.isok(0)){
+	SystemLogger(robj.estr(0),-1);
+	return false;
+	}
+	return robj.fmap(0);
+}
 //email.ini写入
 svWriteEmailIniFileSectionString = function(section){
 	console.log(section);
@@ -521,6 +561,23 @@ svDeleteEmailAddressIniFileSection = function(ids){
 	return robj.fmap(0);
 }
 
+
+/*
+Type：add 
+Author：xuqiang
+Date:2013-10-18 15:00
+Content:删除reportset.ini的section
+*/ 
+svDeleteStatisticalIniFileSection = function(ids){
+	var dowhat = {
+		'dowhat' : 'DeleteIniFileSection',
+		'filename' : "reportset.ini",
+		'user' : "default",
+		"sections" : ids
+	};
+	var robj = process.sv_univ(dowhat,0);
+	return robj.fmap(0);
+}
 
 //更改邮件状态
 svWriteEmailAddressStatusInitFilesection = function(sectionName,status){
@@ -621,25 +678,22 @@ svWriteAlertStatusInitFileSection = function(sectionName,status){
 	return robj.fmap(0);
 }
 /*====================SvseTopN==============*/
-//新添加2013/10/11
-//topnrepor.ini文件写入
-svWriteTopNReportsetIniFileSectionString = function(sectionname,section){
-	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"alert.ini",'user':"default",'section':sectionname},0); 
-//	console.log(robj.fmap(0));
-	return robj.fmap(0);
-}
 
-//topnreport.ini 删除
-svDeleteTopNReportInitFileSection = function(ids){
-	var dowhat = {
-		'dowhat' : 'DeleteIniFileSection',
-		'filename' : "alert.ini",
-		'user' : "default",
-		"sections" : ids
-	};
-	var robj = process.sv_univ(dowhat,0);
+//topn.ini文件写入
+/*
+Type：add|modify
+Author：renjie	
+Date:2013-10-18 13:40
+Content:统计报告 topn.ini写入
+*/ 
+svWriteTopNIniFileSectionString = function(sectionname,section){
+	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"topnreportset.ini",'user':"default",'section':addressname},0); 
+//	console.log(robj.fmap(0));
+	if(!robj.isok(0)){
+	SystemLogger(robj.estr(0),-1);
+	return false;
+	}
 	return robj.fmap(0);
-	
 }
 
 //改变TopN状态

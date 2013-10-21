@@ -121,6 +121,7 @@ SvseMonitorTemplateDao ={
 		}
 	},
 	getMonityDynamicPropertyData:function(panrentid,templateMonitoryId,fn){
+		console.log("getMonityDynamicPropertyData templateMonitoryId is:"+templateMonitoryId);
 		Meteor.call(
 			SvseMonitorTemplateDao.AGENT,
 			"getMonityDynamicPropertyData",
@@ -134,5 +135,26 @@ SvseMonitorTemplateDao ={
 				}
 			}
 		);
+	},
+	/*
+		Type:Add
+		Author:huyinghuan
+		Date:2013-10-17 14:25
+		Content:根据设备ID和设备的监视器模板Id组 一次性获取该设备的监视器动态属性
+	*/
+	getMonityDynamicPropertyDataArray:function(entityId,templateMonitoryTemlpateIds,fn){
+		Meteor.call(
+			SvseMonitorTemplateDao.AGENT,
+			"getMonityDynamicPropertyDataArray",
+			[entityId,templateMonitoryTemlpateIds],
+			function(err,result){
+				if(err){
+					SystemLogger(err);
+					fn(false,err);
+				}else{
+					fn(true,result);
+				}
+			}
+		)
 	}
 }

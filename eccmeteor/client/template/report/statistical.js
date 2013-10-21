@@ -2,6 +2,17 @@
 Template.statistical.events = {
 	"click #statisticalofadd":function(e){
 		$('#statisticalofadddiv').modal('toggle');
+	},
+	"click #statisticalofdel":function(){
+	var checks = $("#statisticallist :checkbox[checked]");
+	var ids = [];
+	for(var i = 0; i < checks.length; i++){
+	   ids.push($(checks[i]).attr("id"));
+	}
+	if(ids.length)
+	  SvseStatisticalDao.deleteStatisticalByIds(ids,function(result){
+	  	SystemLogger(result);
+	  });
 	}
 
 }
@@ -24,22 +35,65 @@ Template.statistical.rendered = function(){
 }
 
 Template.statisticalofadd.events = {
-"click #statisticalofaddcancelbtn":function(){
-$('#statisticalofadddiv').modal('toggle');
-},
-"click #statisticalofaddsavebtn":function(){
-var basicinfoofstatisticaladd = ClientUtils.formArrayToObject($("basicinfoofstatisticaladd").serializeArray());
-var nIndex = Utils.getUUID();
-basicinfoofstatisticaladd["nIndex"] = nIndex
-var address = {};
-address[nIndex] = basicinfoofstatisticaladd;
-SvseStatisticalDao.addStatistical(nIndex,address,function(result){
-SystemLogger(result);
-$('#statisticalofadddiv').modal('toggle');
-});
-}
+	"click #statisticalofaddcancelbtn":function(){
+		$('#statisticalofadddiv').modal('toggle');
+	},
+	"click #statisticalofaddsavebtn":function(){
+		var basicinfoofstatisticaladd = ClientUtils.formArrayToObject($("#basicinfoofstatisticaladd").serializeArray());
+		var nIndex = Utils.getUUID();
+		basicinfoofstatisticaladd["nIndex"] = nIndex
+		
+		console.log(basicinfoofstatisticaladd); //控制台打印添加的信息
+		
+		var address = {};
+		address[nIndex] = basicinfoofstatisticaladd;
+		
+		console.log(address[nIndex]); 
+		
+		SvseStatisticalDao.addStatistical(nIndex,address,function(result){
+			SystemLogger(result);
+			console.log("123");
+			console.log(result); //控制台打印添加的信息
+			console.log("123");		
+			$('#statisticalofadddiv').modal('toggle');
+		});
+	}
 }
 
+/*
+Type： add 
+Author：xuqiang
+Date:2013-10-15 
+Content:初始化statistical 列表
+*/ 
+Template.statisticallist.statisticalresultlist = function(){
+	console.log(SvseStatisticalDao.getStatisticalresultlist());
+	return SvseStatisticalDao.getStatisticalresultlist();
+}
+
+Template.statisticallist.rendered = function(){
+$(function(){
+		 //隐藏所有操作按钮
+		ClientUtils.hideOperateBtnInTd("statisticallist");
+		  //初始化 checkbox事件
+		ClientUtils.tableSelectAll("statisticallistselectall");
+		 //初始化tr点击变色效果
+		ClientUtils.trOfTableClickedChangeColor("statisticallist");
+		 //tr 鼠标悬停显示操作按钮效果
+		 ClientUtils.showOperateBtnInTd("statisticallist");
+	 
+});
+}
+
+ //根据id编辑报告表单
+Template.statisticallist.events({
+"click td .btn":function(e){
+console.log(e.target.id);
+var result = SvseStatisticalDao.getStatisticalById(e.target.id);
+ 	Session.set("emailbasicsettingofaddressbasciinfoeditform",result);
+	$('#statisticalofadddivedit').modal('toggle');
+	}
+});
 Template.statisticalofadd.rendered = function(){
 	//监视器选择树
 	$(function(){
@@ -72,19 +126,4 @@ Template.statisticalofadd.rendered = function(){
 		};
 		$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
-}
-
-Template.statisticalofaddform.rendered = function(){
-	//报告类型下拉列表
-	SvseEmailDao.getEmailTemplates(function(err,result){
-		for(name in result){
-	//		console.log(name);
-			var option = $("<option value="+name+"></option>").html(name)
-			$("#statisticalofaddtypelist").append(option);
-		}
-	});
-}
-Template.statisticallist.statisticalresultlist = function(){
-console.log(SvseStatisticalDao.getStatisticalresultlist());
-return SvseStatisticalDao.getStatisticalresultlist();
 }

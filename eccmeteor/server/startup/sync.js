@@ -164,6 +164,27 @@ SyncFunction = {
 		}
 		SystemLogger("扫描 SysncEmailList 变动结束。。");
 	},
+	
+	
+	//同步统计报告列表
+	'SyncStatisticalList':function(){
+		SystemLogger("扫描统计报告list开始！");
+		var list = SvseMethodsOnServer.svGetStatisticalList();
+		if(!list){
+		SystemLogger("初始化统计报告列表失败",-1);
+		return;
+		}
+		for(itemname in list){
+		if(itemname.indexof("return")!== -1) continue;
+		var item = list[itemname];
+		var flag = Utils.compareObject(item,SvseStatisticalresultlist.findOne({nIndex:item["nIndex"]}),{_id:true});
+		if(flag) continue;
+		SvseStatisticalresultlist.update({nIndex:item["nIndex"]},item);
+		}
+		SystemLogger("扫描统计报告list结束！");
+	},
+	
+	
 	//同步报警规则
 	'SyncWarnerRules' : function(){
 		SystemLogger("扫描 SyncWarnerRules 变动开始。。");
@@ -181,12 +202,37 @@ SyncFunction = {
 		}
 		SystemLogger("扫描 SyncWarnerRules 变动结束。。");
 	},
+	/*
+Type： add | modify
+Author：任杰
+Date:2013-10-18 09:40
+Content:增加和修改 SyncTopNList
+*/ 
+	//同步TopN报告列表
+	'SyncTopNList' : function(){
+		SystemLogger("扫描 SyncTopNList 变动开始。。");
+		var list = SvseMethodsOnServer.svGetTopNList();
+		if(!list){
+			SystemLogger("初始化TopN报告失败",-1);
+			return;
+		}
+		for(itemname in list){
+			if(itemname.indexOf("return") !== -1) continue;
+			var item = list[itemname];
+			var flag = Utils.compareObject(item,SvseTopNresultlist.findOne({nIndex:item["nIndex"]}),{_id:true});
+			if(flag) continue;
+			SvseTopNresultlist.update({nIndex:item["nIndex"]},item);
+		}
+		SystemLogger("扫描 SyncTopNresultlist 变动结束。。");
+	},
 	'sync' : function(){
 		SystemLogger("扫描变动开始。。");
 		SyncFunction.SyncTreeNodeData();
 		SyncFunction.SyncTreeStructure();
 		SyncFunction.SyncEmailList();
 		SyncFunction.SyncWarnerRules();
+		SyncFunction.SyncTopNList();
 		SystemLogger("扫描变动结束。。");
+		SyncFunction.SyncStatisticalList();
 	}
 }
