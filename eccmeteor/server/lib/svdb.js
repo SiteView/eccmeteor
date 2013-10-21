@@ -277,6 +277,22 @@ svGetEmailList = function(){
 		return fmap;
 }
 
+//获取统计报告列表
+/*
+Type：   add 
+Author：xuqiagn
+Date:2013-10-18 09:40
+Content:增加svGetStatisticalList的操作，获取统计报告列表
+*/ 
+svGetStatisticalList = function(){
+		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"reportset.ini",
+			"user":"default","sections":"default"}, 0);
+		if(!robj.isok(0)){
+		}
+		var fmap= robj.fmap(0);
+		return fmap;
+}
+
 //获取发送邮件的设置
 svGetSendEmailSetting = function(){
 		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",
@@ -504,6 +520,21 @@ svWriteEmailAddressIniFileSectionString = function(addressname,address){
 	return robj.fmap(0);
 }
 
+//统计报告 Statistical.ini写入
+/*
+Type：add
+Author：xuqiang	
+Date:2013-10-18 09:40
+Content:统计报告 Statistical.ini写入
+*/ 
+svWriteStatisticalIniFileSectionString =  function(addressname,address){
+	var robj = process.sv_submit(address,{'dowhat': 'WriteIniFileSection','filename':"reportset.ini",'user':"default",'section':addressname},0);
+	if(!robj.isok(0)){
+	SystemLogger(robj.estr(0),-1);
+	return false;
+	}
+	return robj.fmap(0);
+}
 //email.ini写入
 svWriteEmailIniFileSectionString = function(section){
 	console.log(section);
@@ -530,6 +561,23 @@ svDeleteEmailAddressIniFileSection = function(ids){
 	return robj.fmap(0);
 }
 
+
+/*
+Type：add 
+Author：xuqiang
+Date:2013-10-18 15:00
+Content:删除reportset.ini的section
+*/ 
+svDeleteStatisticalIniFileSection = function(ids){
+	var dowhat = {
+		'dowhat' : 'DeleteIniFileSection',
+		'filename' : "reportset.ini",
+		'user' : "default",
+		"sections" : ids
+	};
+	var robj = process.sv_univ(dowhat,0);
+	return robj.fmap(0);
+}
 
 //更改邮件状态
 svWriteEmailAddressStatusInitFilesection = function(sectionName,status){
@@ -648,6 +696,7 @@ svWriteTopNIniFileSectionString = function(addressname,address){
 	return robj.fmap(0);
 }
 
+<<<<<<< HEAD
 //topnreport.ini 删除
 svDeleteTopNIniFileSection = function(ids){
 	var dowhat = {
@@ -660,3 +709,43 @@ svDeleteTopNIniFileSection = function(ids){
 	return robj.fmap(0);
 	
 }
+=======
+//改变TopN状态
+svWriteTopNReportStatusInitFileSection = function(sectionName,status){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "alert.ini",
+		'user' : "default",
+		'section' : sectionName,
+		"key" : "AlertState",
+		"value" : status
+	}, 0);
+	return robj.fmap(0);
+}
+
+/*
+	Type:add file about message.ini
+	Author:zhuqing
+	Date:2013-10-16  16:47
+	content:SvseMessage使用部分
+**/
+/*============SvseMessage===============*/
+//smsphoneset.ini文件写入
+svWriteMessageIniFileSectionString = function(messagename,message){
+	var robj= process.sv_submit(message,{'dowhat':'WriteIniFileSection','filename':"smsphoneset.ini",'user':"default",'section':messagename},0); 
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	return robj.fmap(0);
+}
+//获取短信列表
+svGetMessageList = function(){
+		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"smsphoneset.ini",
+			"user":"default","sections":"default"}, 0);
+		if(!robj.isok(0)){
+		}
+		var fmap= robj.fmap(0);
+		return fmap;
+}
+>>>>>>> branch 'meteorite' of https://github.com/SiteView/eccmeteor.git

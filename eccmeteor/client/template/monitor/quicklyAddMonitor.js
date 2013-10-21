@@ -1,8 +1,62 @@
 Template.showQuickMonityTemplate.monities = function(){
-	var entityDevicetype =  Session.get("showEntityId");
+//	var entityDevicetype =  Session.get("_showEntityId");
+	var entityDevicetype = Session.get(SessionManage.MAP.CHECKEDENTITYTEMPLATEID);
+	if(!entityDevicetype) return [];
 	SystemLogger("快速添加的设备类型是："+entityDevicetype);
-	return SvseEntityTemplateDao.getEntityMontityByDevicetype(entityDevicetype,true);
+	var addedEntityId = SessionManage.getAddedEntityId();
+	SystemLogger("快速添加的设备ID是："+addedEntityId);
+	var monitors = SvseEntityTemplateDao.getEntityMonitorByDevicetype(entityDevicetype,true); //true表示获取快速添加的监视器列表
+	SystemLogger("该设备监视器有：");
+	SystemLogger(monitors);
+	return monitors;
 }
+/**
+		Type:Add
+		Author:huyinghuan
+		Date:2013-10-16 15:00
+		Content:添加完设备后快速添加监视器时，获取相关监视器模板的动态属性
+		-----------
+		Deps.autorun(function(){.....
+		var getQuicklyMonitorsDynamicParams = function..................
+		------------
+		{
+			DynamicData:{
+				'C:': "C:"
+				'D:': "D:"
+			},
+			return:{
+				return : true
+			}
+
+		}
+**/
+Deps.autorun(function(){
+	var id = Session.get("ADDEDENTITYID");
+	if(!id)
+		return;
+	var entityDevicetype = Session.get(SessionManage.MAP.CHECKEDENTITYTEMPLATEID);
+	var monitors = SvseEntityTemplateDao.getEntityMonitorByDevicetype(entityDevicetype,true);
+	getQuicklyMonitorsDynamicParams(SessionManage.getAddedEntityId(),monitors);//"1.26.19"
+});
+//接收一个设备ID以及该设备相关的一组监视器模板
+var getQuicklyMonitorsDynamicParams = function(entityId,monitors){
+	if(!monitors || !monitors.length)
+		return;
+	var length = monitors.length;
+	var dynamicMonitors = [];
+	for(var i = 0 ; i < length ; i++){
+		if(!monitors[i]["property"]["sv_extradll"]) //如果没有动态属性
+			continue;
+		dynamicMonitors.push(monitors[i]["return"]["id"]);
+	}
+	SvseMonitorTemplateDao.getMonityDynamicPropertyDataArray(entityId,dynamicMonitors,function(status,result){
+		if(!status){
+			
+		}
+	});
+
+}
+
 var getQuicklyMonitorsParams = function(id){
 	console.log("getQuicklyMonitorsParams " + id);
 	var template =  SvseMonitorTemplateDao.getTemplateById(id);
@@ -66,7 +120,8 @@ Template.showQuickMonityTemplate.events = {
 	"click #showQuickMonityTemplateSaveBtn" : function () {
 		var checkeds = $("#quickMonitorList :checkbox[checked='checked']");
 		if(!checkeds.length){
-			Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
+		//	Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
+			$("#showQuickMonityTemplatediv").modal("hide");
 			return;
 		}
 		var templates = [];
@@ -83,14 +138,14 @@ Template.showQuickMonityTemplate.events = {
 				SystemLogger(result.msg,-1);
 			}else{
 				SystemLogger("刷新完成...");
-				$("#showQuickMonityTemplatediv").modal("hide");
-				SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
+		//		SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
 			}
+			$("#showQuickMonityTemplatediv").modal("hide");
 		});
 	},
 	"click #showQuickMonityTemplateCancelBtn" : function() {
 		//Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
 		$("#showQuickMonityTemplatediv").modal("hide");
-		SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
+	//	SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
 	}
 }

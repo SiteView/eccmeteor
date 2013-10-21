@@ -15,6 +15,14 @@ SvseWarnerRule = new Meteor.Collection("svse_warnerrule");//报警规则
    Content:修改"SvseTopNresultlist
   */
 SvseTopNresultlist = new Meteor.Collection("svse_TopNresultlist");//topN报告列表
+/*
+	Type：add
+	Author：xuqiang
+	Date:2013-10-18 09:20
+	Content:增加统计报告statistical Collection
+*/ 
+SvseStatisticalresultlist = new Meteor.Collection("Svse_Statisticalresultlist");//统计报告list
+
 Svse.allow({
 	insert: function (userId, doc) {
     // the user must be logged in, and the document must be owned by the user
@@ -102,6 +110,25 @@ SvseEmailList.allow({
 		return true;
 	}
 });
+
+/*
+Type： add 
+Author：xuqiang
+Date:2013-10-18 09:23
+Content:增加SvseStatisticalresultlist
+*/ 
+SvseStatisticalresultlist.allow({
+	insert: function (userId, doc) {
+		return true;
+	},
+	update: function (userId, doc, fields, modifier) {
+		return true;
+	},
+	remove: function (userId, doc) {
+		return true;
+	}
+});
+
 SvseWarnerRule.allow({
 	insert: function (userId, doc) {
 		return true;

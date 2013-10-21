@@ -2,7 +2,7 @@ Template.ChooseMonitorTemplate.monities = function(){
 //	var id = Session.get("checkedTreeNode")["id"];
 	var id = SessionManage.getCheckedTreeNode("id");
 	var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);
-	return SvseEntityTemplateDao.getEntityMontityByDevicetype(devicetype);
+	return SvseEntityTemplateDao.getEntityMonitorByDevicetype(devicetype);
 }
 Template.ChooseMonitorTemplate.events = {
 	"click tr a":function(e){
@@ -230,22 +230,22 @@ Template.showMonitorInfo.rendered = function(){
 				});
 			});
 		});
-		//在HelperRegister.js中createDomeByPropertyHelper 创建监视器属性时，可能出现dll类型属性，此时需要重新处理该属性对应的Dom元素
-		if($("select.dll:first").length){
+		//在HelperRegister.js中createDomeByPropertyHelper 创建监视器属性时，可能出现dll(通过Class="dynamicDll")类型动态属性，此时需要重新处理该属性对应的Dom元素
+		if($("select.dynamicDll:first").length){
 			(function(){		
 			//	var panrentid = Session.get("checkedTreeNode")["id"];
-				var panrentid = SessionManage.getCheckedTreeNode("id");
+				var entityId = SessionManage.getCheckedTreeNode("id");
 				var monitorstatus = ($("#monitorstatus").val() === "true" || $("#monitorstatus").val() === true) ;
 				if(monitorstatus){ //编辑状态
 				//	var monitorid = Session.get("checkedMonitorId")["id"];
-					var monitorid = SessionManage.setCheckedMonitorId();
-					var templateMonitoryId = SvseTreeDao.getMonitorTypeById(monitorid); //获取需编辑监视器的模板id
+					var monitorTemplateType = SessionManage.setCheckedMonitorId();
+					var templateMonitoryId = SvseTreeDao.getMonitorTypeById(monitorTemplateType); //获取需编辑监视器的模板id
 				}else{
 					templateMonitoryId = Session.get("monityTemplateId");
 				}			
-				console.log(panrentid+" : "+templateMonitoryId);
+				console.log(entityId+" : "+templateMonitoryId);
 				//获取某个监视器的动态属性
-				SvseMonitorTemplateDao.getMonityDynamicPropertyData(panrentid,templateMonitoryId,function(status,result){
+				SvseMonitorTemplateDao.getMonityDynamicPropertyData(entityId,templateMonitoryId,function(status,result){
 					if(!status){
 						SystemLogger(result,-1);
 						return;
@@ -253,7 +253,7 @@ Template.showMonitorInfo.rendered = function(){
 					var optionObj = result["DynamicData"];
 					for(name in optionObj){
 						var option = $("<option value='"+optionObj[name]+"'>"+name+"</option>");
-						$("select.dll:first").append(option);
+						$("select.dynamicDll:first").append(option);
 					}
 				});
 			})();
