@@ -7,9 +7,9 @@
 	setting:设置 属性如下：      ---------参数类型:Object  可选
 		time:3   窗体显示的时间,如：经过3秒后窗体自动关闭,若不指定则表示需要用户自己关闭. 默认为用户自己动作触发关闭 type:Int  单位:秒 为0时手动触发
 		align:"center"  文本对齐方式 ,默认选项"left" ,可选选项:left|center|right
-	用法如下：
+	用法如下：(测试的时候可以直接在浏览器的console运行)
 	Message.info("hello word",{align:"center",time:1})
-
+	
 */
 Message = {
 	//检查设置参数,设置弹窗内容

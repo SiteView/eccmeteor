@@ -12,13 +12,14 @@ error(content[,setting])
 		close: 是否可以被用户关闭 ,true:是,false否 ;默认为true  可选
 		id:为该提示信息div添加id ,可选.
 返回值：html字符串
-使用：
+使用：(测试的时候可以直接在浏览器的console运行)
 		MessageTip.info("hello world",{selector:"body div#hello",replace:true,close:false,id:"a1"},);
 	或者
 		MessageTip.info("hello world");
 2 可用函数：close
   关闭指定提示信息
    id:在error|warn|info时设置的id
+   
 使用:
 	MessageTip.close("id");
 **/
