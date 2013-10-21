@@ -150,7 +150,7 @@
 				<div class="control-group">
 					<label class="control-label">E-MAIL方式发送:</label>
 					<div class="controls">
-						<input type="email" name="EmailSend" /> EmailSend
+						<input type="email" name="EmailSend" />
 					 </div>
 			</div>
 			
@@ -209,6 +209,7 @@
 					<ul id="svse_tree_check" class="ztree"></ul>
 				</div>
 					<div class="span8">
+					{{#with statisticalofaddformeditform}}
 	<form id="statisticalofaddformedit" class="well form-horizontal form-inline">
 		<input type="hidden" name="nIndex" value="{{nIndex}}">
 		<fieldset>
@@ -305,6 +306,7 @@
 
 		</fieldset>
 	</form>
+	{{/with}}
 					</div>
 				
 			</div>

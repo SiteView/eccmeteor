@@ -86,18 +86,14 @@ $(function(){
 }
 
  //根据id编辑报告表单
-Template.statisticallist.events = {
+Template.statisticallist.events({
 "click td .btn":function(e){
 console.log(e.target.id);
-var result = SvseStatisticalDao.getStatisticalresult(e.target.id);
-$("#statisticalofedit").find(":text[name='Title']:first").val(result.Title);
-$("#statisticalofedit").find(":text[name='Descript']:first").val(result.Descript);
-$("#statisticalofedit").find(":text[name='EmailSend']:first").val(result.EmailSend);
-$("#statisticalofedit").find(":text[name='Generate']:first").val(result.Generate);
-$("#statisticalofedit").find(":text[name='EndTime']:first").val(result.EndTime);
-
-}
-}
+var result = SvseStatisticalDao.getStatisticalById(e.target.id);
+ 	Session.set("emailbasicsettingofaddressbasciinfoeditform",result);
+	$('#statisticalofadddivedit').modal('toggle');
+	}
+});
 Template.statisticalofadd.rendered = function(){
 	//监视器选择树
 	$(function(){
