@@ -115,8 +115,8 @@ SvseEntityTemplateDao = {
 			}
 		});
 	},
-	getEntityMontityByDevicetype:function(type,status){ //获取设备的可以添加监视器 status控制是否为快速添加的监视器 true 快速添加，false为选择添加，默认为选择添加
-		SystemLogger("SvseEntityTemplate.js 的getQuickAddMontityByDevicetype打印：");
+	getEntityMonitorByDevicetype:function(type,status){ //获取设备的可以添加监视器 status控制是否为快速添加的监视器 true 快速添加，false为选择添加，默认为选择添加
+		SystemLogger("SeseEntityTemplate.js getEntityMonitorByDevicetype 打印：");
 		template = SvseEntityTemplet.findOne({"return.id":type});
 		if(!template){
 			SystemLogger("找不到设备"+type);
@@ -127,8 +127,6 @@ SvseEntityTemplateDao = {
 			SystemLogger("该设备"+type+"不存在监视器");
 			return [];
 		}
-		SystemLogger("该设备监视器有：");
-		SystemLogger(monityIds);
 		var monities = SvseMonitorTemplate.find({"return.id":{$in:monityIds}}).fetch();
 		return monities;
 	}

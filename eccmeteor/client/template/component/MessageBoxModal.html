@@ -1,0 +1,18 @@
+<!--信息提示弹窗-->
+<Template name="MessageBoxModal">
+	<div id="MessageBoxModal" class="modal hide"
+		data-backdrop="false" data-keyboard="false" data-show="false" data-modalOverflow="true"
+		data-width="400"
+		>
+	</div>
+	</div>
+</Template>
+<!--信息提示提示弹窗内容模板-->
+<Template name="AlerBox">
+	<div class="modal-body" style="padding:0px">
+		<div id="AlerBox" class="alert alert-{{type}}" style="margin-bottom:0px" align="{{align}}">  
+	  		<a class="close" data-dismiss="alert">×</a>
+	 		 <strong>{{content}}</strong> 
+		</div>
+	</div> 
+</Template>

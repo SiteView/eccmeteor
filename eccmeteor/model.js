@@ -8,12 +8,18 @@ SvseTask = new Meteor.Collection("svse_task"); //计划任务
 SvseEmailList = new Meteor.Collection("svse_emaillist");//邮件列表
 SvseMessageList = new Meteor.Collection("svse_messagelist");//短信列表
 SvseWarnerRule = new Meteor.Collection("svse_warnerrule");//报警规则
-SvseTopN = new Meteor.Collection("svse_topN");//topN报告(2011/10/11)
+/*‌
+   Type：  modify ‌
+   Author：任杰‌
+   Date:2013-10-16 10:40‌
+   Content:修改"SvseTopNresultlist
+  */
+SvseTopNresultlist = new Meteor.Collection("svse_TopNresultlist");//topN报告列表
 /*
-Type：add
-Author：xuqiang
-Date:2013-10-18 09:20
-Content:增加统计报告statistical Collection
+	Type：add
+	Author：xuqiang
+	Date:2013-10-18 09:20
+	Content:增加统计报告statistical Collection
 */ 
 SvseStatisticalresultlist = new Meteor.Collection("Svse_Statisticalresultlist");//统计报告list
 
@@ -146,8 +152,14 @@ SvseMessageList.allow({
 		return true;
 	}
 });
-/*2013/10/11*/
-SvseTopN.allow({
+//TopN报告list
+/*‌
+   Type：  modify ‌
+   Author：任杰‌
+   Date:2013-10-16 10:40‌
+   Content:修改"SvseTopNresultlist
+  */
+SvseTopNresultlist.allow({
 	insert: function (userId, doc) {
 		return true;
 	},

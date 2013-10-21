@@ -345,11 +345,20 @@ svGetWarnerRule = function(){
 			"user":"default","sections":"default"}, 0);
 	return robj.fmap(0);;
 }
-//获取TopN报告列表(2013/10/11)
-svGetTopN = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"alert.ini",
+//获取TopN报告列表(2013/10/16)
+/*
+Type：   add 
+Author：renjie
+Date:2013-10-18 13:40
+Content:增加svGetTopNList的操作，获取统计报告列表
+*/ 
+svGetTopNList = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"topnreportset.ini",
 			"user":"default","sections":"default"}, 0);
-	return robj.fmap(0);;
+	if(!robj.isok(0)){
+		}
+		var fmap= robj.fmap(0);
+		return fmap;
 }
 //邮件测试
 svEmailTest = function(emailSetting){
@@ -669,25 +678,22 @@ svWriteAlertStatusInitFileSection = function(sectionName,status){
 	return robj.fmap(0);
 }
 /*====================SvseTopN==============*/
-//新添加2013/10/11
-//topnrepor.ini文件写入
-svWriteTopNReportsetIniFileSectionString = function(sectionname,section){
-	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"alert.ini",'user':"default",'section':sectionname},0); 
-//	console.log(robj.fmap(0));
-	return robj.fmap(0);
-}
 
-//topnreport.ini 删除
-svDeleteTopNReportInitFileSection = function(ids){
-	var dowhat = {
-		'dowhat' : 'DeleteIniFileSection',
-		'filename' : "alert.ini",
-		'user' : "default",
-		"sections" : ids
-	};
-	var robj = process.sv_univ(dowhat,0);
+//topn.ini文件写入
+/*
+Type：add|modify
+Author：renjie	
+Date:2013-10-18 13:40
+Content:统计报告 topn.ini写入
+*/ 
+svWriteTopNIniFileSectionString = function(sectionname,section){
+	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"topnreportset.ini",'user':"default",'section':addressname},0); 
+//	console.log(robj.fmap(0));
+	if(!robj.isok(0)){
+	SystemLogger(robj.estr(0),-1);
+	return false;
+	}
 	return robj.fmap(0);
-	
 }
 
 //改变TopN状态
@@ -701,4 +707,30 @@ svWriteTopNReportStatusInitFileSection = function(sectionName,status){
 		"value" : status
 	}, 0);
 	return robj.fmap(0);
+}
+
+/*
+	Type:add file about message.ini
+	Author:zhuqing
+	Date:2013-10-16  16:47
+	content:SvseMessage使用部分
+**/
+/*============SvseMessage===============*/
+//smsphoneset.ini文件写入
+svWriteMessageIniFileSectionString = function(messagename,message){
+	var robj= process.sv_submit(message,{'dowhat':'WriteIniFileSection','filename':"smsphoneset.ini",'user':"default",'section':messagename},0); 
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	return robj.fmap(0);
+}
+//获取短信列表
+svGetMessageList = function(){
+		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"smsphoneset.ini",
+			"user":"default","sections":"default"}, 0);
+		if(!robj.isok(0)){
+		}
+		var fmap= robj.fmap(0);
+		return fmap;
 }

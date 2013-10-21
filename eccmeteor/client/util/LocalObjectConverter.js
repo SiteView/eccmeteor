@@ -1,6 +1,13 @@
 /**
 	将服务端的对象转成本地标准化对象，为其转Dom元素做准备
 **/
+/**
+		Type:fix bug
+		Author:huyinghuan
+		Date:2013-10-16 16:20
+		Content:修复监视器动态属性的支持
+		-----------if(obj.type == "select").....------------
+**/
 LocalObjectConverter = {
 	//监视器模板参数转本地对象
 	convertMonityTemplateParameter : function(paramter){
@@ -20,6 +27,8 @@ LocalObjectConverter = {
 											}
 											return obj[$0];
 										})
+		if(obj.type == "select")
+			obj.clazz = paramter["sv_dll"] ? "dynamicDll":false; //通过sv_extradll属性判断监视器类型是否具有动态属性
 		return obj;
 	}
 }

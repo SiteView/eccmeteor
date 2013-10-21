@@ -23,7 +23,7 @@ Template.operateNode.statisticalData = function(){
 //增删改操作Template
 Template.operateNode.events ={
 	"click .btn#addGroup":function(){
-	    $("#showGroupAdddiv").modal('show');
+		$("#showGroupAdddiv").modal('show');
 	},
 	"click .btn#editGroup":function(){
 	},
@@ -44,8 +44,9 @@ Template.operateNode.events ={
 	    SvseDao.enableNode(groupsIds,function(err){});
 	},
 	"click .btn#addEntity":function(){
-		SwithcView.view(MONITORVIEW.ENTITYGROUP);//设置视图状态
-		SwithcView.render(MONITORVIEW.ENTITYGROUP,LAYOUTVIEW.NOTOPERATION);
+	//	SwithcView.view(MONITORVIEW.ENTITYGROUP);//设置视图状态
+	//	SwithcView.render(MONITORVIEW.ENTITYGROUP,LAYOUTVIEW.NOTOPERATION);
+		$("#entitiesGroupByTypeDiv").modal('show');
 	},
 	"click .btn#editEntity":function(){
 		if(!SessionManage.getCheckedTreeNode() || SessionManage.getCheckedTreeNode("type") !== "entity")
