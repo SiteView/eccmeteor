@@ -18,6 +18,20 @@ Template.statistical.events = {
 }
 //弹窗初始化
 Template.statistical.rendered = function(){
+
+	$(function(){
+		$('#datereportdiv').modal({
+			backdrop:true,
+			keyboard:true,
+			show:false
+		}).css({
+			width: '800',
+			'margin-left': function () {
+				return -($(this).width() / 2);
+			},
+		});
+	});
+	
 }
 
 Template.statisticalofadd.events = {
@@ -58,7 +72,7 @@ Template.statisticallist.statisticalresultlist = function(){
 }
 
 Template.statisticallist.rendered = function(){
-	$(function(){
+$(function(){
 		 //隐藏所有操作按钮
 		ClientUtils.hideOperateBtnInTd("statisticallist");
 		  //初始化 checkbox事件
@@ -67,22 +81,19 @@ Template.statisticallist.rendered = function(){
 		ClientUtils.trOfTableClickedChangeColor("statisticallist");
 		 //tr 鼠标悬停显示操作按钮效果
 		 ClientUtils.showOperateBtnInTd("statisticallist");
-		 
-	});
+	 
+});
 }
 
  //根据id编辑报告表单
-Template.statisticallist.events = {
-	"click td .btn":function(e){
-		console.log(e.target.id);
-		var result = SvseStatisticalDao.getStatisticalresult(e.target.id);
-		$("#statisticalofedit").find(":text[name='Title']:first").val(result.Title);
-		$("#statisticalofedit").find(":text[name='Descript']:first").val(result.Descript);
-		$("#statisticalofedit").find(":text[name='EmailSend']:first").val(result.EmailSend);
-		$("#statisticalofedit").find(":text[name='Generate']:first").val(result.Generate);
-		$("#statisticalofedit").find(":text[name='EndTime']:first").val(result.EndTime);
+Template.statisticallist.events({
+"click td .btn":function(e){
+console.log(e.target.id);
+var result = SvseStatisticalDao.getStatisticalById(e.target.id);
+ 	Session.set("emailbasicsettingofaddressbasciinfoeditform",result);
+	$('#statisticalofadddivedit').modal('toggle');
 	}
-}
+});
 Template.statisticalofadd.rendered = function(){
 	//监视器选择树
 	$(function(){
