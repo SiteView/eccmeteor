@@ -18,7 +18,7 @@ Meteor.methods({
   "svseEntityTemplateDaoAgent":SvseEntityTemplateDaoAgent.agent,
   "svseWarnerRuleDaoAgent":SvseWarnerRuleDaoAgent.agent,
   "svseMonitorTemplateDaoAgent":SvseMonitorTemplateDaoAgent.agent,
-  "SvseTopNDaoAgent":SvseTopNDaoAgent.agent
+  "SvseTopNDaoAgent":SvseTopNDaoAgent.agent,
   "SvseStatisticalDaoAgent":SvseStatisticalDaoAgent.agent
 });//给客户端调用的
  /**

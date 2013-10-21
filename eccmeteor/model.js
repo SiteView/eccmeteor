@@ -14,8 +14,7 @@ SvseWarnerRule = new Meteor.Collection("svse_warnerrule");//报警规则
    Date:2013-10-16 10:40‌
    Content:修改"SvseTopNresultlist
   */
-//SvseTopNresultlist = new Meteor.Collection("svse_TopNresultlist");//topN报告列表
-SvseTopN = new Meteor.Collection("svse_topN");//topN报告(2011/10/11)
+SvseTopNresultlist = new Meteor.Collection("svse_TopNresultlist");//topN报告列表
 /*
 	Type：add
 	Author：xuqiang
