@@ -49,7 +49,9 @@ var getQuicklyMonitorsDynamicParams = function(entityId,monitors){
 			continue;
 		dynamicMonitors.push(monitors[i]["return"]["id"]);
 	}
+	LoadingModal.loading();
 	SvseMonitorTemplateDao.getMonityDynamicPropertyDataArray(entityId,dynamicMonitors,function(status,result){
+		LoadingModal.loaded();
 		if(!status){
 			Messsage.error(result);
 			return;

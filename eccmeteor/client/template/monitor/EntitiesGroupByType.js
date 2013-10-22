@@ -17,3 +17,9 @@ Template.EntitiesGroupByType.events({
 		$("#showAddEntityDiv").modal("show");
 	}
 })
+
+Template.EntitiesGroupByType.rendered = function(){
+	$("#entitiesGroupByTypeDiv").draggable({
+    	handle: ".modal-header"
+	});
+}
