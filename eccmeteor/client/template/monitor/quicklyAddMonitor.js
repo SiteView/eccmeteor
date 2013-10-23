@@ -124,6 +124,14 @@ var getQuicklyMonitorsParams = function(id){
 	return monitor;
 }
 
+Template.QuickMonitorDynamicService.rendered = function(){
+	$(function(){
+		$("div#QuickMonitorDynamicService :checkbox").click(function(){
+			console.log(hello);
+		});
+	})
+}
+
 Template.showQuickMonityTemplate.events = {
 	"click #chooseallqucikmonitor" : function () {
 		$("#quickMonitorList :checkbox").each(function(){
@@ -166,4 +174,10 @@ Template.showQuickMonityTemplate.events = {
 		$("#showQuickMonityTemplatediv").modal("hide");
 	//	SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
 	}
+}
+
+Template.showQuickMonityTemplate.rendered = function(){
+	$("#showQuickMonityTemplatediv").draggable({
+    	handle: ".modal-header"
+	});
 }

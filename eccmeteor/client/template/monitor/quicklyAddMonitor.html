@@ -1,5 +1,5 @@
 <Template name="showQuickMonityTemplate">
-	<div id="showQuickMonityTemplatediv" class="modal hide fade"
+	<div id="showQuickMonityTemplatediv" class="modal hide"
 		data-backdrop="static" data-keyboard="true" data-show="false" 
 		data-modalOverflow="true" data-maxHeight='600'>
 	    <div class="modal-header">添加监视器{{ide "showQuickMonityTemplate"}}</div>
@@ -21,7 +21,7 @@
 			<div><input type="checkbox" id="MonitorDynamicPropertyCheckBox{{return.id}}">{{property.sv_description}}</div>
 			<div style="max-height:200px;overflow:auto">
 				<div id="MonitorDynamicProperty{{return.id}}">
-					<p><input type="checkbox" id=""><span>{{property.sv_name}}</span></p>
+					<p><input type="checkbox" value="{{property.sv_name}}"><span>{{property.sv_name}}</span></p>
 				</div>
 			</div>
 		</div>

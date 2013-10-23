@@ -1,7 +1,7 @@
 SvseEntityTemplateDao = {
 	AGENT:"svseEntityTemplateDaoAgent",
 	getEntityGroup:function(){//获取设备分组数据
-		return SvseEntityTempletGroup.find({}).fetch();
+		return SvseEntityTempletGroup.find({},{sort:{sv_index:1}}).fetch();
 	},
 	//获取设备模板的属性  ,若第二个属性name存在,则获取模板的属性值
 	getEntityPropertyById:function(id,name){
