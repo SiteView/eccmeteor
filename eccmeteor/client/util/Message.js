@@ -1,4 +1,9 @@
 var setContent = function(content,type,setting){
+		var selector = "#MessageBoxModal";
+		if(type === "close"){
+			$(selector).modal("hide");
+			return;
+		}
 		//Log4js[type](content);
 		type = type === "warn" ? "block" : type;//转成相应样式
 		var obj = {
@@ -11,8 +16,8 @@ var setContent = function(content,type,setting){
 			var html = Meteor.render(function(){
 					return Template.AlerBox(obj);
 				})
-			$("#MessageBoxModal").empty().append(html);
-			$("#MessageBoxModal").modal("show");
+			$(selector).empty().append(html);
+			$(selector).modal("show");
 			return;
 		}
 		if(typeof(setting.time) === "number")
@@ -24,8 +29,8 @@ var setContent = function(content,type,setting){
 					return Template.AlerBox(obj);
 				})
 			console.log("4");
-		$("#MessageBoxModal").empty().append(html);
-		$("#MessageBoxModal").modal("show");
+		$(selector).empty().append(html);
+		$(selector).modal("show");
 		console.log(obj.time);
 		if(obj.time){
   			Meteor.setTimeout(Message.close,obj.time*1000);
@@ -47,17 +52,29 @@ var setContent = function(content,type,setting){
 	手动强制关闭弹窗
 */
 /**调整对象。避免不必要的函数暴露。**/
-Message = {
-	error : function(content,setting){
-		setContent(content,"error",setting);
-	},
-	warn : function(content,setting){
-		setContent(content,"warn",setting);
-	},
-	info : function(content,setting){
+Message = {};
+Object.defineProperties(Message,{
+  "info":{
+    "value":function(content,setting){
 		setContent(content,"info",setting);
 	},
-	close:function(){
-		$("#MessageBoxModal").modal("hide");
+    "writable": false,
+    "enumerable": false,
+    "configurable": false
+  },
+  "warn":{
+    "value":function(content,setting){
+		setContent(content,"warn",setting);
 	}
-};
+  },
+  "error":{
+    "value":function(content,setting){
+		setContent(content,"error",setting);
+	}
+  },
+  "close":{
+  	"value":function(){
+		setContent(null,"close");
+  	}
+  }
+});

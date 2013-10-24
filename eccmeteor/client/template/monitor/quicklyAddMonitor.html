@@ -17,11 +17,13 @@
 </Template>
 <Template name="QuickMonitorDynamicService">
 	{{#each monities}}
-		<div id="QuickMonitorDynamicService">
-			<div><input type="checkbox" id="MonitorDynamicPropertyCheckBox{{return.id}}">{{property.sv_description}}</div>
-			<div style="max-height:200px;overflow:auto">
+		<div class="QuickMonitorDynamicService">
+			<div class="QuickMonitorDynamicServiceSelectParent">
+				<input type="checkbox"  name="{{ParameterItem_1.sv_name}}" id="MonitorDynamicPropertyCheckBox{{return.id}}">{{property.sv_description}}
+			</div>
+			<div class="QuickMonitorDynamicServiceSelectChildren" style="max-height:200px;overflow:auto">
 				<div id="MonitorDynamicProperty{{return.id}}">
-					<p><input type="checkbox" value="{{property.sv_name}}"><span>{{property.sv_name}}</span></p>
+					<p><input type="checkbox" name="{{ParameterItem_1.sv_name}}" value="{{property.sv_name}}"><span>{{property.sv_name}}</span></p>
 				</div>
 			</div>
 		</div>

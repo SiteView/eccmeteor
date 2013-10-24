@@ -19,7 +19,5 @@ Template.EntitiesGroupByType.events({
 })
 
 Template.EntitiesGroupByType.rendered = function(){
-	$("#entitiesGroupByTypeDiv").draggable({
-    	handle: ".modal-header"
-	});
+	ModalDrag.draggable("#entitiesGroupByTypeDiv");
 }

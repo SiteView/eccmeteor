@@ -23,9 +23,13 @@ error(content[,setting])
 使用:
 	MessageTip.close("id");
 **/
-MessageTip = {
-	prefix:"_MESSAGETIOIDS_",
-	getContent:function(content,type,setting){
+MessageTip = {};
+Object.defineProperties(MessageTip,{
+  "prefix":{
+  	"value":"_MESSAGETIOIDS_"
+  },
+  "getContent":{
+  	"value":function(content,type,setting){
 		var contentObj = {
 			align:"left",
 			close:true,
@@ -59,21 +63,32 @@ MessageTip = {
 			}
 		}
 		return html;
-	},
-	error:function(content,setting){
-		return MessageTip.getContent(content,"error",setting);
-	},
-	warn:function(content,setting){
-		return MessageTip.getContent(content,"block",setting);
-	},
-	info:function(content,setting){
+	}
+  },
+  "info":{
+    "value":function(content,setting){
 		return MessageTip.getContent(content,"info",setting);
-	},
-	success:function(content,setting){
-		return MessageTip.getContent(content,"success",setting);
-	},
-	close:function(id){
+	}
+  },
+  "warn":{
+    "value":function(content,setting){
+		return MessageTip.getContent(content,"block",setting);
+	}
+  },
+  "error":{
+    "value":function(content,setting){
+		return MessageTip.getContent(content,"error",setting);
+	}
+  },
+  "success":{
+  	"value":function(content,setting){
+  		return MessageTip.getContent(content,"success",setting);
+  	}
+  },
+  "close":{
+  	"value":function(id){
 		var sid = "#"+MessageTip.prefix + id
 		$(sid).alert('close');
 	}
-}
+  }
+});

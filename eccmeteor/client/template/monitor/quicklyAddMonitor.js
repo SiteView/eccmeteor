@@ -31,7 +31,7 @@ Template.QuickMonitorDynamicService.monities = function(){
 		}
 **/
 Deps.autorun(function(){
-	var id = Session.get("ADDEDENTITYID");
+	var id = Session.get(SessionManage.MAP.ADDEDENTITYID);
 	if(!id)
 		return;
 	var entityDevicetype = Session.get(SessionManage.MAP.CHECKEDENTITYTEMPLATEID);
@@ -67,7 +67,7 @@ var setQuicklyMonitorsDynamicParamsToDom = function(monitors){
 	var length = monitors.length;
 	for(index = 0; index < length; index++){
 		var monitor = monitors[index];
-		var seletor = "div#QuickMonitorDynamicService div#MonitorDynamicProperty"+monitor["temlpateId"];
+		var seletor = "div.QuickMonitorDynamicService div#MonitorDynamicProperty"+monitor["temlpateId"];
 		var html = Meteor.render(function(){
 			return Template.QuickMonitorDynamicProperty(monitor);
 		})
@@ -124,14 +124,17 @@ var getQuicklyMonitorsParams = function(id){
 	return monitor;
 }
 
-Template.QuickMonitorDynamicService.rendered = function(){
-	$(function(){
-		$("div#QuickMonitorDynamicService :checkbox").click(function(){
-			console.log(hello);
-		});
-	})
-}
-
+Template.QuickMonitorDynamicService.events({
+	"click div.QuickMonitorDynamicServiceSelectParent :checkbox":function(e){
+		var checked = e.currentTarget.checked
+		$(e.currentTarget).parents("div.QuickMonitorDynamicService")
+							.children("div.QuickMonitorDynamicServiceSelectChildren")
+							.find(":checkbox")
+							.each(function(){
+								this.checked = checked;
+							});
+	}
+});
 Template.showQuickMonityTemplate.events = {
 	"click #chooseallqucikmonitor" : function () {
 		$("#quickMonitorList :checkbox").each(function(){
@@ -177,7 +180,5 @@ Template.showQuickMonityTemplate.events = {
 }
 
 Template.showQuickMonityTemplate.rendered = function(){
-	$("#showQuickMonityTemplatediv").draggable({
-    	handle: ".modal-header"
-	});
+	ModalDrag.draggable("#showQuickMonityTemplatediv");
 }
