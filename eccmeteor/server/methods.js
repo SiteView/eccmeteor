@@ -71,16 +71,13 @@ SvseMethodsOnServer = {
 	"svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
 	"svWriteTopNIniFileSectionString":svWriteTopNIniFileSectionString,
 	"svGetTopNList": svGetTopNList,
-<<<<<<< HEAD
 	"svDeleteTopNIniFileSection":svDeleteTopNIniFileSection,
-=======
 	"svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
 	"svWriteMessageIniFileSectionString":svWriteMessageIniFileSectionString,
 	"svGetMessageList":svGetMessageList,
 	"svWriteStatisticalIniFileSectionString":svWriteStatisticalIniFileSectionString,
 	"svGetStatisticalList": svGetStatisticalList,
 	"svDeleteStatisticalIniFileSection":svDeleteStatisticalIniFileSection,
->>>>>>> branch 'meteorite' of https://github.com/SiteView/eccmeteor.git
 }
 
 SvseSyncData = {

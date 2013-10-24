@@ -696,7 +696,6 @@ svWriteTopNIniFileSectionString = function(addressname,address){
 	return robj.fmap(0);
 }
 
-<<<<<<< HEAD
 //topnreport.ini 删除
 svDeleteTopNIniFileSection = function(ids){
 	var dowhat = {
@@ -709,8 +708,11 @@ svDeleteTopNIniFileSection = function(ids){
 	return robj.fmap(0);
 	
 }
-=======
-//改变TopN状态
+/*
+Type：   delete 
+Author：renjie
+Date:2013-10-23 13:40
+Content: 删除 //改变TopN状态
 svWriteTopNReportStatusInitFileSection = function(sectionName,status){
 	var robj = process.sv_univ({
 		'dowhat' : 'WriteIniFileString',
@@ -722,6 +724,7 @@ svWriteTopNReportStatusInitFileSection = function(sectionName,status){
 	}, 0);
 	return robj.fmap(0);
 }
+*/ 
 
 /*
 	Type:add file about message.ini
@@ -748,4 +751,4 @@ svGetMessageList = function(){
 		var fmap= robj.fmap(0);
 		return fmap;
 }
->>>>>>> branch 'meteorite' of https://github.com/SiteView/eccmeteor.git
+
