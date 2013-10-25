@@ -17,5 +17,12 @@ initDateAtStartUp = {
 	"initWarnerRuleAtStartUp":initWarnerRuleAtStartUp,
 	"initAdminAccount":initAdminAccount,
 	"initTopNListAtStartUp":initTopNListAtStartUp,
-	"initMessageListAtStartUp":initMessageListAtStartUp
+	"initMessageListAtStartUp":initMessageListAtStartUp,
+/*
+Type： add 
+Author：xuqiang
+Date:2013-10-24 12:00
+Content:initStatisticalList.js ////initStatisticalAtStartUp
+*/ 
+	"initStatisticalAtStartUp":initStatisticalAtStartUp
 };

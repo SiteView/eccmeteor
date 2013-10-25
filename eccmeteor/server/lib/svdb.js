@@ -582,6 +582,27 @@ svDeleteStatisticalIniFileSection = function(ids){
 	return robj.fmap(0);
 }
 
+/*
+Type：add 
+Author：xuqiang
+Date:2013-10-24 17：20
+Content:增加统计报表允许，禁止状态的改变
+*/ 
+svWriteStatisticalStatusInitFilesection = function(sectionName,status){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "reportset.ini",
+		'user' : "default",
+		'section' : sectionName,
+		"key" : "bCheck",
+		"value" : status
+	},0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	return robj.fmap(0);
+}
 //更改邮件状态
 svWriteEmailAddressStatusInitFilesection = function(sectionName,status){
 	var robj = process.sv_univ({
