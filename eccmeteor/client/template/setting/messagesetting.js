@@ -3,58 +3,53 @@ Template.messagesetting.events={
 	"click #addmessagesetting": function(){
 		$('#addmessagesettingdiv').modal('show');
 		console.log("弹出");
-	}
+	},
+	"click #delmessagesetting" : function(){
+		var checks = $("#messageSettingList :checkbox[checked]");
+		var ids = [];
+		for(var i = 0 ; i < checks.length; i++){
+			ids.push($(checks[i]).attr("id"));
+		}
+		if(ids.length)
+			SvseMessageDao.deleteMessageByIds(ids,function(result){
+				SystemLogger(result);
+			});
+	},
+	"click #allowmessagesetting" : function(){  //启用邮件地址
+		var checks = $("#messageSettingList :checkbox[checked]");
+		var ids = [];
+		for(var i = 0 ; i < checks.length; i++){
+			ids.push($(checks[i]).attr("id"));
+		}
+		if(ids.length)
+			SvseMessageDao.updateMessageStatus(ids,"0",function(result){
+				SystemLogger(result);
+			});
+	},
+	"click #forbidmessagesetting" : function(){ //禁用邮件地址
+		var checks = $("#messageSettingList :checkbox[checked]");
+		var ids = [];
+		for(var i = 0 ; i < checks.length; i++){
+			ids.push($(checks[i]).attr("id"));
+		}
+		if(ids.length)
+			SvseMessageDao.updateMessageStatus(ids,"1",function(result){
+				SystemLogger(result);
+			});
+	},
 }
 
 Template.messagesetting.rendered=function(){
 	$(function(){
 		//隐藏所有操作按钮
-		ClientUtils.hideOperateBtnInTd("messagesettingList");
+		ClientUtils.hideOperateBtnInTd("messageSettingList");
 		//初始化 checkbox事件
 	    ClientUtils.tableSelectAll("messagesettingtableselectall");  
 	    //初始化tr点击变色效果
-		ClientUtils.trOfTableClickedChangeColor("messagesettingList");
+		ClientUtils.trOfTableClickedChangeColor("messageSettingList");
 		//tr 鼠标悬停显示操作按钮效果
-		ClientUtils.showOperateBtnInTd("messagesettingList");
+		ClientUtils.showOperateBtnInTd("messageSettingList");
 	});
-}
-
-//点击保存、取消按钮时的事件----
-Template.messagebasicsettingofadd.events = {
-
-	"click #messagesettingcancelbtn": function(){
-		$('#addmessagesettingdiv').modal('hide');
-		console.log("执行取消");
-	},
-	
-	"click #messagebasicsettingofsavebtn": function(){
-		var messagebasicsettingofbasciinfo = ClientUtils.formArrayToObject($("#messagebasicsettingofbasciinfo").serializeArray());
-		var nIndex = Utils.getUUID();
-		messagebasicsettingofbasciinfo["nIndex"] = nIndex
-	//	console.log(emailbasicsettingofaddressbasciinfo);
-		var message = {};
-		message[nIndex] = messagebasicsettingofbasciinfo;
-		SvseEmailDao.addEmailAddress(nIndex,message,function(result){
-			SystemLogger(result);
-			$('#addmessagesettingdiv').modal('toggle');
-		});
-		console.log("保存");
-	}
-}
-
-Template.messagebasicsettingofadd.rendered = function(){
-	$(function(){
-		$("button#messagesettingcancelbtn").click(function(){
-			console.log("hello");
-			$('#addmessagesettingdiv').modal('hide');
-		});
-	});
-}
-
-Template.editmessagebasicsetting.events = {
-	"click #editmessagebasicsettingofcancelbtn":function(){
-		$('#editmessagesettingdiv').modal('toggle');
-	},
 }
 
 //获取messagelist的集合
@@ -65,6 +60,31 @@ Template.messagesettingList.messagelist = function(){
 
 Template.messagesettingList.events({
 	"click td .btn":function(e){
-		$('#editmessagesettingdiv').modal('toggle');
+		console.log(e.target.id);
+		var result = SvseMessageDao.getMessageById(e.target.id);
+		//console.log(result);
+		var template = result["Template"];
+		console.log("Template:"+result["Template"]);
+		var status = result["Status"];
+		$("#messagebasicsettingofmessagetemplatelistedit option").each(function(){
+			if($(this).val() === template) this.checked = true;
+		});
+		$(":checkbox[name='Status']").each(function(){
+			if($(this).val() === status) this.checked = true;
+		});
+		Session.set("messagebasicsettingofmessagebasciinfoeditform",result);
+		console.log("nIndex:",result["nIndex"]);
+		$('#editmessagesettingdiv').modal('show');
 	}
 });
+
+Template.sendingmessagemethods.rendered=function(){
+	SvseMessageDao.getMessageDllName(function(err,result){
+		console.log(result);
+		for(name in result){
+			console.log("dllname:"+name);
+			var option = $("<option value="+name+"></option>").html(name)
+			$("#sendmessageofdllnamelist").append(option);
+		}
+	});
+}

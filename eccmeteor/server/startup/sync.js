@@ -225,6 +225,29 @@ Content:增加和修改 SyncTopNList
 		}
 		SystemLogger("扫描 SyncTopNresultlist 变动结束。。");
 	},
+	/*
+		Author:zhuqing
+		Data:2013-10-23 10:00
+		Content:添加 SyncMessageList
+	*/
+	//同步短信列表
+	'SyncMessageList':function(){
+		SystemLogger("扫描 SyncMessageList 变动开始。。");
+		var list = SvseMethodsOnServer.svGetMessageList();
+		if(!list){
+			SystemLogger("初始化短信列表失败",-1);
+			return;
+		}
+		for(itemname in list){
+			if(itemname.indexOf("return") !== -1) continue;
+			var item = list[itemname];
+			var flag = Utils.compareObject(item,SvseMessageList.findOne({nIndex:item["nIndex"]}),{_id:true});
+			if(flag) continue;
+			SvseMessageList.update({nIndex:item["nIndex"]},item);
+		}
+		SystemLogger("扫描 SyncMessageList 变动结束。。");
+	},
+	
 	'sync' : function(){
 		SystemLogger("扫描变动开始。。");
 		SyncFunction.SyncTreeNodeData();
@@ -232,6 +255,7 @@ Content:增加和修改 SyncTopNList
 		SyncFunction.SyncEmailList();
 		SyncFunction.SyncWarnerRules();
 		SyncFunction.SyncTopNList();
+		SyncFunction.SyncMessageList();
 		SystemLogger("扫描变动结束。。");
 		SyncFunction.SyncStatisticalList();
 	}

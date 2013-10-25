@@ -2,8 +2,8 @@
 {{>messagesettingopratebtn}}
 <br/>
 {{> messagesettingList}}
-{{> messagebasicsettingofadd}}
 {{> sendingmessagemethods}}
+{{> messagebasicsettingofadd}}
 {{> editmessagebasicsetting}}
 {{ide messagesetting}}
 </Template>
@@ -47,15 +47,15 @@
 				<th></th>
 			</tr>
 		</thead>
-		<tbody id="messagesettingList">
+		<tbody id="messageSettingList">
 			{{#each messagelist}}
 			<tr>
-				<td><input type="checkbox" id="{{_id}}"></td>
+				<td><input type="checkbox" id="{{nIndex}}"></td>
 				<td>{{Name}}</td>
 				<td>{{Status}}</td><td>{{Phone}}</td>
 				<td>
 					<div class="btn-group">
-						<button id="{{_id}}" class="btn"><i class="icon-edit"></i> {{language.messagesettingmodel.editbtn}}</button>
+						<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i> {{language.messagesettingmodel.editbtn}}</button>
 					</div>
 				</td>
 			</tr>
@@ -79,15 +79,15 @@
 			<div id="methodsendforweb">
 				<div class="controls">
 					<label class="control-label">用户名*：&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="text"  name="name"></label>
+					<input type="text"  name="User"></label>
 				</div>
 				<div class="controls">
 					<label class="control-label">密&nbsp;&nbsp;&nbsp;&nbsp;码*：&nbsp;&nbsp;&nbsp;
-					<input type="password"  name="pwd"></label>
+					<input type="password"  name="Pwd"></label>
 				</div>
 				<div class="controls">
-					<label class="control-label">信息长度*：<input type="text"  name="messagelong" value="0">
-					<span style="color:#f00">短信最大长度为0</span></label>
+					<label class="control-label">信息长度*：<input type="text"  name="Length" value="0">
+					<span style="color:#f00">短信最大长度为70</span></label>
 				</div>
 				<div class="controls" style="padding-left:88px">
 					<button class="btn" id="webmessagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
@@ -101,7 +101,7 @@
 			<div id="methodsendforcom">
 				<div class="controls">
 					<label class="control-label">端口号*：&nbsp;&nbsp;&nbsp;
-					<select name="port">
+					<select name="Port">
 						<option value="COM1" checked>COM1</option>
 						<option value="COM2">COM2</option>
 						<option value="COM3">COM3</option>
@@ -109,8 +109,8 @@
 					</select></label>
 				</div>
 				<div class="controls">
-					<label class="control-label">信息长度*：<input type="text"  name="messagelong" value="0">
-					<span style="color:#f00">短信最大长度为0</span></label>
+					<label class="control-label">信息长度*：<input type="text"  name="length" value="0">
+					<span style="color:#f00">短信最大长度为70</span></label>
 				</div>
 			</div>
 			<div class="controls" style="padding-left:88px">
@@ -123,15 +123,12 @@
 			<div id="methodsendforlib">
 				<div class="controls">
 					<label class="control-label">动态库名称*：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<select name="libname">
-						<option value="COM1" checked>SMSend(EIC-NS20).dll</option>
-						<option value="COM2">SMSend(万联平台).dll</option>
-						<option value="COM3">TelephoneDll.dll</option>
-						<option value="COM4">smsdll.dll</option>
+					<select id="sendmessageofdllnamelist" name="DllName">
+						
 					</select></label>
 				</div>
 				<div>
-					<label class="control-label">动态库函数参数：<input type="text"  name="libfunctionparam"></label>
+					<label class="control-label">动态库函数参数：<input type="text"  name="DllFunParam"></label>
 				</div>
 			</div>
 			<div class="controls" style="padding-left:120px">
@@ -193,149 +190,4 @@
 		</fieldset>
 	</form>
 	
-</Template>
-
-<Template name="messagebasicsettingofadd">
-	<!--添加短信的基本设置 -->
-	<div id="addmessagesettingdiv" class="modal hide fade"
-	data-backdrop="true" data-keyboard="true" data-show="false" 
-	data-width="800" data-modalOverflow="true">
-		<div class="modal-header">添加手机号码设置{{ide "messagesetting"}}</div>
-		<div class="modal-body">
-			<form class="well form-horizontal form-inline" id="messagebasicsettingofbasciinfo">
-				<fieldset>
-					<span class="label label-info">手机号码信息</span><br /><br />
-					<div class="control-group">
-					  <label class="control-label">名称*:</label>
-					  <div class="controls">
-						<input type="text"  name="Name" id="name">
-					  </div>
-					</div>
-					<div class="control-group">
-					  <label class="control-label">*接收手机号码:</label>
-					  <div class="controls">
-						<input type="text"  name="Phone">
-					  </div>
-					</div>
-					<div class="control-group">
-						<div class="controls">
-					  	<input type="checkbox" name="Status" /> 禁止
-					  	</div>
-					</div>
-					
-					<div class="control-group">
-						<label class="control-label">模板类型:</label>
-						<div class="controls">
-							<select name="TemplateType">
-								<option value="1" checked>com</option>
-							</select>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">信息模板:</label>
-						<div class="controls">
-							<select name="Template">
-								<option value="1" checked>Default</option>
-							</select>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">任务计划类型:</label>
-						<div class="controls">
-							<select name="TaskType">
-								<option value="1" checked>时间段计划</option>
-							</select>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">任务计划:</label>
-						<div class="controls">
-							<select name="Plan">
-								<option value="5x8" checked>5x8</option>
-							</select>
-						</div>
-					</div>
-					
-				</fieldset>
-			</form>
-		</div>
-		<div class="modal-footer" align="right">
-			<button class="btn btn-primary" id="messagebasicsettingofsavebtn">保存</button>
-			<button class="btn" id="messagesettingcancelbtn">取消</button>
-		</div>
-	</div>
-
-</Template>
-
-<Template name="editmessagebasicsetting">
-	<!--编辑短信的基本设置 -->
-	<div id="editmessagesettingdiv" class="modal hide fade"
-	data-backdrop="true" data-keyboard="true" data-show="false" 
-	data-width="800" data-modalOverflow="true"
-	>
-		<div class="modal-header">添加手机号码设置{{ide "messagesetting"}}</div>
-		<div class="modal-body">
-			<form class="well form-horizontal form-inline" id="editmessagebasicsettingofbasciinfo">
-				<fieldset>
-					<span class="label label-info">手机号码信息</span><br /><br />
-					<div class="control-group">
-					  <label class="control-label">名称*:</label>
-					  <div class="controls">
-						<input type="text"  name="Name" value="{{Name}}">
-					  </div>
-					</div>
-					<div class="control-group">
-					  <label class="control-label">*接收手机号码:</label>
-					  <div class="controls">
-						<input type="text"  name="Phone" value="{{Phone}}">
-					  </div>
-					</div>
-					<div class="control-group">
-						<div class="controls">
-					  	<input type="checkbox" name="Status" /> 禁止
-					  	</div>
-					</div>
-					
-					<div class="control-group">
-						<label class="control-label">模板类型:</label>
-						<div class="controls">
-							<select name="TemplateType">
-								<option value="1" checked>com</option>
-							</select>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">信息模板:</label>
-						<div class="controls">
-							<select name="Template">
-								<option value="1" checked>Default</option>
-							</select>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">任务计划类型:</label>
-						<div class="controls">
-							<select name="TaskType">
-								<option value="1" checked>时间段计划</option>
-							</select>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">任务计划:</label>
-						<div class="controls">
-							<select name="Plan">
-								<option value="5x8" checked>5x8</option>
-							</select>
-						</div>
-					</div>
-					
-				</fieldset>
-			</form>
-		</div>
-		<div class="modal-footer" align="right">
-			<button class="btn btn-primary" id="editmessagebasicsettingofsavebtn">保存</button>
-			<button class="btn" id="editmessagebasicsettingofcancelbtn">取消</button>
-		</div>
-	</div>
-
 </Template>
