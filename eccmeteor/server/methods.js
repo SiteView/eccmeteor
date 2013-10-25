@@ -77,6 +77,13 @@ SvseMethodsOnServer = {
 	"svWriteStatisticalIniFileSectionString":svWriteStatisticalIniFileSectionString,
 	"svGetStatisticalList": svGetStatisticalList,
 	"svDeleteStatisticalIniFileSection":svDeleteStatisticalIniFileSection,
+/*
+Type： add
+Author：xuqiang
+Date:2013-10-24 17:10
+Content:增加统计报表允许，禁止操作，api声明
+*/ 
+	"svWriteStatisticalStatusInitFilesection":svWriteStatisticalStatusInitFilesection,
 }
 
 SvseSyncData = {

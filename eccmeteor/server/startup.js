@@ -12,6 +12,13 @@ function initAllDateStartUp(status){
 	initDateAtStartUp["initWarnerRuleAtStartUp"](0);
 	initDateAtStartUp["initAdminAccount"]();
 	initDateAtStartUp["initMessageListAtStartUp"](0);
+/*
+Type： add
+Author：xuqiang
+Date:2013-10-24 13:40
+Content: add 
+*/ 
+	initDateAtStartUp["initStatisticalAtStartUp"](0);
 	SystemLogger("全部数据初始化完毕");
 //	var timeloop = new UnrealThread(SyncFunction.sync,70*1000);
 //	timeloop.start();

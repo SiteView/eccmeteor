@@ -22,11 +22,11 @@ SvseStatisticalDaoAgent = {
 			case "updateStatisticalStatus":
 				flag = Agent.getPermission("settingOperatePermission>statistical>update");
 				break;
-			/*
+			
 			case "sync": 
-				flag = Agent.getPermission("settingOperatePermission>emailsetting>sync");
+				flag = Agent.getPermission("settingOperatePermission>statistical>sync");
 				break;
-			*/	
+				
 			default : flag = true;
 		}
 		if(!SvseStatisticalOnServer[fn]){
