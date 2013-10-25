@@ -710,8 +710,8 @@ Author：renjie
 Date:2013-10-18 13:40
 Content:统计报告 topn.ini写入
 */ 
-svWriteTopNIniFileSectionString = function(sectionname,section){
-	var robj= process.sv_submit(section,{'dowhat':'WriteIniFileSection','filename':"topnreportset.ini",'user':"default",'section':addressname},0); 
+svWriteTopNIniFileSectionString = function(addressname,address){
+	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"topnreportset.ini",'user':"default",'section':addressname},0); 
 //	console.log(robj.fmap(0));
 	if(!robj.isok(0)){
 	SystemLogger(robj.estr(0),-1);
@@ -720,18 +720,38 @@ svWriteTopNIniFileSectionString = function(sectionname,section){
 	return robj.fmap(0);
 }
 
+//topnreport.ini 删除
+svDeleteTopNIniFileSection = function(ids){
+	var dowhat = {
+		'dowhat' : 'DeleteIniFileSection',
+		'filename' : "topnreportset.ini",
+		'user' : "default",
+		"sections" : ids
+	};
+	var robj = process.sv_univ(dowhat,0);
+	return robj.fmap(0);
+	
+}
+/*
+Type：  modify
+Author：renjie
+Date:2013-10-23 13:40
+Content: 删除 svWriteTopNreportStatusInitFileSection 改成 svWriteTopNStatusInitFileSection
+*/
+
 //改变TopN状态
-svWriteTopNReportStatusInitFileSection = function(sectionName,status){
+svWriteTopNStatusInitFilesection = function(sectionName,status){
 	var robj = process.sv_univ({
 		'dowhat' : 'WriteIniFileString',
-		'filename' : "alert.ini",
+		'filename' : "topnreportset.ini",
 		'user' : "default",
 		'section' : sectionName,
-		"key" : "AlertState",
+		"key" : "Deny",
 		"value" : status
 	}, 0);
 	return robj.fmap(0);
 }
+
 
 /*
 	Type:add file about message.ini
@@ -758,3 +778,4 @@ svGetMessageList = function(){
 		var fmap= robj.fmap(0);
 		return fmap;
 }
+
