@@ -70,6 +70,13 @@ SvseMethodsOnServer = {
 	"svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
 	"svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
 	"svWriteTopNIniFileSectionString":svWriteTopNIniFileSectionString,
+	/*
+Type：add 
+Author：renjie
+Date:2013-10-24 15:00
+Content:添加"svWriteTopNStatusInitFilesection":svWriteTopNStatusInitFilesection,
+*/ 
+	"svWriteTopNStatusInitFilesection":svWriteTopNStatusInitFilesection,
 	"svGetTopNList": svGetTopNList,
 	"svDeleteTopNIniFileSection":svDeleteTopNIniFileSection,
 	"svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,

@@ -709,22 +709,25 @@ svDeleteTopNIniFileSection = function(ids){
 	
 }
 /*
-Type：   delete 
+Type：  modify
 Author：renjie
 Date:2013-10-23 13:40
-Content: 删除 //改变TopN状态
-svWriteTopNReportStatusInitFileSection = function(sectionName,status){
+Content: 删除 svWriteTopNreportStatusInitFileSection 改成 svWriteTopNStatusInitFileSection
+*/
+
+//改变TopN状态
+svWriteTopNStatusInitFilesection = function(sectionName,status){
 	var robj = process.sv_univ({
 		'dowhat' : 'WriteIniFileString',
-		'filename' : "alert.ini",
+		'filename' : "topnreportset.ini",
 		'user' : "default",
 		'section' : sectionName,
-		"key" : "AlertState",
+		"key" : "Deny",
 		"value" : status
 	}, 0);
 	return robj.fmap(0);
 }
-*/ 
+
 
 /*
 	Type:add file about message.ini

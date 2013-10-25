@@ -26,6 +26,7 @@
 {{> topNlist}}
 {{> topNofadd}}
 {{> topNofedit}}
+{{> helpmessage}}
 </Template>
 
 <template name="topNlist">
@@ -67,6 +68,7 @@
 	    data-backdrop="true" data-keyboard="true" data-show="false" 
 		data-maxHeight='500' data-width="800" data-height="500" data-modalOverflow="true"
 	>
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <div class="modal-header">添加topN报告{{ide "topN"}}</div>
         <div class="modal-body">
 		<div class="row-fluid">
@@ -128,16 +130,16 @@
 			<div class="control-group">
 				<label class="control-label" >数量:</label>
 				<div class="controls">
-                    <input type="number" name="count" min="1" max="50" />
+                    <input type="number" name="Count" min="01" max="500" />
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">报告类型:</label>
 				<div class="controls">
 					<select id="reporttypetemplatelist" name="Period">
-					<option value="1" checked>日报</option>
-				    <option value="2" checked>周报</option>
-				    <option value="3" checked>月报</option>
+					<option value="Day" checked>日报</option>
+				    <option value="Week" checked>周报</option>
+				    <option value="Month" checked>月报</option>
 					</select>
 				</div>
 			</div>
@@ -145,10 +147,10 @@
 				<label class="control-label" >报告文件格式:</label>
 				<div class="controls">
 					<select id="topNoutputtype" name="fileType">
-					<option value="0" checked>html</option>
-					<option value="1" checked>word</option>
-					<option value="2" checked>pdf</option>
-					<option value="3" checked>Excel</option>
+					<option value="html" checked>html</option>
+					<option value="word" checked>word</option>
+					<option value="pdf" checked>pdf</option>
+					<option value="Excel" checked>Excel</option>
 					</select>
 				</div>
 			</div>
@@ -198,8 +200,9 @@
 <div id="topNofadddivedit" class="modal hide fade"
 	    data-backdrop="true" data-keyboard="true" data-show="false" 
 		data-maxHeight='500' data-width="800" data-height="500" data-modalOverflow="true"
-	>
-        <div class="modal-header">修改topN报告{{ide "topN"}}</div>
+	>    
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <label class="modal-header">修改topN报告{{ide "topN"}}</label>
         <div class="modal-body">
 		<div class="row-fluid">
 		<div class="span4" style="overflow:auto">
@@ -224,7 +227,7 @@
 			<div class="control-group">
 				<label class="control-label">检测器类型:</label>
 				<div class="controls">
-				<select id="Typelist" name="Type">
+				<select id="Typelisted" name="Type">
 				<option value="0" checked>CPU</option>‌
 				<option value="1" checked>Disk</option>‌
 				<option value="2" checked>Ping</option>‌
@@ -234,7 +237,7 @@
 			<div class="control-group">
 				<label class="control-label">选择指标:</label>
 				<div class="controls">
-				<select id="marklist" name="Mark">
+				<select id="marklisted" name="Mark">
 				<option value="0" checked>包成功率(%)</option>
 				<option value="1" checked>数据往返时间(ms)</option>
 				<option value="2" checked>状态值(200表示成功 300表示出错)</option>
@@ -251,34 +254,34 @@
 			<div class="control-group">
 				<label class="control-label" >数量:</label>
 				<div class="controls">
-                    <input type="number" name="count" min="1" max="50" />
+                    <input type="number" name="Count" min="01" max="500" />
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">报告类型:</label>
 				<div class="controls">
-					<select id="reporttypetemplatelist" name="Period">
-					<option value="1" checked>日报</option>
-				    <option value="2" checked>周报</option>
-				    <option value="3" checked>月报</option>
+					<select id="reporttypePeriodlisted" name="Period">
+					<option value="Day" checked>日报</option>
+				    <option value="Week" checked>周报</option>
+				    <option value="Month" checked>月报</option>
 					</select>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" >报告文件格式:</label>
 				<div class="controls">
-					<select id="topNoutputtype" name="fileType">
-					<option value="0" checked>html</option>
-					<option value="1" checked>word</option>
-					<option value="2" checked>pdf</option>
-					<option value="3" checked>Excel</option>
+					<select id="topNoutputtyped" name="fileType">
+					<option value="html" checked>html</option>
+					<option value="word" checked>word</option>
+					<option value="pdf" checked>pdf</option>
+					<option value="Excel" checked>Excel</option>
 					</select>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" >取值方式:</label>
 				<div class="controls">
-					<select id="GetValuelist" name="GetValue">
+					<select id="GetValuelisted" name="GetValue">
 					<option value="0" checked>平均</option>
 					<option value="1" checked>最新</option>
 					</select>
@@ -302,7 +305,7 @@
 		    <div>
 				<label class="control-label" >周报截止时间:</label>
 				<div class="controls">
-					<select id="topNtypetemplatelist" name="WeekEndTime">
+					<select id="topNtypetemplatelisted" name="WeekEndTime">
 					<option value="0" checked>周日</option>
 					<option value="1" checked>周一</option>
 					<option value="2" checked>周二</option>
@@ -323,5 +326,20 @@
 			  <button class="btn btn-primary btn-large" id="topNofaddsavebtnedit">保存</button>
 	     </div>
        </div>
+</Template>
+
+<!-- helpmessage(帮助信息)demo -->
+
+<Template name="helpmessage">
+    <div id="helpmessagediv" class="modal hide fade">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <label class="label label-info">帮助信息demo:</label>
+    <div>
+    <marquee width=400 behavior=alternate direction=left align=middle>
+    <a href="http://www.siteview.com/" target="_blank">
+    <strong>ECCMeteor!</strong></a>
+     </marquee>
+    </div>
+   </div>
 </Template>
 

@@ -68,6 +68,25 @@ SvseTopNOnServer = {
 					
 				}
 			})
+	},
+	"updateTopNStatus":function(ids,status){
+		var count = 0;
+		for(index in ids){
+			var id = ids[index];
+			console.log("CH");
+			var result = SvseMethodsOnServer.svWriteTopNStatusInitFilesection(id,status);
+			if(result){
+				SvseTopNresultlist.update(SvseTopNresultlist.findOne({nIndex:id})._id,{$set:{"Deny":status}});
+				count = count+1;
+			}else{
+				var msg = "SvseTopNDaoOnServer's updateTopNStatus "+index+" faild";
+				SystemLogger.log(msg,-1);
+			}
+		}
+		console.log("~~~~~~~~~~~~~~");
+		return SvseTopNOnServer.getReturn(true,1);
+		
+		
 	}
 	
 }

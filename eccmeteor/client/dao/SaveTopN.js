@@ -1,9 +1,9 @@
 SvseTopNDao = {
 	"AGENT":"SvseTopNDaoAgent",
 	//根据id获取topN报告
-	/*"getTopNresult" : function(id){
+	"getTopNresult" : function(id){
 	return SvseTopNresultlist.findOne({nIndex:id});
-	},*/
+	},
 	"getTopNresultlist" : function(){
 		return SvseTopNresultlist.find().fetch()
 	},
@@ -22,6 +22,7 @@ SvseTopNDao = {
 			}
 		});
 	},
+	//批量删除
 	"deleteTopNByIds":function(ids,fn){
 		Meteor.call(SvseTopNDao.AGENT,"deleteTopNByIds",[ids],function(err,result){
 			if(err){
@@ -50,6 +51,47 @@ SvseTopNDao = {
 				}
 			}
 		});
-	}
+	},
+	//批量更新topN报告状态
+	/*"updateTopNStatus": function(ids,status,fn){
+		SystemLogger(typeof fn);
+		Meteor.call(SvseTopNDao.AGENT,"updateTopNStatus",[ids,status],function(err,result){
+			if(err){
+				fn({status:false,msg:err});
+			}else{
+				if(result && !result.status){
+					fn(result)
+				}else{
+					fn({status:true,option:{count:ids.length}});
+				}
+			}
+		});
+	},*/
+	
+	"updateTopNStatus" : function(ids,status,fn){
+		Meteor.call(SvseTopNDao.AGENT,"updateTopNStatus",[ids,status],function(err,result){
+			if(err){
+				SystemLogger(err);
+				fn({status:false,msg:err})
+			}else{
+				fn(result);
+			}
+		});
+	},
+	//刷新同步
+	/*"sync":function(fn){
+		Meteor.call(SvseTopNDao.AGENT,"sync",function(err,result){
+			if(result && !result.status){
+				fn(result);
+			}
+			else{
+				fn({status:true});
+			}
+		});
+	}*/
+	"sync" : function(){
+		Meteor.call(SvseTopNDao.AGENT,"sync");
+	},
+	
 }
 	

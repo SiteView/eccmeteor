@@ -12,6 +12,13 @@ function initAllDateStartUp(status){
 	initDateAtStartUp["initWarnerRuleAtStartUp"](0);
 	initDateAtStartUp["initAdminAccount"]();
 	initDateAtStartUp["initMessageListAtStartUp"](0);
+	/*
+	Type： add
+	Author：renjie
+	Date:2013-10-24 13:50
+	Content:增加 initTopNList 的 initTopNListAtStartUp初始化
+*/ 
+	initDateAtStartUp["initTopNListAtStartUp"](0);
 	SystemLogger("全部数据初始化完毕");
 //	var timeloop = new UnrealThread(SyncFunction.sync,70*1000);
 //	timeloop.start();

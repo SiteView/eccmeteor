@@ -14,8 +14,42 @@ Template.topN.events = {
 	}
 	if(ids.length)
 	  SvseTopNDao.deleteTopNByIds(ids,function(result){
+	    console.log("删除全部《《");
 	  	SystemLogger(result);
+	  	console.log("删除全部》》");
 	  });
+	  
+	},
+	"click #allowetopN" : function(){  //启用TopN地址
+		var checks = $("#topNlist :checkbox[checked]");
+		var ids = [];
+		for(var i = 0 ; i < checks.length; i++){
+			ids.push($(checks[i]).attr("id"));
+		}
+		if(ids.length)
+			SvseTopNDao.updateTopNStatus(ids,"Yes",function(result){
+				SystemLogger(result);
+			});
+			
+	},
+	"click #forbidtopN" : function(){ //禁用TopN地址
+		var checks = $("#topNlist :checkbox[checked]");
+		var ids = [];
+		for(var i = 0 ; i < checks.length; i++){
+			ids.push($(checks[i]).attr("id"));
+		}
+		if(ids.length)
+			SvseTopNDao.updateTopNStatus(ids,"No",function(result){
+				SystemLogger(result);
+			});
+	},
+	"click #topNrefresh" : function(){
+		//topN报告同步
+		SvseTopNDao.sync();
+	},
+	"click #topNhelpmessage" : function(){
+	$('#helpmessagediv').modal('toggle');
+ 
 	}
 }
 
@@ -66,14 +100,16 @@ Template.topNofadd.events = {
 }*/
 
 //获取topNlist的集合
-Template.topNlist.topNresultlist=function(){
+Template.topNlist.topNresultlist = function(){
 	console.log(SvseTopNDao.getTopNresultlist());
 	return SvseTopNDao.getTopNresultlist();
 }
 
 
 Template.topNlist.rendered = function(){
-	    //初始化checkbox选项
+
+	   
+	   //初始化checkbox选项
 	$(function(){
 		//隐藏所有操作按钮
 		ClientUtils.hideOperateBtnInTd("topNlist");
@@ -94,56 +130,62 @@ Template.topNlist.events({
         console.log(result);
 		$("#topNofadddivedit").find(":text[name='Title']:first").val(result.Title);
 		$("#topNofadddivedit").find(":text[name='Descript']:first").val(result.Descript);
-	    $("#topNofadddivedit").find(":text[name='Type']:first").val(result.Type);
-	    $("#topNofadddivedit").find(":text[name='Mark']:first").val(result.Mark);
-	    $("#topNofadddivedit").find(":text[name='Sort']:first").val(result.Sort);
-	    $("#topNofadddivedit").find(":text[name='Count']:first").val(result.Count);
-	    $("#topNofadddivedit").find(":text[name='Period']:first").val(result.Period);
-	    $("#topNofadddivedit").find(":text[name='fileType']:first").val(result.fileType);
-	    $("#topNofadddivedit").find(":text[name='GetValue']:first").val(result.GetValue);
-	    $("#topNofadddivedit").find(":text[name='Generate']:first").val(result.Generate);
-		$("#topNofadddivedit").find(":text[name='EmailSend']:first").val(result.EmailSend);
+	    
+	    //$("#topNofadddivedit").find(":text[name='Sort']:first").val(result.Sort);
+	    $("#topNofadddivedit").find("input[type='number'][name='Count']:first").val(result.Count);
+	    
+		$("#topNofadddivedit").find("input[type='number'][name='Generate']:first").val(result.Generate);
+		$("#topNofadddivedit").find("input[type='email'][name='EmailSend']:first").val(result.EmailSend);
 		$("#topNofadddivedit").find(":text[name='Deny']:first").val(result.Deny);
-		$("#topNofadddivedit").find(":text[name='WeekEndTime']:first").val(result.WeekEndTime);
+		
 		$("#topNofadddivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
-		//填充表单
-		var CheckedType = result["Type"].split(",");
+		
+		$("#Typelisted").find("option[value = '"+result["Type"]+"']:first").attr("selected","selected");
+		$("#marklisted").find("option[value = '"+result["Mark"]+"']:first").attr("selected","selected");
+		$("#reporttypePeriodlisted").find("option[value = '"+result["Period"]+"']:first").attr("selected","selected");
+		$("#topNoutputtyped").find("option[value = '"+result["fileType"]+"']:first").attr("selected","selected");
+		$("#GetValuelisted").find("option[value = '"+result["GetValue"]+"']:first").attr("selected","selected");
+		$("#topNtypetemplatelisted").find("option[value = '"+result["WeekEndTime"]+"']:first").attr("selected","selected");
+		
+		/*var CheckedType = result["Type"];
 		 for(var eal = 0; eal < CheckedType.length; eal++){
 				 $("#Typelist").find("option[name = '"+CheckedType[eal]+"']:first").attr("selected","selected").prop("selected",true);
 			 }
 			 var CheckedMark = result.Mark;
 			 for(var ebl = 0; ebl<CheckedMark.length;ebl++){
 				$("#marklist").find("option[name = '"+CheckedMark[ebl]+"']:first").attr("selected","selected").prop("selected",true);
-			}
+			}*/
 			var Sort = result.Sort;
 		   $("#topNofadddivedit").find(":radio[name='Sort']").each(function(){
 			if($(this).val() === Sort){
 				$(this).attr("checked",true);
 			}
 		  });
-			var CheckedCount = result["count"].split(",");
+		  
+			/*var CheckedCount = result["count"];
 			for(var ecl = 0; ecl<CheckedCount.length;ecl++){
 				$("#topNofadddivedit").find("option[name = '"+CheckedCount[ecl]+"']:first").attr("selected","selected").prop("selected",true);
 			}
 			
-			 var CheckedPeriod = result["Period"].split(",");
+			 var CheckedPeriod = result["Period"];
 		     for(var edl = 0; edl < CheckedPeriod.length; edl++){
 				 $("#reporttypetemplatelist").find("option[name = '"+CheckedPeriod[edl]+"']:first").attr("selected","selected").prop("selected",true);
 			 }
-             var CheckedfileType = result["fileType"].split(",");
+             var CheckedfileType = result["fileType"];
 			 for(var eel = 0; eel<CheckedfileType.length;eel++){
 				$("#topNoutputtype").find("option[name = '"+CheckedfileType[eel]+"']:first").attr("selected","selected").prop("selected",true);
 			} 
-			var CheckedGetValue = result["GetValue"].split(",");
+			var CheckedGetValue = result["GetValue"];
 			 for(var efl = 0; efl<CheckedfileType.length;efl++){
 				$("#GetValuelist").find("option[name = '"+CheckedGetValue[efl]+"']:first").attr("selected","selected").prop("selected",true);
-			} 
+			} */
 			
             var CheckedDeny = result.Deny;
 			 $("#topNofadddivedit").find(":checkbox[name='Deny']").each(function(){
 				 if($(this).val()=== CheckedDeny){
 					 $(this).attr("checked",true);
 					 }
+					// $(this).attr("checked",false);
 				 });
 		$('#topNofadddivedit').modal('toggle');
 		
@@ -218,6 +260,10 @@ Template.topNofadd.rendered = function(){
 	});
 }
 
+Template.topNofedit.topNeditform = function(){
+	return Session.get("topNeditform");
+}
+
 Template.topNofedit.events = {
          "click #topNofaddcancelbtnedit":function(){
           $('#topNofadddivedit').modal('toggle');
@@ -230,8 +276,9 @@ Template.topNofedit.events = {
            address[nIndex] = topNofaddfromedit;
           console.log("nIndex:"+nIndex);
           SvseTopNDao.updateTopN(nIndex,address,function(result){
-          
+          console.log("12313");
           $('#topNofadddivedit').modal('toggle');
+          console.log("%%%%");
               });
             }
        }
