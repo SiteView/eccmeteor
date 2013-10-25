@@ -19,7 +19,8 @@ Meteor.methods({
   "svseWarnerRuleDaoAgent":SvseWarnerRuleDaoAgent.agent,
   "svseMonitorTemplateDaoAgent":SvseMonitorTemplateDaoAgent.agent,
   "SvseTopNDaoAgent":SvseTopNDaoAgent.agent,
-  "SvseStatisticalDaoAgent":SvseStatisticalDaoAgent.agent
+  "SvseStatisticalDaoAgent":SvseStatisticalDaoAgent.agent,
+  "svseMessageDaoAgent":SvseMessageDaoAgent.agent	//by zhuqing add
 });//给客户端调用的
  /**
 	Type： add | modify 
@@ -90,6 +91,9 @@ SvseMethodsOnServer = {
 	"svDeleteTopNIniFileSection":svDeleteTopNIniFileSection,
 	"svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
 	"svWriteMessageIniFileSectionString":svWriteMessageIniFileSectionString,
+	"svDeleteMessageIniFileSection":svDeleteMessageIniFileSection,	//by zhuqing about deleting message
+	"svGetMessageTemplates":svGetMessageTemplates,	//by zhuqing about getting message templates
+	"svWriteMessageStatusInitFilesection":svWriteMessageStatusInitFilesection,	//by zhuqing
 	"svGetMessageList":svGetMessageList,
 	"svWriteStatisticalIniFileSectionString":svWriteStatisticalIniFileSectionString,
 	"svGetStatisticalList": svGetStatisticalList,

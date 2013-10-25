@@ -778,4 +778,38 @@ svGetMessageList = function(){
 		var fmap= robj.fmap(0);
 		return fmap;
 }
-
+//删除短信Message的section
+svDeleteMessageIniFileSection = function(ids){
+	var dowhat = {
+		'dowhat' : 'DeleteIniFileSection',
+		'filename' : "smsphoneset.ini",
+		'user' : "default",
+		"sections" : ids
+	};
+	var robj = process.sv_univ(dowhat,0);
+	return robj.fmap(0);
+}
+//获取发送短信模板
+svGetMessageTemplates = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"TXTtemplate.ini",
+			"user":"default","sections":"SMS"}, 0);
+	var fmap= robj.fmap(0);
+	return fmap["SMS"];
+}
+//更改短信状态
+svWriteMessageStatusInitFilesection = function(sectionName,status){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "smsphoneset.ini",
+		'user' : "default",
+		'section' : sectionName,
+		"key" : "Status",
+		"value" : status
+	}, 0);
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	return robj.fmap(0);
+}
+//获取短信设置的发送短信方式中的调用动态库的动态库名称
