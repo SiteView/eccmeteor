@@ -5,8 +5,7 @@ AUX_SOURCE_DIRECTORY(. DIR_SRCS)
 
 SET(LIBRARY_OUTPUT_PATH "../bin")
 ADD_LIBRARY(addonsv ${DIR_SRCS})
-#ADD_LIBRARY(addonsv SHARED ${DIR_SRCS})
 
-ADD_DEFINITIONS( -D_USE_32BIT_TIME_T -DSV_ADDON_EXPORTS)
+ADD_DEFINITIONS( -D_USE_32BIT_TIME_T )
 SET(CMAKE_BUILD_TYPE Release)
-INCLUDE_DIRECTORIES("../node-v0.8.22/src" "../node-v0.8.22/deps/uv/include" "../node-v0.8.22/deps/v8/include" "../../qt/addon")
+INCLUDE_DIRECTORIES("../node-v0.8.22/src" "../node-v0.8.22/deps/uv/include" "../node-v0.8.22/deps/v8/include" "../addon")
