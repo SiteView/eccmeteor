@@ -132,15 +132,15 @@ Template.showMonitorInfo.events({
 		var parentid = SessionManage.getCheckedTreeNode("id");
 		SystemLogger("获取到的结果是:");
 		console.log(monitor);
-		SystemLogger("正在刷新监视器....");
+		LoadingModal.loading();
 		//如果是添加监视器
 		if(monitorstatus){ 
 			SvseMonitorDao.addMonitor(monitor,parentid,function(result){
+				LoadingModal.loaded();
 				if(result && !result.status){
-					SystemLogger(result.msg,-1);
+					Message.error(result.msg);
 				}
 				else{
-					SystemLogger("刷新监视器完成....");
 				}
 			//	Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
 				$("#showMonitorInfoDiv").modal('hide');

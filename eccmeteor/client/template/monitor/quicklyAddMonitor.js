@@ -35,8 +35,8 @@ Deps.autorun(function(){
 	if(!id)
 		return;
 	var entityDevicetype = Session.get(SessionManage.MAP.CHECKEDENTITYTEMPLATEID);
-	var monitors = SvseEntityTemplateDao.getEntityMonitorByDevicetype(entityDevicetype,true);
-	getQuicklyMonitorsDynamicParams("1.26.19",monitors);//"1.26.19" SessionManage.getAddedEntityId() 
+	var monitors = typeof(SvseEntityTemplateDao) !== "undefined" ? SvseEntityTemplateDao.getEntityMonitorByDevicetype(entityDevicetype,true) : [];
+	getQuicklyMonitorsDynamicParams&&getQuicklyMonitorsDynamicParams(SessionManage.getAddedEntityId(),monitors);//"1.26.19"  
 });
 //接收一个设备ID以及该设备相关的一组监视器模板
 var getQuicklyMonitorsDynamicParams = function(entityId,monitors){
@@ -123,6 +123,44 @@ var getQuicklyMonitorsParams = function(id){
 	console.log(monitor);
 	return monitor;
 }
+/*
+	获取选中的checkbox
+*/
+var getTheCheckedDynamicServices = function(){
+	var children = $("div.QuickMonitorDynamicServiceSelectChildren");
+	var c_len = children.length;
+	var quickMonitorLists = [];
+	for(var index = 0 ; index < c_len ; index++){
+		var values = $(children[index]).find(":checkbox[checked]");
+		//如果当前监视没有选择被选择
+		if(!values.length)
+			continue;
+		//获取该监视器相关信息，id，类型,sv_name等
+		var template = $(children[index]).parents("div.QuickMonitorDynamicService")
+							.children("div.QuickMonitorDynamicServiceSelectParent")
+							.find(":checkbox:first");
+		var sv_name = template.attr("data-name");
+		var sv_monitortype = template.attr("data-id");
+		var extra = template.attr("data-extra") === "" ? false :  template.attr("data-extra");
+		var monitor = getQuicklyMonitorsParams(sv_monitortype);
+		//判断是否为动态属性
+		//非动态属性
+		if(!extra){
+			quickMonitorLists.push(monitor);
+			continue;
+		}
+		//动态属性
+		for(var i = 0; i < values.length ; i++){
+			var tmp = Utils.clone(monitor);
+			console.log(extra);
+			console.log(values[i].value);
+			console.log(values[i]);
+			tmp.parameter[extra] = values[i].value;
+			quickMonitorLists.push(tmp);
+		}
+	}
+	return quickMonitorLists;
+}
 
 Template.QuickMonitorDynamicService.events({
 	"click div.QuickMonitorDynamicServiceSelectParent :checkbox":function(e){
@@ -147,26 +185,14 @@ Template.showQuickMonityTemplate.events = {
 		});
 	},
 	"click #showQuickMonityTemplateSaveBtn" : function () {
-		var checkeds = $("#quickMonitorList :checkbox[checked='checked']");
-		if(!checkeds.length){
-		//	Session.set("viewstatus",MONITORVIEW.GROUPANDENTITY);//显示组和设备界面
-			$("#showQuickMonityTemplatediv").modal("hide");
-			return;
-		}
-		var templates = [];
-		for (var index = 0; index < checkeds.length ; index++){
-			console.log("checkeds index " + index)
-			templates.push(getQuicklyMonitorsParams(checkeds[index].id));
-		//	templates.push(checkeds[index].id);
-		}
-		console.log("father id is "+SessionManage.getAddedEntityId());
+		var templates = getTheCheckedDynamicServices();
 		console.log(templates);
-		SystemLogger("正在刷新多个监视器...");
+		LoadingModal.loading();
 		SvseMonitorDao.addMultiMonitor(templates,SessionManage.getAddedEntityId(),function(result){
+			LoadingModal.loaded();
 			if(!result.status){
-				SystemLogger(result.msg,-1);
+				Messsage.error(result.msg);
 			}else{
-				SystemLogger("刷新完成...");
 		//		SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
 			}
 			$("#showQuickMonityTemplatediv").modal("hide");

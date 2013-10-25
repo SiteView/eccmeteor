@@ -98,3 +98,18 @@
 		return d;
 	}
 }
+/**对象clone*/
+Object.defineProperty(Utils,"clone",{
+	value:function(obj){
+	    if (!obj){
+	        return null; 
+	    }
+	    var o = obj.constructor === Array ? [] : {};
+	    for(var i in obj){
+	        if(obj.hasOwnProperty(i)){
+	            o[i] = typeof obj[i] === "object" ? Utils.clone(obj[i]) : obj[i];
+	        }
+	    }
+	    return o;
+	}
+})

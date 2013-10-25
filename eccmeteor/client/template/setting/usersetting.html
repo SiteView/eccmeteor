@@ -3,15 +3,29 @@
 	<span class="label label-info">用户设置</span>{{ide usersetting}}
 	<div class="btn-toolbar">
 		<div class="btn-group">
-			<button class="btn" id="addusersetting">{{language.addbtn}}</button>
-			<button class="btn" id="delusersetting">{{language.delbtn}}</button>
+			<button class="btn" id="addusersetting">
+				<i class="icon-plus"></i>
+				{{language.addbtn}}
+			</button>
+			<button class="btn" id="delusersetting">
+				<i class="icon-trash"></i>
+				{{language.delbtn}}
+			</button>
 			<button class="btn">更多</button>
 			<button class="btn dropdown-toggle" data-toggle="dropdown">
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu pull-right">	
-				<li><a href="#" id="allowusersetting">{{language.allowbtn}}</a></li>
-				<li><a href="#" id="forbidusersetting">{{language.forbidbtn}}</a></li>
+				<li>
+					<a href="#" id="allowusersetting">
+						<i class="icon-ok"></i>{{language.allowbtn}}
+					</a>
+				</li>
+				<li>
+					<a href="#" id="forbidusersetting">
+						<i class="icon-remove"></i>{{language.forbidbtn}}
+					</a>
+				</li>
 				<li class="divider"></li>
 				<li><a href="#" id="helpmessage">{{language.helpmessagebtn}}</a></li>
 			</ul>

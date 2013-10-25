@@ -64,8 +64,6 @@ Template.userPromissionSetting.events({
 		SvseUserDao.setSettingOperatePermission(uid,operationData,function(result){
 			console.log(result);
 		});
-		
-		
 		//清空Session中的临时数据
 		clearUserPromissionSettingGroupControlData();
 		$("#userPromissionSettingDiv").modal('toggle');

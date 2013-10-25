@@ -137,10 +137,13 @@ svGetMonitorRuntimeRecords = function(id,count){
 		throw new Meteor.Error(500,robj.estr(0));
 	}
 	var fmap = robj.fmap(0);
+	Log4js.info(fmap);
+	Log4js.info("===========================");
 	var runtiomeRecords = [];
 	for(r in fmap){
 		runtiomeRecords.push(fmap[r]);
 	}
+	Log4js.info(runtiomeRecords);
 	return runtiomeRecords;
 }
 

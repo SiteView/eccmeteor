@@ -26,11 +26,13 @@ Template.AddEntity.events = {
 		var parentid =checkedTreeNode.id;
 		var entity ={"property":property};
 		SystemLogger(entity);
+		LoadingModal.loading();
 		SvseEntityTemplateDao.addEntity(entity,parentid,function(result){
+			LoadingModal.loaded();
 			$("#showAddEntityDiv").modal("hide");
 			if(!result.status){
-				SystemLogger("SvseEntityTemplateDao.addEntity 捕捉到错误");
-				SystemLogger(result);
+				Log4js.error("SvseEntityTemplateDao.addEntity 捕捉到错误");
+				Log4js.error(result);
 				return;
 			}
 			var entityid = result.option['id'];

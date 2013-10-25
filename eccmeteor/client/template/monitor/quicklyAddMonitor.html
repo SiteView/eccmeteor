@@ -19,11 +19,14 @@
 	{{#each monities}}
 		<div class="QuickMonitorDynamicService">
 			<div class="QuickMonitorDynamicServiceSelectParent">
-				<input type="checkbox"  name="{{ParameterItem_1.sv_name}}" id="MonitorDynamicPropertyCheckBox{{return.id}}">{{property.sv_description}}
+				<input type="checkbox" id="MonitorDynamicPropertyCheckBox{{return.id}}" data-id="{{return.id}}"
+					data-name="{{property.sv_name}}" data-extra="{{property.sv_extrasave}}"
+				 >
+				{{property.sv_description}}
 			</div>
 			<div class="QuickMonitorDynamicServiceSelectChildren" style="max-height:200px;overflow:auto">
 				<div id="MonitorDynamicProperty{{return.id}}">
-					<p><input type="checkbox" name="{{ParameterItem_1.sv_name}}" value="{{property.sv_name}}"><span>{{property.sv_name}}</span></p>
+					<p><input type="checkbox" value="{{property.sv_name}}"><span>{{property.sv_name}}</span></p>
 				</div>
 			</div>
 		</div>
@@ -44,6 +47,6 @@
 </Template>
 <Template name="QuickMonitorDynamicProperty">
 	{{#each DynamicProperties}}
-		<p><input type="checkbox" id="{{this}}"><span>{{this}}</span></p>
+		<p><input type="checkbox" value="{{this}}"><span>{{this}}</span></p>
 	{{/each}}
 </Template>

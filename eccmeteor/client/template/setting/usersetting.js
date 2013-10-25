@@ -74,6 +74,7 @@ Template.usersettingListTable.events({
 		if(!user){
 			SystemLogger(Meteor.users.find().fetch());
 			SystemLogger("edit 数据暂未缓冲");
+			return;
 		}
 		$('#usersettingeditdiv :text[name="username"]').val(user.username);
 		$('#usersettingeditdiv :text[name="aliasname"]').val(user.profile.aliasname);
@@ -86,6 +87,7 @@ Template.usersettingListTable.events({
 		if(!user){
 			SystemLogger(Meteor.users.find().fetch());
 			SystemLogger("promission 数据暂未缓冲");
+			return;
 		}
 		console.log(user);
 		$("#userPromissionSettingDiv #promissionUsername").html(user.username);

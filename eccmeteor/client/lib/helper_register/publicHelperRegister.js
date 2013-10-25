@@ -45,8 +45,6 @@ Handlebars.registerHelper('createDomeByTypeAndName', function(type,name,value,se
 
 
 Handlebars.registerHelper('createDomeByPropertyHelper', function(obj) {
-	console.log("createDomeByPropertyHelper:")
-	console.log(obj);
 	var factory = new DomCreateFactory();
 	var result = factory.get(LocalObjectConverter.convertMonityTemplateParameter(obj));
 	return new Handlebars.SafeString(result);
