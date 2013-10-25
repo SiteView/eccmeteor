@@ -21,7 +21,6 @@ Template.messagebasicsettingofadd.rendered = function(){
 		var message = {};
 		message[nIndex] = messagebasicsettingofbasciinfo;
 		SvseMessageDao.addMessage(nIndex,message,function(result){
-			SystemLogger(result);
 			$('#addmessagesettingdiv').modal('hide');
 		});
 		console.log("保存");

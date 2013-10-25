@@ -67,7 +67,4 @@ SvseMessageDao = {
 			}
 		});
 	},
-	"getMessageDllName":function(fn){
-		Meteor.call(SvseMessageDao.AGENT,"getMessageDllName",[],fn);
-	}
 }

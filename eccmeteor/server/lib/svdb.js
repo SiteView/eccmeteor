@@ -769,13 +769,3 @@ svWriteMessageStatusInitFilesection = function(sectionName,status){
 	return robj.fmap(0);
 }
 //获取短信设置的发送短信方式中的调用动态库的动态库名称
-svGetMessageSendDllName = function(){
-	var robj=process.sv_univ({
-		'dowhat':'WriteIniFileString',
-		'filename':'interfacedll.ini',
-		'user':'default',
-		'section':'DLL'
-	},0)
-	var fmap=robj.fmap(0);
-	return fmap;
-}

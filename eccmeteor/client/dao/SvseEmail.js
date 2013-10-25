@@ -9,7 +9,7 @@ SvseEmailDao = {
 				SystemLogger(err);
 				fn({status:false,msg:err})
 			}else{
-				if(result && !reult[status]){ // 无权限
+				if(result && !result[status]){ // 无权限
 					SystemLogger(err);
 					fn(result);
 				}else{
@@ -37,7 +37,7 @@ SvseEmailDao = {
 				SystemLogger(err);
 				fn({status:false,msg:err})
 			}else{
-				if(result && !reult[status]){ // 无权限
+				if(result && !result[status]){ // 无权限
 					SystemLogger(err);
 					fn(result);
 				}else{

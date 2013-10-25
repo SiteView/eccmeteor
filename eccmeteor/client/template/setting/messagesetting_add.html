@@ -3,7 +3,9 @@
 	<div id="addmessagesettingdiv" class="modal hide fade"
 	data-backdrop="true" data-keyboard="true" data-show="false" 
 	data-width="800" data-modalOverflow="true">
-		<div class="modal-header">添加手机号码设置{{ide "messagesetting"}}</div>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<label class="label label-info">添加手机号码设置</label>{{ide "messagesetting"}}</div>
 		<div class="modal-body">
 			<form class="well form-horizontal form-inline" id="messagebasicsettingofbasciinfo">
 				<fieldset>
@@ -22,7 +24,7 @@
 					</div>
 					<div class="control-group">
 						<div class="controls">
-					  	<input type="checkbox" name="Status" value="禁止" /> 禁止
+					  	<input type="checkbox" name="Status" value="No" /> 禁止
 					  	</div>
 					</div>
 					

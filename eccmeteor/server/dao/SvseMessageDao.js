@@ -42,7 +42,7 @@ SvseMessageDaoOnServer = {
 		var result = SvseMethodsOnServer.svWriteMessageIniFileSectionString(sectionname,section);
 		if(!result){
 			var msg = "SvseMessageDaoOnServer's addMessage  update " + sectionname +" faild";
-			SystemLogger.log(msg,-1);
+			Log4js.error(msg);
 			throw new Meteor.Error(500,msg);
 		}
 		var messageresult = result[sectionname];
@@ -67,6 +67,7 @@ SvseMessageDaoOnServer = {
 			var result = SvseMethodsOnServer.svWriteMessageStatusInitFilesection(id,status);
 			if(result){
 				SvseMessageList.update(SvseMessageList.findOne({nIndex:id})._id,{$set:{"Status":status}});
+				console.log("status:"+status);
 				count = count+1;
 			}else{
 				var msg = "SvseMessageDaoOnServer's updateMessageStatus "+index+" faild";
@@ -75,8 +76,4 @@ SvseMessageDaoOnServer = {
 		}
 		return SvseMessageDaoOnServer.getReturn(true,1);
 	},
-	"getMessageDllName":function(){
-		console.log(SvseMethodsOnServer.svGetMessageSendDllName());
-		return SvseMethodsOnServer.svGetMessageSendDllName();
-	}
 }

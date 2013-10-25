@@ -142,12 +142,12 @@
 				<fieldset>
 					<legend style="font-size:14px">插入方式</legend>
 						<div class="controls">
-							<label class="control-label"><input type="radio"  name="insertmethod" value="nomal" checked>常规插入</label>
-							<label class="control-label"><input type="radio"  name="insertmethod" value="procedure">存储过程插入</label>
+							<label class="control-label"><input type="radio"  name="InsertWay" value="nomal" checked>常规插入</label>
+							<label class="control-label"><input type="radio"  name="InsertWay" value="procedure">存储过程插入</label>
 						</div>  
 				</fieldset>
 				{{> choosemodelaccordinginsertmethod}}
-				<div class="control-group">
+				<div class="control-group" style="padding-left:300px">
 					<button class="btn" id="insertmethodmessagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
 					<button class="btn" id="insertmethodmessagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
 				</div>
@@ -166,7 +166,7 @@
 				<div class="control-group pull-left">
 					<label class="control-label">数据库类型*：</label>
 					<div class="controls">
-						<select name="dbtype">
+						<select name="DataBaseType">
 							<option value="oracle" checked>Oracle</option>
 							<option value="mysql">Mysql</option>
 							<option value="sqlserver">SqlServer</option>
@@ -178,14 +178,170 @@
 				<div class="control-group">
 					<label class="control-label">数据库表名*：</label>
 					<div class="controls">
-						<input type="text" name="dbtablename">
+						<input type="text" name="TableName">
 					</div>
 				</div>
-				
+				<div class="control-group">
+					<label class="control-label">连接字符串*：</label>
+					<div class="controls">
+						<input type="text" class="span8" name="ConnectionString">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">参数列表*：</label>
+					<div class="controls">
+						<table class="table" style="width:420px">
+							<thead>
+								<tr></tr>
+								<tr>
+									<th><input type="checkbox" id="datamessagetableselectall"></th>
+									<th>参数名称</th>
+									<th>参数类型</th>
+									<th>长度</th>
+									<th>参数含义</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th><input type="checkbox" id="datamessagetableselectall"></th>
+									<th><input type="text" style="width:80px" name="PramName0" value="smsPhones"></th>
+									<th>
+										<select name="" style="width:100px">
+											<option value="String">String</option>
+											<option value="Int">Int</option>
+											<option value="DataTime">DataTime</option>
+										</select>
+									</th>
+									<th><input type="text" style="width:80px" name="PramLength0" value="150"></th>
+									<th>
+										<select name="PramDesc0" style="width:100px">
+											<option value="0">手机号码</option>
+											<option value="1">短信内容</option>
+											<option value="2">发送时间</option>
+										</select>
+									</th>
+								</tr>
+								<tr>
+									<th><input type="checkbox" id="cdatamessagetableselectall"></th>
+									<th><input type="text" style="width:80px" name="PramName1" value="context"></th>
+									<th>
+										<select name="PramType0" style="width:100px">
+											<option value="String">String</option>
+											<option value="Int">Int</option>
+											<option value="DataTime">DataTime</option>
+										</select>
+									</th>
+									<th><input type="text" style="width:80px" name="PramLength1" value="150"></th>
+									<th>
+										<select name="PramType1" style="width:100px">
+											<option value="0">手机号码</option>
+											<option value="1">短信内容</option>
+											<option value="2">发送时间</option>
+										</select>
+									</th>
+								</tr>
+							</tdoby>
+						</table>
+					</div>
+				</div>
 			</div>
 			
 			<div id="chooseprocedureinsert" class="hide">
-				<p>bbbb</p>
+				<div class="control-group pull-left">
+					<label class="control-label">数据库类型*：</label>
+					<div class="controls">
+						<select name="DataBaseType">
+							<option value="oracle" checked>Oracle</option>
+							<option value="mysql">Mysql</option>
+							<option value="sqlserver">SqlServer</option>
+							<option value="sybase">Sybase</option>
+							<option value="db2">DB2</option>
+					</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">数据库表名*：</label>
+					<div class="controls">
+						<input type="text" name="TableName">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">连接字符串*：</label>
+					<div class="controls">
+						<input type="text" class="span8" name="ConnectionString">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">参数列表*：</label>
+					<div class="controls">
+						<table class="table" style="width:420px">
+							<thead>
+								<tr></tr>
+								<tr>
+									<th><input type="checkbox" id="datamessagetableselectall"></th>
+									<th>参数名称</th>
+									<th>参数类型</th>
+									<th>长度</th>
+									<th>参数含义</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th><input type="checkbox" id="datamessagetableselectall"></th>
+									<th><input type="text" style="width:80px" name="PramName0" value="smsPhones"></th>
+									<th>
+										<select name="" style="width:100px">
+											<option value="String">String</option>
+											<option value="Int">Int</option>
+											<option value="DataTime">DataTime</option>
+										</select>
+									</th>
+									<th><input type="text" style="width:80px" name="PramLength0" value="150"></th>
+									<th>
+										<select name="PramDesc0" style="width:100px">
+											<option value="0">手机号码</option>
+											<option value="1">短信内容</option>
+											<option value="2">发送时间</option>
+										</select>
+									</th>
+								</tr>
+								<tr>
+									<th><input type="checkbox" id="cdatamessagetableselectall"></th>
+									<th><input type="text" style="width:80px" name="PramName1" value="context"></th>
+									<th>
+										<select name="PramType0" style="width:100px">
+											<option value="String">String</option>
+											<option value="Int">Int</option>
+											<option value="DataTime">DataTime</option>
+										</select>
+									</th>
+									<th><input type="text" style="width:80px" name="PramLength1" value="150"></th>
+									<th>
+										<select name="PramType1" style="width:100px">
+											<option value="0">手机号码</option>
+											<option value="1">短信内容</option>
+											<option value="2">发送时间</option>
+										</select>
+									</th>
+								</tr>
+							</tdoby>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="control-group">
+					<label class="control-label">存储过程名称*：</label>
+					<div class="controls">
+						<input type="text" name="PorcName">
+					</div>
+			</div>
+			<div class="control-group">
+					<label class="control-label">返回值：</label>
+					<div class="controls">
+						<input type="text" class="span8" name="">
+						<input type="button" class="btn" value="...">
+					</div>
+			</div>
 			</div>
 		</fieldset>
 	</form>

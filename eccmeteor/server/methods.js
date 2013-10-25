@@ -77,7 +77,6 @@ SvseMethodsOnServer = {
 	"svDeleteMessageIniFileSection":svDeleteMessageIniFileSection,	//by zhuqing about deleting message
 	"svGetMessageTemplates":svGetMessageTemplates,	//by zhuqing about getting message templates
 	"svWriteMessageStatusInitFilesection":svWriteMessageStatusInitFilesection,	//by zhuqing
-	"svGetMessageSendDllName":svGetMessageSendDllName,	//by zhuqing
 	"svGetMessageList":svGetMessageList,
 	"svWriteStatisticalIniFileSectionString":svWriteStatisticalIniFileSectionString,
 	"svGetStatisticalList": svGetStatisticalList,

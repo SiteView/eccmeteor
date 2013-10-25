@@ -8,34 +8,33 @@
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<label class="label label-info">编辑手机号码设置</label>{{ide "messagesetting"}}</div>
 		<div class="modal-body">
-			{{#with messagebasicsettingofmessagebasciinfoeditform}}
 			<form class="well form-horizontal form-inline" id="editmessagebasicsettingofbasciinfo">
-				<input type="hidden" name="nIndex" value="{{nIndex}}">
+				<input type="hidden" name="nIndex">
 				<fieldset>
 					<span class="label label-info">手机号码信息</span><br /><br />
 					<div class="control-group">
 					  <label class="control-label">名称*:</label>
 					  <div class="controls">
-						<input type="text"  name="Name" value="{{Name}}">
+						<input type="text"  name="Name">
 					  </div>
 					</div>
 					<div class="control-group">
 					  <label class="control-label">*接收手机号码:</label>
 					  <div class="controls">
-						<input type="text"  name="Phone" value="{{Phone}}">
+						<input type="text"  name="Phone">
 					  </div>
 					</div>
 					<div class="control-group">
 						<div class="controls">
-					  	<input type="checkbox" name="Status" value="0" /> 禁止
+					  	<input type="checkbox" name="Status" value="No" /> 禁止
 					  	</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">模板类型:</label>
 						<div class="controls">
-							<select name="TemplateType">
-								<option value="1" checked>com</option>
+							<select name="TemplateType" id="editmessageTemplateTypelist">
+								<option value="1" selected>com</option>
 							</select>
 						</div>
 					</div>
@@ -49,23 +48,24 @@
 					<div class="control-group">
 						<label class="control-label">任务计划类型:</label>
 						<div class="controls">
-							<select name="TaskType">
-								<option value="1" checked>时间段计划</option>
+							<select name="TaskType" id="editmessageTaskTypelist">
+								<option value="1" selected>时间段计划</option>
 							</select>
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">任务计划:</label>
 						<div class="controls">
-							<select name="Plan">
-								<option value="5x8" checked>5x8</option>
+							<select name="Plan" id="editmessagePlanlist">
+								<option value="5x8" selected>5x8</option>
+								<option value="7x14">7x14</option>
 							</select>
 						</div>
 					</div>
 					
 				</fieldset>
 			</form>
-			{{/with}}
+
 		</div>
 		<div class="modal-footer" align="right">
 			<button class="btn btn-primary" id="editmessagebasicsettingofsavebtn">保存</button>
