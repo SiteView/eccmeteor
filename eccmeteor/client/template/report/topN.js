@@ -131,7 +131,7 @@ Template.topNlist.events({
 		$("#topNofadddivedit").find(":text[name='Title']:first").val(result.Title);
 		$("#topNofadddivedit").find(":text[name='Descript']:first").val(result.Descript);
 	    
-	    //$("#topNofadddivedit").find(":text[name='Sort']:first").val(result.Sort);
+	    
 	    $("#topNofadddivedit").find("input[type='number'][name='Count']:first").val(result.Count);
 	    
 		$("#topNofadddivedit").find("input[type='number'][name='Generate']:first").val(result.Generate);
@@ -147,14 +147,7 @@ Template.topNlist.events({
 		$("#GetValuelisted").find("option[value = '"+result["GetValue"]+"']:first").attr("selected","selected");
 		$("#topNtypetemplatelisted").find("option[value = '"+result["WeekEndTime"]+"']:first").attr("selected","selected");
 		
-		/*var CheckedType = result["Type"];
-		 for(var eal = 0; eal < CheckedType.length; eal++){
-				 $("#Typelist").find("option[name = '"+CheckedType[eal]+"']:first").attr("selected","selected").prop("selected",true);
-			 }
-			 var CheckedMark = result.Mark;
-			 for(var ebl = 0; ebl<CheckedMark.length;ebl++){
-				$("#marklist").find("option[name = '"+CheckedMark[ebl]+"']:first").attr("selected","selected").prop("selected",true);
-			}*/
+		
 			var Sort = result.Sort;
 		   $("#topNofadddivedit").find(":radio[name='Sort']").each(function(){
 			if($(this).val() === Sort){
@@ -162,23 +155,6 @@ Template.topNlist.events({
 			}
 		  });
 		  
-			/*var CheckedCount = result["count"];
-			for(var ecl = 0; ecl<CheckedCount.length;ecl++){
-				$("#topNofadddivedit").find("option[name = '"+CheckedCount[ecl]+"']:first").attr("selected","selected").prop("selected",true);
-			}
-			
-			 var CheckedPeriod = result["Period"];
-		     for(var edl = 0; edl < CheckedPeriod.length; edl++){
-				 $("#reporttypetemplatelist").find("option[name = '"+CheckedPeriod[edl]+"']:first").attr("selected","selected").prop("selected",true);
-			 }
-             var CheckedfileType = result["fileType"];
-			 for(var eel = 0; eel<CheckedfileType.length;eel++){
-				$("#topNoutputtype").find("option[name = '"+CheckedfileType[eel]+"']:first").attr("selected","selected").prop("selected",true);
-			} 
-			var CheckedGetValue = result["GetValue"];
-			 for(var efl = 0; efl<CheckedfileType.length;efl++){
-				$("#GetValuelist").find("option[name = '"+CheckedGetValue[efl]+"']:first").attr("selected","selected").prop("selected",true);
-			} */
 			
             var CheckedDeny = result.Deny;
 			 $("#topNofadddivedit").find(":checkbox[name='Deny']").each(function(){
