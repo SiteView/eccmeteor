@@ -67,9 +67,8 @@ Template.usersettingListTable.rendered = function(){
 }
 Template.usersettingListTable.events({
 	"click #userSettingList button[name='edit']":function(e){
-		console.log(e.target.id);
-	//	return; 
-		var user = SvseUserDao.getUserByUserId(e.target.id);
+		var id = e.currentTarget.id;
+		var user = SvseUserDao.getUserByUserId(id);
 		console.log(user);
 		if(!user){
 			SystemLogger(Meteor.users.find().fetch());
@@ -81,9 +80,7 @@ Template.usersettingListTable.events({
 		$('#usersettingeditdiv').modal('toggle');
 	},
 	"click #userSettingList button[name='promission']":function(e){ //点击授权按钮时 获取临时数据
-		console.log(e.target.id);
-	//	return ;
-		var user = SvseUserDao.getUserByUserId(e.target.id);
+		var user = SvseUserDao.getUserByUserId(e.currentTarget.id);
 		if(!user){
 			SystemLogger(Meteor.users.find().fetch());
 			SystemLogger("promission 数据暂未缓冲");
@@ -119,7 +116,4 @@ Template.usersettingListTable.events({
 		}
 	}
 });
-
-Template.userPromissionSetting.rendered = function(){
-}
 

@@ -1,11 +1,24 @@
 //TreeDate的数据集
 Meteor.publish("svse_tree", function (fieldsObj) {
-      //,fields:fieldsObj
-	return SvseTree.find({},{sort:[["sv_id","asc"]]});
+	console.log(this.userId);
+	if(!this.userId)
+		return null;
+    //如果为管理员权限
+    if(UserUtils.isAdmin(this.userId))
+       return SvseTree.find({},{sort:[["sv_id","asc"]]});//,fields:fieldsObj
+    var nodes = UserDaoOnServer.getOwnMonitorsNodes(this.userId);
+    Log4js.info(nodes);
+    return SvseTree.find({sv_id: {$in: nodes}},{sort:[["sv_id","asc"]]});
 });
 //Svse的数据集
 Meteor.publish("svse",function(){
-	return Svse.find();
+	console.log(this.userId);
+	if(!this.userId)
+		return null;
+	if(UserUtils.isAdmin(this.userId))
+		return Svse.find();
+	var showNodes = UserDaoOnServer.getOwnMonitorsNodes(this.userId);
+	return Svse.find({sv_id:{$in: nodes}});
 });
 //监视器模板
 Meteor.publish("svse_monitor_template",function(){

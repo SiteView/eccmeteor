@@ -85,5 +85,13 @@ UserDaoOnServer = {
 	"forbid":function(ids,status){
 		Meteor.users.update({_id:{$in:ids}},{$set:{"profile.accountstatus":!!status}},{multi:true});
 		return UserDaoOnServer.getReturn(true);
+	},
+	/*获取拥有的节点 svse_tree*/
+	"getOwnMonitorsNodes":function(userid){
+		var user = Meteor.users.find(userid);
+		if(!user || !user.profile)
+			return [];
+		var nodes = user.profile.nodeDisplayPermission;
+		return nodes ? nodes : [];
 	}
 }
