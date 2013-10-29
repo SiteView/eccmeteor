@@ -12,13 +12,33 @@ Meteor.publish("svse_tree", function (fieldsObj) {
 });
 //Svse的数据集
 Meteor.publish("svse",function(){
-	console.log(this.userId);
 	if(!this.userId)
 		return null;
 	if(UserUtils.isAdmin(this.userId))
 		return Svse.find();
 	var showNodes = UserDaoOnServer.getOwnMonitorsNodes(this.userId);
-	return Svse.find({sv_id:{$in: nodes}});
+//	return  Svse.find({sv_id:{$in: showNodes}});
+	var nodes =  Svse.find({sv_id:{$in: showNodes}}).fetch();
+	if(!nodes)
+		return null;
+	var length = nodes.length;
+	var newNodes = [];
+	for(var i = 0;i<length;i++){
+		var newNode = nodes[i];
+		if(nodes[i]["type"] === "entity"){
+			newNodes.push(newNode);
+			continue;
+		}
+		if(newNode["subentity"] && newNode["subentity"].length){
+			newNode["subentity"]=ArrayUtils.intersect(showNodes,newNode["subentity"]) //求交集
+		}
+		if(newNode["subgroup"] &&  newNode["subgroup"].length){
+			newNode["subentity"] = ArrayUtils.intersect(showNodes,newNode["subgroup"]) //求交集
+		}
+		newNodes.push(newNode);
+	}
+	Log4js.info(newNodes);
+	return newNodes;
 });
 //监视器模板
 Meteor.publish("svse_monitor_template",function(){

@@ -88,7 +88,9 @@ UserDaoOnServer = {
 	},
 	/*获取拥有的节点 svse_tree*/
 	"getOwnMonitorsNodes":function(userid){
-		var user = Meteor.users.find(userid);
+		var user = Meteor.users.findOne(userid);
+		Log4js.info("==========user");
+		Log4js.info(user);
 		if(!user || !user.profile)
 			return [];
 		var nodes = user.profile.nodeDisplayPermission;
