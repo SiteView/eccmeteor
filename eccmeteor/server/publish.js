@@ -1,3 +1,10 @@
+/**
+	Type:add
+	Author:huyinghuan
+	Date:2013-10-29 14:34
+	Content:增加按用户权限过滤
+	for(index in nodes){ ............}
+**/
 //TreeDate的数据集
 Meteor.publish("svse_tree", function (fieldsObj) {
 	console.log(this.userId);
@@ -8,8 +15,15 @@ Meteor.publish("svse_tree", function (fieldsObj) {
        return SvseTree.find({},{sort:[["sv_id","asc"]]});//,fields:fieldsObj
     var nodes = UserDaoOnServer.getOwnMonitorsNodes(this.userId);
     Log4js.info(nodes);
-    return SvseTree.find({sv_id: {$in: nodes}},{sort:[["sv_id","asc"]]});
+    return SvseTree.find({$or:[{sv_id: {$in: nodes}},{type:"monitor"}]},{sort:[["sv_id","asc"]]});
 });
+/**
+	Type:add
+	Author:huyinghuan
+	Date:2013-10-29 14:34
+	Content:增加按用户权限过滤
+	for(index in nodes){ ............}
+**/
 //Svse的数据集
 Meteor.publish("svse",function(){
 	if(!this.userId)
@@ -17,7 +31,25 @@ Meteor.publish("svse",function(){
 	if(UserUtils.isAdmin(this.userId))
 		return Svse.find();
 	var showNodes = UserDaoOnServer.getOwnMonitorsNodes(this.userId);
+	Log4js.info(showNodes);
+	var self = this;
+	Svse.find({sv_id:{$in: showNodes}}).forEach(function(newNode){
+		if(newNode["type"] === "entity"){
+			self.added("svse",newNode._id,newNode);
+		}else{
+			if(newNode["subentity"] && newNode["subentity"].length){
+				newNode["subentity"]=ArrayUtils.intersect(showNodes,newNode["subentity"]) //求交集
+			}
+			if(newNode["subgroup"] &&  newNode["subgroup"].length){
+			newNode["subgroup"] = ArrayUtils.intersect(showNodes,newNode["subgroup"]) //求交集
+			}
+			self.added("svse",newNode._id,newNode);
+		}
+	})
+	self.ready();
+	//return self;
 //	return  Svse.find({sv_id:{$in: showNodes}});
+/*
 	var nodes =  Svse.find({sv_id:{$in: showNodes}}).fetch();
 	if(!nodes)
 		return null;
@@ -39,6 +71,7 @@ Meteor.publish("svse",function(){
 	}
 	Log4js.info(newNodes);
 	return newNodes;
+	*/
 });
 //监视器模板
 Meteor.publish("svse_monitor_template",function(){
