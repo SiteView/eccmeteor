@@ -1,3 +1,9 @@
+/*‌‌
+   Type：  add ‌‌
+   Author： huyinghuan
+   Date:2013-17-41 10:40 星期二‌‌
+   Content: 增加获取设置节点集合函数
+*/
 UserDaoOnServer = {	
 	"getReturn":function(status,msg){ //组装返回客户端的信息
 		status = !!status ;
@@ -89,11 +95,17 @@ UserDaoOnServer = {
 	/*获取拥有的节点 svse_tree*/
 	"getOwnMonitorsNodes":function(userid){
 		var user = Meteor.users.findOne(userid);
-	//	Log4js.info("==========user");
-	//	Log4js.info(user);
 		if(!user || !user.profile)
 			return [];
 		var nodes = user.profile.nodeDisplayPermission;
+		return nodes ? nodes : [];
+	},
+	/**获取拥有的设置节点 settingNodes*/
+	"getOwnSettingNodes" : function(userid){
+		var user = Meteor.users.findOne(userid);
+		if(!user || !user.profile)
+			return [];
+		var nodes = user.profile.settingNodeDisplayPermission;
 		return nodes ? nodes : [];
 	}
 }

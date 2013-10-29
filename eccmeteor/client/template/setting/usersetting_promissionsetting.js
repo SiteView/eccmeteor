@@ -251,7 +251,7 @@ Template.userPromissViewControle.userpromissViewType = function(){
 Template.userPromissionSettingSettingControl.type = function(){
 	return Session.get("userPromissionSettingOperationControlAction");
 }
-
+/**设置相关权限的初始化渲染*/
 Template.userPromissionSettingSettingControl.rendered = function(){
 	var  data  = Session.get("userPromissionSettingOperationControlData");
 	var currend_action = Session.get("userPromissionSettingOperationControlAction"); //改变模板状态
