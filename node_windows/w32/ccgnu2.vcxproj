@@ -140,7 +140,7 @@
       <Culture>0x0c0a</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(OutDir)lib\$(ProjectName).lib</OutputFile>
+      <OutputFile>$(SolutionDir)bin\$(ProjectName).lib</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

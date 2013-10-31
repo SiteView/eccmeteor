@@ -75,7 +75,7 @@
       <DisableSpecificWarnings>4996;</DisableSpecificWarnings>
     </ClCompile>
     <Lib>
-      <OutputFile>$(OutDir)lib\$(ProjectName).lib</OutputFile>
+      <OutputFile>$(SolutionDir)bin\$(ProjectName).lib</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

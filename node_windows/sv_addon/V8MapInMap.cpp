@@ -129,8 +129,8 @@ Handle<Value> V8MapInMap::GetFmap(const Arguments& args) {
 		else
 			printf("V8MapInMap::GetFmap, isok==false \n");
 	}
-	if(!obj->isok)
-		return scope.Close(String::New(obj->estr.c_str()));
+	//if(!obj->isok)
+	//	return scope.Close(String::New(obj->estr.c_str()));
 
 	for(fit=obj->fmap.begin(); fit!=obj->fmap.end();  ++fit)
 	{

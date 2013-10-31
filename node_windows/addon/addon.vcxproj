@@ -199,7 +199,7 @@
       </Command>
     </PostBuildEvent>
     <Lib>
-      <OutputFile>$(OutDir)lib\$(ProjectName).lib</OutputFile>
+      <OutputFile>$(SolutionDir)bin\$(ProjectName).lib</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
