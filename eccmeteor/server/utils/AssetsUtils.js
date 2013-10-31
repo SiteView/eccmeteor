@@ -4,6 +4,6 @@
 AssetsUtils = {};
 Object.defineProperty(AssetsUtils,"getLanguage",{
 	value:function(){
-		return EJSON.parse(Assets.getText("language/Language.js")
+		return EJSON.parse(Assets.getText("language/Language.js"))
 	}
 });
