@@ -1,5 +1,3 @@
-/.meteor
 /public/css/images
 /log
-/lib/configure.js
-svapi.ini
+/.meteor/local/db
