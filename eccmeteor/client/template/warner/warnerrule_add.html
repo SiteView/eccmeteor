@@ -35,7 +35,7 @@
 				<div class="controls">
 					<select class="emailmultiselect" multiple="multiple" name="SmsNumber">
 						{{#each messagelist}}
-							 <option value="{{Phone}}">{{Phone}}</option>
+							 <option value="{{Name}}">{{Name}}</option>
 						{{/each}}
 					</select>
 				</div>
@@ -44,6 +44,18 @@
 				<label class="control-label">其他手机号:</label>
 				<div class="controls">
 					<input type="text" class="span6" name="OtherNumber">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">发送方式:</label>
+				<div class="controls">
+					<select id="messageSendModelist" name="SmsSendMode">
+						<option value="Web">Web</option>
+						<option value="Com">Com</option>
+						<option value="SelfDefine">SelfDefine</option>
+						<option value="Smsdll.dll">Smsdll.dll</option>
+						<option value="Database">Database</option>
+					</select>
 				</div>
 			</div>
 			<div class="control-group">
@@ -99,4 +111,105 @@
 			</fieldset>
 		</form>
 	</div>
+</Template>
+
+<!--编辑短信报警 -->
+<Template name="editwarnerruleofmessage">
+	<div id="messagewarnerdivedit" class="modal hide fade" 
+	data-backdrop="true" data-keyboard="true" data-show="false" 
+	data-width="800" data-modalOverflow="true">
+		<div class="modal-header">编辑短信报警</div>
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="span4" style="overflow:auto">
+					<ul id="svse_tree_check_editsms" class="ztree"></ul>
+				</div>
+				<div class="span8">
+					<form id="warnerruleofmessageformedit" class="well form-horizontal form-inline">
+						<input type="hidden" name="nIndex" >
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">报警名称:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="AlertName">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">报警接收手机号:</label>
+								<div class="controls">
+									<select class="emailmultiselect" multiple="multiple" name="SmsNumber">
+									{{#each messagelist}}
+										 <option value="{{Phone}}">{{Phone}}</option>
+									{{/each}}
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">其他手机号:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="OtherNumber">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">短信模板:</label>
+								<div class="controls">
+									<select id="Messagetemplatelist" name="SmsTemplate">
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" >升级次数:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="Upgrade">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" >升级接收人地址:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="UpgradeTo">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" >停止次数:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="Stop">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" >值班报警列表:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="WatchSheet">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" >报警策略:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="Strategy">
+								</div>
+							</div>
+						</fieldset>
+					</form>
+	
+					<div>
+						<form class="well form-horizontal form-inline" id="warnerruleofmessageformsendconditionsedit">
+							<fieldset>
+								<div class="control-group">
+								<label class="control-label" >报警事件:</label>
+									<div class="controls">
+										<input type="radio" name="AlertCategory" value="危险">危险</td>
+										<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+		  	</div>
+		</div>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-large" id="editwarnerruleofmessagecancelbtn">{{language.warnerrulemodel.cancelemailwarnerrulesettingbtn}}</button>
+			<button class="btn btn-primary btn-large" id="editwarnerruleofmessagesavebtn">{{language.warnerrulemodel.saveemailwarnerrulesettingbtn}}</button>
+		</div>
+	</div>
+	
 </Template>

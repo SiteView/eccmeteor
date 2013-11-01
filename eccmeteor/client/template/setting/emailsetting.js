@@ -131,8 +131,8 @@ Template.emailbasicsettingofaddressedit.rendered = function(){
 
 Template.emailsettingList.events({
 	"click td .btn":function(e){
-		console.log(e.target.id);
-		var result = SvseEmailDao.getEmailById(e.target.id);
+		console.log(e.currentTarget.id);
+		var result = SvseEmailDao.getEmailById(e.currentTarget.id);
 		var template = result["Template"];
 		var bCheck = result["bCheck"];
 		$("#emailbasicsettingofaddressemailtemplatelistedit option").each(function(){

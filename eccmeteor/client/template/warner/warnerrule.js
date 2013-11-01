@@ -145,6 +145,7 @@ Template.warnerruleofemailform.emaillist = function(){
 }
 
 Template.warnerrulelist.rulelist = function(){
+	console.log(SvseWarnerRuleDao.getWarnerRuleList());
 	return SvseWarnerRuleDao.getWarnerRuleList();
 }
 
@@ -164,8 +165,8 @@ Template.warnerrulelist.rendered = function(){
 }
 Template.warnerrulelist.events = {
 	"click td .btn":function(e){
-		console.log(e.target.id);
-		var result = SvseWarnerRuleDao.getWarnerRule(e.target.id);
+		console.log(e.currentTarget.id);
+		var result = SvseWarnerRuleDao.getWarnerRule(e.currentTarget.id);
 		//填充表单
 		$("#emailwarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
 		$("#emailwarnerdivedit").find(":text[name='OtherAdress']:first").val(result.OtherAdress);

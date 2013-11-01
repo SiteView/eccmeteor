@@ -20,7 +20,12 @@ Meteor.methods({
   "svseMonitorTemplateDaoAgent":SvseMonitorTemplateDaoAgent.agent,
   "SvseTopNDaoAgent":SvseTopNDaoAgent.agent,
   "SvseStatisticalDaoAgent":SvseStatisticalDaoAgent.agent,
-  "svseMessageDaoAgent":SvseMessageDaoAgent.agent	//by zhuqing add
+  "svseMessageDaoAgent":SvseMessageDaoAgent.agent,	//by zhuqing add
+  "svGetSMSWebConfigSetting":svGetSMSWebConfigSetting,
+  "svGetSMSComConfigSetting":svGetSMSComConfigSetting,
+  "svGetSmsDllName":svGetSmsDllName,
+  "svGetEmailTemplates":svGetEmailTemplates,
+  "svGetAllTask":svGetAllTask,
 });//给客户端调用的
  /**
 	Type： add | modify 
@@ -50,6 +55,12 @@ Meteor.methods({
 	Content:增加统计报表允许，禁止操作，api声明
 
 **/
+/*
+	Type:add and modify some methods at cilent and server
+	Author:zhuqing
+	Date:2013-11-1
+	Content:在客户端和服务端添加一些定义的方法
+*/
 //给服务端调用的。//调用 /lib/svdb.js中定义的方法
 SvseMethodsOnServer = {
 	"GetAllEntityGroups":GetAllEntityGroups,
@@ -91,9 +102,11 @@ SvseMethodsOnServer = {
 	"svDeleteTopNIniFileSection":svDeleteTopNIniFileSection,
 	"svWriteAlertStatusInitFileSection":svWriteAlertStatusInitFileSection,
 	"svWriteMessageIniFileSectionString":svWriteMessageIniFileSectionString,
-	"svDeleteMessageIniFileSection":svDeleteMessageIniFileSection,	//by zhuqing about deleting message
-	"svGetMessageTemplates":svGetMessageTemplates,	//by zhuqing about getting message templates
-	"svWriteMessageStatusInitFilesection":svWriteMessageStatusInitFilesection,	//by zhuqing
+	"svDeleteMessageIniFileSection":svDeleteMessageIniFileSection,
+	"svGetMessageTemplates":svGetMessageTemplates,
+	"svWriteMessageStatusInitFilesection":svWriteMessageStatusInitFilesection,
+	"svWriteSMSWebConfigIniFileSectionString":svWriteSMSWebConfigIniFileSectionString,
+	"svWriteSMSCommConfigIniFileSectionString":svWriteSMSCommConfigIniFileSectionString,
 	"svGetMessageList":svGetMessageList,
 	"svWriteStatisticalIniFileSectionString":svWriteStatisticalIniFileSectionString,
 	"svGetStatisticalList": svGetStatisticalList,

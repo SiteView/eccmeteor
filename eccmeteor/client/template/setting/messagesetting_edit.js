@@ -7,6 +7,15 @@ Template.editmessagebasicsetting.rendered = function(){
 		}
 	});
 	
+	SvseTaskDao.getAllTaskNames(function(err,result){
+		console.log("task");
+		for(name in result){
+			console.log(name);
+			var option = $("<option value="+name+"></option>").html(name)
+			$("#editmessagePlanlist").append(option);
+		}
+	});
+	
 	$(function(){
 		$("button#editmessagebasicsettingofcancelbtn").click(function(){
 			$('#editmessagesettingdiv').modal('hide');
@@ -14,9 +23,14 @@ Template.editmessagebasicsetting.rendered = function(){
 		$("button#editmessagebasicsettingofsavebtn").click(function(){
 			var editmessagebasicsettingofbasciinfo = ClientUtils.formArrayToObject($("#editmessagebasicsettingofbasciinfo").serializeArray());
 			var nIndex = editmessagebasicsettingofbasciinfo["nIndex"];
+			
+			if($(":checkbox[name='Status']").attr("checked")){
+				editmessagebasicsettingofbasciinfo["Status"]="Yes";
+			}
+			
 			var message = {};
 			message[nIndex] = editmessagebasicsettingofbasciinfo;
-		//	console.log(message);
+			//console.log(message);
 			SvseMessageDao.updateMessage(nIndex,message,function(){
 				$('#editmessagesettingdiv').modal('hide');
 			});

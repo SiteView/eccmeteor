@@ -7,7 +7,15 @@ Template.messagebasicsettingofadd.rendered = function(){
 			$("#messagebasicsettingofmessagetemplatelist").append(option);
 		}
 	});
-	
+	//获取任务计划列表
+	SvseTaskDao.getAllTaskNames(function(err,result){
+		console.log("plan");
+		for(name in result){
+			console.log(name);
+			var option = $("<option value="+name+"></option>").html(name)
+			$("#tasknamelist").append(option);
+		}
+	});
 	$(function(){
 		$("button#messagesettingcancelbtn").click(function(){
 			console.log("hello");
@@ -18,6 +26,19 @@ Template.messagebasicsettingofadd.rendered = function(){
 		var nIndex = Utils.getUUID();
 		messagebasicsettingofbasciinfo["nIndex"] = nIndex
 	//	console.log(emailbasicsettingofaddressbasciinfo);
+		$(":checkbox[name='Status']").each(function(){
+			if(!this.checked) messagebasicsettingofbasciinfo["Status"]="Yes";
+		});
+		var name=messagebasicsettingofbasciinfo["Name"];
+		if(!name){
+			Message.info("请填写名称");
+			return;
+		}
+		var result=SvseMessageDao.getMessageByName(name);
+		if(result){
+			Message.info("此信息名已经存在！");
+			return;
+		}
 		var message = {};
 		message[nIndex] = messagebasicsettingofbasciinfo;
 		SvseMessageDao.addMessage(nIndex,message,function(result){
@@ -26,9 +47,10 @@ Template.messagebasicsettingofadd.rendered = function(){
 		console.log("保存");
 		});
 	});
+	
 }
 /*
-Template.messagebasicsettingofadd.events = {
+Template.messagebasicsettingofadd.events({
 
 	"click #messagesettingcancelbtn": function(){
 		$('#addmessagesettingdiv').modal('hide');
@@ -40,6 +62,9 @@ Template.messagebasicsettingofadd.events = {
 		var nIndex = Utils.getUUID();
 		messagebasicsettingofbasciinfo["nIndex"] = nIndex
 	//	console.log(emailbasicsettingofaddressbasciinfo);
+		$(":checkbox[name='Status']").each(function(){
+			if(!this.checked) messagebasicsettingofbasciinfo['Status']='Yes';
+		});
 		var message = {};
 		message[nIndex] = messagebasicsettingofbasciinfo;
 		SvseMessageDao.addMessage(nIndex,message,function(result){
@@ -48,4 +73,4 @@ Template.messagebasicsettingofadd.events = {
 		});
 		console.log("保存");
 	}
-}*/
+});*/
