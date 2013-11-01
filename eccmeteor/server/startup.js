@@ -25,12 +25,12 @@ function initAllDateStartUp(status){
 		return;
 	initDateAtStartUp["initTreeDataAtStartup"](0);
 	initDateAtStartUp["initSvseTreeStructureAtStartUp"](0);
-	initDateAtStartUp["initSvseMonitorsTemplateAtStartUp"](-1);
-	initDateAtStartUp["initSvseEntityTempletGroupAtStartUp"](-1);
+	initDateAtStartUp["initSvseMonitorsTemplateAtStartUp"](0);
+	initDateAtStartUp["initSvseEntityTempletGroupAtStartUp"](0);
 	initDateAtStartUp["initSvseEntityInfoAtStartUp"](0);
-	initDateAtStartUp["initTaskAtStartUp"](-1);
-	initDateAtStartUp["initEmailListAtStartUp"](-1);
-	initDateAtStartUp["initWarnerRuleAtStartUp"](-1);
+	initDateAtStartUp["initTaskAtStartUp"](0);
+	initDateAtStartUp["initEmailListAtStartUp"](0);
+	initDateAtStartUp["initWarnerRuleAtStartUp"](0);
 	initDateAtStartUp["initAdminAccount"]();
 	initDateAtStartUp["initMessageListAtStartUp"](0);
 	initDateAtStartUp["initStatisticalAtStartUp"](0);
@@ -40,7 +40,21 @@ function initAllDateStartUp(status){
 //	var timeloop = new UnrealThread(SyncFunction.sync,70*1000);
 //	timeloop.start();
 }
+
+var SetSvdbAddr = function(){
+	var filename = '/home/ec/svapi.ini';
+	process.sv_univ({'dowhat':'SetSvdbAddrByFile','filename': filename,}, 2); 
+	var robj= process.sv_univ({'dowhat':'GetSvdbAddr' }, 2); 
+	var addr = 'Invalid addr';
+	if( robj.isok!=undefined )
+	{
+		addr= robj.fmap(0)['return']['return'];
+	}
+	console.log( ' ----  SetSvdbAddr.js to: ' + addr + '  by file: ' + filename + ' ---- ');
+}
+
 Meteor.startup(function(){
 	process.sv_init();
-	initAllDateStartUp(1);	
+	SetSvdbAddr();
+	initAllDateStartUp(0);	
 });
