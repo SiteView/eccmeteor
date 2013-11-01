@@ -14,7 +14,8 @@ Template.Login.events({
         return;
       }
       SvseUserDao.login(username,password,function(err,status){
-        if(err){ 
+        if(err){
+          Log4js.error(err)
           errorMsg.html(status ? err : "登陆名不存在或密码错误").css("display","block");
         }else{
             Meteor.Router.to("/home");

@@ -1,11 +1,11 @@
 //清除临时数据
 var clearUserPromissionSettingGroupControlData = function(){
-	Session.set("userPromissionSettingGroupControlData",undefined);//清空Session中的临时数据
-	Session.set("userPromissionSettingGroupControlNodeId",undefined);
-	Session.set("userPromissionSettingGroupControlType",undefined);
-	Session.set("userPromissionSettingOperationControlData",undefined);
-	Session.set("userPromissionSettingOperationControlAction",undefined);
-	Session.set("userpromissViewType",undefined);
+	Session.set("userPromissionSettingGroupControlData",null);//清空Session中的临时数据
+	Session.set("userPromissionSettingGroupControlNodeId",null);
+	Session.set("userPromissionSettingGroupControlType",null);
+	Session.set("userPromissionSettingOperationControlData",null);
+	Session.set("userPromissionSettingOperationControlAction",null);
+	Session.set("userpromissViewType",null);
 }
 
 /*
@@ -24,62 +24,82 @@ var clearUserPromissionSettingGroupControlData = function(){
 */
 
 // 弹窗中用户授权的事件管理
+/* 当使用userPromissionSetting时，事件无法触发 待修复
 Template.userPromissionSetting.events({
-	"click #userPromissionSettingSetNodesBtn":function(){
-		var  data  = Session.get("userPromissionSettingGroupControlData");
-		var operationData =  Session.get("userPromissionSettingOperationControlData");
-		if(!data){
-			$("#userPromissionSettingDiv").modal('toggle');
-			return;
-		}
-		console.log("权限是");
-		console.log(data);
-		
-		var svsenodes = [];
-		//获取可见节点授权
-		var svsenodearr = $.fn.zTree.getZTreeObj("svse_tree_promission_check").getNodesByFilter(function(node){return node.checked});
-		for(index in svsenodearr){
-			svsenodes.push(svsenodearr[index].id);
-		}
-		console.log("勾选节点是：");
-		console.log(svsenodes);
-		var uid = $("#userPromissionSettingDiv #promissionUserId").val();
-		
-		var svseOperateNodeArr = $.fn.zTree.getZTreeObj("svse_other_promission_check").getNodesByFilter(function(node){return node.checked});
-		var svseOperateNodes = [];
-		for(svseOperateNodeArrIndex in svseOperateNodeArr){
-			svseOperateNodes.push(svseOperateNodeArr[svseOperateNodeArrIndex].action);
-		}
-		//存储可见节点数据
-		SvseUserDao.setDisplayPermission(uid,svsenodes,svseOperateNodes,function(result){
-			console.log(result);
-		});
-		console.log("uid setNodeOpratePermission " +uid);
-		//存储节点操作权限
-		SvseUserDao.setNodeOpratePermission(uid,ClientUtils.changePointAndLine(data),function(result){
-			console.log(result);
-		});
-		console.log("uid setSettingOperatePermission " +uid);
-		//存储设置节点操作权限
-		SvseUserDao.setSettingOperatePermission(uid,operationData,function(result){
-			console.log(result);
-		});
-		//清空Session中的临时数据
-		clearUserPromissionSettingGroupControlData();
-		$("#userPromissionSettingDiv").modal('toggle');
+	"click button#userPromissionSettingSetNodesBtn":function(){
 	},
-	"click #userPromissionSettingCloseBtn":function(){ //关闭权限控制弹窗
-		clearUserPromissionSettingGroupControlData();//清空Session中的临时数据
-		$("#userPromissionSettingDiv").modal('toggle');
+	"click button#userPromissionSettingCloseBtn":function(){ //关闭权限控制弹窗
 	}
 });
+*/
+var userPromissionSettingSave = function(){
+	var  data  = Session.get("userPromissionSettingGroupControlData");
+	var operationData =  Session.get("userPromissionSettingOperationControlData");
+	if(!data){
+		$("#userPromissionSettingDiv").modal('hide');
+		return;
+	}
+	console.log("权限是");
+	console.log(data);
+	
+	var svsenodes = [];
+	//获取可见节点授权
+	var svsenodearr = $.fn.zTree.getZTreeObj("svse_tree_promission_check").getNodesByFilter(function(node){return node.checked});
+	for(index in svsenodearr){
+		svsenodes.push(svsenodearr[index].id);
+	}
+	console.log("勾选节点是：");
+	console.log(svsenodes);
+	var uid = $("#userPromissionSettingDiv #promissionUserId").val();
+	
+	var svseOperateNodeArr = $.fn.zTree.getZTreeObj("svse_other_promission_check").getNodesByFilter(function(node){return node.checked});
+	var svseOperateNodes = [];
+	for(svseOperateNodeArrIndex in svseOperateNodeArr){
+		svseOperateNodes.push(svseOperateNodeArr[svseOperateNodeArrIndex].action);
+	}
+	//存储可见节点数据
+	SvseUserDao.setDisplayPermission(uid,svsenodes,svseOperateNodes,function(result){
+		console.log(result);
+	});
+	console.log("uid setNodeOpratePermission " +uid);
+	//存储节点操作权限
+	SvseUserDao.setNodeOpratePermission(uid,ClientUtils.changePointAndLine(data),function(result){
+		console.log(result);
+	});
+	console.log("uid setSettingOperatePermission " +uid);
+	//存储设置节点操作权限
+	SvseUserDao.setSettingOperatePermission(uid,operationData,function(result){
+		console.log(result);
+	});
+	//清空Session中的临时数据
+	clearUserPromissionSettingGroupControlData();
+	$("#userPromissionSettingDiv").modal('hide');
+}
+var userPromissionSettingClose = function(){
+	console.log("userPromissionSettingCloseBtn close");
+	clearUserPromissionSettingGroupControlData();//清空Session中的临时数据
+	$("#userPromissionSettingDiv").modal('hide');
+}
+// 弹窗中用户授权的事件管理
+Template.userPromissionSetting.rendered = function(){
+	$(function(){
+		$("#userPromissionSettingDiv button#userPromissionSettingSetNodesBtn").click(function(){
+			userPromissionSettingSave();
+		});
+		$("#userPromissionSettingDiv button#userPromissionSettingCloseBtn").click(function(){
+			userPromissionSettingClose();
+		})
+	})
+}
+
+
 //授权树当前节点类型
 Template.userPromissionSettingGroupControl.type = function(){
 	return Session.get("userPromissionSettingGroupControlType");
 }
 
-//在模板中进行节点勾选 而不在树点击事件时处理是有由于 
-//点击事件后 当节点类型不相同时 该模板将进行重绘，重绘未完成时jquery相关操作已完成。这样讲导致Jquery无法获取相关Dom元素
+//在模板中进行节点勾选 而不在树点击事件时处理是 
+//由于点击事件后 当节点类型不相同时 该模板将进行重绘，重绘未完成时jquery相关操作已完成。这样讲导致Jquery无法获取相关Dom元素
 Template.userPromissionSettingGroupControl.rendered = function(){
 	console.log("重绘");
 	var data = Session.get("userPromissionSettingGroupControlData");
@@ -111,8 +131,8 @@ Template.userPromissionSettingGroupControl.rendered = function(){
 
 Template.userPromissionSettingGroupControl.events({
 	"click #userPromissionSettingGroupControlForm :checkbox":function(e){
-		var name = e.target.name;
-		var checked = e.target.checked;
+		var name = e.currentTarget.name;
+		var checked = e.currentTarget.checked;
 		console.log("选中节点的name是"+name +"======="+checked);
 		var  data  = Session.get("userPromissionSettingGroupControlData");
 		var currend_id  =  Session.get("userPromissionSettingGroupControlNodeId");
@@ -123,8 +143,12 @@ Template.userPromissionSettingGroupControl.events({
 		Session.set("userPromissionSettingGroupControlData",data);
 	}
 });
-
-
+//改变权限checkbox的状态为未选中
+var clearUserPromissionSettingCheckbox = function(){
+	$("#userPromissionSettingGroupControlForm :checkbox").each(function(){
+		this.checked = false;
+	});
+}
 
 //两棵树的渲染 及 点击等事件处理
 Template.userPromissionSettingTree.rendered = function(){
@@ -159,6 +183,7 @@ Template.userPromissionSettingTree.rendered = function(){
 							var promissionCheckboxs = data[currend_id];
 							console.log("promissionCheckboxs:  ");
 							console.log(promissionCheckboxs);
+							clearUserPromissionSettingCheckbox();//清空选项
 							//如果当前节点不存在授权
 							if(!promissionCheckboxs)
 								return;
@@ -226,7 +251,7 @@ Template.userPromissViewControle.userpromissViewType = function(){
 Template.userPromissionSettingSettingControl.type = function(){
 	return Session.get("userPromissionSettingOperationControlAction");
 }
-
+/**设置相关权限的初始化渲染*/
 Template.userPromissionSettingSettingControl.rendered = function(){
 	var  data  = Session.get("userPromissionSettingOperationControlData");
 	var currend_action = Session.get("userPromissionSettingOperationControlAction"); //改变模板状态
@@ -252,8 +277,8 @@ Template.userPromissionSettingSettingControl.rendered = function(){
 },
 Template.userPromissionSettingSettingControl.events({
 	"click #userPromissionSettingSettingControlForm :checkbox":function(e){
-		var name = e.target.name;
-		var checked = e.target.checked;
+		var name = e.currentTarget.name;
+		var checked = e.currentTarget.checked;
 		console.log("选中节点的name是"+name +"======="+checked);
 		var  data  = Session.get("userPromissionSettingOperationControlData");
 		var currend_action  =  Session.get("userPromissionSettingOperationControlAction");
@@ -290,8 +315,8 @@ Template.userPromissionSettingWarnerControl.rendered = function(){
 }
 Template.userPromissionSettingWarnerControl.events({
 	"click #userPromissionSettingWarnerControlForm :checkbox":function(e){
-		var name = e.target.name;
-		var checked = e.target.checked;
+		var name = e.currentTarget.name;
+		var checked = e.currentTarget.checked;
 		console.log("选中节点的name是"+name +"======="+checked);
 		var  data  = Session.get("userPromissionSettingOperationControlData");
 		var currend_action  =  Session.get("userPromissionSettingOperationControlAction");

@@ -18,7 +18,7 @@ Template.usersettingadd.events({
 		if(!user.password.length || user.password !== user.password2) return;
 		SvseUserDao.register(user,function(result){
 			if(result.status){
-				console.log("注册成功");
+				Log4js.info("注册成功");
 				$("#usersettingaddform :text").val("");
 				$("#usersettingaddform :password").val("");
 				$("#usersettingaddform :text[name='username']").closest("div.controls").find("span").css("display","none");

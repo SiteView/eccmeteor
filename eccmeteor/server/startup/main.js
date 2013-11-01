@@ -1,8 +1,21 @@
 /*
-Type： add | modify
-Author：任杰
-Date:2013-10-18 10:18
-Content:增加 "initTopNListAtStartUp":initTopNListAtStartUp
+	Type： add | modify
+	Author：任杰
+	Date:2013-10-18 10:18
+	Content:增加 "initTopNListAtStartUp":initTopNListAtStartUp
+
+===============================================
+
+	Type： add 
+	Author：xuqiang
+	Date:2013-10-24 12:00
+	Content:initStatisticalList.js ////initStatisticalAtStartUp
+
+===================================================
+	Type： add 
+	Author：huyinghuan
+	Date:2013-10-29 16:18
+	Content:增加 initSettingNodes
 */
 
 //综合./init*.js中的方法，提供统一访问接口
@@ -18,11 +31,6 @@ initDateAtStartUp = {
 	"initAdminAccount":initAdminAccount,
 	"initTopNListAtStartUp":initTopNListAtStartUp,
 	"initMessageListAtStartUp":initMessageListAtStartUp,
-/*
-Type： add 
-Author：xuqiang
-Date:2013-10-24 12:00
-Content:initStatisticalList.js ////initStatisticalAtStartUp
-*/ 
+	"initSettingNodes":initSettingNodes,
 	"initStatisticalAtStartUp":initStatisticalAtStartUp
 };

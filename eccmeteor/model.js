@@ -23,6 +23,14 @@ SvseTopNresultlist = new Meteor.Collection("svse_TopNresultlist");//topN报告�
 */ 
 SvseStatisticalresultlist = new Meteor.Collection("Svse_Statisticalresultlist");//统计报告list
 
+/*
+	Type：add
+	Author：huyinghuan
+	Date:2013-10-29 15:11
+	Content:增加设置节点的集合  SvseSettingNodes
+*/
+SvseSettingNodes = new Meteor.Collection("svse_settingnodes");
+
 Svse.allow({
 	insert: function (userId, doc) {
     // the user must be logged in, and the document must be owned by the user
@@ -168,5 +176,22 @@ SvseTopNresultlist.allow({
 	},
 	remove: function (userId, doc) {
 		return true;
+	}
+});
+/*
+	Type：add
+	Author：huyinghuan
+	Date:2013-10-29 15:11
+	Content:增加设置节点的集合控制权限
+*/
+SvseSettingNodes.allow({
+	insert: function (userId, doc) {
+		return false;
+	},
+	update: function (userId, doc, fields, modifier) {
+		return false;
+	},
+	remove: function (userId, doc) {
+		return false;
 	}
 });
