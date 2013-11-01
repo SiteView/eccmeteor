@@ -76,4 +76,22 @@ SvseMessageDaoOnServer = {
 		}
 		return SvseMessageDaoOnServer.getReturn(true,1);
 	},
+	"setMessageWebConfig":function(section){
+		var result = SvseMethodsOnServer.svWriteSMSWebConfigIniFileSectionString(section);
+		if(!result){
+			var msg = "SvseMessageDaoOnServer's setMessageWebConfig faild";
+			Log4js.error(msg);
+			throw new Meteor.Error(500,msg);
+		}
+		return SvseMessageDaoOnServer.getReturn(true);
+	},
+	"setMessageCommConfig":function(section){
+		var result = SvseMethodsOnServer.svWriteSMSCommConfigIniFileSectionString(section);
+		if(!result){
+			var msg = "SvseMessageDaoOnServer's setMessageWebConfig faild";
+			Log4js.error(msg);
+			throw new Meteor.Error(500,msg);
+		}
+		return SvseMessageDaoOnServer.getReturn(true);
+	},
 }

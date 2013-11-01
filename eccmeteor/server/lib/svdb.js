@@ -812,4 +812,73 @@ svWriteMessageStatusInitFilesection = function(sectionName,status){
 	}
 	return robj.fmap(0);
 }
-//获取短信设置的发送短信方式中的调用动态库的动态库名称
+
+/*
+	Type:ini文件读写
+	Author:zhuqing
+	Date:2013-10-28
+	Content:发送短信方式的数据写入
+*/
+//(Web方式)短信发送方式smsconfig.ini(section:SMSWebConfig)写入
+svWriteSMSWebConfigIniFileSectionString = function(section){
+	console.log(section);
+	section["Pwd"] = svEncryptOne(section["Pwd"]);
+	var ini = {"SMSWebConfig":section};
+	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"smsconfig.ini",'user':"default",'section':"SMSWebConfig"},0); 
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	SystemLogger(robj.fmap(0));
+	return robj.fmap(0);
+}
+//(com方式)短信发送方式smsconfig.ini(section:SMSCommConfig)写入
+svWriteSMSCommConfigIniFileSectionString = function(section){
+	console.log(section);
+	var ini = {"SMSCommConfig":section};
+	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"smsconfig.ini",'user':"default",'section':"SMSCommConfig"},0); 
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	SystemLogger(robj.fmap(0));
+	return robj.fmap(0);
+}
+//获取以web方式发送短信的设置
+svGetSMSWebConfigSetting = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"smsconfig.ini",
+		"user":"default","section":"SMSWebConfig"}, 0);
+	if(!robj.isok(0)){
+		return;
+	}
+	var fmap= robj.fmap(0);
+	if(!fmap || !fmap["SMSWebConfig"]) return ;
+	fmap["SMSWebConfig"]["Pwd"] = svDecryptOne(fmap["SMSWebConfig"]["Pwd"]);
+	return fmap["SMSWebConfig"];
+}
+//获取以com方式发送短信的设置
+svGetSMSComConfigSetting = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"smsconfig.ini",
+		"user":"default","section":"SMSCommConfig"}, 0);
+	if(!robj.isok(0)){
+		return;
+	}
+	var fmap= robj.fmap(0);
+	if(!fmap || !fmap["SMSCommConfig"]) return ;
+	return fmap["SMSCommConfig"];
+}
+/*
+//获取短信设置的发送短信方式中的调用动态库的动态库名称(有问题-待修改)
+svGetSmsDllName=function(){
+	var dowhat={'dowhat':'GetSmsDllName'};
+	var robj=process.sv_univ(dowhat,0);
+	Log4js.info("11");
+	if(!robj.isok(0)){
+		SystemLogger(robj.estr(0),-1);
+		return false;
+	}
+	Log4js.info("22");
+	var fmap=robj.fmap(0);
+	return fmap;
+}
+*/

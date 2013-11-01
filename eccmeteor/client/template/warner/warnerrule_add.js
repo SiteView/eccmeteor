@@ -16,6 +16,21 @@ Template.warnerruleofmessage.events={
 		warnerruleofmessageform["AlwaysTimes"] = 1;
 		warnerruleofmessageform["OnlyTimes"] = 1;
 		
+		var alertName=warnerruleofmessageform["AlertName"];
+		if(!alertName){
+			Message.info("请填写名称");
+			return;
+		}
+		var alertresult=SvseWarnerRuleDao.getAlertByName(alertName);
+		if(alertresult){
+			Message.info("报警名称已经存在");
+			return;
+		}
+		var smsNumber=warnerruleofmessageform["SmsNumber"];
+		if(!smsNumber){
+			Message.info("报警短信接收手机号不能为空");
+			return;
+		}
 		var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
 		
 		var targets = [];
@@ -24,6 +39,10 @@ Template.warnerruleofmessage.events={
 			targets.push(arr[index].id);
 		}
 		warnerruleofmessageform["AlertTarget"] = targets.join();
+		if(!warnerruleofmessageform["AlertTarget"]){
+			Message.info("监测范围不能为空");
+			return;
+		}
 		warnerruleofmessageform["nIndex"] = nIndex;
 		console.log(warnerruleofmessageform);
 		var section = {};
@@ -60,6 +79,13 @@ Template.warnerruleofmessage.rendered = function(){
 			}
 		};
 		$.fn.zTree.init($("#svse_tree_check_add"), setting, data);
+	});
+	SvseMessageDao.getMessageTemplates(function(err,result){
+		for(name in result){
+		//console.log(name);
+			var option = $("<option value="+name+"></option>").html(name)
+			$("#Messagetemplatelist").append(option);
+		}
 	});
 }
 

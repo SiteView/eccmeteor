@@ -81,5 +81,9 @@ SvseWarnerRuleDao = {
 				fn(result);
 			}
 		});
+	},
+	//根据报警名称获取对象
+	"getAlertByName":function(alertname){
+		return SvseWarnerRule.findOne({AlertName:alertname});
 	}
 }

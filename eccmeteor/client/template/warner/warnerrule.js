@@ -59,6 +59,22 @@ Template.warnerruleofemail.events = {
 		warnerruleofemailform["AlwaysTimes"] = 1;
 		warnerruleofemailform["OnlyTimes"] = 1;
 		
+		var alertName=warnerruleofemailform["AlertName"];
+		if(!alertName){
+			Message.info("请填写名称");
+			return;
+		}
+		var alertresult=SvseWarnerRuleDao.getAlertByName(alertName);
+		if(alertresult){
+			Message.info("报警名称已经存在");
+			return;
+		}
+		var emailAdress=warnerruleofemailform["EmailAdress"];
+		if(!emailAdress){
+			Message.info("报警邮件接收地址不能为空");
+			return;
+		}
+		
 		var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
 		
 		var targets = [];
@@ -67,6 +83,10 @@ Template.warnerruleofemail.events = {
 			targets.push(arr[index].id);
 		}
 		warnerruleofemailform["AlertTarget"] = targets.join();
+		if(!warnerruleofemailform["AlertTarget"]){
+			Message.info("监测范围不能为空");
+			return;
+		}
 		warnerruleofemailform["nIndex"] = nIndex;
 		console.log(warnerruleofemailform);
 		var section = {};
@@ -132,7 +152,7 @@ Template.warnerruleofemailform.rendered = function(){
 		//邮件模板下拉列表
 		Meteor.call("svGetEmailTemplates",function(err,result){
 			for(name in result){
-				console.log(name);
+				//console.log(name);
 				var option = $("<option value="+name+"></option>").html(name)
 				$("#emailtemplatelist").append(option);
 			}
@@ -145,6 +165,7 @@ Template.warnerruleofemailform.emaillist = function(){
 }
 
 Template.warnerrulelist.rulelist = function(){
+	console.log(SvseWarnerRuleDao.getWarnerRuleList());
 	return SvseWarnerRuleDao.getWarnerRuleList();
 }
 
@@ -164,8 +185,9 @@ Template.warnerrulelist.rendered = function(){
 }
 Template.warnerrulelist.events = {
 	"click td .btn":function(e){
-		console.log(e.target.id);
-		var result = SvseWarnerRuleDao.getWarnerRule(e.target.id);
+		console.log(e.currentTarget.id);
+		var result = SvseWarnerRuleDao.getWarnerRule(e.currentTarget.id);
+		console.log("alerttype:"+result["AlertType"]);
 		//填充表单
 		$("#emailwarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
 		$("#emailwarnerdivedit").find(":text[name='OtherAdress']:first").val(result.OtherAdress);
@@ -264,7 +286,7 @@ Template.warnerruleofemailedit.rendered = function(){
 	//填充邮件模板列表
 	Meteor.call("svGetEmailTemplates",function(err,result){
 		for(name in result){
-			console.log(name);
+			//console.log(name);
 			var option = $("<option value="+name+"></option>").html(name)
 			$("#emailtemplatelistedit").append(option);
 		}

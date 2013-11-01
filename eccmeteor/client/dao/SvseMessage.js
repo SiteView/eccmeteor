@@ -11,11 +11,11 @@ SvseMessageDao = {
 	"addMessage":function(messagename,message,fn){
 		Meteor.call(SvseMessageDao.AGENT,'addMessage',[messagename,message],function(err,result){
 			if(err){
-				SystemLogger(err);
+				Log4js.error(err);
 				fn({status:false,msg:err})
 			}else{
 				if(result && !result[status]){ // 无权限
-					SystemLogger(err);
+					Log4js.error(err);
 					fn(result);
 				}else{
 					fn({status:true})
@@ -27,7 +27,7 @@ SvseMessageDao = {
 	"deleteMessageByIds":function(ids,fn){
 		Meteor.call(SvseMessageDao.AGENT,"deleteMessageByIds",[ids],function(err,result){
 			if(err){
-				SystemLogger(err);
+				Log4js.error(err);
 				fn({status:false,msg:err})
 			}else{
 				fn(result);
@@ -38,14 +38,18 @@ SvseMessageDao = {
 	"getMessageById" : function(id){
 		return SvseMessageList.findOne({nIndex:id});
 	},
+	//根据name获取Message对象
+	"getMessageByName":function(name){
+		return SvseMessageList.findOne({Name:name});
+	},
 	"updateMessage":function(sectionname,section,fn){
 		Meteor.call(SvseMessageDao.AGENT,'updateMessage',[sectionname,section],function(err,result){
 			if(err){
-				SystemLogger(err);
+				Log4js.error(err);
 				fn({status:false,msg:err})
 			}else{
 				if(result && !result[status]){ // 无权限
-					SystemLogger(err);
+					Log4js.error(err);
 					fn(result);
 				}else{
 					fn({status:true})
@@ -59,6 +63,26 @@ SvseMessageDao = {
 	//批量更新短信状态
 	"updateMessageStatus" : function(ids,status,fn){
 		Meteor.call(SvseMessageDao.AGENT,"updateMessageStatus",[ids,status],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn(result);
+			}
+		});
+	},
+	"setMessageWebConfig":function(web,fn){
+		Meteor.call(SvseMessageDao.AGENT,"setMessageWebConfig",[web],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn(result);
+			}
+		});
+	},
+	"setMessageCommConfig":function(web,fn){
+		Meteor.call(SvseMessageDao.AGENT,"setMessageCommConfig",[web],function(err,result){
 			if(err){
 				Log4js.error(err);
 				fn({status:false,msg:err})
