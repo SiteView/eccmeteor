@@ -72,7 +72,7 @@
         <div class="modal-header">添加topN报告{{ide "topN"}}</div>
         <div class="modal-body">
 		<div class="row-fluid">
-		<div class="span4" style="overflow:auto">
+		<div class="span4" style="overflow:auto" id="treeDemo">
 		  <ul id="svse_tree_check" class="ztree"></ul>
 		</div>
 				<div class="span8">{{> topNofaddform}}</div>
@@ -85,33 +85,67 @@
 </div>
 </Template>
 
+
 <Template name="topNofaddform">
 	<form id="basicinfooftopNadd" class="well form-horizontal form-inline">
 		<fieldset>
 			<div class="control-group">
 				<label class="control-label">报告标题*:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Title">
+					<input type="text" class="span6" name="Title" title="报告列表中的标题">
 			  </div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">报告描述:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Descript">
+					<input type="text" class="span6" name="Descript" title="详细的报告描述">
 				 </div>
 			</div>
+			
+<!--<script type="text/javascript">
+ 
+     var marklist=new Array();
+marklist[0]=["CPU使用率(%)"];
+marklist[1]=["Memory使用率(%)","剩余空间(MB)","内存总量(MB)"];
+marklist[2]=["包成功率(%)","数据往返时间(ms)","状态值(200表示成功 300表示出错)"];
+marklist[3]=["数据往返时间(ms)"];
+marklist[4]=["CPU使用率(%)"];
+marklist[5]=["IDS_640_AS400","System ASP总量(MB)","剩余空间(MB)"];
+
+ function getMarklist(provinceid){
+       var objsel=document.getElementById("marklist");
+       var pmarklist;
+          objsel.options.length=0;
+          pmarklist=marklist[provinceid];
+        for(var i=0;i<pmarklist.length;i++){
+          objsel.options[i]=new Option(pmarklist[i],pmarklist[i]);
+}
+}
+ 
+ 
+</script>-->
+
 			<div class="control-group">
-				<label class="control-label">检测器类型:</label>
+				<label class="control-label">监测器类型:</label>
 				<div class="controls">
-				<select id="Typelist" name="Type">
-				<option value="0" checked>CPU</option>‌
-				<option value="1" checked>Disk</option>‌
+				<!--<select id="Typelist" name="Type" onChange="getMarklist(this.value)">
+				
+				<option value="0" checked>CPU (Unix)</option>‌
+				<option value="1" checked>Memory (Unix)</option>‌
 				<option value="2" checked>Ping</option>‌
-					</select>
+				<option value="3" checked>Port</option>‌
+				<option value="4" checked>SNMP_CPU</option>‌
+				<option value="5" checked>System ASP</option>‌
+					</select>-->
+			<select id="Typelist" name="sv_type" onChange="myFunction" title="要选择的检测器类别">
+			{{#each monitortypelist}}
+			<option value="{{sv_name}}">{{sv_label}}</option>
+			{{/each}}
+		</select>
 				</div>
 			</div>
-			<div class="control-group">
-				<label class="control-label">选择指标:</label>
+		
+				<!--<label class="control-label">选择指标:</label>
 				<div class="controls">
 				<select id="marklist" name="Mark">
 				<option value="0" checked>包成功率(%)</option>
@@ -119,12 +153,22 @@
 				<option value="2" checked>状态值(200表示成功 300表示出错)</option>
 					</select>
 				</div>
-			</div>
+			</div>-->
+			<div class="control-group">
+			  <label class="control-label">选择指标:</label>
+			  <div class="controls">
+			       <select id="marklist" name="Mark" title="要选择的指标">
+			          {{#each monitortypelist}}
+  	                  <option value=""{{sv_name}}">{{sv_label}}</option>
+  	                  {{/each}}
+                   </select>
+                   </div>
+                 </div>
 			<div class="control-group">
 				<label class="control-label" >排序方式:</label>
 				<div class="controls">
-					<input type="radio" name="Sort" value="升序">升序</td>
-					<input type="radio" name="Sort" value="降序" checked>降序</td>
+					<input type="radio" name="Sort" value="升序"  title="升序">升序</td>
+					<input type="radio" name="Sort" value="降序" title="降序" checked>降序</td>
 				</div>
 			</div>
 			<div class="control-group">
@@ -136,7 +180,7 @@
 			<div class="control-group">
 				<label class="control-label">报告类型:</label>
 				<div class="controls">
-					<select id="reporttypetemplatelist" name="Period">
+					<select id="reporttypetemplatelist" name="Period" title="报告的类别">
 					<option value="Day" checked>日报</option>
 				    <option value="Week" checked>周报</option>
 				    <option value="Month" checked>月报</option>
@@ -157,7 +201,7 @@
 			<div class="control-group">
 				<label class="control-label" >取值方式:</label>
 				<div class="controls">
-					<select id="GetValuelist" name="GetValue">
+					<select id="GetValuelist" name="GetValue" title="取值方式">
 					<option value="0" checked>平均</option>
 					<option value="1" checked>最新</option>
 					</select>
@@ -166,25 +210,25 @@
 			<div class="control-group">
 				<label class="control-label" >报告生成时间:</label>
 				<div class="controls">
-				<input type="number" name="Generate" min="01" max="23" />
+				<input type="number" name="Generate" min="01" max="23" /title="报告的生成时间">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" >以E-mail方式发送报告:</label>
 				<div class="controls">
-					<input type="email" name="EmailSend" />
+					<input type="email" name="EmailSend" title="以E-mail方式发送报告" />
 				</div>
 			</div>
 			<div class="control-group">
 			      <label class="control-label" >禁止报告:</label>
 			   <div class="controls">
-					 <input type="checkbox" name="Deny" />
+					 <input type="checkbox" name="Deny" title="禁止报告"/>
 					</div>
 				</div>
 		    <div>
 				<label class="control-label" >周报截止时间:</label>
 				<div class="controls">
-					<select id="topNtypetemplatelist" name="WeekEndTime">
+					<select id="topNtypetemplatelist" name="WeekEndTime"  title="周报截止时间">
 					<option value="0" checked>周日</option>
 					<option value="1" checked>周一</option>
 					<option value="2" checked>周二</option>
@@ -218,19 +262,20 @@
 			<div class="control-group">
 				<label class="control-label">报告标题*:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Title">
+					<input type="text" class="span6" name="Title" title="报告列表中的标题">
 			  </div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">报告描述:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Descript">
+					<input type="text" class="span6" name="Descript" title="详细的报告描述">
 				 </div>
 			</div>
+			
 			<div class="control-group">
-				<label class="control-label">检测器类型:</label>
+				<label class="control-label">监测器类型:</label>
 				<div class="controls">
-				<select id="Typelisted" name="Type">
+				<select id="Typelisted" name="Type" title="监测器类型">
 				<option value="0" checked>CPU</option>‌
 				<option value="1" checked>Disk</option>‌
 				<option value="2" checked>Ping</option>‌
@@ -240,10 +285,7 @@
 			<div class="control-group">
 				<label class="control-label">选择指标:</label>
 				<div class="controls">
-				<select id="marklisted" name="Mark">
-				<option value="0" checked>包成功率(%)</option>
-				<option value="1" checked>数据往返时间(ms)</option>
-				<option value="2" checked>状态值(200表示成功 300表示出错)</option>
+				<select id="marklisted" name="Mark" title="选择指标">
 					</select>
 				</div>
 			</div>
@@ -257,13 +299,13 @@
 			<div class="control-group">
 				<label class="control-label" >数量:</label>
 				<div class="controls">
-                    <input type="number" name="Count" min="01" max="500" />
+                    <input type="number" name="Count" min="01" max="500" title="数量"/>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">报告类型:</label>
 				<div class="controls">
-					<select id="reporttypePeriodlisted" name="Period">
+					<select id="reporttypePeriodlisted" name="Period" title="报告类型">
 					<option value="Day" checked>日报</option>
 				    <option value="Week" checked>周报</option>
 				    <option value="Month" checked>月报</option>
@@ -293,22 +335,26 @@
 			<div class="control-group">
 				<label class="control-label" >报告生成时间:</label>
 				<div class="controls">
-				<input type="number" name="Generate" min="01" max="23" />
+				<input type="number" name="Generate" min="01" max="23" title="报告生成时间"/>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" >以E-mail方式发送报告:</label>
 				<div class="controls">
-					<input type="email" name="EmailSend" />
+					<input type="email" name="EmailSend" title="以E-mail方式发送报告" />
 				</div>
 			</div>
 			<div class="control-group">
-					  <input type="checkbox" name="Deny" />禁止报告
-					</div>
+					            <label class="control-label" >禁止报告:</label>
+                <div class="controls">
+           <input type="checkbox" name="Deny" title="禁止报告"/>
+           </div>
+        </div>
+					
 		    <div>
 				<label class="control-label" >周报截止时间:</label>
 				<div class="controls">
-					<select id="topNtypetemplatelisted" name="WeekEndTime">
+					<select id="topNtypetemplatelisted" name="WeekEndTime" title="周报截止时间">
 					<option value="0" checked>周日</option>
 					<option value="1" checked>周一</option>
 					<option value="2" checked>周二</option>

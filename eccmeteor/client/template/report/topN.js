@@ -53,22 +53,7 @@ Template.topN.events = {
 	}
 }
 
-Template.topN.rendered=function(){
-	
-	//初始化弹窗
-	$(function(){
-		$('#topNdiv').modal({
-			backdrop:true,
-			keyboard:true,
-			show:false
-		}).css({
-			width: '800',
-			'margin-left': function () {
-				return -($(this).width() / 2);
-			},
-		});
-	});
-}
+
 //点击保存、取消按钮时的事件
 
 Template.topNofadd.events = {
@@ -82,7 +67,7 @@ Template.topNofadd.events = {
 			for(index in arr){
 			targets.push(arr[index].id);
 			}
-			basicinfooftopNadd["AlertTarget"] = targets.join();
+			basicinfooftopNadd["GroupRight"] = targets.join();
     var nIndex = Utils.getUUID();
         basicinfooftopNadd["nIndex"] = nIndex
         var address = {};
@@ -95,9 +80,9 @@ Template.topNofadd.events = {
               });
             }
        }
- /*   Template.topNofedit.topNofaddsavebtneditform = function(){
+    /*   Template.topNofedit.topNofaddsavebtneditform = function(){
 	return Session.get("topNofaddsavebtneditform");
-}*/
+   }*/
 
 //获取topNlist的集合
 Template.topNlist.topNresultlist = function(){
@@ -107,8 +92,7 @@ Template.topNlist.topNresultlist = function(){
 
 
 Template.topNlist.rendered = function(){
-
-	   
+   
 	   //初始化checkbox选项
 	$(function(){
 		//隐藏所有操作按钮
@@ -125,19 +109,18 @@ Template.topNlist.rendered = function(){
 
 Template.topNlist.events({
 	"click td .btn":function(e){
-		console.log(e.target.id);
-		var result = SvseTopNDao.getTopNById(e.target.id);
+		console.log(e.currentTarget.id);
+		var result = SvseTopNDao.getTopNById(e.currentTarget.id);
         console.log(result);
 		$("#topNofadddivedit").find(":text[name='Title']:first").val(result.Title);
 		$("#topNofadddivedit").find(":text[name='Descript']:first").val(result.Descript);
 	    
-	    
+	  
 	    $("#topNofadddivedit").find("input[type='number'][name='Count']:first").val(result.Count);
 	    
 		$("#topNofadddivedit").find("input[type='number'][name='Generate']:first").val(result.Generate);
 		$("#topNofadddivedit").find("input[type='email'][name='EmailSend']:first").val(result.EmailSend);
 		$("#topNofadddivedit").find(":text[name='Deny']:first").val(result.Deny);
-		
 		$("#topNofadddivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
 		
 		$("#Typelisted").find("option[value = '"+result["Type"]+"']:first").attr("selected","selected");
@@ -155,7 +138,6 @@ Template.topNlist.events({
 			}
 		  });
 		  
-			
             var CheckedDeny = result.Deny;
 			 $("#topNofadddivedit").find(":checkbox[name='Deny']").each(function(){
 				 if($(this).val()=== CheckedDeny){
@@ -163,10 +145,11 @@ Template.topNlist.events({
 					 }
 					// $(this).attr("checked",false);
 				 });
+				 
 		$('#topNofadddivedit').modal('toggle');
 		
         //加载编辑弹出页面左侧树
-		var checkednodes = result.AlertTarget.split("\,")
+		var checkednodes = result.GroupRight.split("\,")
 		//左边树的勾选
 		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_edit");
 		treeObj.checkAllNodes(false);//清空上一个用户状态
@@ -203,19 +186,10 @@ Template.topNofedit.rendered = function(){
 }
 
 Template.topNofadd.rendered = function(){
+
 //监视器选择树
 	$(function(){
-		$('#topNofadddiv').modal({
-			backdrop:true,
-			keyboard:true,
-			show:false
-		}).css({
-			width: '800',
-			'margin-left': function () {
-				return -($(this).width() / 2);
-			},
-		//	height:"600"
-		});
+		
 		var data = SvseDao.getDetailTree();
 		var setting = {
 			check:{
@@ -223,6 +197,24 @@ Template.topNofadd.rendered = function(){
 				chkStyle: "checkbox",
 				chkboxType: { "Y": "ps", "N": "ps" }
 			},
+			
+			callback:{
+			
+			      Change:function (event, treeId, treeNode) {
+			  
+			      zTree = $.fn.zTree.getZTreeObj("svse_tree_check");
+			
+			     if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
+				     zTree.cancelSelectedNode();
+				     show("root", event.clientX, event.clientY);
+			     } else if (treeNode && !treeNode.noR) {
+				zTree.selectNode(treeNode);
+				show("node", event.clientX, event.clientY);
+			}
+		}
+			
+			},
+			
 			data: {
 				simpleData: {
 					enable: true,
@@ -234,7 +226,61 @@ Template.topNofadd.rendered = function(){
 		};
 		$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
+	
+	
+        console.log("QQQQ");
+       
+         function zTreeOnChange(event, treeId, treeNode) {
+            operDiyDom(treeId, treeNode);
+        }
+	/*function show(type, x, y) {
+			$("#basicinfooftopNadd select").show();
+			$("body").bind("change", onBodyChange);
+		}
+		
+		function hideMenu() {
+			if (basicinfooftopNadd) $("#basicinfooftopNadd").css({"visibility": "hidden"});
+			$("body").unbind("change", onBodyChange);
+		}			
+		function onBodyChange(event){
+			if (!(event.target.id == "basicinfooftopNadd" || $(event.target).parents("#basicinfooftopNadd").length>0)) {
+				$("#basicinfooftopNadd").css({"visibility" : "hidden"});
+			}
+		}*/
+console.log("QQQQ111");
 }
+
+/*Template.Typelist.monitortypelist = function(){
+		var nodes = Svse.find().fetch();
+		 
+		var branch =[];
+		for(index in nodes){
+			var obj = nodes[index];
+			var branchNode = {};
+			branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]}).property.sv_name;
+			}
+		return branchNode["name"];
+
+}*/
+
+/* Template.topNresultlist.monitorType = function(){
+	return Session.get("monitorTypelist") 
+			? SvseTopNDao.getTemplateTypeById(Session.get("monitorTypelist"))
+			: {}
+	
+}*/
+/*
+Template.showMonitorInfo.Mark = function(){
+	return  Session.get("Mark") ? Session.get("Mark") : "";
+}
+
+Template.showMonitorInfo.getTopNParameters = function(){
+	return Session.get("monityTemplateId") 
+			? SvseMonitorTemplateDao.getTopNParametersById(Session.get("topNId"))
+			: {}
+	
+}*/
+
 
 Template.topNofedit.topNeditform = function(){
 	return Session.get("topNeditform");
