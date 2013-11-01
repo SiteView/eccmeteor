@@ -1,0 +1,35 @@
+<Template name="rMenu">
+
+<div id="rMenu" name="rmenu"  style="position: fixed; visibility: hidden;">
+<!--
+	<ul>
+		<li id="m_add" onmouseover ="onmouseover();">增加节点</li>
+	<!--	<li id="m_del" onclick="removeTreeNode();">删除节点</li>
+		<li id="m_check" onclick="checkTreeNode(true);">Check节点</li>
+		<li id="m_unCheck" onclick="checkTreeNode(false);">unCheck节点</li>
+		<li id="m_reset" onclick="resetTree();">恢复zTree</li>
+
+	</ul>
+-->	
+	<ul id="nav">
+		<li id = "m_add" onclick="resetTree();">批量选择</li>
+	
+		{{#each monitortypelist}}
+			
+			<li>{{sv_name}}</li>        	
+			
+		{{/each}}
+	</ul>
+
+</div>
+<!--
+		<div id="rMenu"  style="position: absolute; visibility: hidden;">
+			<li>
+				<ul id="r_addFolder"><li>增加文件夹</li></ul>
+				<ul id="r_addNode"><li>增加节点</li></ul>
+				<ul id="r_updateNode"><li>修改名称</li></ul>
+				<ul id="r_deleteNode"><li>删除节点</li></ul>
+			</li>
+		</div>
+-->
+</Template>

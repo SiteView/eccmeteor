@@ -1,4 +1,4 @@
-﻿.axis path,
+.axis path,
 .axis line {
   fill: none;
   stroke: #000;
@@ -14,3 +14,31 @@
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+/*
+Type：add 
+Author：xuqiang
+Date:2013-10-30 09:40
+Content:增加右键树的样式
+*/ 
+<style type="text/css">
+div#rMenu {
+	background-color:#555555;
+	text-align: left;
+	padding:2px;
+	width:100px;
+	position:absolute;
+	display:none;
+}
+div#rMenu ul {
+	margin:1px 0;
+	padding:0 5px;
+	cursor: pointer;
+	list-style: none outside none;
+	background-color:#DFDFDF;
+	display:none;
+}
+div#rMenu ul li {
+	margin:0;
+	padding:2px 0;
+}
+	</style>

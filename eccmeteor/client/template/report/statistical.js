@@ -52,54 +52,63 @@ Template.statistical.events = {
 //帮助	
 	"click #statisticalhelpmessage":function(){
 		console.log("这里是帮助信息...");
-	},	
-/*	
-//允许操作
-	"click #allowestatistical":function(){
-		var checks = $("#statisticallist :checkbox[checked]");
-		var ids =[];
-		for(var i =0; i<checks.length; i++){
-			ids.push($(checks.[i]).attr("id"));
-		}
-		if(ids.length)
-		SvseStatisticalDao.updateStatisticalStatus(ids,"On",function(result){
-		SystemLogger(result);
-		});
-	}
-	
-//禁止操作
-	"click #forbidstatistical":function(){
-		var checks = $("#statisticallist":checkbox[checked]);
-		var ids = [];
-		for(var i =0; i<checks.length; i++){
-			ids.push($(checks.[i]).attr("id"));
-		}
-	 	if(ids.length)
-	 	SvseStatisticalDao.updateStatisticalStatus(ids,"No",function(result){
-	 	SystemLogger(result);
-	 	});
-	}
-	
-*/
+	}	
 }
-//弹窗初始化
-Template.statistical.rendered = function(){
-
+Template.statisticalofadd.rendered = function(){
+	//监视器选择树
 	$(function(){
-		$('#datereportdiv').modal({
-			backdrop:true,
-			keyboard:true,
-			show:false
-		}).css({
-			width: '800',
-			'margin-left': function () {
-				return -($(this).width() / 2);
+		var data = SvseDao.getDetailTree();
+		var setting = {
+			check:{
+				enable: true,
+				chkStyle: "checkbox",
+				chkboxType: { "Y": "ps", "N": "ps" }
 			},
-		});
-	});
-	
+			callback:{	
+				onRightClick:function (event, treeId, treeNode) {
+				zTree = $.fn.zTree.getZTreeObj("svse_tree_check");
+			if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
+				zTree.cancelSelectedNode();
+				showRMenu("root", event.clientX, event.clientY);
+			} else if (treeNode && !treeNode.noR) {
+				zTree.selectNode(treeNode);
+				showRMenu("node", event.clientX, event.clientY);
+			}
+		}
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "id",
+					pIdKey: "pId",
+					rootPId: "0",
+				}
+			}
+		};		
+		$.fn.zTree.init($("#svse_tree_check"), setting, data);
+	});	
+	function showRMenu(type, x, y) {
+			$("#rMenu ul").show();
+			$("#rMenu").css({"top":y+10+"px", "left":x+10+"px","visibility":"visible"});
+			$("body").bind("mousedown", onBodyMouseDown);
+		}
+		
+		function hideRMenu() {
+			if (rMenu) $("#rMenu").css({"visibility": "hidden"});
+			$("body").unbind("mousedown", onBodyMouseDown);
+		}			
+		function onBodyMouseDown(event){
+			if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length>0)) {
+				$("#rMenu").css({"visibility" : "hidden"});
+			}
+		}
+	/*	function resetTree() {
+			var nodes = Svse.find().fetch();
+			console.log(nodes);
+			console.log("123");
+		}
+*/	
 }
-
 Template.statisticalofadd.events = {
 	"click #statisticalofaddcancelbtn":function(){
 		$('#statisticalofadddiv').modal('toggle');
@@ -111,7 +120,7 @@ Template.statisticalofadd.events = {
 			for(index in arr){
 			targets.push(arr[index].id);
 			}
-			basicinfoofstatisticaladd["AlertTarget"] = targets.join();
+			basicinfoofstatisticaladd["GroupRight"] = targets.join();
 			
 		var nIndex = Utils.getUUID();
 		basicinfoofstatisticaladd["nIndex"] = nIndex
@@ -143,7 +152,6 @@ Template.statisticallist.statisticalresultlist = function(){
 	console.log(SvseStatisticalDao.getStatisticalresultlist());
 	return SvseStatisticalDao.getStatisticalresultlist();
 }
-
 Template.statisticallist.rendered = function(){
 $(function(){
 		 //隐藏所有操作按钮
@@ -153,17 +161,15 @@ $(function(){
 		 //初始化tr点击变色效果
 		ClientUtils.trOfTableClickedChangeColor("statisticallist");
 		 //tr 鼠标悬停显示操作按钮效果
-		 ClientUtils.showOperateBtnInTd("statisticallist");
-	 
+		 ClientUtils.showOperateBtnInTd("statisticallist");	 
 });
 }
-
  //根据id编辑报告表单
 Template.statisticallist.events({
 "click td .btn":function(e){
-console.log(e.target.id);
-   var result = SvseStatisticalDao.getStatisticalById(e.target.id); 
-		$("#statisticalofadddivedit").find(":text[name='Title']:first").val(result.Title);
+console.log(e.currentTarget.id);
+   var result = SvseStatisticalDao.getStatisticalById(e.currentTarget.id); 
+		$("#statisticalofadddivedit").find(":input[type='text'][name='Title']:first").val(result.Title);
 		$("#statisticalofadddivedit").find(":text[name='Descript']:first").val(result.Descript);
 		$("#statisticalofadddivedit").find("input[type='email'][name='EmailSend']:first").val(result.EmailSend);
 		$("#statisticalofadddivedit").find("input[type='number'][name='Generate']:first").val(result.Generate);
@@ -212,7 +218,7 @@ console.log(e.target.id);
 	$('#statisticalofadddivedit').modal('toggle');
 	
 	//加载编辑弹出页面左侧树
-		var checkednodes = result.AlertTarget.split("\,")
+		var checkednodes = result.GroupRight.split("\,");
 		//左边树的勾选
 		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_edit");
 		treeObj.checkAllNodes(false);//清空上一个用户状态
@@ -236,6 +242,7 @@ Template.statisticalofedit.rendered = function(){
 				chkStyle: "checkbox",
 				chkboxType: { "Y": "ps", "N": "ps" }
 			},
+
 			data: {
 				simpleData: {
 					enable: true,
@@ -250,39 +257,6 @@ Template.statisticalofedit.rendered = function(){
 }
 	
 
-Template.statisticalofadd.rendered = function(){
-	//监视器选择树
-	$(function(){
-		$('#statisticalofadddiv').modal({
-			backdrop:true,
-			keyboard:true,
-			show:false
-		}).css({
-			width: '800',
-			'margin-left': function () {
-				return -($(this).width() / 2);
-			},
-		//	height:"600"
-		});
-		var data = SvseDao.getDetailTree();
-		var setting = {
-			check:{
-				enable: true,
-				chkStyle: "checkbox",
-				chkboxType: { "Y": "ps", "N": "ps" }
-			},
-			data: {
-				simpleData: {
-					enable: true,
-					idKey: "id",
-					pIdKey: "pId",
-					rootPId: "0",
-				}
-			}
-		};
-		$.fn.zTree.init($("#svse_tree_check"), setting, data);
-	});
-}
 
 Template.statisticalofedit.events = {
 	"click #statisticalofeditcancelbtn":function(){
@@ -299,4 +273,18 @@ Template.statisticalofedit.events = {
 			$('#statisticalofadddivedit').modal('toggle');
 		});
 	}
+}
+
+Template.rMenu.monitortypelist = function(){
+/*		var nodes = Svse.find().fetch();
+		    console.log(nodes);
+			console.log("123");
+		var branch =[];
+		for(index in nodes){
+			var obj = nodes[index];
+			var branchNode = {};
+			branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]}).property.sv_name;
+			}
+		//return branchNode["name"];
+*/
 }

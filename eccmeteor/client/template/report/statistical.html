@@ -74,14 +74,19 @@
 	<div id="statisticalofadddiv" class="modal hide fade" 
 		data-backdrop="true" data-keyboard="true" data-show="false" 
 		data-maxHeight='500' data-width="800" data-height="600" data-modalOverflow="true">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 		<div class="modal-header">添加报告{{ide "statistical"}}
 		</div>
 		<div class="modal-body">
 			<div class="row-fluid">
-				<div class="span4" style="overflow:auto">
-					<ul id="svse_tree_check" class="ztree"></ul>
+				<div class="span4" style="overflow:auto" id="treeDemo">
+					<ul id="svse_tree_check" class="ztree"></ul>	
+					
 				</div>
-					<div class="span8">
+				{{> rMenu}}	
+
+
+				<div class="span8">
 					{{> statisticalofaddform}}
 					</div>
 				
@@ -94,8 +99,6 @@
 		
 	</div>
 </Template>
-
-
 <Template name="statisticalofaddform">
 	<form id="basicinfoofstatisticaladd" class="well form-horizontal form-inline">
 		<fieldset>
@@ -201,6 +204,7 @@
 	<div id="statisticalofadddivedit" class="modal hide fade" 
 		data-backdrop="true" data-keyboard="true" data-show="false" 
 		data-maxHeight='500' data-width="800" data-height="600" data-modalOverflow="true">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 	<div class="modal-header">修改统计报告{{ide "statistical"}}</div>
 		<div class="modal-body">
 			<div class="row-fluid">
