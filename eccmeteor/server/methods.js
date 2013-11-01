@@ -23,9 +23,7 @@ Meteor.methods({
   "svseMessageDaoAgent":SvseMessageDaoAgent.agent,	//by zhuqing add
   "svGetSMSWebConfigSetting":svGetSMSWebConfigSetting,
   "svGetSMSComConfigSetting":svGetSMSComConfigSetting,
-  "svGetSmsDllName":svGetSmsDllName,
   "svGetEmailTemplates":svGetEmailTemplates,
-  "svGetAllTask":svGetAllTask,
 });//给客户端调用的
  /**
 	Type： add | modify 

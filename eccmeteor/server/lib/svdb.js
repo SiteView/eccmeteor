@@ -867,6 +867,7 @@ svGetSMSComConfigSetting = function(){
 	if(!fmap || !fmap["SMSCommConfig"]) return ;
 	return fmap["SMSCommConfig"];
 }
+/*
 //获取短信设置的发送短信方式中的调用动态库的动态库名称(有问题-待修改)
 svGetSmsDllName=function(){
 	var dowhat={'dowhat':'GetSmsDllName'};
@@ -880,3 +881,4 @@ svGetSmsDllName=function(){
 	var fmap=robj.fmap(0);
 	return fmap;
 }
+*/

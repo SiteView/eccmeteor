@@ -181,8 +181,10 @@ Template.sendingmessagemethods.rendered=function(){
 		$("#comselectport").find("option[value='"+smscom["Port"]+"']:first").attr("selected","selected").prop("selected",true);
 		$("#methodsendforcom :text[name=length]").val(smscom["length"]);
 	});
+	/*
 	Meteor.call("svGetSmsDllName",function(err,dllname){
 		console.log("svGetSmsDllName");
 		console.log(dllname);
 	});
+	*/
 }

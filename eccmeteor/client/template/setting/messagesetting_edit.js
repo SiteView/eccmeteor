@@ -7,19 +7,12 @@ Template.editmessagebasicsetting.rendered = function(){
 		}
 	});
 	
-	SvseTaskDao.getAllTaskNames(function(err,result){
-		console.log("task");
-		for(name in result){
-			console.log(name);
-			var option = $("<option value="+name+"></option>").html(name)
-			$("#editmessagePlanlist").append(option);
-		}
-	});
-	
 	$(function(){
+		//点击取消编辑
 		$("button#editmessagebasicsettingofcancelbtn").click(function(){
 			$('#editmessagesettingdiv').modal('hide');
 		});
+		//点击保存编辑
 		$("button#editmessagebasicsettingofsavebtn").click(function(){
 			var editmessagebasicsettingofbasciinfo = ClientUtils.formArrayToObject($("#editmessagebasicsettingofbasciinfo").serializeArray());
 			var nIndex = editmessagebasicsettingofbasciinfo["nIndex"];
@@ -35,6 +28,14 @@ Template.editmessagebasicsetting.rendered = function(){
 				$('#editmessagesettingdiv').modal('hide');
 			});
 		});
+		//获取任务计划列表
+		var tasks=SvseTaskDao.getAllTaskNames();
+		console.log(tasks);
+		for(var i=0;i<tasks.length;i++){
+			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
+			$("#editmessagePlanlist").append(option);
+		}
+		
 	});
 	
 }

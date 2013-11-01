@@ -1,0 +1,154 @@
+<Template name="warnerruleofscript">
+	<div id="scriptwarnerdiv" class="modal hide fade" 
+	data-backdrop="true" data-keyboard="true" data-show="false" 
+	data-width="800" data-modalOverflow="true">
+		<div class="modal-header">添加脚本报警</div>
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="span4" style="overflow:auto">
+					<ul id="svse_tree_check_addscript" class="ztree"></ul>
+				</div>
+				<div class="span8">
+					{{> warnerruleofscriptform}}
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-large" id="warnerruleofscriptcancelbtn">{{language.warnerrulemodel.cancelemailwarnerrulesettingbtn}}</button>
+			<button class="btn btn-primary btn-large" id="warnerruleofscriptsavebtn">{{language.warnerrulemodel.saveemailwarnerrulesettingbtn}}</button>
+		</div>
+	</div>
+
+</Template>
+
+<Template name="warnerruleofscriptform">
+	<form id="warnerruleofscriptform" class="well form-horizontal form-inline">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">报警名称:</label>
+				<div class="controls">
+					<input type="text" class="span6" name="AlertName">
+				 </div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">选择服务器*:</label>
+				<div class="controls">
+					<select class="emailmultiselect" multiple="multiple" name="ScriptServer">
+							 <option value="127.0.0.1" selected>127.0.0.1</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">选择脚本*:</label>
+				<div class="controls">
+					<select id="" name="ScriptFile">
+						<option value="Reboot" selected>Reboot</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >附加参数:</label>
+				<div class="controls">
+					<input type="text" class="span6" name="ScriptParam">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >报警策略:</label>
+					<div class="controls">
+						<input type="text" class="span6" name="Strategy">
+					</div>
+			</div>
+			
+		</fieldset>
+	</form>
+	
+	<div>
+		<form class="well form-horizontal form-inline" id="warnerruleofscriptformsendconditions">
+			<fieldset>
+				<div class="control-group">
+				<label class="control-label" >报警事件:</label>
+				<div class="controls">
+					<input type="radio" name="AlertCategory" value="危险">危险</td>
+					<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
+				</div>
+			</div>
+			</fieldset>
+		</form>
+	</div>
+</Template>
+
+<!--编辑短信报警 -->
+<Template name="editwarnerruleofscript">
+	<div id="scriptwarnerdivedit" class="modal hide fade" 
+	data-backdrop="true" data-keyboard="true" data-show="false" 
+	data-width="800" data-modalOverflow="true">
+		<div class="modal-header">编辑脚本报警</div>
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="span4" style="overflow:auto">
+					<ul id="svse_tree_check_editsms" class="ztree"></ul>
+				</div>
+				<div class="span8">
+					<form id="warnerruleofscriptformedit" class="well form-horizontal form-inline">
+						<input type="hidden" name="nIndex" >
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">报警名称:</label>
+									<div class="controls">
+										<input type="text" class="span6" name="AlertName">
+									 </div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">选择服务器*:</label>
+								<div class="controls">
+									<select class="emailmultiselect" multiple="multiple" name="ScriptServer">
+										 <option value="127.0.0.1">127.0.0.1</option>
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">选择脚本*:</label>
+								<div class="controls">
+									<select id="messageSendModelist" name="ScriptFile">
+										<option value="Reboot" selected>Reboot</option>
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" >附加参数:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="ScriptParam">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" >报警策略:</label>
+									<div class="controls">
+										<input type="text" class="span6" name="Strategy">
+									</div>
+							</div>
+						</fieldset>
+					</form>
+	
+					<div>
+						<form class="well form-horizontal form-inline" id="warnerruleofscriptformsendconditionsedit">
+							<fieldset>
+								<div class="control-group">
+								<label class="control-label" >报警事件:</label>
+									<div class="controls">
+										<input type="radio" name="AlertCategory" value="危险">危险</td>
+										<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+		  	</div>
+		</div>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-large" id="editwarnerruleofscriptcancelbtn">{{language.warnerrulemodel.cancelemailwarnerrulesettingbtn}}</button>
+			<button class="btn btn-primary btn-large" id="editwarnerruleofscriptsavebtn">{{language.warnerrulemodel.saveemailwarnerrulesettingbtn}}</button>
+		</div>
+	</div>
+	
+</Template>
