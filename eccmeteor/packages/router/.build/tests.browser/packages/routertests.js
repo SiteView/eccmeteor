@@ -2,7 +2,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 //                                                                              //
-// packages/router/tests/router_client_tests.js                                 //
+// packages\router\tests\router_client_tests.js                                 //
 //                                                                              //
 //////////////////////////////////////////////////////////////////////////////////
                                                                                 //
@@ -212,7 +212,7 @@ Tinytest.add("Router before routing interrupt", function(test) {                
 
 //////////////////////////////////////////////////////////////////////////////////
 //                                                                              //
-// packages/router/tests/router_common_tests.js                                 //
+// packages\router\tests\router_common_tests.js                                 //
 //                                                                              //
 //////////////////////////////////////////////////////////////////////////////////
                                                                                 //

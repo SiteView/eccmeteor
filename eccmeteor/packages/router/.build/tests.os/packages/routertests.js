@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                                                            //
-// packages/router/tests/router_server_tests.js                               //
+// packages\router\tests\router_server_tests.js                               //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
                                                                               //
@@ -125,7 +125,7 @@ Tinytest.add("Router.serve with http method restriction", function(test) {    //
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                                                            //
-// packages/router/tests/router_common_tests.js                               //
+// packages\router\tests\router_common_tests.js                               //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
                                                                               //

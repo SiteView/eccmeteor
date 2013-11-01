@@ -3,40 +3,40 @@
   "sliceDependencies": {
     "browser.json": {
       "files": {
-        "/home/ec/workspace/eccmeteor/eccmeteor/packages/HTML5-History-API/package.js": "19192d368cd2cdbdc1d68e8c5bfd13b8e7e8b0e2",
-        "/home/ec/workspace/eccmeteor/eccmeteor/packages/HTML5-History-API/HTML5-History-API/history.iegte8.js": "56f273d0bb427f011a83425c7788414b52862209",
-        "/home/ec/workspace/eccmeteor/eccmeteor/packages/HTML5-History-API/settings.js": "a42f6a27c71186dd2e335eadc778050c51c25f35"
+        "E:\\workspace\\GitHub\\eccmeteor\\eccmeteor\\packages\\HTML5-History-API\\package.js": "0aa05353198accf64691d93d46724072f57469ae",
+        "E:\\workspace\\GitHub\\eccmeteor\\eccmeteor\\packages\\HTML5-History-API\\HTML5-History-API\\history.iegte8.js": "d66e3683ac8360a559e6cab514c5727594c025bd",
+        "E:\\workspace\\GitHub\\eccmeteor\\eccmeteor\\packages\\HTML5-History-API\\settings.js": "5b4d100c56d39044e4b2792c8ce4270e9f449ddd"
       },
       "directories": []
     },
     "os.json": {
       "files": {
-        "/home/ec/workspace/eccmeteor/eccmeteor/packages/HTML5-History-API/package.js": "19192d368cd2cdbdc1d68e8c5bfd13b8e7e8b0e2"
+        "E:\\workspace\\GitHub\\eccmeteor\\eccmeteor\\packages\\HTML5-History-API\\package.js": "0aa05353198accf64691d93d46724072f57469ae"
       },
       "directories": []
     },
     "tests.browser.json": {
       "files": {
-        "/home/ec/workspace/eccmeteor/eccmeteor/packages/HTML5-History-API/package.js": "19192d368cd2cdbdc1d68e8c5bfd13b8e7e8b0e2"
+        "E:\\workspace\\GitHub\\eccmeteor\\eccmeteor\\packages\\HTML5-History-API\\package.js": "0aa05353198accf64691d93d46724072f57469ae"
       },
       "directories": []
     },
     "tests.os.json": {
       "files": {
-        "/home/ec/workspace/eccmeteor/eccmeteor/packages/HTML5-History-API/package.js": "19192d368cd2cdbdc1d68e8c5bfd13b8e7e8b0e2"
+        "E:\\workspace\\GitHub\\eccmeteor\\eccmeteor\\packages\\HTML5-History-API\\package.js": "0aa05353198accf64691d93d46724072f57469ae"
       },
       "directories": []
     }
   },
   "pluginDependencies": {
     "files": {
-      "/home/ec/workspace/eccmeteor/eccmeteor/packages/HTML5-History-API/package.js": "19192d368cd2cdbdc1d68e8c5bfd13b8e7e8b0e2"
+      "E:\\workspace\\GitHub\\eccmeteor\\eccmeteor\\packages\\HTML5-History-API\\package.js": "0aa05353198accf64691d93d46724072f57469ae"
     },
     "directories": []
   },
   "pluginProviderPackages": {
-    "HTML5-History-API": "/home/ec/workspace/eccmeteor/eccmeteor/packages/HTML5-History-API",
-    "meteor": "/home/ec/.meteor/packages/meteor/088e5254e3"
+    "HTML5-History-API": "E:\\workspace\\GitHub\\eccmeteor\\eccmeteor\\packages\\HTML5-History-API",
+    "meteor": "C:\\Users\\huyinghuan\\AppData\\Local\\.meteor\\packages\\meteor\\30266216a1"
   },
-  "source": "/home/ec/workspace/eccmeteor/eccmeteor/packages/HTML5-History-API"
+  "source": "E:\\workspace\\GitHub\\eccmeteor\\eccmeteor\\packages\\HTML5-History-API"
 }

@@ -42,7 +42,7 @@ function initAllDateStartUp(status){
 }
 
 var SetSvdbAddr = function(){
-	var filename = '/home/ec/svapi.ini';
+	var filename = 'e:\\svapi.ini';
 	process.sv_univ({'dowhat':'SetSvdbAddrByFile','filename': filename,}, 2); 
 	var robj= process.sv_univ({'dowhat':'GetSvdbAddr' }, 2); 
 	var addr = 'Invalid addr';
