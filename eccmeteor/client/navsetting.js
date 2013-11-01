@@ -31,6 +31,8 @@ var NavigationSettionTreeEvents = {
 }
 NavigationSettionTree = {
 	getTreeData:function(){
+		return SvseSettingNodes.find().fetch();
+		/*
 		return [
 			{id:1,pId:0,name:LanguageModel.getLanaguage("AlertModel").Alert,action:"warner",type:"warner",icon:"imag/setting/warner.png"},
 			{id:3,pId:0,name:LanguageModel.getLanaguage("ReportModel").Report,action:"report",type:"report",icon:"imag/setting/Report.png"},
@@ -51,7 +53,7 @@ NavigationSettionTree = {
 			{id:37,pId:3,name:LanguageModel.getLanaguage("ReportModel").time,action:"time",type:"report",icon:"imag/setting/time.png"},
 			{id:38,pId:3,name:LanguageModel.getLanaguage("ReportModel").monitorInfo,action:"monitorInfo",type:"report",icon:"imag/setting/monitorInfo.png"},
 			{id:39,pId:3,name:LanguageModel.getLanaguage("ReportModel").SysLogQuery,action:"SysLogQuery",type:"report",icon:"imag/setting/SysLogQuery.png"},
-		];
+		];*/
 	},
 	execute:function(action){
 		NavigationSettionTreeEvents[action]();

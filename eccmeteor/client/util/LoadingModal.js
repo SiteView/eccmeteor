@@ -1,3 +1,7 @@
+/**转动球机制
+  LoadingModal.loading() //出现转动球
+   LoadingModal.load() //隐藏转动球
+*/
 LoadingModal = {}
 Object.defineProperties(LoadingModal,{
   "selector":{
