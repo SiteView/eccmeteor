@@ -1,0 +1,19 @@
+{
+  "format": "unipackage-slice-pre1",
+  "packageVariables": [],
+  "uses": [
+    {
+      "package": "meteor"
+    }
+  ],
+  "resources": [
+    {
+      "type": "prelink",
+      "file": "os/packages/page-js-ie-support.js",
+      "length": 0,
+      "offset": 0,
+      "servePath": "/packages/page-js-ie-support.js",
+      "sourceMap": "os/packages/page-js-ie-support.js.map"
+    }
+  ]
+}

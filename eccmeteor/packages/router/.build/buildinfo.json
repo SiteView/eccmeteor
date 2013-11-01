@@ -1,0 +1,61 @@
+{
+  "builtBy": "meteor/10",
+  "sliceDependencies": {
+    "browser.json": {
+      "files": {
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/package.js": "58ad86f00ae9788a92000c9a7dbacf1792a4ab67",
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/lib/router_client.js": "2ae48bcff8e96afcfefeb620f6a17f9482d40bce",
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/lib/router_helpers.js": "95499f3d33a87baaf409764ec8e276fcd703a435",
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/lib/router_common.js": "98dbbbde3bc3b6ee06a5414bb257ce5b04bfebe5",
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/page-js-ie-support/package.js": "6362114403a5c2460ea5ac9d5932ae0ce6c9aa05"
+      },
+      "directories": []
+    },
+    "os.json": {
+      "files": {
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/package.js": "58ad86f00ae9788a92000c9a7dbacf1792a4ab67",
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/lib/router_server.js": "a4e1dd38ed3bdd0b361597a671c766fa0f070bdb",
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/lib/router_common.js": "98dbbbde3bc3b6ee06a5414bb257ce5b04bfebe5"
+      },
+      "directories": []
+    },
+    "tests.browser.json": {
+      "files": {
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/package.js": "58ad86f00ae9788a92000c9a7dbacf1792a4ab67",
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/tests/router_client_tests.js": "88ecbf3d54fa7b8d1145e67da200664b0c819300",
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/tests/router_common_tests.js": "7d2c9e96a2a62a2893294f46133f8eadc00ddeee"
+      },
+      "directories": []
+    },
+    "tests.os.json": {
+      "files": {
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/package.js": "58ad86f00ae9788a92000c9a7dbacf1792a4ab67",
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/tests/router_server_tests.js": "d26131ec1ace47f3d3775510ce7e0a660a0402e9",
+        "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/tests/router_common_tests.js": "7d2c9e96a2a62a2893294f46133f8eadc00ddeee"
+      },
+      "directories": []
+    }
+  },
+  "pluginDependencies": {
+    "files": {
+      "/home/ec/workspace/eccmeteor/eccmeteor/packages/router/package.js": "58ad86f00ae9788a92000c9a7dbacf1792a4ab67"
+    },
+    "directories": []
+  },
+  "pluginProviderPackages": {
+    "router": "/home/ec/workspace/eccmeteor/eccmeteor/packages/router",
+    "meteor": "/home/ec/.meteor/packages/meteor/088e5254e3",
+    "deps": "/home/ec/.meteor/packages/deps/3fcd2fb868",
+    "startup": "/home/ec/.meteor/packages/startup/170e69b24f",
+    "templating": "/home/ec/.meteor/packages/templating/58c779c8a8",
+    "handlebars": "/home/ec/.meteor/packages/handlebars/e0a601c201",
+    "page-js-ie-support": "/home/ec/workspace/eccmeteor/eccmeteor/packages/page-js-ie-support",
+    "underscore": "/home/ec/.meteor/packages/underscore/4da64d4949",
+    "webapp": "/home/ec/.meteor/packages/webapp/2ebc806124",
+    "test-helpers": "/home/ec/.meteor/packages/test-helpers/3105cc6117",
+    "tinytest": "/home/ec/.meteor/packages/tinytest/5a40ec7944",
+    "session": "/home/ec/.meteor/packages/session/c9ebbd7290",
+    "http": "/home/ec/.meteor/packages/http/47a2387102"
+  },
+  "source": "/home/ec/workspace/eccmeteor/eccmeteor/packages/router"
+}
