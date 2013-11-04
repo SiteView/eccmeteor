@@ -40,21 +40,22 @@ function initAllDateStartUp(status){
 //	var timeloop = new UnrealThread(SyncFunction.sync,70*1000);
 //	timeloop.start();
 }
-
+/**读取INI配置文件*/
 var SetSvdbAddr = function(){
-	var filename = 'e:\\svapi.ini';
-	process.sv_univ({'dowhat':'SetSvdbAddrByFile','filename': filename,}, 2); 
+	var cwd = process.cwd();
+    var dir = cwd.substr(0,cwd.indexOf(".meteor"))+"svapi.ini";
+	process.sv_univ({'dowhat':'SetSvdbAddrByFile','filename': dir,}, 2); 
 	var robj= process.sv_univ({'dowhat':'GetSvdbAddr' }, 2); 
 	var addr = 'Invalid addr';
 	if( robj.isok!=undefined )
 	{
 		addr= robj.fmap(0)['return']['return'];
 	}
-	console.log( ' ----  SetSvdbAddr.js to: ' + addr + '  by file: ' + filename + ' ---- ');
+	console.log( ' ----  SetSvdbAddr.js to: ' + addr + '  by file: ' + dir + ' ---- ');
 }
 
 Meteor.startup(function(){
 	process.sv_init();
 	SetSvdbAddr();
-	initAllDateStartUp(0);	
+	initAllDateStartUp(1);	
 });
