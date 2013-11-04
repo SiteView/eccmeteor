@@ -1,27 +1,37 @@
 <Template name="Login">
     <div id="content">
-  		<div id="logindiv">
-  			<div class="loginformdiv">		
+		<div class="logindiv">
+			<div class="login-logo"></div>
+			<div class="login-icons"></div>
+			<div class="login-forms">			
 				<form id="loginForm" class="form-horizontal"> 
-		        <fieldset>
-					<div class="control-group">
-						<label class="control-label">登录名:</label>
-						<div class="controls">
-						    <input type="text" class="input-big" name="username">
-					    </div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">密码:</label>
-						<div class="controls">
-							<input type="password" class="input-big" name="password">
+			        <fieldset>
+						<div class="control-group">
+							<label class="control-label">登录名:</label>
+							<div class="controls">
+							    <input type="text" class="input-big" name="username">
+						    </div>
 						</div>
-					</div>
-					<div id="loginErrorMsg"></div>
-				</fieldset>
+						<div class="control-group">
+							<label class="control-label">密码:</label>
+							<div class="controls">
+								<input type="password" class="input-big" name="password">
+							</div>
+						</div>
+						<div id="loginErrorMsg"></div>
+						<div style="float:right">
+							<div style="float:left;margin-top:12px">
+								<label class="checkbox">
+						      		<input type="checkbox"> Remeber Me
+						    	</label>
+					    	</div>
+					    	<div style="float:left;margin-left:20px">
+								<button type="button" class="btn btn-info login-btn">登陆</button>
+							</div>
+						</div> 
+					</fieldset>
 		    	</form>
-	    	</div>
-	    	<div class="loginbtndiv"></div>
-	    	{{ide "Login"}}
-    	</div>  	
+			</div>
+		</div>
 	</div>
 </Template>

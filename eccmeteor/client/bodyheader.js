@@ -1,5 +1,6 @@
 Template.multilanguage.rendered = function(){
 	var languages = LanguageModel.getLanguages(true);
+	$("#multi-language").empty();
 	for(index in languages){
 		var li = $("<li></li>");
 		var a = $("<a tabindex='-1' href='#' name='"+languages[index].name+"'>"+languages[index].value+"</a>");

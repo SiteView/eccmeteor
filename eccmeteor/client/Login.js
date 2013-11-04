@@ -1,11 +1,9 @@
 Template.Login.events({
-    "submit #loginForm":function(){
-        return false;
-    },
-    "keydown input:password, click .loginbtndiv":function(e){
+    "keydown input:password, click .login-btn":function(e){
       if(e.keyCode !== 0 && e.keyCode !== 13){
         return;
       }
+      console.log(e.keyCode);
       var username = $("#loginForm :input[name='username']").val();
       var password = $("#loginForm :input[name='password']").val();
       var errorMsg = $("#loginErrorMsg");
@@ -18,7 +16,8 @@ Template.Login.events({
           Log4js.error(err)
           errorMsg.html(status ? err : "登陆名不存在或密码错误").css("display","block");
         }else{
-            Meteor.Router.to("/home");
+           Meteor.Router.to("/home");
+           $("body").css("background-color","white");
         }
       });
     }
@@ -31,3 +30,7 @@ Deps.autorun(function(){
     Meteor.logout(function(){alert('你的账户已被禁止，请联系系统管理员');});    
   }
 });
+
+Template.Login.rendered = function(){
+  $("body").css("background-color","#e7f6fd");
+}
