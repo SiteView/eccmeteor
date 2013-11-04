@@ -16,6 +16,12 @@
 	Author：huyinghuan
 	Date:2013-10-29 16:18
 	Content:增加 initSettingNodes
+
+===================================================
+	Type： add 
+	Author：huyinghuan
+	Date:2013-11-4 13:29
+	Content:增加语言 initLanguageAtStartUp
 */
 
 //综合./init*.js中的方法，提供统一访问接口
@@ -32,5 +38,6 @@ initDateAtStartUp = {
 	"initTopNListAtStartUp":initTopNListAtStartUp,
 	"initMessageListAtStartUp":initMessageListAtStartUp,
 	"initSettingNodes":initSettingNodes,
-	"initStatisticalAtStartUp":initStatisticalAtStartUp
+	"initStatisticalAtStartUp":initStatisticalAtStartUp,
+	"initLanguageAtStartUp":initLanguageAtStartUp
 };

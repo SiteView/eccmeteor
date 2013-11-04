@@ -110,7 +110,7 @@ Meteor.publish("svse_TopNresultlist",function(){
 /*‌‌
    Type：  modify ‌‌
    Author： huyinghuan
-   Date:2013-17-41 10:40‌‌ 星期二‌‌
+   Date:2013-10-29 10:40‌‌ 星期二‌‌
    Content: 修改管理员账户判断标准 UserUtils.isAdmin(this.userId)
   */
 //用户信息
@@ -125,7 +125,7 @@ Meteor.publish("userData",function(){
 /*‌‌
    Type：  add ‌‌
    Author： huyinghuan
-   Date:2013-17-41 10:40 星期二‌‌
+   Date:2013-10-29  10:40 星期二‌‌
    Content: 增加设置节点集合
 */
 Meteor.publish("svse_settingnodes",function(){
@@ -137,4 +137,15 @@ Meteor.publish("svse_settingnodes",function(){
 	Log4js.info("=--==============svse_settingnodes")
 	Log4js.info(showNodes);
 	return SvseSettingNodes.find({action:{$in: showNodes}});
+});
+
+
+/*‌‌
+   Type：  add ‌‌
+   Author： huyinghuan
+   Date:2013-11-04 13:55 星期一
+   Content: 增加设置语言集合集合
+*/
+Meteor.publish("svse_language",function(){
+	return SvseLanguage.find({});
 });

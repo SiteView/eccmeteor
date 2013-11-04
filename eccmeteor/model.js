@@ -30,6 +30,13 @@ SvseStatisticalresultlist = new Meteor.Collection("Svse_Statisticalresultlist");
 	Content:增加设置节点的集合  SvseSettingNodes
 */
 SvseSettingNodes = new Meteor.Collection("svse_settingnodes");
+/*
+	Type：add
+	Author：huyinghuan
+	Date:2013-11-04 13:43
+	Content:增加设置语言的集合  SvseLanguage
+*/
+SvseLanguage = new Meteor.Collection("svse_language");
 
 Svse.allow({
 	insert: function (userId, doc) {
@@ -185,6 +192,24 @@ SvseTopNresultlist.allow({
 	Content:增加设置节点的集合控制权限
 */
 SvseSettingNodes.allow({
+	insert: function (userId, doc) {
+		return false;
+	},
+	update: function (userId, doc, fields, modifier) {
+		return false;
+	},
+	remove: function (userId, doc) {
+		return false;
+	}
+});
+
+/*
+	Type：add
+	Author：huyinghuan
+	Date:2013-10-29 15:11
+	Content:增加设置语言的集合控制权限
+*/
+SvseLanguage.allow({
 	insert: function (userId, doc) {
 		return false;
 	},

@@ -67,18 +67,20 @@ Handlebars.registerHelper('createDomByObjListHelper',function(list){
 	国际化助手
 */
 Handlebars.registerHelper('language',function(){
-	return Language.findOne({name:Session.get("language")}).value;
+	//return Language.findOne({name:Session.get("language")}).value;
+	return LanguageModel.getLanaguage();
 });
 
 Handlebars.registerHelper('getLanguage',function(key){
+	var modal = LanguageModel.getLanaguage();
 	if(!key)
 		return "";
 	if(key.length-1 > key.replace(/\./g,"").length)
 		return "";
 	if(key.indexOf("\.") === -1)
-		return Language.findOne({name:Session.get("language")})["value"][key];
+		return modal[key];
 	var arr = key.split('\.');
-	return Language.findOne({name:Session.get("language")})["value"][arr[0]][arr[1]];
+	return modal[arr[0]][arr[1]];
 });
 
 /*当前用户名*/
