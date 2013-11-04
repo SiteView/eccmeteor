@@ -36,7 +36,8 @@ LAYOUTVIEW = {
 //报表
 REPORT ={
 	STATISTICAL:"statistical",
-	TOPN:"topN"//topN报告
+	TOPN:"topN", //topN报告
+	MONITORINFO:"monitorInfo"//监测器信息报告, 搜索测试
 }
 //视图切换
 SwithcView = {
