@@ -27,20 +27,18 @@
 	initSvseMonitorsTemplateAtStartUp,initSvseEntityTempletGroupAtStartUp
 */
 function initAllDateStartUp(status){
-	if(status === -1)
-		return;
-	initDateAtStartUp["initTreeDataAtStartup"](0);
-	initDateAtStartUp["initSvseTreeStructureAtStartUp"](0);
-	initDateAtStartUp["initSvseMonitorsTemplateAtStartUp"](0);
-	initDateAtStartUp["initSvseEntityTempletGroupAtStartUp"](0);
-	initDateAtStartUp["initSvseEntityInfoAtStartUp"](0);
-	initDateAtStartUp["initTaskAtStartUp"](0);
-	initDateAtStartUp["initEmailListAtStartUp"](0);
-	initDateAtStartUp["initWarnerRuleAtStartUp"](0);
+	initDateAtStartUp["initTreeDataAtStartup"](status);
+	initDateAtStartUp["initSvseTreeStructureAtStartUp"](status);
+	initDateAtStartUp["initSvseMonitorsTemplateAtStartUp"](status);
+	initDateAtStartUp["initSvseEntityTempletGroupAtStartUp"](status);
+	initDateAtStartUp["initSvseEntityInfoAtStartUp"](status);
+	initDateAtStartUp["initTaskAtStartUp"](status);
+	initDateAtStartUp["initEmailListAtStartUp"](status);
+	initDateAtStartUp["initWarnerRuleAtStartUp"](status);
 	initDateAtStartUp["initAdminAccount"]();
-	initDateAtStartUp["initMessageListAtStartUp"](0);
-	initDateAtStartUp["initStatisticalAtStartUp"](0);
-	initDateAtStartUp["initTopNListAtStartUp"](0);
+	initDateAtStartUp["initMessageListAtStartUp"](status);
+	initDateAtStartUp["initStatisticalAtStartUp"](status);
+	initDateAtStartUp["initTopNListAtStartUp"](status);
 	initDateAtStartUp["initSettingNodes"]();
 	initDateAtStartUp["initLanguageAtStartUp"]();
 	SystemLogger("全部数据初始化完毕");

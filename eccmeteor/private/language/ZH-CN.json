@@ -98,6 +98,27 @@
 			"helpbtn":"帮助",
 			"bordercolor":"边框颜色",
 			"borderwidth":"边框宽度"
+		},
+		"SettingNodeTree":{
+			"Alert" : "报警",
+			"AlertRule" : "报警规则",
+			"AlertLog" : "报警日志",
+			"AlertPlan" : "报警策略",
+			"Setting":"设置",
+			"BasicSetting":"基础设置",
+			"EmailSetting" : "邮件设置",
+			"MessageSetting" : "短信设置",
+			"UserSetting":"用户设置",
+			"Report":"报表",
+			"statistical":"统计报告",
+			"trend":"趋势报告",
+			"topN":"TopN报告",
+			"statusStatistical":"状态统计报告",
+			"contrast":"对比报告",
+			"operationAndMaintenance":"运维统计报告",
+			"time":"时段对比报告",
+			"monitorInfo":"监测器信息报告",
+			"SysLogQuery":"系统日志查询"
 		}
 	}
 }

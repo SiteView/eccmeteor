@@ -87,6 +87,27 @@
 			"helpbtn":"Help",
 			"bordercolor":"BorderColor",
 			"borderwidth":"BorderWidth"
+		},
+		"SettingNodeTree":{
+			"Alert" : "Alert",
+			"AlertRule" : "AlertRule",
+			"AlertLog" : "AlertLog",
+			"AlertPlan" : "AlertPlan",
+			"Setting":"Setting",
+			"BasicSetting":"Basic Setting",
+			"EmailSetting" : "Email Setting",
+			"MessageSetting" : "Message Setting",
+			"UserSetting":"User Setting",
+			"Report":"Report",
+			"statistical":"Statistical Report",
+			"trend":"Trend Report",
+			"topN":"TopN Report",
+			"statusStatistical":"Status Statistical",
+			"contrast":"Contrast Report",
+			"operationAndMaintenance":"Operation Maintenance",
+			"time":"Time Report",
+			"monitorInfo":"Monitor Infomation",
+			"SysLogQuery":"System Log"
 		}
 	}
 }
