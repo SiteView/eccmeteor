@@ -10,7 +10,8 @@ Object.defineProperty(AssetsUtils,"getLanguages",{
 		var lists = fs.readdirSync(dir);
 		var languages  = [];
 		for(index in lists){
-			languages.push(EJSON.parse(Assets.getText("language/"+lists[index])))
+			var p = path.join("language",lists[index]);
+			languages.push(EJSON.parse(Assets.getText(p)));
 		}
 		return languages
 	}
