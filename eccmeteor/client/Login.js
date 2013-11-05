@@ -6,23 +6,34 @@ Template.Login.events({
       console.log(e.keyCode);
       var username = $("#loginForm :input[name='username']").val();
       var password = $("#loginForm :input[name='password']").val();
-      var errorMsg = $("#loginErrorMsg");
+      var errorMsg = $("#loginErrorDiv div:first");
       if(!password || password.replace(/" "/g,"").length === 0){
-        errorMsg.html("密码不能为空").css("display","block");
-        return;
+          errorMsg.html("*密码不能为空");
+          return;
       }
+      errorMsg.empty();
       SvseUserDao.login(username,password,function(err,status){
         if(err){
           Log4js.error(err)
-          errorMsg.html(status ? err : "登陆名不存在或密码错误").css("display","block");
+          errorMsg.html(status ? err : "*登陆名不存在或密码错误");
         }else{
-           Meteor.Router.to("/home");
-           $("body").css("background-color","white");
+            $("body").css("background-color","white");
+            remeberMe(username,password);
+            errorMsg.empty();
+            Meteor.Router.to("/home");    
         }
       });
     }
 });
-
+var remeberMe = function(username,password){
+  if($("#login-remeber")[0].checked){
+      if(ClientUtils.gotUser())
+        return;
+      ClientUtils.remberUser(username,password);
+  }else{
+    ClientUtils.forgotUser();
+  }
+}
 Deps.autorun(function(){
   if(!Meteor.user())
     return;
@@ -33,4 +44,10 @@ Deps.autorun(function(){
 
 Template.Login.rendered = function(){
   $("body").css("background-color","#e7f6fd");
+  var user = ClientUtils.gotUser();
+  if(user){
+    $("#loginForm :input[name='username']").val(user.a);
+    $("#loginForm :input[name='password']").val(user.b);
+    $("#login-remeber")[0].checked = true;
+  }
 }

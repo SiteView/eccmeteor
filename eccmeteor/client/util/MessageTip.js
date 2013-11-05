@@ -42,7 +42,7 @@ Object.defineProperties(MessageTip,{
 			replace:false,	
 		}
 		if(setting && typeof(setting) === "object"){
-			contentObj.id = setting.id ? MessageTip.prefix+id:false;
+			contentObj.id = setting.id ? MessageTip.prefix+setting.id:false;
 			if(setting.align && !!setting.align.match("^(left|right|center)$")){
 				contentObj.align = setting.align;
 			};
