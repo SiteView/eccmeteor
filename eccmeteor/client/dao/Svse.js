@@ -70,40 +70,7 @@ SvseDao = {
 		
 	},	
 	
-	getEntityTree:function(){ //包含监视器	
-		var nodes = Svse.find().fetch();
-		var branch = [];
-		for(index in nodes){
-			var obj = nodes[index];
-			var branchNode = {};
-			branchNode["id"] = obj["sv_id"];
-			branchNode["pId"] = obj["parentid"];
-			branchNode["type"] = obj["type"];
-			branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]})["sv_name"];
-			branchNode["isParent"] = true;
-			if(branchNode["pId"] === "0") branchNode["open"] = true;
-			branchNode["open"] = true;
-			if(obj["type"] === "entity" && obj["submonitor"] && obj["submonitor"].length){				
-				var submonitor = obj["submonitor"];		
-				var submonitors = [];
-				for(subindex in submonitor){
-					var subobj = {};
-					subobj["id"] = submonitor[subindex];
-					//subobj["pId"] = obj["sv_id"];
-					subobj["type"] = SvseTree.findOne({sv_id:submonitor[subindex]})["sv_monitortype"];
-					subobj["name"] = SvseTree.findOne({sv_id:submonitor[subindex]})["sv_name"];
-					subobj["dstr"] = SvseTree.findOne({sv_id:submonitor[subindex]})["dstr"];
-					subobj["status"] = SvseTree.findOne({sv_id:submonitor[subindex]})["status"];
-					//subobj["status_disable"] = SvseTree.findOne({sv_id:submonitor[subindex]})["status_disable"];
-					submonitors.push(subobj);
-				}
-				branchNode["submonitor"] = submonitors;
-			}
-			branch.push(branchNode);
-		}
-		return branch;
-		
-	},
+
 	
 	removeNodesById:function(id,fn){  //根据ID删除节点 返回删除的节点数
 		//同时删除SvseTree和Svse中的数据而且删除其子节点。 //先删除服务器中的节点再删本地数据库中的节点
