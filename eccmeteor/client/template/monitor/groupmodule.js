@@ -6,7 +6,7 @@ Template.showGroupAndEntity.subgroup = function(){
     var id = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subgroup");
     var status = SessionManage.getEntityListFilter();
-     return status ? SvseTreeDao.getNodesByIds(childrenIds,status) : SvseTreeDao.getNodesByIds(childrenIds);
+    return status ? SvseTreeDao.getNodesByIds(childrenIds,status) : SvseTreeDao.getNodesByIds(childrenIds);
 }
 
 Template.showGroupAndEntity.subentity = function(){
@@ -47,8 +47,7 @@ Template.showGroupAndEntity.events({
         Session.set("showGroupAndEntityEditEntityId",id);
         $("#showEditEntityDiv").modal('show');
     },
-    "dblclick tbody tr, click tbody tr td a":function(e){
-        console.log(1);
+    "click tbody tr td a":function(e){ //dblclick tbody tr, 
         e.stopPropagation();
         var id = e.currentTarget.id;
         console.log(id);
@@ -58,27 +57,27 @@ Template.showGroupAndEntity.events({
             type:node.type,
             name:node.sv_name
         }
-        console.log(checkedTreeNode);
         SwithcView.layout(LAYOUTVIEW.NODE);
         //记录点击的节点。根据该节点获取 编辑增加设备时的基本信息; 
         SessionManage.setCheckedTreeNode(checkedTreeNode);
         if(node.type === "group"){
             SwithcView.view(MONITORVIEW.GROUPANDENTITY); 
         }else{
+            Log4js.info("****ENTITYMODULE****");
             SwithcView.view(MODULEVIEW.ENTITYMODULE);
         }
     },
     "mouseenter #showGroupAndEntityTableGroupList img":function(e){
-        $(e.target).popover('show');
+        $(e.currentTarget).popover('show');
     },
     "mouseleave #showGroupAndEntityTableGroupList img":function(e){
-        $(e.target).popover('hide');
+        $(e.currentTarget).popover('hide');
     },
     "mouseenter #showGroupAndEntityTableEntityList img":function(e){
-        $(e.target).popover('show');
+        $(e.currentTarget).popover('show');
     },
     "mouseleave #showGroupAndEntityTableEntityList img":function(e){
-        $(e.target).popover('hide');
+        $(e.currentTarget).popover('hide');
     }
 });
 
