@@ -160,7 +160,11 @@ Template.statisticalofadd.rendered = function () {
         todayBtn: true,
         pickerPosition: "bottom-left"
     });
-
+	function selectPeriod(){
+		if(document.getElementById("reporttypePeriodlist").value=="Week"){
+			 document.getElementById("reporttypetemplatelist").disabled=false;
+		}
+	}
 }
 
 Template.statisticalofadd.events = {
