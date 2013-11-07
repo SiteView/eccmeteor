@@ -137,10 +137,10 @@ marklist[5]=["IDS_640_AS400","System ASP总量(MB)","剩余空间(MB)"];
 				<option value="4" checked>SNMP_CPU</option>‌
 				<option value="5" checked>System ASP</option>‌
 					</select>-->
-			<select id="Typelist" name="sv_type" onChange="myFunction" title="要选择的检测器类别">
-			{{#each monitortypelist}}
+			<select id="Typelist" name="sv_type" onchange="tpye(this.options[this.options.selectedIndex].value)" title="要选择的检测器类别">
+			<!--{{#each monitortypelist}}
 			<option value="{{sv_name}}">{{sv_label}}</option>
-			{{/each}}
+			{{/each}}-->
 		</select>
 				</div>
 			</div>
@@ -158,9 +158,10 @@ marklist[5]=["IDS_640_AS400","System ASP总量(MB)","剩余空间(MB)"];
 			  <label class="control-label">选择指标:</label>
 			  <div class="controls">
 			       <select id="marklist" name="Mark" title="要选择的指标">
-			          {{#each monitortypelist}}
+			         <!-- {{#each monitortypelist}}
   	                  <option value=""{{sv_name}}">{{sv_label}}</option>
   	                  {{/each}}
+					  -->
                    </select>
                    </div>
                  </div>

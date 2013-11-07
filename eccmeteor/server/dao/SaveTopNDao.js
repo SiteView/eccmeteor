@@ -87,6 +87,26 @@ SvseTopNOnServer = {
 		return SvseTopNOnServer.getReturn(true,1);
 		
 		
-	}
+	},
+	/*getMonityDynamicPropertyDataArray:function(entityId,templateMonitoryTemlpateIds){
+		var array = [];
+		var data;
+		for(index in templateMonitoryTemlpateIds){
+			var temlpateId = templateMonitoryTemlpateIds[index];
+			data = SvseMethodsOnServer.svGetEntityDynamicPropertyData(entityId,temlpateId);
+			if(!data || !data["DynamicData"])
+				continue;
+			var DynamicProperties = [];
+			for (x in data["DynamicData"]){
+				DynamicProperties.push(x);
+			}
+
+			array.push({
+				temlpateId:temlpateId,
+				DynamicProperties:DynamicProperties
+			});
+		}
+		return array;
+	}*/
 	
 }
