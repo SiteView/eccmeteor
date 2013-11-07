@@ -30,7 +30,6 @@ Meteor.publish("svse",function(){
 	if(UserUtils.isAdmin(this.userId))
 		return Svse.find();
 	var showNodes = UserDaoOnServer.getOwnMonitorsNodes(this.userId);
-	Log4js.info(showNodes);
 	var self = this;
 	Svse.find({sv_id:{$in: showNodes}}).forEach(function(newNode){
 		if(newNode["type"] === "entity"){
@@ -40,7 +39,7 @@ Meteor.publish("svse",function(){
 				newNode["subentity"]=ArrayUtils.intersect(showNodes,newNode["subentity"]) //求交集
 			}
 			if(newNode["subgroup"] &&  newNode["subgroup"].length){
-			newNode["subgroup"] = ArrayUtils.intersect(showNodes,newNode["subgroup"]) //求交集
+				newNode["subgroup"] = ArrayUtils.intersect(showNodes,newNode["subgroup"]) //求交集
 			}
 			self.added("svse",newNode._id,newNode);
 		}

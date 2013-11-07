@@ -13,6 +13,6 @@ Object.defineProperty(AssetsUtils,"getLanguages",{
 			var p = path.join("language",lists[index]);
 			languages.push(EJSON.parse(Assets.getText(p)));
 		}
-		return languages
+		return languages;
 	}
 });

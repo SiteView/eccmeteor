@@ -1,5 +1,7 @@
 //初始化设备模板信息
 initSvseEntityTempletAtStartUp = function (entityIds){
+	Log4js.info("--------------------------------------------")
+	Log4js.info(entityIds);
 	for(id in entityIds){
 		var temp = SvseMethodsOnServer.GetEntityTemplet(entityIds[id])
 		if(!temp){
@@ -22,21 +24,24 @@ initSvseEntityTempletAtStartUp = function (entityIds){
 
 //初始化设备模板组信息
 initSvseEntityTempletGroupAtStartUp = function (debug){
-	SystemLogger("设备模板初始化开始。。。");
+	Log4js.info("设备模板初始化开始。。。");
 	if(debug === -1)return;
 	if(debug === 0){
 		SvseEntityTempletGroup.remove({});
-		SystemLogger("SvseEntityTempletGroup 数据清除");
+		Log4js.warn("SvseEntityTempletGroup 数据清除");
 		SvseEntityTemplet.remove({});
-		SystemLogger("SvseEntityTemplet 数据已清除");
+		Log4js.warn("SvseEntityTemplet 数据已清除");
 	}
 	
 	var entityGroup = SvseMethodsOnServer.GetAllEntityGroups();//调用server/methods.js中的方法
+	Log4js.info(entityGroup);
+	Log4js.info(1)
 	if(!entityGroup){
+		Log4js.info(2)
 		SystemLogger("设备组为空");
 		return;
 	}
-	
+	Log4js.info(3)
 	for(entityTemplate in entityGroup){
 		if(entityTemplate === "return") continue;
 		var temp = entityGroup[entityTemplate];
@@ -54,19 +59,15 @@ initSvseEntityTempletGroupAtStartUp = function (debug){
 			subEntity = subEntity.substr(0,subEntity.length -1);
 			node["entityTemplateId"] = subEntity.split("\,");
 		}
+		var tids = node["entityTemplateId"];
 		SvseEntityTempletGroup.insert(node,function(err,r_id){  //插入设备模板组
 			if(err){
 				SystemLogger("初始化组"+entityTemplate+"失败")
 				SystemLogger(err);
 				return;
 			}
-			var subIds = node["entityTemplateId"];
-			if(subIds.length === 0){
-				SystemLogger("设备组"+entityTemplate+"为空");
-				return;
-			}
-			initSvseEntityTempletAtStartUp(subIds); //插入设备模板
 		});
+		initSvseEntityTempletAtStartUp(tids); //插入设备模板
 	}
 	SystemLogger("设备模板初始化完成");
 }

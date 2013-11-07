@@ -75,3 +75,21 @@ SvseUserDao = {
 		Meteor.loginWithPassword(usename,password,fn);
 	}
 }
+/*
+	获取单个设备节点的操作权限
+	参数:
+	 nid:节点ID，
+	 permission:权限类型
+*/
+Object.defineProperty(SvseUserDao,"getSingleNodePermission",{
+	value:function(nid,permission){
+		var user = Meteor.user();
+		if(!user)
+			return false;
+		if(UserUtils.isAdmin())
+			return true;
+		nid = nid.replace(/\./g,"-");
+		var nodeOpratePermissions = user.profile.nodeOpratePermission;
+		return nodeOpratePermissions && nodeOpratePermissions[nid] && nodeOpratePermissions[nid][permission]
+	}
+});
