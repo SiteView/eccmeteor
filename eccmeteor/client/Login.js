@@ -27,11 +27,11 @@ Template.Login.events({
 });
 var remeberMe = function(username,password){
   if($("#login-remeber")[0].checked){
-      if(ClientUtils.gotUser())
+      if(UserUtils.gotUser())
         return;
-      ClientUtils.remberUser(username,password);
+      UserUtils.remberUser(username,password);
   }else{
-    ClientUtils.forgotUser();
+    UserUtils.forgotUser();
   }
 }
 Deps.autorun(function(){
@@ -44,7 +44,7 @@ Deps.autorun(function(){
 
 Template.Login.rendered = function(){
   $("body").css("background-color","#e7f6fd");
-  var user = ClientUtils.gotUser();
+  var user = UserUtils.gotUser();
   if(user){
     $("#loginForm :input[name='username']").val(user.a);
     $("#loginForm :input[name='password']").val(user.b);

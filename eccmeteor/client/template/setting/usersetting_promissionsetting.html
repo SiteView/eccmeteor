@@ -48,10 +48,6 @@
 		<span class="badge">组权限</span>
 		<ul class="nav nav-list">
 			<li>
-				<input type="checkbox" name="addEntity">
-				<i class="icon-book"></i> 增加设备
-			</li>
-			<li>
 				<input type="checkbox" name="addGroup">
 				<i class="icon-book"></i> 增加组
 			</li>
@@ -67,16 +63,25 @@
 				<input type="checkbox" name="refresh">
 				<i class="icon-book"></i>刷新组
 			</li>
+			
+		</ul>
+		<br>
+		<span class="badge">设备权限</span>
+		<ul class="nav nav-list">
+			<li>
+				<input type="checkbox" name="addEntity">
+				<i class="icon-book"></i> 增加设备
+			</li>
+			<li>
+				<input type="checkbox" name="deleteMul">
+				<i class="icon-book"></i> 删除下属设备
+			</li>
 		</ul>
 		<br>
 		{{/if}}
 		{{#if equal type "entity"}}
 		<span class="badge">设备权限</span>
 		<ul class="nav nav-list">
-			<li>
-				<input type="checkbox" name="addMonitor">
-				<i class="icon-book"></i> 增加监视器
-			</li>
 			<li>
 				<input type="checkbox" name="edit">
 				<i class="icon-book"></i> 编辑设备
@@ -91,8 +96,12 @@
 			</li>
 		</ul>
 		<br>
-		<span class="badge">监视器权限权限</span>
+		<span class="badge">监视器权限</span>
 		<ul class="nav nav-list">
+			<li>
+				<input type="checkbox" name="addMonitor">
+				<i class="icon-book"></i> 增加监视器
+			</li>
 			<li>
 				<input type="checkbox" name="editMonitor">
 				<i class="icon-book"></i> 编辑监视器

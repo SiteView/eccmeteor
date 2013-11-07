@@ -233,25 +233,3 @@
 		});
 	}
 }
-
-Object.defineProperty(ClientUtils,"remberUser",{
-	value:function(username,password){
-		var obj = {
-			a:username,
-			b:password
-		}
-		$.cookie("helloword",EJSON.stringify(obj),{expires:5});	
-	}
-});
-
-Object.defineProperty(ClientUtils,"forgotUser",{
-	value:function(){
-		$.removeCookie('helloword');
-	}
-});
-
-Object.defineProperty(ClientUtils,"gotUser",{
-	value:function(){
-		return $.cookie("helloword") ? EJSON.parse($.cookie("helloword")) : null;
-	}
-});

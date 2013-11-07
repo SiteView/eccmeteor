@@ -7,7 +7,7 @@ SvseEntityTemplateDao = {
 	getEntityPropertyById:function(id,name){
 		var entityTemplate = SvseEntityTemplet.findOne({"return.id":id})
 		if(!entityTemplate)
-			return {};
+			return "";
 		var property = entityTemplate.property;
 		if(!name)
 			return property;
@@ -116,7 +116,7 @@ SvseEntityTemplateDao = {
 		});
 	},
 	getEntityMonitorByDevicetype:function(type,status){ //获取设备的可以添加监视器 status控制是否为快速添加的监视器 true 快速添加，false为选择添加，默认为选择添加
-		SystemLogger("SeseEntityTemplate.js getEntityMonitorByDevicetype 打印：");
+		Log4js.info("SeseEntityTemplate.js getEntityMonitorByDevicetype 打印：");
 		template = SvseEntityTemplet.findOne({"return.id":type});
 		if(!template){
 			SystemLogger("找不到设备"+type);
