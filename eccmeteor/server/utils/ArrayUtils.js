@@ -2,20 +2,26 @@
 ArrayUtils={};
 Object.defineProperty(ArrayUtils,"intersect",{
 	value:function(a,b){
-		var ai=0;
-		var bi=0;
-		var result = new Array();
-		while( ai < a.length && bi < b.length ){
-	     	if(a[ai] < b[bi] ){
-				ai++;
-	    	}else if(a[ai] > b[bi] ){
-	      		bi++; 
-	  		}else{
-		       result.push(a[ai]);
-		       ai++;
-		       bi++;
-	     	}
-	  	}
-	  return result;
+		var al = a.length;
+		var bl = b.length;
+		var result = [];
+		var tmpIndex =0;
+		var tmp;
+		for(var i = 0; i < al; i ++){
+			if(tmpIndex === bl)
+				break;
+			for(var j = tmpIndex; j < bl; j++){
+				if(a[i] === b[j]){
+					tmp = b[j];
+					b[j] = b[tmpIndex];
+					b[tmpIndex] = tmp;
+					tmpIndex++;
+					result.push(a[i]);
+					break;
+				}
+				
+			}
+		}
+		return result;
 	}
 });

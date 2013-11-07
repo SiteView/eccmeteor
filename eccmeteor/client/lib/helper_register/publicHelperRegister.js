@@ -106,3 +106,16 @@ Handlebars.registerHelper('trim',function(arg){
 	return arg ? arg.replace( /^\s+/, "" ).replace(/\s+$/, "" ) : arg;
 
 });
+/*
+	节点是否可操作
+*/
+Handlebars.registerHelper('isNodeEnabled',function(nid,permission){
+	var user = Meteor.user();
+	if(!user)
+		return false;
+	if(UserUtils.isAdmin())
+		return true;
+	nid = nid.replace(/\./g,"-");
+	var nodeOpratePermissions = user.profile.nodeOpratePermission;
+	return nodeOpratePermissions && nodeOpratePermissions[nid] && nodeOpratePermissions[nid][permission]
+});

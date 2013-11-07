@@ -23,21 +23,21 @@ Template.showMonitorInfo.monitorStatus = function(){
 Template.showMonitorInfo.getMonityTemplateParameters = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateParametersById(Session.get("monityTemplateId"))
-			: {}
+			: []
 	
 }
 
 Template.showMonitorInfo.getMonityTemplateAdvanceParameters = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(Session.get("monityTemplateId"))
-			: {}
+			: []
 	
 }
 
 Template.monitorTemplateStatus.getMonityTemplateReturnItemsById = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("monityTemplateId"))
-			: {}
+			: []
 	
 }
 
