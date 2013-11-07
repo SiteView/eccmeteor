@@ -8,6 +8,12 @@ Template.warnerrule.events = {
 	"click #messagewarner":function(e){
 		$('#messagewarnerdiv').modal('toggle');
 	},
+	"click #scriptwarner":function(){
+		$("#scriptwarnerdiv").modal("show");
+	},
+	"click #soundwarner":function(){
+		$("#soundwarnerdiv").modal("show");
+	},
 	"click #delwarnerrule" : function(){
 		SvseWarnerRuleDao.deleteWarnerRules(getWarnerRuleListSelectAll());
 	},
@@ -187,37 +193,56 @@ Template.warnerrulelist.events = {
 	"click td .btn":function(e){
 		console.log(e.currentTarget.id);
 		var result = SvseWarnerRuleDao.getWarnerRule(e.currentTarget.id);
-		console.log("alerttype:"+result["AlertType"]);
-		//填充表单
-		$("#emailwarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
-		$("#emailwarnerdivedit").find(":text[name='OtherAdress']:first").val(result.OtherAdress);
-		$("#emailwarnerdivedit").find(":text[name='Upgrade']:first").val(result.Upgrade);
-		$("#emailwarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.UpgradeTo);
-		$("#emailwarnerdivedit").find(":text[name='Stop']:first").val(result.Stop);
-		$("#emailwarnerdivedit").find(":text[name='WatchSheet']:first").val(result.WatchSheet);
-		$("#emailwarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.Strategy);
-		$("#emailwarnerdivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
-		var checkedEmailAdress = result["EmailAdress"].split(",");
-		for(var eal = 0 ; eal < checkedEmailAdress.length ; eal ++){
-			try{
-				$(".emailmultiselectedit").multiselect('select',checkedEmailAdress[eal]);
-			}catch(e){}
-		}
-		var checkedEmailTemplate = result["AlertTarget"].split(",");
-		for(var etl = 0 ; etl < checkedEmailTemplate.length; etl ++){
-			$("#emailtemplatelistedit").find("option[name='"+checkedEmailTemplate[etl]+"']:first").attr("selected","selected").prop("selected",true);
-		}
-		var AlertCategory = result.AlertCategory;
-		$("#warnerruleofemailformsendconditionsedit").find(":radio[name='AlertCategory']").each(function(){
-			if($(this).val() === AlertCategory){
-				$(this).attr("checked",true);
+		var alertType=result["AlertType"];
+		console.log("alerttype:"+alertType);
+		//邮件报警EmailAlert
+		if(alertType=="EmailAlert"){
+			console.log("EmailAlert");
+			//填充表单
+			$("#emailwarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
+			$("#emailwarnerdivedit").find(":text[name='OtherAdress']:first").val(result.OtherAdress);
+			$("#emailwarnerdivedit").find(":text[name='Upgrade']:first").val(result.Upgrade);
+			$("#emailwarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.UpgradeTo);
+			$("#emailwarnerdivedit").find(":text[name='Stop']:first").val(result.Stop);
+			$("#emailwarnerdivedit").find(":text[name='WatchSheet']:first").val(result.WatchSheet);
+			$("#emailwarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.Strategy);
+			$("#emailwarnerdivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
+			var checkedEmailAdress = result["EmailAdress"].split(",");
+			for(var eal = 0 ; eal < checkedEmailAdress.length ; eal ++){
+				try{
+					$(".emailmultiselectedit").multiselect('select',checkedEmailAdress[eal]);
+				}catch(e){}
 			}
-		});
-		$("#emailwarnerdivedit").modal('toggle');
+			var checkedEmailTemplate = result["EmailTemplate"].split(",");
+			for(var etl = 0 ; etl < checkedEmailTemplate.length; etl ++){
+				$("#emailtemplatelistedit").find("option[name='"+checkedEmailTemplate[etl]+"']:first").attr("selected","selected").prop("selected",true);
+			}
+			var AlertCategory = result.AlertCategory;
+			$("#warnerruleofemailformsendconditionsedit").find(":radio[name='AlertCategory']").each(function(){
+				if($(this).val() === AlertCategory){
+					$(this).attr("checked",true);
+				}
+			});
+			$("#emailwarnerdivedit").modal('toggle');
+			
+			var checkednodes = result.AlertTarget.split("\,")
+			//左边树的勾选
+			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_edit");
+		}
+		//短信报警SmsAlert
+		if(alertType=="SmsAlert"){
+			console.log("SmsAlert");
+		}
+		//脚本报警ScriptAlert
+		if(alertType=="ScriptAlert"){
+			console.log("ScriptAlert");
+		}
+		//声音报警SoundAlert
+		if(alertType=="SoundAlert"){
+			console.log("SoundAlert");
+		}
 		
-		var checkednodes = result.AlertTarget.split("\,")
-		//左边树的勾选
-		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_edit");
+		
 		treeObj.checkAllNodes(false);//清空上一个用户状态
 		//节点勾选
 		for(var index  = 0; index < checkednodes.length ; index++){
@@ -312,12 +337,32 @@ Template.warnerruleofemailedit.events = {
 		warnerruleofemailformedit["AlwaysTimes"] = 1;
 		warnerruleofemailformedit["OnlyTimes"] = 1;
 		
+		var alertName=warnerruleofemailformedit["AlertName"];
+		if(!alertName){
+			Message.info("请填写名称");
+			return;
+		}
+		var alertresult=SvseWarnerRuleDao.getAlertByName(alertName);
+		if(alertresult){
+			Message.info("报警名称已经存在");
+			return;
+		}
+		var emailAdress=warnerruleofemailformedit["EmailAdress"];
+		if(!emailAdress){
+			Message.info("报警邮件接收地址不能为空");
+			return;
+		}
+		
 		var targets = [];
 		var arr = $.fn.zTree.getZTreeObj("svse_tree_check_edit").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
 		for(index in arr){
 			targets.push(arr[index].id);
 		}
 		warnerruleofemailformedit["AlertTarget"] = targets.join();
+		if(!warnerruleofemailformedit["AlertTarget"]){
+			Message.info("监测范围不能为空");
+			return;
+		}
 		console.log(warnerruleofemailformedit);
 		var section = {};
 		section[warnerruleofemailformedit["nIndex"]] = warnerruleofemailformedit;

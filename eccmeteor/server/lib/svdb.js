@@ -882,3 +882,21 @@ svGetSmsDllName=function(){
 	return fmap;
 }
 */
+/*
+========================================
+	Type:对报警规则的操作
+	Author:zhuqing
+	Date:2013-11-6
+	Content:read ScriptFile...
+*/
+//获取脚本报警中的ScriptFile脚本
+svGetScriptFileofScriptAlert=function(){
+	var robj=process.sv_univ({
+		'dowhat':'GetSvIniFileBySections',
+		'filename':'TXTTemplate.ini',
+		'user':'default',
+		'section':'Scripts'
+	},0);
+	var fmap= robj.fmap(0);
+	return fmap["Scripts"];
+}
