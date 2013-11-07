@@ -103,7 +103,7 @@
 	<form id="basicinfoofstatisticaladd" class="well form-horizontal form-inline">
 		<fieldset>
 			<div class="control-group">
-				<label class="control-label">报告标题:</label>
+				<label class="control-label">报告标题*:</label>
 				<div class="controls">
 					<input type="text" class="span6" name="Title">
 				 </div>
@@ -117,7 +117,7 @@
 			<div class="control-group">
 				<label class="control-label">报告类型:</label>
 				<div class="controls">
-					<select id="reporttypePeriodlist" name="Period">
+					<select id="reporttypePeriodlist" name="Period" onclick="selectPeriod()">
 					<option value="Day" checked>日报</option>
 				    <option value="Week" checked>周报</option>
 				    <option value="Month" checked>月报</option>
@@ -181,7 +181,7 @@
 			<div class="control-group">
 				<label class="control-label">周报截止时间:</label>
 				<div class="controls">
- 					<select id="reporttypetemplatelist" name="WeekEndTime">
+ 					<select id="reporttypetemplatelist" name="WeekEndTime" disabled="true">
 					<option value="1" checked>星期日</option>
 				    <option value="2" checked>星期一</option>
 				    <option value="3" checked>星期二</option>
@@ -192,7 +192,20 @@
 					</select>
 				</div>		
 			</div>
-
+			<div class="control-group">
+			<label class="control-label">开始时间:</label>
+				<div class="input-append date form_datetime">
+					<input size="10" type="text" value="" readonly>
+					<span class="add-on"><i class="icon-th"></i></span>
+				</div>
+		<!--	<input type="text" id="datepicker"/>
+		
+			<div class="input-append date" id="datetimepicker" data-date="11-04-2013" data-date-format="dd-mm-yyyy">
+				<input size="10" type="text" value="11-04-2013" readonly>
+				<span class="add-on"><i class="icon-th"></i></span>
+			</div>
+		-->
+			</div>
 		</fieldset>
 	</form>
 	
@@ -217,9 +230,9 @@
 		<input type="hidden" name="nIndex" value="{{nIndex}}">
 		<fieldset>
 			<div class="control-group">
-				<label class="control-label">报告标题:</label>
+				<label class="control-label">报告标题*:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Title">
+					<input type="text" class="span6" name="Title" readonly="true">
 				 </div>
 			</div>
 			<div class="control-group">

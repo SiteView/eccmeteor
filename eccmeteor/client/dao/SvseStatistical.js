@@ -1,11 +1,11 @@
 SvseStatisticalDao = {
 	"AGENT":"SvseStatisticalDaoAgent",
-	/*
+	
 	//根据id获取统计报告的list
-	"getStatisticalresult" : function(id){
+	"getStatisticalById" : function(id){
 	return SvseStatisticalresultlist.findOne({nIndex:id});
 	},
-	*/
+	
 	"getStatisticalresultlist" : function(){
 		return SvseStatisticalresultlist.find().fetch()
 	},
@@ -37,10 +37,6 @@ SvseStatisticalDao = {
 			}
 		});
 	},
-	"getStatisticalById":function(id){
-	return SvseStatisticalresultlist.findOne({nIndex:id});
-	},
-	
 	"updateStatistical":function(addressname,address,fn){
 	 Meteor.call(SvseStatisticalDao.AGENT,'updateStatistical',[addressname,address],function(err,result){
 	 if(err){
@@ -76,6 +72,10 @@ SvseStatisticalDao = {
 			fn({status:true});
 		}
 		});
+	},
+		//根据报告标题与之前查看对比是否重复。
+	"getTitle":function(title){
+		return SvseStatisticalresultlist.findOne({Title:title});
 	}
 
 }

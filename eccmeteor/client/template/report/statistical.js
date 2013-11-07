@@ -1,401 +1,451 @@
 //单击添加按钮事件
 Template.statistical.events = {
-	"click #statisticalofadd":function(e){
+	"click #statisticalofadd" : function (e) {
 		$('#statisticalofadddiv').modal('toggle');
 	},
-//删除单行，多行记录
-	"click #statisticalofdel":function(){
-	var checks = $("#statisticallist :checkbox[checked]");
-	var ids = [];
-	for(var i = 0; i < checks.length; i++){
-	   ids.push($(checks[i]).attr("id"));
-	}
-	if(ids.length)
-	  SvseStatisticalDao.deleteStatisticalByIds(ids,function(result){
-	  	SystemLogger(result);
-	  });
-	},
-//允许操作
-	"click #allowestatistical" : function(){ 
+	//删除单行，多行记录
+	"click #statisticalofdel" : function () {
 		var checks = $("#statisticallist :checkbox[checked]");
 		var ids = [];
-		for(var i = 0 ; i < checks.length; i++){
+		for (var i = 0; i < checks.length; i++) {
 			ids.push($(checks[i]).attr("id"));
 		}
-		if(ids.length)
-			SvseStatisticalDao.updateStatisticalStatus(ids,"on",function(result){
-				SystemLogger(result);
-			});
-			
-	},
-//禁止操作
-		"click #forbidstatistical" : function(){ 
-		var checks = $("#statisticallist :checkbox[checked]");
-		var ids = [];
-		for(var i = 0 ; i < checks.length; i++){
-			ids.push($(checks[i]).attr("id"));
-		}
-		if(ids.length)
-			SvseStatisticalDao.updateStatisticalStatus(ids,"No",function(result){
+		if (ids.length)
+			SvseStatisticalDao.deleteStatisticalByIds(ids, function (result) {
 				SystemLogger(result);
 			});
 	},
-	"click #refreshstatistical":function(){
-		SvseStatisticalDao.sync(function(result){
-			if(result.status){
+	//允许操作
+	"click #allowestatistical" : function () {
+		var checks = $("#statisticallist :checkbox[checked]");
+		var ids = [];
+		for (var i = 0; i < checks.length; i++) {
+			ids.push($(checks[i]).attr("id"));
+		}
+		if (ids.length)
+			SvseStatisticalDao.updateStatisticalStatus(ids, "on", function (result) {
+				SystemLogger(result);
+			});
+
+	},
+	//禁止操作
+	"click #forbidstatistical" : function () {
+		var checks = $("#statisticallist :checkbox[checked]");
+		var ids = [];
+		for (var i = 0; i < checks.length; i++) {
+			ids.push($(checks[i]).attr("id"));
+		}
+		if (ids.length)
+			SvseStatisticalDao.updateStatisticalStatus(ids, "No", function (result) {
+				SystemLogger(result);
+			});
+	},
+	"click #refreshstatistical" : function () {
+		SvseStatisticalDao.sync(function (result) {
+			if (result.status) {
 				console.log("页面刷新已完成！");
-			}else{
+			} else {
 				SystemLogger(result);
 			}
 		});
 	},
-//帮助	
-	"click #statisticalhelpmessage":function(){
+	//帮助
+	"click #statisticalhelpmessage" : function () {
 		console.log("这里是帮助信息...");
-	}	
+	}
 }
-Template.statisticalofadd.rendered = function(){
+Template.statisticalofadd.rendered = function () {
 	//监视器选择树
-	$(function(){
+	$(function () {
 		var data = SvseDao.getDetailTree();
 		var setting = {
-			check:{
-				enable: true,
-				chkStyle: "checkbox",
-				chkboxType: { "Y": "ps", "N": "ps" }
-			},
-			callback:{	
-				onRightClick:function (event, treeId, treeNode) {
-				zTree = $.fn.zTree.getZTreeObj("svse_tree_check");
-			if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
-				zTree.cancelSelectedNode();
-				showRMenu("root", event.clientX, event.clientY);
-			} else if (treeNode && !treeNode.noR) {
-				zTree.selectNode(treeNode);
-				showRMenu("node", event.clientX, event.clientY);
-			}
-		}
-			},
-			data: {
-				simpleData: {
-					enable: true,
-					idKey: "id",
-					pIdKey: "pId",
-					rootPId: "0",
+			check : {
+				enable : true,
+				chkStyle : "checkbox",
+				chkboxType : {
+					"Y" : "ps",
+					"N" : "ps"
 				}
-			}
-		};		
-		$.fn.zTree.init($("#svse_tree_check"), setting, data);
-	});	
-	function showRMenu(type, x, y) {
-			$("#rMenu ul").show();
-			$("#rMenu").css({"top":y+10+"px", "left":x+10+"px","visibility":"visible"});
-			$("body").bind("mousedown", onBodyMouseDown);
-		}
-		
-		function hideRMenu() {
-			if (rMenu) $("#rMenu").css({"visibility": "hidden"});
-			$("body").unbind("mousedown", onBodyMouseDown);
-		}			
-		function onBodyMouseDown(event){
-			if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length>0)) {
-				$("#rMenu").css({"visibility" : "hidden"});
-			}
-		}
-	/*	function addTreeNode() {
-			hideRMenu();
-			var newNode = { name:"增加" + (addCount++)};
-			if (zTree.getSelectedNodes()[0]) {
-				newNode.checked = zTree.getSelectedNodes()[0].checked;
-				zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
-			} else {
-				zTree.addNodes(null, newNode);
-			}
-		}
-		function removeTreeNode() {
-			hideRMenu();
-			var nodes = zTree.getSelectedNodes();
-			if (nodes && nodes.length>0) {
-				if (nodes[0].children && nodes[0].children.length > 0) {
-					var msg = "要删除的节点是父节点，如果删除将连同子节点一起删掉。\n\n请确认！";
-					if (confirm(msg)==true){
-						zTree.removeNode(nodes[0]);
+			},
+			callback : {
+				onRightClick : function (event, treeId, treeNode) {
+					zTree = $.fn.zTree.getZTreeObj("svse_tree_check");
+					if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
+						zTree.cancelSelectedNode();
+						showRMenu("root", event.clientX, event.clientY);
+					} else if (treeNode && !treeNode.noR) {
+						zTree.selectNode(treeNode);
+						showRMenu("node", event.clientX, event.clientY);
 					}
-				} else {
-					zTree.removeNode(nodes[0]);
+				}
+			},
+			data : {
+				simpleData : {
+					enable : true,
+					idKey : "id",
+					pIdKey : "pId",
+					rootPId : "0",
 				}
 			}
-		}
-		function checkTreeNode(checked) {
-			var nodes = zTree.getSelectedNodes();
-			if (nodes && nodes.length>0) {
-				zTree.checkNode(nodes[0], checked, true);
-			}
-			hideRMenu();
-		}
-		function resetTree() {
-			hideRMenu();
-			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-		}
+		};
+		$.fn.zTree.init($("#svse_tree_check"), setting, data);
+	});
+	function showRMenu(type, x, y) {
+		$("#rMenu ul").show();
+		$("#rMenu").css({
+			"top" : y + 10 + "px",
+			"left" : x + 10 + "px",
+			"visibility" : "visible"
+		});
+		$("body").bind("mousedown", onBodyMouseDown);
+	}
 
+	function hideRMenu() {
+		if (rMenu)
+			$("#rMenu").css({
+				"visibility" : "hidden"
+			});
+		$("body").unbind("mousedown", onBodyMouseDown);
+	}
+	function onBodyMouseDown(event) {
+		if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length > 0)) {
+			$("#rMenu").css({
+				"visibility" : "hidden"
+			});
 		}
-*/	
+	}
+	/*	function addTreeNode() {
+	hideRMenu();
+	var newNode = { name:"增加" + (addCount++)};
+	if (zTree.getSelectedNodes()[0]) {
+	newNode.checked = zTree.getSelectedNodes()[0].checked;
+	zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
+	} else {
+	zTree.addNodes(null, newNode);
+	}
+	}
+	function removeTreeNode() {
+	hideRMenu();
+	var nodes = zTree.getSelectedNodes();
+	if (nodes && nodes.length>0) {
+	if (nodes[0].children && nodes[0].children.length > 0) {
+	var msg = "要删除的节点是父节点，如果删除将连同子节点一起删掉。\n\n请确认！";
+	if (confirm(msg)==true){
+	zTree.removeNode(nodes[0]);
+	}
+	} else {
+	zTree.removeNode(nodes[0]);
+	}
+	}
+	}
+	function checkTreeNode(checked) {
+	var nodes = zTree.getSelectedNodes();
+	if (nodes && nodes.length>0) {
+	zTree.checkNode(nodes[0], checked, true);
+	}
+	hideRMenu();
+	}
+	function resetTree() {
+	hideRMenu();
+	$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+	}
+
+	}
+	 */
+	 	//$('#datetimepicker').datetimepicker();
+		 // $('#datepicker').datepicker();
+		 $(".form_datetime").datetimepicker({
+        format: "dd MM yyyy",
+        autoclose: true,
+        todayBtn: true,
+        pickerPosition: "bottom-left"
+    });
+
 }
+
 Template.statisticalofadd.events = {
-	"click #statisticalofaddcancelbtn":function(){
+/*
+	function selectPeriod(){
+		if(document.getElementById("reporttypePeriodlist").value=="Week"){
+			 document.getElementById("reporttypetemplatelist").disabled=false;
+		}
+	}
+	function selectPeriod(){
+		if($("#reporttypePeriodlist").value=="Week"){
+		$("#reporttypetemplatelist").disabled=false;
+		}
+	},
+*/
+	"click #statisticalofaddcancelbtn" : function () {
 		$('#statisticalofadddiv').modal('toggle');
 	},
-	"click #statisticalofaddsavebtn":function(){
+	"click #statisticalofaddsavebtn" : function () {
 		var basicinfoofstatisticaladd = ClientUtils.formArrayToObject($("#basicinfoofstatisticaladd").serializeArray());
+		//表单数据校验。
+		var Title = basicinfoofstatisticaladd["Title"];
+			if(!Title){
+			Message.info("报告标题不能为空，请重新输入！");
+			return;
+		}
+		//报告标题是否重复判断
+		var result =SvseStatisticalDao.getTitle(Title);
+			if(result){
+				Message.info("报告名称已存在，请重新输入！");
+			return;
+		}
 		var targets = [];
-		var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
-			for(index in arr){
+		var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function (node) {
+				return (node.checked && node.type === "monitor")
+			});
+		for (index in arr) {
 			targets.push(arr[index].id);
-			}
-			basicinfoofstatisticaladd["GroupRight"] = targets.join();
-			
+		}
+		basicinfoofstatisticaladd["GroupRight"] = targets.join();
+
 		var nIndex = Utils.getUUID();
 		basicinfoofstatisticaladd["nIndex"] = nIndex
-		
-		console.log(basicinfoofstatisticaladd); //控制台打印添加的信息
-		
+
+			console.log(basicinfoofstatisticaladd); //控制台打印添加的信息
+
 		var address = {};
 		address[nIndex] = basicinfoofstatisticaladd;
-		
-		console.log(address[nIndex]); 
-		
-		SvseStatisticalDao.addStatistical(nIndex,address,function(result){
+
+		console.log(address[nIndex]);
+
+		SvseStatisticalDao.addStatistical(nIndex, address, function (result) {
 			SystemLogger(result);
 			console.log("123");
 			console.log(result); //控制台打印添加的信息
-			console.log("123");		
+			console.log("123");
 			$('#statisticalofadddiv').modal('toggle');
 		});
 	}
 }
 
 /*
-Type： add 
+Type： add
 Author：xuqiang
-Date:2013-10-15 
+Date:2013-10-15
 Content:初始化statistical 列表
-*/ 
-Template.statisticallist.statisticalresultlist = function(){
+ */
+Template.statisticallist.statisticalresultlist = function () {
 	console.log(SvseStatisticalDao.getStatisticalresultlist());
 	return SvseStatisticalDao.getStatisticalresultlist();
 }
-Template.statisticallist.rendered = function(){
-$(function(){
-		 //隐藏所有操作按钮
+Template.statisticallist.rendered = function () {
+	$(function () {
+		//隐藏所有操作按钮
 		ClientUtils.hideOperateBtnInTd("statisticallist");
-		  //初始化 checkbox事件
+		//初始化 checkbox事件
 		ClientUtils.tableSelectAll("statisticallistselectall");
-		 //初始化tr点击变色效果
+		//初始化tr点击变色效果
 		ClientUtils.trOfTableClickedChangeColor("statisticallist");
-		 //tr 鼠标悬停显示操作按钮效果
-		 ClientUtils.showOperateBtnInTd("statisticallist");	 
-});
+		//tr 鼠标悬停显示操作按钮效果
+		ClientUtils.showOperateBtnInTd("statisticallist");
+	});
 }
- //根据id编辑报告表单
+//根据id编辑报告表单
 Template.statisticallist.events({
-"click td .btn":function(e){
-console.log(e.currentTarget.id);
-   var result = SvseStatisticalDao.getStatisticalById(e.currentTarget.id); 
+	"click td .btn" : function (e) {
+		console.log(e.currentTarget.id);
+		var result = SvseStatisticalDao.getStatisticalById(e.currentTarget.id);
+		console.log("111111");
+		console.log(result);
 		$("#statisticalofadddivedit").find(":input[type='text'][name='Title']:first").val(result.Title);
 		$("#statisticalofadddivedit").find(":text[name='Descript']:first").val(result.Descript);
 		$("#statisticalofadddivedit").find("input[type='email'][name='EmailSend']:first").val(result.EmailSend);
 		$("#statisticalofadddivedit").find("input[type='number'][name='Generate']:first").val(result.Generate);
 		$("#statisticalofadddivedit").find(":input[type='time'][name='EndTime']:first").val(result.EndTime);
 		$("#statisticalofadddivedit").find(":text[name='WeekEndTime']:first").val(result.WeekEndTime);
-		$("#statisticalofadddivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);	
-		
-		$("#reporttypePeriodlisted").find("option[value = '"+result["Period"]+"']:first").attr("selected","selected");
-		$("#statisticalofaddtypelisted").find("option[value = '"+result["ComboGraphic"]+"']:first").attr("selected","selected");
-		$("#statisticaloutputtypeed").find("option[value = '"+result["fileType"]+"']:first").attr("selected","selected");
-		
-		
-			var CheckedGraphic = result.Graphic;
-			 $("#statisticalofadddivedit").find(":checkbox[name='Graphic']").each(function(){
-				 if($(this).val()=== CheckedGraphic){
-					 $(this).attr("checked",true);
-					 }
-				 });	
-		
- 			 var CheckedListError = result.ListError;
-			 $("#statisticalofadddivedit").find(":checkbox[name='ListError']").each(function(){
-				 if($(this).val()=== CheckedListError){
-					 $(this).attr("checked",true);
-					 }
-				 });
-				 
-  			 var CheckedListDanger = result.ListDanger;
-			 $("#statisticalofadddivedit").find(":checkbox[name='ListDanger']").each(function(){
-				 if($(this).val()=== CheckedListDanger){
-					 $(this).attr("checked",true);
-					 }
-				 });
-   			 var CheckedParameter = result.Parameter;
-			 $("#statisticalofadddivedit").find(":checkbox[name='Parameter']").each(function(){
-				 if($(this).val()=== CheckedParameter){
-					 $(this).attr("checked",true);
-					 }
-				 });
-   			 var CheckedDeny = result.Deny;
-			 $("#statisticalofadddivedit").find(":checkbox[name='Deny']").each(function(){
-				 if($(this).val()=== CheckedDeny){
-					 $(this).attr("checked",true);
-					 }
-				 });
- 	//Session.set("emailbasicsettingofaddressbasciinfoeditform",result);
-	$('#statisticalofadddivedit').modal('toggle');
-	
-	//加载编辑弹出页面左侧树
+		$("#statisticalofadddivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
+
+		$("#reporttypePeriodlisted").find("option[value = '" + result["Period"] + "']:first").attr("selected", "selected");
+		$("#statisticalofaddtypelisted").find("option[value = '" + result["ComboGraphic"] + "']:first").attr("selected", "selected");
+		$("#statisticaloutputtypeed").find("option[value = '" + result["fileType"] + "']:first").attr("selected", "selected");
+
+		var CheckedGraphic = result.Graphic;
+		$("#statisticalofadddivedit").find(":checkbox[name='Graphic']").each(function () {
+			if ($(this).val() === CheckedGraphic) {
+				$(this).attr("checked", true);
+			}
+		});
+
+		var CheckedListError = result.ListError;
+		$("#statisticalofadddivedit").find(":checkbox[name='ListError']").each(function () {
+			if ($(this).val() === CheckedListError) {
+				$(this).attr("checked", true);
+			}
+		});
+
+		var CheckedListDanger = result.ListDanger;
+		$("#statisticalofadddivedit").find(":checkbox[name='ListDanger']").each(function () {
+			if ($(this).val() === CheckedListDanger) {
+				$(this).attr("checked", true);
+			}
+		});
+		var CheckedParameter = result.Parameter;
+		$("#statisticalofadddivedit").find(":checkbox[name='Parameter']").each(function () {
+			if ($(this).val() === CheckedParameter) {
+				$(this).attr("checked", true);
+			}
+		});
+		var CheckedDeny = result.Deny;
+		$("#statisticalofadddivedit").find(":checkbox[name='Deny']").each(function () {
+			if ($(this).val() === CheckedDeny) {
+				$(this).attr("checked", true);
+			}
+		});
+		//Session.set("emailbasicsettingofaddressbasciinfoeditform",result);
+		$('#statisticalofadddivedit').modal('toggle');
+
+		//加载编辑弹出页面左侧树
 		var checkednodes = result.GroupRight.split("\,");
 		//左边树的勾选
 		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_edit");
-		treeObj.checkAllNodes(false);//清空上一个用户状态
+		treeObj.checkAllNodes(false); //清空上一个用户状态
 		//节点勾选
-		for(var index  = 0; index < checkednodes.length ; index++){
-			treeObj.checkNode(treeObj.getNodesByFilter(function(node){
-				return  node.id  === checkednodes[index];
-			}, true), true);
+		for (var index = 0; index < checkednodes.length; index++) {
+			treeObj.checkNode(treeObj.getNodesByFilter(function (node) {
+					return node.id === checkednodes[index];
+				}, true), true);
 		}
-	/*
-			function OnRightClick(event, treeId, treeNode) {
-			if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
-				zTree.cancelSelectedNode();
-				showRMenu("root", event.clientX, event.clientY);
-			} else if (treeNode && !treeNode.noR) {
-				zTree.selectNode(treeNode);
-				showRMenu("node", event.clientX, event.clientY);
-			}
+		/*
+		function OnRightClick(event, treeId, treeNode) {
+		if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
+		zTree.cancelSelectedNode();
+		showRMenu("root", event.clientX, event.clientY);
+		} else if (treeNode && !treeNode.noR) {
+		zTree.selectNode(treeNode);
+		showRMenu("node", event.clientX, event.clientY);
+		}
 		}
 
 		function showRMenu(type, x, y) {
-			$("#rMenu ul").show();
-			if (type=="root") {
-				$("#m_del").hide();
-				$("#m_check").hide();
-				$("#m_unCheck").hide();
-			} else {
-				$("#m_del").show();
-				$("#m_check").show();
-				$("#m_unCheck").show();
-			}
-			rMenu.css({"top":y+"px", "left":x+"px", "visibility":"visible"});
+		$("#rMenu ul").show();
+		if (type=="root") {
+		$("#m_del").hide();
+		$("#m_check").hide();
+		$("#m_unCheck").hide();
+		} else {
+		$("#m_del").show();
+		$("#m_check").show();
+		$("#m_unCheck").show();
+		}
+		rMenu.css({"top":y+"px", "left":x+"px", "visibility":"visible"});
 
-			$("body").bind("mousedown", onBodyMouseDown);
+		$("body").bind("mousedown", onBodyMouseDown);
 		}
 		function hideRMenu() {
-			if (rMenu) rMenu.css({"visibility": "hidden"});
-			$("body").unbind("mousedown", onBodyMouseDown);
+		if (rMenu) rMenu.css({"visibility": "hidden"});
+		$("body").unbind("mousedown", onBodyMouseDown);
 		}
 		function onBodyMouseDown(event){
-			if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length>0)) {
-				rMenu.css({"visibility" : "hidden"});
-			}
+		if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length>0)) {
+		rMenu.css({"visibility" : "hidden"});
+		}
 		}
 		var addCount = 1;
 		function addTreeNode() {
-			hideRMenu();
-			var newNode = { name:"增加" + (addCount++)};
-			if (zTree.getSelectedNodes()[0]) {
-				newNode.checked = zTree.getSelectedNodes()[0].checked;
-				zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
-			} else {
-				zTree.addNodes(null, newNode);
-			}
+		hideRMenu();
+		var newNode = { name:"增加" + (addCount++)};
+		if (zTree.getSelectedNodes()[0]) {
+		newNode.checked = zTree.getSelectedNodes()[0].checked;
+		zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
+		} else {
+		zTree.addNodes(null, newNode);
+		}
 		}
 		function removeTreeNode() {
-			hideRMenu();
-			var nodes = zTree.getSelectedNodes();
-			if (nodes && nodes.length>0) {
-				if (nodes[0].children && nodes[0].children.length > 0) {
-					var msg = "要删除的节点是父节点，如果删除将连同子节点一起删掉。\n\n请确认！";
-					if (confirm(msg)==true){
-						zTree.removeNode(nodes[0]);
-					}
-				} else {
-					zTree.removeNode(nodes[0]);
-				}
-			}
+		hideRMenu();
+		var nodes = zTree.getSelectedNodes();
+		if (nodes && nodes.length>0) {
+		if (nodes[0].children && nodes[0].children.length > 0) {
+		var msg = "要删除的节点是父节点，如果删除将连同子节点一起删掉。\n\n请确认！";
+		if (confirm(msg)==true){
+		zTree.removeNode(nodes[0]);
+		}
+		} else {
+		zTree.removeNode(nodes[0]);
+		}
+		}
 		}
 		function checkTreeNode(checked) {
-			var nodes = zTree.getSelectedNodes();
-			if (nodes && nodes.length>0) {
-				zTree.checkNode(nodes[0], checked, true);
-			}
-			hideRMenu();
+		var nodes = zTree.getSelectedNodes();
+		if (nodes && nodes.length>0) {
+		zTree.checkNode(nodes[0], checked, true);
+		}
+		hideRMenu();
 		}
 		function resetTree() {
-			hideRMenu();
-			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		hideRMenu();
+		$.fn.zTree.init($("#treeDemo"), setting, zNodes);
 		}
 
 		var zTree, rMenu;
 		$(document).ready(function(){
-			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-			zTree = $.fn.zTree.getZTreeObj("treeDemo");
-			rMenu = $("#rMenu");
+		$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		zTree = $.fn.zTree.getZTreeObj("treeDemo");
+		rMenu = $("#rMenu");
 		});
-	
-	*/
+
+		 */
 	}
 });
 
-Template.statisticalofedit.rendered = function(){
-//树
-	$(function(){
+Template.statisticalofedit.rendered = function () {
+	//树
+	$(function () {
 		var data = SvseDao.getDetailTree();
 		var setting = {
-			check:{
-				enable: true,
-				chkStyle: "checkbox",
-				chkboxType: { "Y": "ps", "N": "ps" }
+			check : {
+				enable : true,
+				chkStyle : "checkbox",
+				chkboxType : {
+					"Y" : "ps",
+					"N" : "ps"
+				}
 			},
 
-			data: {
-				simpleData: {
-					enable: true,
-					idKey: "id",
-					pIdKey: "pId",
-					rootPId: "0",
+			data : {
+				simpleData : {
+					enable : true,
+					idKey : "id",
+					pIdKey : "pId",
+					rootPId : "0",
 				}
 			}
 		};
 		$.fn.zTree.init($("#svse_tree_check_edit"), setting, data);
 	});
 }
-	
-
 
 Template.statisticalofedit.events = {
-	"click #statisticalofeditcancelbtn":function(){
+	"click #statisticalofeditcancelbtn" : function () {
 		$("#statisticalofadddivedit").modal('toggle');
 	},
-	"click #statisticalofeditsavebtn":function(){
+	"click #statisticalofeditsavebtn" : function () {
 		var statisticalofaddformedit = ClientUtils.formArrayToObject($("#statisticalofaddformedit").serializeArray());
 		var nIndex = statisticalofaddformedit["nIndex"];
 		var address = {};
 		address[nIndex] = statisticalofaddformedit;
-		
-		SvseStatisticalDao.updateStatistical(nIndex,address,function(result){
-	
+
+		SvseStatisticalDao.updateStatistical(nIndex, address, function (result) {
+
 			$('#statisticalofadddivedit').modal('toggle');
 		});
 	}
 }
 
-Template.rMenu.monitortypelist = function(){
-/*		var nodes = Svse.find().fetch();
-		    console.log(nodes);
-			console.log("123");
-		var branch =[];
-		for(index in nodes){
-			var obj = nodes[index];
-			var branchNode = {};
-			branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]}).property.sv_name;
-			}
-		//return branchNode["name"];
-*/
+Template.rMenu.monitortypelist = function () {
+	/*		var nodes = Svse.find().fetch();
+	console.log(nodes);
+	console.log("123");
+	var branch =[];
+	for(index in nodes){
+	var obj = nodes[index];
+	var branchNode = {};
+	branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]}).property.sv_name;
+	}
+	//return branchNode["name"];
+	 */
 }
