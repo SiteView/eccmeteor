@@ -154,17 +154,52 @@ Template.statisticalofadd.rendered = function () {
 	 */
 	 	//$('#datetimepicker').datetimepicker();
 		 // $('#datepicker').datepicker();
+		$().tooltip();		 
+		$.fn.tooltip = function( options ) { 
+		return this.each(function(e) {        
+		// If options exist, lets merge them
+		// with our default settings
+			if ( options ) { 
+				$.extend( settings, options );
+			}
+			var tooltip = "";
+			var title = "";
+			$(this).mouseover(function(e){						 
+				title = $(this).attr("title");
+				if(title== ""){
+					 tooltip = "";
+				}else{
+					tooltip = "<div id='tooltip'><p>"+title+"</p></div>";
+					$(this).attr("title","");
+				}		
+				$('body').append(tooltip);
+				$('#tooltip')
+					.css({
+					"opacity":"0.8",
+					"top":(e.pageY)+"px",
+					"left":(e.pageX)+"px"
+						}).show('fast');
+			})
+			$(this).mouseout(function(){
+				$(this).attr("title",title);
+				$('#tooltip').remove();				
+			 })
+			
+			$(this).mousemove(function(e){
+				$('#tooltip').css({
+					"top":(e.pageY+20)+"px",
+					"left":(e.pageX+10)+"px"
+				});							
+			})
+		});
+		
+	};
 		 $(".form_datetime").datetimepicker({
         format: "dd MM yyyy",
         autoclose: true,
         todayBtn: true,
         pickerPosition: "bottom-left"
     });
-	function selectPeriod(){
-		if(document.getElementById("reporttypePeriodlist").value=="Week"){
-			 document.getElementById("reporttypetemplatelist").disabled=false;
-		}
-	}
 }
 
 Template.statisticalofadd.events = {
@@ -172,6 +207,8 @@ Template.statisticalofadd.events = {
 	function selectPeriod(){
 		if(document.getElementById("reporttypePeriodlist").value=="Week"){
 			 document.getElementById("reporttypetemplatelist").disabled=false;
+		}else{
+		document.getElementById("reporttypetemplatelist").disabled=true;
 		}
 	}
 	function selectPeriod(){

@@ -105,19 +105,19 @@
 			<div class="control-group">
 				<label class="control-label">报告标题*:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Title">
+					<input type="text" class="span6" name="Title" title="显示在报告的上方或报告列表中的标题">
 				 </div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">报告描述:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Descript"> 
+					<input type="text" class="span6" name="Descript" title="输入报告备注信息"> 
 				 </div> 
 			</div>
 			<div class="control-group">
 				<label class="control-label">报告类型:</label>
 				<div class="controls">
-					<select id="reporttypePeriodlist" name="Period" onclick="selectPeriod()">
+					<select id="reporttypePeriodlist" name="Period" onclick="selectPeriod()" title="请指定生成报告的时间周期">
 					<option value="Day" checked>日报</option>
 				    <option value="Week" checked>周报</option>
 				    <option value="Month" checked>月报</option>
@@ -128,15 +128,15 @@
 			<div class="control-group">
 					<label class="control-label">报告选项:</label>
 					<div class="controls">
-						<input type="checkbox" name="Graphic" />生成图形	&nbsp;
+						<input type="checkbox" name="Graphic" title="请指定生成报告要显示的项目"/>生成图形	&nbsp;
 						<select id="statisticalofaddtypelist" name="ComboGraphic" class="span4">
 							<option value="线状图" checked>线状图</option>  
 				   		    <option value="柱状图" checked>柱状图</option>
 						</select>			
 					</div>
 					<div class="controls">
-						<input type="checkbox" name="ListError" />列出错误</br>
-						<input type="checkbox" name="ListDanger" />列出危险
+						<input type="checkbox" name="ListError" title="请指定生成报告要显示的项目"/>列出错误</br>
+						<input type="checkbox" name="ListDanger" title="请指定生成报告要显示的项目"/>列出危险
 					</div>		
 			</div>
 			<div class="control-group">
@@ -153,35 +153,35 @@
 				<div class="control-group">
 					<label class="control-label">E-MAIL方式发送:</label>
 					<div class="controls">
-						<input type="email" name="EmailSend" />
+						<input type="email" name="EmailSend" title="输入接收报告的E-mail地址，可以录入多个地址，多个地址之间请用英文的逗号分隔，当报告产生，所设定的邮箱就会接受到新产生的报告"/>
 					 </div>
 			</div>
 			
 			<div class="control-group">
 				<label class="control-label">详细参数:</label>
 				<div class="controls">
-						<input type="checkbox" name="Parameter" />显示监测的详细信息</br>
-						<input type="checkbox" name="Deny" />禁止报告
+						<input type="checkbox" name="Parameter" title="如果你选择了此项，检测器所有返回值的检测情况都会显示在报告里，否则只列出每个检测器的主要参数指标"/>显示监测的详细信息</br>
+						<input type="checkbox" name="Deny" title="勾选此项后，报告将停止自动生成"/>禁止报告
 				</div>		
 			</div>
 			
 			<div class="control-group">
 				<label class="control-label">生成时间:</label>
 				<div class="controls">
- 					<input type="number" name="Generate" min="01" max="23" />时
+ 					<input type="number" name="Generate" min="01" max="23" title="选择此项后，报告将在指定的时间生成报告"/>时
 				</div>		
 			</div>
 			<div class="control-group">
 				<label class="control-label">截止时间:</label>
 				<div class="controls">
- 					<input type="time" name="EndTime" />
+ 					<input type="time" name="EndTime" title="设置报告生成截止时间，用户可以根据需要自己定义"/>
 				</div>		
 			</div>
 			
 			<div class="control-group">
 				<label class="control-label">周报截止时间:</label>
 				<div class="controls">
- 					<select id="reporttypetemplatelist" name="WeekEndTime" disabled="true">
+ 					<select id="reporttypetemplatelist" name="WeekEndTime" disabled="true" title="周报截止时间，用户可以根据需要自己定义">
 					<option value="1" checked>星期日</option>
 				    <option value="2" checked>星期一</option>
 				    <option value="3" checked>星期二</option>
@@ -232,19 +232,19 @@
 			<div class="control-group">
 				<label class="control-label">报告标题*:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Title" readonly="true">
+					<input type="text" class="span6" name="Title" readonly="true" title="显示在报告的上方或报告列表中的标题">
 				 </div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">报告描述:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Descript"> 
+					<input type="text" class="span6" name="Descript" title="输入报告备注信息"> 
 				 </div> 
 			</div>
 			<div class="control-group">
 				<label class="control-label">报告类型:</label>
 				<div class="controls">
-					<select id="reporttypePeriodlisted" name="Period">
+					<select id="reporttypePeriodlisted" name="Period" title="请指定生成报告的时间周期">
 					<option value="Day" checked>日报</option>
 				    <option value="Week" checked>周报</option>
 				    <option value="Month" checked>月报</option>
@@ -255,15 +255,15 @@
 			<div class="control-group">
 					<label class="control-label">报告选项:</label>
 					<div class="controls">
-						<input type="checkbox" name="Graphic" />生成图形	&nbsp; 
+						<input type="checkbox" name="Graphic" title="请指定生成报告要显示的项目"/>生成图形	&nbsp; 
 						<select id="statisticalofaddtypelisted" name="ComboGraphic" width="20" class="span4">
 							<option value="线状图" checked>线状图</option>  
 				   		    <option value="柱状图" checked>柱状图</option>
 						</select>			
 					</div>
 					<div class="controls">
-						<input type="checkbox" name="ListError" />列出错误</br>
-						<input type="checkbox" name="ListDanger" />列出危险
+						<input type="checkbox" name="ListError" title="请指定生成报告要显示的项目"/>列出错误</br>
+						<input type="checkbox" name="ListDanger" title="请指定生成报告要显示的项目"/>列出危险
 					</div>		
 			</div>
 			<div class="control-group">
@@ -280,35 +280,35 @@
 				<div class="control-group">
 					<label class="control-label">E-MAIL方式发送:</label>
 					<div class="controls">
-						<input type="email" name="EmailSend" /> 
+						<input type="email" name="EmailSend" title="输入接收报告的E-mail地址，可以录入多个地址，多个地址之间请用英文的逗号分隔，当报告产生，所设定的邮箱就会接受到新产生的报告"/> 
 					 </div>
 			</div>
 			
 			<div class="control-group">
 				<label class="control-label">详细参数:</label>
 				<div class="controls">
-						<input type="checkbox" name="Parameter" />显示监测的详细信息</br>
-						<input type="checkbox" name="Deny" />禁止报告
+						<input type="checkbox" name="Parameter" title="如果你选择了此项，检测器所有返回值的检测情况都会显示在报告里，否则只列出每个检测器的主要参数指标"/>显示监测的详细信息</br>
+						<input type="checkbox" name="Deny" title="勾选此项后，报告将停止自动生成"/>禁止报告
 				</div>		
 			</div>
 			
 			<div class="control-group">
 				<label class="control-label">生成时间:</label>
 				<div class="controls">
- 					<input type="number" name="Generate" min="01" max="23" />时
+ 					<input type="number" name="Generate" min="01" max="23" title="选择此项后，报告将在指定的时间生成报告"/>时
 				</div>		
 			</div>
 			<div class="control-group">
 				<label class="control-label">截止时间:</label>
 				<div class="controls">
- 					<input type="time" name="EndTime" />
+ 					<input type="time" name="EndTime" title="设置报告生成截止时间，用户可以根据需要自己定义"/>
 				</div>		
 			</div>
 			
 			<div class="control-group">
 				<label class="control-label">周报截止时间:</label>
 				<div class="controls">
- 					<select id="reporttypetemplatelisted" name="WeekEndTime">
+ 					<select id="reporttypetemplatelisted" name="WeekEndTime" title="周报截止时间，用户可以根据需要自己定义">
 					<option value="1" checked>星期日</option>
 				    <option value="2" checked>星期一</option>
 				    <option value="3" checked>星期二</option>
