@@ -275,3 +275,43 @@ SvseDao = {
 	}
 
 }
+
+/**
+	批量启用设备以及组节点
+	参数
+		fid：这些节点的父节点id
+		cids:子节点数组
+		fn:回调函数 接收一个结果对象,{status:true|false,msg:"当status为false时，存在该属性",result:{}}
+**/
+Object.defineProperty(SvseDao,"enabledEquipments",{
+	value:function(fid,cids,fn){
+		Meteor.call(SvseDao.AGENT,'enabledEquipments',[fid,cids],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn({status:true})
+			}
+		});
+	}
+});
+
+/**
+	批量禁用设备以及组节点
+	参数
+		fid：这些节点的父节点id
+		cids:子节点数组
+		fn:回调函数 接收一个结果对象,{status:true|false,msg:"当status为false时，存在该属性",result:{}}
+**/
+Object.defineProperty(SvseDao,"forbidEquipments",{
+	value:function(fid,cids,fn){
+		Meteor.call(SvseDao.AGENT,'forbidEquipments',[fid,cids],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn({status:true})
+			}
+		});
+	}
+});

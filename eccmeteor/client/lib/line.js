@@ -104,7 +104,7 @@ DrawLine = function(data,setting,selector){
 			.scale(xScale)
 			.ticks(this.xAxisTicks)
 			.orient("bottom")
-			.tickFormat(d3.time.format(this.dateformate));
+			.tickFormat(d3.time.format(this.dateformate));//"%H:%M"this.dateformate
 			
 		var yAxis = d3.svg.axis()
 			.scale(yScale)

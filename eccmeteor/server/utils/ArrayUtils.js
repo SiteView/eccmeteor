@@ -12,9 +12,11 @@ Object.defineProperty(ArrayUtils,"intersect",{
 				break;
 			for(var j = tmpIndex; j < bl; j++){
 				if(a[i] === b[j]){
-					tmp = b[j];
-					b[j] = b[tmpIndex];
-					b[tmpIndex] = tmp;
+					if(tmpIndex !== j){
+						tmp = b[j];
+						b[j] = b[tmpIndex];
+						b[tmpIndex] = tmp;
+					}
 					tmpIndex++;
 					result.push(a[i]);
 					break;

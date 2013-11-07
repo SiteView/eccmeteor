@@ -67,5 +67,5 @@ var SetSvdbAddr = function(){
 Meteor.startup(function(){
 	process.sv_init();
 	SetSvdbAddr();
-	initAllDateStartUp(0);	
+	initAllDateStartUp(-1);	
 });

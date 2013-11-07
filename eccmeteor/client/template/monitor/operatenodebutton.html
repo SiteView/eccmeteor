@@ -67,29 +67,41 @@
 					</li>
 				</ul>
 			{{else}}
-				<button class="btn" id="addGroup"><i class="icon-plus"></i>增加组
+			 	{{#if isNodeEnabled sv_id "addGroup"}}
+				<button class="btn" id="addGroup">
+					<i class="icon-plus"></i>增加组
 				</button>
+				{{/if}}
+				{{#if isNodeEnabled sv_id "addEntity"}}
 				<button class="btn" id="addEntity"><i class="icon-plus"></i>增加设备</button>
+				{{/if}}
 				<button class="btn">更多</button>
 				<button class="btn dropdown-toggle" data-toggle="dropdown">
 				<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu pull-right">
+					{{#if isNodeEnabled sv_id "enableMul"}}
 					<li>
-						<a href="#" id="allowGroup">
+						<a href="#" id="enabledEquipment">
 							<i class="icon-ok"></i>启用
 						</a>
 					</li>
+					{{/if}}
+					{{#if isNodeEnabled sv_id "foribedMul"}}
 					<li>
-						<a href="#" id="forbidGroup">
-							<i class="icon-remove"></i>禁用</a>
-						</li>
+						<a href="#" id="forbidEquipment">
+							<i class="icon-remove"></i>禁用
+						</a>
+					</li>
+					{{/if}}
+					{{#if isNodeEnabled sv_id "deleteMul"}}
 					<li class="divider"></li>
 					<li>
 						<a href="#" id="removeNodes">
 							<i class="icon-trash"></i>删除
 						</a>
 					</li>
+					{{/if}}
 				</ul>
 			{{/if}}
 			</div>

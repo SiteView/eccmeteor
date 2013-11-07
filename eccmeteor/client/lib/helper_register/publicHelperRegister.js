@@ -110,6 +110,8 @@ Handlebars.registerHelper('trim',function(arg){
 	节点是否可操作
 */
 Handlebars.registerHelper('isNodeEnabled',function(nid,permission){
+	if(!nid || nid === "")
+		return false;
 	var user = Meteor.user();
 	if(!user)
 		return false;
