@@ -39,6 +39,13 @@ SvseTopNDao = {
 	"getTopNById":function(id){
 	return SvseTopNresultlist.findOne({nIndex:id});
 	},
+	//根据name获取topN对象
+	"getTopNByName":function(name){
+		return SvseTopNresultlist.findOne({Name:name});
+	},
+	"getMonitorTemplates":function(fn){
+		Meteor.call(SvseTopNDao.AGENT,"getMonitorTemplates",[],fn);
+	},
 
 	"updateTopN":function(addressname,address,fn){
 		Meteor.call(SvseTopNDao.AGENT,'updateTopN',[addressname,address],function(err,result){
@@ -136,7 +143,22 @@ SvseTopNDao = {
 			newparameters.push(parameters[index]);
 		}
 		return newparameters;
-		}
+		},
+	getMonityDynamicPropertyDataArray:function(entityId,templateMonitoryTemlpateIds,fn){
+		Meteor.call(
+			SvseMonitorTemplateDao.AGENT,
+			"getMonityDynamicPropertyDataArray",
+			[entityId,templateMonitoryTemlpateIds],
+			function(err,result){
+				if(err){
+					SystemLogger(err);
+					fn(false,err);
+				}else{
+					fn(true,result);
+				}
+			}
+		)
+	}
 }
 /*Meteor.autosubscribe(function () {
    Meteor.subscribe("marklists",Session.get("selected_Typelist"));

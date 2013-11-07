@@ -58,6 +58,7 @@ Template.topN.events = {
 
 Template.topNofadd.events = {
          "click #topNofaddcancelbtn":function(){
+		 console.log("helloQQ");
           $('#topNofadddiv').modal('toggle');
                                      },
           "click #topNofaddsavebtn":function(){
@@ -68,11 +69,41 @@ Template.topNofadd.events = {
 			targets.push(arr[index].id);
 			}
 			basicinfooftopNadd["GroupRight"] = targets.join();
-    var nIndex = Utils.getUUID();
+			
+			$(":checkbox[name='Status']").each(function(){
+			if(!this.checked) basicinfooftopNadd["Status"]="Yes";
+		});
+		var Title=basicinfooftopNadd["Title"];
+		   if(!Title){
+			Message.info("请填写标题");
+			return;
+		}
+		
+		var result=SvseTopNDao.getTopNByName(Title);
+		   if(result){
+			Message.info("报告标题已经存在!");
+			return;
+		}
+		console.log("helloQQ111111111");
+		var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
+		
+		
+		for(index in arr){
+			targets.push(arr[index].id);
+		}
+		basicinfooftopNadd["AlertTarget"] = targets.join();
+		if(!basicinfooftopNadd["AlertTarget"]){
+			Message.info("监测范围不能为空");
+			return;
+		}
+			
+        var nIndex = Utils.getUUID();
         basicinfooftopNadd["nIndex"] = nIndex
         var address = {};
-            address[nIndex] = basicinfooftopNadd;
+		
+          address[nIndex] = basicinfooftopNadd;
           console.log(address[nIndex]); 
+		  
           SvseTopNDao.addTopN(nIndex,address,function(result){
           SystemLogger(result);
 			console.log(result); //控制台打印添加的信息
@@ -183,6 +214,28 @@ Template.topNofedit.rendered = function(){
 		};
 		$.fn.zTree.init($("#svse_tree_check_edit"), setting, data);
 	});
+	Meteor.call("svGetEmailTemplates",function(err,result){
+		for(name in result){
+			console.log(name);
+			var option = $("<option value="+name+"></option>").html(name)
+			$("#Typelist").append(option);
+		}
+	});
+	Meteor.call("svGetEmailTemplates",function(err,result){
+		for(name in result){
+			console.log(name);
+			var option = $("<option value="+name+"></option>").html(name)
+			$("#marklist").append(option);
+		}
+	});
+	/*$(function(){ type(s)
+{
+    txt.value+=s;
+    //选择后,让第一项被选中,这样,就有Change啦.
+    document.all.sel.options[0].selected=true;
+}*/
+
+
 }
 
 Template.topNofadd.rendered = function(){
@@ -233,7 +286,7 @@ Template.topNofadd.rendered = function(){
          function zTreeOnChange(event, treeId, treeNode) {
             operDiyDom(treeId, treeNode);
         }
-	/*function show(type, x, y) {
+	function show(type, x, y) {
 			$("#basicinfooftopNadd select").show();
 			$("body").bind("change", onBodyChange);
 		}
@@ -246,40 +299,46 @@ Template.topNofadd.rendered = function(){
 			if (!(event.target.id == "basicinfooftopNadd" || $(event.target).parents("#basicinfooftopNadd").length>0)) {
 				$("#basicinfooftopNadd").css({"visibility" : "hidden"});
 			}
-		}*/
+		}
 console.log("QQQQ111");
-}
-
-/*Template.Typelist.monitortypelist = function(){
-		var nodes = Svse.find().fetch();
-		 
-		var branch =[];
-		for(index in nodes){
-			var obj = nodes[index];
-			var branchNode = {};
-			branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]}).property.sv_name;
+        function addTreeNode() {
+			
+			var newNode = { name:"增加" + (addCount++)};
+			if (zTree.getSelectedNodes()[0]) {
+				newNode.checked = zTree.getSelectedNodes()[0].checked;
+				zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
+			} else {
+				zTree.addNodes(null, newNode);
 			}
-		return branchNode["name"];
-
-}*/
-
-/* Template.topNresultlist.monitorType = function(){
-	return Session.get("monitorTypelist") 
-			? SvseTopNDao.getTemplateTypeById(Session.get("monitorTypelist"))
-			: {}
-	
-}*/
-/*
-Template.showMonitorInfo.Mark = function(){
-	return  Session.get("Mark") ? Session.get("Mark") : "";
+		}
+		function removeTreeNode() {
+			
+			var nodes = zTree.getSelectedNodes();
+			if (nodes && nodes.length>0) {
+				if (nodes[0].children && nodes[0].children.length > 0) {
+					var msg = "要删除的节点是父节点，如果删除将连同子节点一起删掉。\n\n请确认！";
+					if (confirm(msg)==true){
+						zTree.removeNode(nodes[0]);
+					}
+				} else {
+					zTree.removeNode(nodes[0]);
+				}
+			}
+		}
+		function checkTreeNode(checked) {
+			var nodes = zTree.getSelectedNodes();
+			if (nodes && nodes.length>0) {
+				zTree.checkNode(nodes[0], checked, true);
+			}
+			hideRMenu();
+		}
+		
+		function resetTree() {
+			
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		}
+		console.log("QQQQ99999");
 }
-
-Template.showMonitorInfo.getTopNParameters = function(){
-	return Session.get("monityTemplateId") 
-			? SvseMonitorTemplateDao.getTopNParametersById(Session.get("topNId"))
-			: {}
-	
-}*/
 
 
 Template.topNofedit.topNeditform = function(){
