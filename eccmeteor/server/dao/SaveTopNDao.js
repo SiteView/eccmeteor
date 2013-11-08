@@ -71,12 +71,13 @@ SvseTopNOnServer = {
 	},
 	"getMonitorTemplate" : function(){
 		return SvseMethodsOnServer.svGetMonitorTemplate();
+		console.log("MMMM");
 	},
 	"updateTopNStatus":function(ids,status){
 		var count = 0;
 		for(index in ids){
 			var id = ids[index];
-			console.log("CH");
+			console.log("CH8888");
 			var result = SvseMethodsOnServer.svWriteTopNStatusInitFilesection(id,status);
 			if(result){
 				SvseTopNresultlist.update(SvseTopNresultlist.findOne({nIndex:id})._id,{$set:{"Deny":status}});
@@ -86,10 +87,18 @@ SvseTopNOnServer = {
 				SystemLogger.log(msg,-1);
 			}
 		}
-		console.log("~~~~~~~~~~~~~~");
+		console.log("~~~~~~~~~~~~~~>>>>");
 		return SvseTopNOnServer.getReturn(true,1);
 		
 		
+	},
+	
+	
+	getMonityDynamicPropertyData:function(panrentid,templateMonitoryId){
+		var data =  SvseMethodsOnServer.svGetEntityDynamicPropertyData(panrentid,templateMonitoryId);
+		if(!data) 
+			throw new Meteor.Error(500,"SvseTopNDaoOnServer.getMonityDynamicPropertyData Errors");
+		return data;
 	},
 	getMonityDynamicPropertyDataArray:function(entityId,templateMonitoryTemlpateIds){
 		var array = [];

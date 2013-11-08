@@ -56,6 +56,35 @@ Template.topN.events = {
 //点击保存、取消按钮时的事件
 
 Template.topNofadd.events = {
+   "change #Typelist":function(){
+	  
+               //var index = document.getElementById('s1').selectedIndex; 
+        if(document.getElementById("Typelist").value=="Default"){
+ 
+            document.getElementById('marklist').disabled=false;
+       }else{
+            document.getElementById('marklist').disabled=true;
+				}
+        },
+/*"change #Typelist":function(){
+      var index = document.getElementById('s1').selectedIndex; 
+ 
+ if(index==2){
+  document.getElementById('marklist').style.display="";
+ }else{
+  document.getElementById('marklist').style.display="none";
+ },
+*/
+    "change #reporttypePeriodlist":function(){
+	  
+                if(document.getElementById("reporttypePeriodlist").value=="Week"){
+			   
+                         document.getElementById("topNtypetemplatelist").disabled=false;
+                }
+				else{
+				 document.getElementById("topNtypetemplatelist").disabled=true;
+				}
+        },
          "click #topNofaddcancelbtn":function(){
 		 console.log("helloQQ");
           $('#topNofadddiv').modal('toggle');
@@ -180,14 +209,22 @@ Template.topNlist.rendered = function(){
 }
 
 Template.topNlist.events({
+/*"change #reporttypePeriodlisted":function(){
+	  
+                if(document.getElementById("reporttypePeriodlisted").value=="Week"){
+			   
+                         document.getElementById("topNtypetemplatelisted").disabled=false;
+                }
+				else{
+				 document.getElementById("topNtypetemplatelisted").disabled=true;
+				}
+        },*/
 	"click td .btn":function(e){
 		console.log(e.currentTarget.id);
 		var result = SvseTopNDao.getTopNById(e.currentTarget.id);
         console.log(result);
 		$("#topNofadddivedit").find(":text[name='Title']:first").val(result.Title);
 		$("#topNofadddivedit").find(":text[name='Descript']:first").val(result.Descript);
-	    
-	  
 	    $("#topNofadddivedit").find("input[type='number'][name='Count']:first").val(result.Count);
 		$("#topNofadddivedit").find("input[type='number'][name='Generate']:first").val(result.Generate);
 		$("#topNofadddivedit").find("input[type='email'][name='EmailSend']:first").val(result.EmailSend);
@@ -217,7 +254,8 @@ Template.topNlist.events({
 					// $(this).attr("checked",false);
 				 });
 				 
-		/*function addTreeNode() {
+				 
+		function addTreeNode() {
 			
 			var newNode = { name:"增加" + (addCount++)};
 			if (zTree.getSelectedNodes()[0]) {
@@ -253,7 +291,7 @@ Template.topNlist.events({
 			
 			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
 		}
-		console.log("QQQQ99999");*/
+		 console.log(">>>>>>>>>>>>>>T");
 		
 				 
 		$('#topNofadddivedit').modal('toggle');
@@ -427,7 +465,7 @@ Template.topNofadd.rendered = function(){
 		}
 		console.log("QQQQ99999");
 		
-        function selectPeriod(x){
+      /*  function selectPeriod(x){
 		      var y=document.getElementById(x).value
                 if(document.getElementById("reporttypePeriodlist").value=="Week"){
 			   //if(document.getElementById("reporttypePeriodlist").value==y.toselectPeriod()){
@@ -436,7 +474,7 @@ Template.topNofadd.rendered = function(){
 				else{
 				 document.getElementById("reporttypetemplatelist").disabled=true;
 				}
-        }
+        }*/
 		
 }
 
@@ -446,6 +484,26 @@ Template.topNofedit.topNeditform = function(){
 }
 
 Template.topNofedit.events = {
+         "change #Typelisted":function(){
+	  
+               //var index = document.getElementById('s1').selectedIndex; 
+        if(document.getElementById("Typelisted").value=="Default"){
+ 
+            document.getElementById('marklisted').disabled=false;
+       }else{
+            document.getElementById('marklisted').disabled=true;
+				}
+        },
+         "change #reporttypePeriodlisted":function(){
+	  
+                if(document.getElementById("reporttypePeriodlisted").value=="Week"){
+			   
+                         document.getElementById("topNtypetemplatelisted").disabled=false;
+                }
+				else{
+				 document.getElementById("topNtypetemplatelisted").disabled=true;
+				}
+        },
          "click #topNofaddcancelbtnedit":function(){
           $('#topNofadddivedit').modal('toggle');
          },

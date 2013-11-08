@@ -101,7 +101,27 @@
 					<input type="text" class="span6" name="Descript" title="输入报告备注信息">
 				</div>
 			</div>
-
+<!--<script type="text/javascript">
+  
+      var marklist=new Array();
+ marklist[0]=["CPU使用率(%)"];
+ marklist[1]=["Memory使用率(%)","剩余空间(MB)","内存总量(MB)"];
+ marklist[2]=["包成功率(%)","数据往返时间(ms)","状态值(200表示成功 300表示出错)"];
+ marklist[3]=["数据往返时间(ms)"];
+ marklist[4]=["CPU使用率(%)"];
+ marklist[5]=["IDS_640_AS400","System ASP总量(MB)","剩余空间(MB)"];
+ 
+  function getMarklist(provinceid){
+        var objsel=document.getElementById("marklist");
+        var pmarklist;
+           objsel.options.length=0;
+           pmarklist=marklist[provinceid];
+         for(var i=0;i<pmarklist.length;i++){
+           objsel.options[i]=new Option(pmarklist[i],pmarklist[i]);
+ }
+ }
+ 
+ </script>-->
 			<div class="control-group">
 				<label class="control-label">监测器类型:</label>
 				<div class="controls">
@@ -114,7 +134,7 @@
 				<option value="4" checked>SNMP_CPU</option>‌
 				<option value="5" checked>System ASP</option>‌
 					</select>-->
-			  <select id="Typelist" name="sv_type" onchange="tpye(this.options[this.options.selectedIndex].value)" title="选择要统计的检测器类型">
+			  <select id="Typelist" name="sv_type" title="选择要统计的检测器类型">
 			{{#each monitortypelist}}
 			    <option value="{{sv_name}}">{{sv_label}}</option>
 			{{/each}}
@@ -134,7 +154,7 @@
 			<div class="control-group">
 			    <label class="control-label">选择指标:</label>
 			      <div class="controls">
-			       <select id="marklist" name="Mark" title="选择要统计的检测器指标">
+			       <select id="marklist" name="Mark"  title="选择要统计的检测器指标">
 			          {{#each monitortypelist}}
   	                  <option value=""{{sv_name}}">{{sv_label}}</option>
   	                  {{/each}}
@@ -157,7 +177,7 @@
 			<div class="control-group">
 				<label class="control-label">报告类型:</label>
 				  <div class="controls">
-					<select id="reporttypePeriodlist" name="Period" onchange="selectPeriod(this.id)" title="请指定生成报告的时间周期">
+					<select id="reporttypePeriodlist" name="Period" title="请指定生成报告的时间周期">
 					<option value="Day" checked>日报</option>
 				    <option value="Week" checked>周报</option>
 				    <option value="Month" checked>月报</option>
@@ -205,7 +225,7 @@
 		    <div>
 				<label class="control-label" >周报截止时间:</label>
 				<div class="controls">
-					<select id="topNtypetemplatelist" name="WeekEndTime"  readonly="true" title="设置周报生产时间，如设置周一，周报生产范围为 本周日0点到上周日0点">
+					<select id="topNtypetemplatelist" name="WeekEndTime"  disabled="true" title="设置周报生产时间，如设置周一，周报生产范围为 本周日0点到上周日0点">
 					<option value="0" checked>周日</option>
 					<option value="1" checked>周一</option>
 					<option value="2" checked>周二</option>
@@ -337,7 +357,7 @@
 		    <div>
 				<label class="control-label" >周报截止时间:</label>
 				<div class="controls">
-					<select id="topNtypetemplatelisted" name="WeekEndTime" title="设置周报生产时间，如设置周一，周报生产范围为 本周日0点到上周日0点">
+					<select id="topNtypetemplatelisted" name="WeekEndTime" disabled="true" title="设置周报生产时间，如设置周一，周报生产范围为 本周日0点到上周日0点">
 					<option value="0" checked>周日</option>
 					<option value="1" checked>周一</option>
 					<option value="2" checked>周二</option>
