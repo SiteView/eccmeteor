@@ -16,7 +16,7 @@ Template.messagebasicsettingofadd.rendered = function(){
 		var messagebasicsettingofbasciinfo = ClientUtils.formArrayToObject($("#messagebasicsettingofbasciinfo").serializeArray());
 		var nIndex = Utils.getUUID();
 		messagebasicsettingofbasciinfo["nIndex"] = nIndex
-	//	console.log(emailbasicsettingofaddressbasciinfo);
+		//console.log(messagebasicsettingofbasciinfo);
 		$(":checkbox[name='Status']").each(function(){
 			if(!this.checked) messagebasicsettingofbasciinfo["Status"]="Yes";
 		});
@@ -33,7 +33,12 @@ Template.messagebasicsettingofadd.rendered = function(){
 		var message = {};
 		message[nIndex] = messagebasicsettingofbasciinfo;
 		SvseMessageDao.addMessage(nIndex,message,function(result){
-			$('#addmessagesettingdiv').modal('hide');
+			if(result.status){
+				$('#addmessagesettingdiv').modal('hide');
+			}else{
+				SystemLogger(result.msg);
+			}
+			
 		});
 		console.log("保存");
 		});

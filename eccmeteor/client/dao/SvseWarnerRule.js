@@ -85,5 +85,9 @@ SvseWarnerRuleDao = {
 	//根据报警名称获取对象
 	"getAlertByName":function(alertname){
 		return SvseWarnerRule.findOne({AlertName:alertname});
+	},
+	//获取脚本报警的脚本
+	"getScriptFiles":function(fn){
+		Meteor.call(SvseWarnerRuleDao.AGENT,"getScriptFiles",[],fn);
 	}
 }

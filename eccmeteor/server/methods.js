@@ -94,6 +94,7 @@ SvseMethodsOnServer = {
 	"svSubmitEntity":svSubmitEntity,
 	"svWriteAlertIniFileSectionString":svWriteAlertIniFileSectionString,
 	"svDeleteAlertInitFileSection":svDeleteAlertInitFileSection,
+	"svGetScriptFileofScriptAlert":svGetScriptFileofScriptAlert,//
 	"svWriteTopNIniFileSectionString":svWriteTopNIniFileSectionString,
 	"svWriteTopNStatusInitFilesection":svWriteTopNStatusInitFilesection,
 	"svGetTopNList": svGetTopNList,

@@ -62,4 +62,8 @@ SvseWarnerRuleDao = {
 		});
 		return SvseWarnerRuleDao.getReturn(true);
 	},
+	//获取报警的脚本
+	"getScriptFiles":function(){
+		return SvseMethodsOnServer.svGetScriptFileofScriptAlert();
+	},
 }
