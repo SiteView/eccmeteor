@@ -1,4 +1,16 @@
 <Template name="warnerrule">
+{{> alertoperation}}
+<br/>
+{{> warnerrulelist}}
+{{> warnerruleofemail}}
+{{> warnerruleofemailedit}}
+{{> warnerruleofmessage}}
+{{> editwarnerruleofmessage}}
+{{> warnerruleofscript}}
+{{> warnerruleofsound}}
+</Template>
+
+<Template name="alertoperation">
 <div class="form-horizontal">
 	<span class="label label-info">报警规则</span>
 	{{ide "warnerrule"}}
@@ -33,12 +45,6 @@
 		</div>
 	</div>
 </div>
-{{> warnerrulelist}}
-{{> warnerruleofemail}}
-{{> warnerruleofemailedit}}
-{{> warnerruleofmessage}}
-{{> warnerruleofscript}}
-{{> warnerruleofsound}}
 </Template>
 
 <Template name="warnerrulelist">
