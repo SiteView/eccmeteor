@@ -146,7 +146,7 @@ SvseDao = {
 			return {};
 		return group["property"];
 	},
-	
+	/*
 	forbidNodeForever : function(ids,fn){
 		console.log("forbiNode ids is ");
 		console.log(ids);
@@ -169,10 +169,10 @@ SvseDao = {
 				fn({status:true})
 			}
 		});
-	},
+	},*/
 	refreshTreeData : function(){
 		Meteor.call(SvseDao.AGENT,'syncAll');
-	},
+	},/*
 	forbidNodeTemporary : function(ids,starttime,endtime,fn){ //temporary
 		console.log("forbiNode ids is ");
 		console.log(ids);
@@ -180,7 +180,7 @@ SvseDao = {
 		Meteor.call(SvseDao.AGENT,[ids,starttime,endtime],function(err,result){
 			fn(result)
 		});
-	},
+	},*/
 	/**
 		Type:fix bug
 		Author:huyinghuan
@@ -297,7 +297,7 @@ Object.defineProperty(SvseDao,"enabledEquipments",{
 });
 
 /**
-	批量禁用设备以及组节点
+	批量永久禁用设备以及组节点
 	参数
 		fid：这些节点的父节点id
 		cids:子节点数组
@@ -306,6 +306,90 @@ Object.defineProperty(SvseDao,"enabledEquipments",{
 Object.defineProperty(SvseDao,"forbidEquipments",{
 	value:function(fid,cids,fn){
 		Meteor.call(SvseDao.AGENT,'forbidEquipments',[fid,cids],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn({status:true})
+			}
+		});
+	}
+});
+
+/**
+	批量临时禁用设备以及组节点
+	参数
+		fid：这些节点的父节点id
+		cids:子节点数组
+		starttime:开始时间
+		endtime:结束时间
+		fn:回调函数 接收一个结果对象,{status:true|false,msg:"当status为false时，存在该属性",result:{}}
+**/
+Object.defineProperty(SvseDao,"forbidEquipmentsTemporary",{
+	value:function(fid,cids,starttime,endtime,fn){
+		Meteor.call(SvseDao.AGENT,'forbidEquipmentsTemporary',[fid,cids,starttime,endtime],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn({status:true})
+			}
+		});
+	}
+});
+
+/**
+	批量启用监视器
+	参数
+		fid：这些节点的父节点id
+		cids:子节点数组
+		fn:回调函数 接收一个结果对象,{status:true|false,msg:"当status为false时，存在该属性",result:{}}
+**/
+Object.defineProperty(SvseDao,"enabledMonitors",{
+	value:function(fid,cids,fn){
+		Meteor.call(SvseDao.AGENT,'enabledMonitors',[fid,cids],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn({status:true})
+			}
+		});
+	}
+});
+
+/**
+	批量永久禁用监视器
+	参数
+		fid：这些节点的父节点id
+		cids:子节点数组
+		fn:回调函数 接收一个结果对象,{status:true|false,msg:"当status为false时，存在该属性",result:{}}
+**/
+Object.defineProperty(SvseDao,"forbidenabledMonitors",{
+	value:function(fid,cids,fn){
+		Meteor.call(SvseDao.AGENT,'forbidenabledMonitors',[fid,cids],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn({status:true})
+			}
+		});
+	}
+});
+
+/**
+	批量永久禁用监视器
+	参数
+		fid：这些节点的父节点id
+		cids:子节点数组
+		starttime:开始时间
+		endtime:结束时间
+		fn:回调函数 接收一个结果对象,{status:true|false,msg:"当status为false时，存在该属性",result:{}}
+**/
+Object.defineProperty(SvseDao,"forbidMonitorsTemporary",{
+	value:function(fid,cids,starttime,endtime,fn){
+		Meteor.call(SvseDao.AGENT,'forbidMonitorsTemporary',[fid,cids,starttime,endtime],function(err,result){
 			if(err){
 				Log4js.error(err);
 				fn({status:false,msg:err})

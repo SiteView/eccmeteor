@@ -47,7 +47,7 @@ Template.operateNode.events ={
 	    console.log(groupsIds);
 	    SvseDao.enableNode(groupsIds,function(err){});
 	},*/
-	"click a#enabledEquipment":function(){  //启用组和设备
+	"click a#enabledEquipments":function(){  //启用组和设备
 		console.log("启用");
 		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
 		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
@@ -64,6 +64,16 @@ Template.operateNode.events ={
 
 	},
 	"click a#forbidEquipments":function(){//禁用组和设备
+		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
+		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
+		var equipmentIds = groupsIds.concat(entityIds);
+		if(!equipmentIds.length){
+			Message.warn("请选择需要禁用的设备或组",{align:"center",time:1});
+			return;
+		}
+		$("#ForbidEquipmentsDiv").find(":hidden[name=equipmetType]").val("equipments").attr("data-value",equipmentIds.join());
+		$("#ForbidEquipmentsDiv").modal("show");		
+		/*
 		console.log("禁用");
 		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
 		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
@@ -77,6 +87,7 @@ Template.operateNode.events ={
 			if(!result.status)
 				Message.error(result.msg);
 		});
+		*/
 	},
 	"click .btn#addEntity":function(){
 		$("#entitiesGroupByTypeDiv").modal('show');

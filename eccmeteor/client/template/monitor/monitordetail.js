@@ -26,23 +26,24 @@ Template.showMonitorDetailSvg.events = {
 	}
 }
 Template.showMonitorDetailSvg.rendered = function(){
+	var template = this;
 	$(function() { //初始化日期选择器
 		var endDate = new Date();
 		var startDate = new Date();
 		startDate.setTime(startDate.getTime() - 1000*60*60*24);
-		$('#datetimepickerStartDate').datetimepicker({
+		$(template.find("#datetimepickerStartDate")).datetimepicker({
 			format: 'yyyy-MM-dd hh:mm:ss',
 			language: 'zh-CN',
 			maskInput: false
 		});
-		$('#datetimepickerEndDate').datetimepicker({
+		$(template.find("#datetimepickerEndDate")).datetimepicker({
 			format: 'yyyy-MM-dd hh:mm:ss',
 			language: 'zh-CN',
 			endDate : endDate,
 			maskInput: false,
 		});
-		var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
-		var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+		var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
+		var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
 		startPicker.setDate(startDate);
 		endPicker.setDate(endDate);
 //		$('#datetimepickerstartDate').on('changeDate', function(e) {
