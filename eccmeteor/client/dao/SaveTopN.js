@@ -6,7 +6,7 @@ SvseTopNDao = {
 	},
 	
 	"getTopNresultlist" : function(){
-		return SvseTopNresultlist.find().fetch()
+		return SvseTopNresultlist.find({nIndex:{$exists:true}}).fetch()
 	},
 	
 	"addTopN":function(addressname,address,fn){
@@ -39,14 +39,28 @@ SvseTopNDao = {
 	"getTopNById":function(id){
 	return SvseTopNresultlist.findOne({nIndex:id});
 	},
-	//根据name获取topN对象
-	"getTopNByName":function(name){
-		return SvseTopNresultlist.findOne({Name:name});
+	//根据title获取topN对象
+	"getTopNByName":function(title){
+		return SvseTopNresultlist.findOne({Title:title});
 	},
+	/*"getTopNByEmailSend":function(EmailSend){
+		return SvseTopNresultlist.findOne({EmailSend:emailSend});
+	},
+	*/
+	
 	"getMonitorTemplates":function(fn){
 		Meteor.call(SvseTopNDao.AGENT,"getMonitorTemplates",[],fn);
 	},
-
+	
+	/*
+	//根据报告标题与之前查看对比是否重复。
+    "getTitle":function(title){
+     return SvseTopNresultlist.findOne({Title:title});
+    },*/
+	//根据监视器id 获取该监视器相应的模板id
+	getMonitorTemplateIdByMonitorId : function(id){
+		return SvseTree.findOne({sv_id:id}).sv_monitortype;
+	},
 	"updateTopN":function(addressname,address,fn){
 		Meteor.call(SvseTopNDao.AGENT,'updateTopN',[addressname,address],function(err,result){
 			if(err){

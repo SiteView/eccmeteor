@@ -69,6 +69,9 @@ SvseTopNOnServer = {
 				}
 			})
 	},
+	"getMonitorTemplate" : function(){
+		return SvseMethodsOnServer.svGetMonitorTemplate();
+	},
 	"updateTopNStatus":function(ids,status){
 		var count = 0;
 		for(index in ids){
@@ -88,7 +91,7 @@ SvseTopNOnServer = {
 		
 		
 	},
-	/*getMonityDynamicPropertyDataArray:function(entityId,templateMonitoryTemlpateIds){
+	getMonityDynamicPropertyDataArray:function(entityId,templateMonitoryTemlpateIds){
 		var array = [];
 		var data;
 		for(index in templateMonitoryTemlpateIds){
@@ -107,6 +110,6 @@ SvseTopNOnServer = {
 			});
 		}
 		return array;
-	}*/
+	}
 	
 }

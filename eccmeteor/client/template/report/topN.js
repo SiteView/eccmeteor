@@ -43,11 +43,10 @@ Template.topN.events = {
 				SystemLogger(result);
 			});
 	},
-	"click #topNrefresh" : function(){
-		//topN报告同步
+	"click #topNrefresh" : function(){//topN报告同步
 		SvseTopNDao.sync();
 	},
-	"click #topNhelpmessage" : function(){
+	"click #topNhelpmessage" : function(){//帮助信息
 	$('#helpmessagediv').modal('toggle');
  
 	}
@@ -62,9 +61,10 @@ Template.topNofadd.events = {
           $('#topNofadddiv').modal('toggle');
                                      },
           "click #topNofaddsavebtn":function(){
-    var basicinfooftopNadd = ClientUtils.formArrayToObject($("#basicinfooftopNadd").serializeArray());
-    var targets = [];
-	var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
+  
+        var targets = [];
+	    var basicinfooftopNadd = ClientUtils.formArrayToObject($("#basicinfooftopNadd").serializeArray());
+	    var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
 			for(index in arr){
 			targets.push(arr[index].id);
 			}
@@ -84,10 +84,51 @@ Template.topNofadd.events = {
 			Message.info("报告标题已经存在!");
 			return;
 		}
-		console.log("helloQQ111111111");
+		
+		var email=basicinfooftopNadd["EmailSend"];
+           if(!email){
+            Message.info("E-mail格式不正确");
+            return;
+     }
+		
+		/*//验证E-mail格式是否正确
+		var strEmail=SvseTopNDao.getTopNByName(EmailSend);
+		if (strEmail.search(/^w+((-w+)|(.w+))*@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+)*.[A-Za-z0-9]+$/) != -1){
+        return true; }
+         else {
+             alert("oh"); 
+		}*/
+		
+		
+		//邮箱  
+   /* var emailValue=document.myform.userEmail.value;
+    if(emailValue.indexOf("@")==-1)  {
+        alert("邮件中必须包含@");
+     document.myform.userEmail.focus();
+     document.myform.userEmail.select();
+        return false;
+     document.getElementById("24").style.display="block";
+     document.getElementById("14").style.display="none";
+       }  
+   if(emailValue.indexOf(".")==-1)  {
+         alert("邮箱必须包含."); 
+     document.myform.userEmail.focus();
+     document.myform.userEmail.select();
+          return false;
+     document.getElementById("24").style.display="block";
+     document.getElementById("14").style.display="none";
+    }      
+   var email = document.getElementById("email").value; //获取邮箱地址  
+     //判断邮箱格式是否正确  
+       if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email))      {   
+              alert("邮箱格式错误!");   
+              document.getElementById("email").focus();       //让邮箱文本框获得焦点  
+              return false;
+             document.getElementById("24").style.display="block";
+             document.getElementById("14").style.display="none";    
+       }*/
+		
 		var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
-		
-		
 		for(index in arr){
 			targets.push(arr[index].id);
 		}
@@ -148,11 +189,10 @@ Template.topNlist.events({
 	    
 	  
 	    $("#topNofadddivedit").find("input[type='number'][name='Count']:first").val(result.Count);
-	    
 		$("#topNofadddivedit").find("input[type='number'][name='Generate']:first").val(result.Generate);
 		$("#topNofadddivedit").find("input[type='email'][name='EmailSend']:first").val(result.EmailSend);
 		$("#topNofadddivedit").find(":text[name='Deny']:first").val(result.Deny);
-		$("#topNofadddivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
+		
 		
 		$("#Typelisted").find("option[value = '"+result["Type"]+"']:first").attr("selected","selected");
 		$("#marklisted").find("option[value = '"+result["Mark"]+"']:first").attr("selected","selected");
@@ -160,9 +200,9 @@ Template.topNlist.events({
 		$("#topNoutputtyped").find("option[value = '"+result["fileType"]+"']:first").attr("selected","selected");
 		$("#GetValuelisted").find("option[value = '"+result["GetValue"]+"']:first").attr("selected","selected");
 		$("#topNtypetemplatelisted").find("option[value = '"+result["WeekEndTime"]+"']:first").attr("selected","selected");
+		$("#topNofadddivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
 		
-		
-			var Sort = result.Sort;
+		   var Sort = result.Sort;
 		   $("#topNofadddivedit").find(":radio[name='Sort']").each(function(){
 			if($(this).val() === Sort){
 				$(this).attr("checked",true);
@@ -177,14 +217,54 @@ Template.topNlist.events({
 					// $(this).attr("checked",false);
 				 });
 				 
+		/*function addTreeNode() {
+			
+			var newNode = { name:"增加" + (addCount++)};
+			if (zTree.getSelectedNodes()[0]) {
+				newNode.checked = zTree.getSelectedNodes()[0].checked;
+				zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
+			} else {
+				zTree.addNodes(null, newNode);
+			}
+		}
+		function removeTreeNode() {
+			
+			var nodes = zTree.getSelectedNodes();
+			if (nodes && nodes.length>0) {
+				if (nodes[0].children && nodes[0].children.length > 0) {
+					var msg = "要删除的节点是父节点，如果删除将连同子节点一起删掉。\n\n请确认！";
+					if (confirm(msg)==true){
+						zTree.removeNode(nodes[0]);
+					}
+				} else {
+					zTree.removeNode(nodes[0]);
+				}
+			}
+		}
+		function checkTreeNode(checked) {
+			var nodes = zTree.getSelectedNodes();
+			if (nodes && nodes.length>0) {
+				zTree.checkNode(nodes[0], checked, true);
+			}
+			hideRMenu();
+		}
+		
+		function resetTree() {
+			
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		}
+		console.log("QQQQ99999");*/
+		
+				 
 		$('#topNofadddivedit').modal('toggle');
 		
-        //加载编辑弹出页面左侧树
+         //加载编辑弹出页面左侧树
 		var checkednodes = result.GroupRight.split("\,")
-		//左边树的勾选
+		 //左边树的勾选
 		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_edit");
-		treeObj.checkAllNodes(false);//清空上一个用户状态
-		//节点勾选
+		treeObj.checkAllNodes(false); //清空上一个用户状态
+		 //节点勾选
+		 
 		for(var index  = 0; index < checkednodes.length ; index++){
 			treeObj.checkNode(treeObj.getNodesByFilter(function(node){
 				return  node.id  === checkednodes[index];
@@ -228,10 +308,12 @@ Template.topNofedit.rendered = function(){
 			$("#marklist").append(option);
 		}
 	});
+	
+	
 	/*$(function(){ type(s)
 {
     txt.value+=s;
-    //选择后,让第一项被选中,这样,就有Change啦.
+    //选择后,让第一项被选中
     document.all.sel.options[0].selected=true;
 }*/
 
@@ -279,7 +361,13 @@ Template.topNofadd.rendered = function(){
 		};
 		$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
-	
+	Meteor.call("svGetMonitorTemplate",function(err,result){
+		for(name in result){
+			console.log(name);
+			var option = $("<option value="+name+"></option>").html(name)
+			$("#marklist").append(option);
+		}
+	}),
 	
         console.log("QQQQ");
        
@@ -300,7 +388,7 @@ Template.topNofadd.rendered = function(){
 				$("#basicinfooftopNadd").css({"visibility" : "hidden"});
 			}
 		}
-console.log("QQQQ111");
+         console.log("QQQQ111");
         function addTreeNode() {
 			
 			var newNode = { name:"增加" + (addCount++)};
@@ -338,6 +426,18 @@ console.log("QQQQ111");
 			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
 		}
 		console.log("QQQQ99999");
+		
+        function selectPeriod(x){
+		      var y=document.getElementById(x).value
+                if(document.getElementById("reporttypePeriodlist").value=="Week"){
+			   //if(document.getElementById("reporttypePeriodlist").value==y.toselectPeriod()){
+                         document.getElementById("reporttypetemplatelist").disabled=false;
+                }
+				else{
+				 document.getElementById("reporttypetemplatelist").disabled=true;
+				}
+        }
+		
 }
 
 
