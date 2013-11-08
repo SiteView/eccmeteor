@@ -1,5 +1,6 @@
 //var QueryLists = new Meteor.Collection("querylists");
-Session.setDefault('query', {id:"", name:"",status:"", Ip:""});
+//Session.setDefault('query', {id:"", name:"",status:"", Ip:""});
+Session.setDefault('query', {sv_id:"", QueryObj:"", QueryOpr:"", QueryValue:""});
 
 /*
 *点击查询按钮开始查询
@@ -9,12 +10,14 @@ Template.monitorInfo.events =
 	"click #searchBtn":function(e)
 	{
 		//console.log("dsdsfd");
-		console.log($("#searchName").val());
+		//console.log($("#searchName").val());
 		//var txt = eval("{sv_id:/" + $("#searchName").val()+"/}");		
 		//console.log(txt);
 		//var txt = $("#searchName").val();
-		var queryCondition = {id:$("#searchId").val(), name:$("#searchName").val(), 
-		status:$("#searchStatus").val(), Ip:$("#searchIp").val()};
+		
+		//var queryCondition = {id:$("#searchId").val(), name:$("#searchName").val(), status:$("#searchStatus").val(), Ip:$("#searchIp").val()};
+		var queryCondition = {sv_id: $("#sv_id").val(), QueryObj:$("#QueryObj").val(), QueryOpr:$("#QueryOpr").val(), QueryValue:$("#QueryValue").val()};
+		
 		//var obj = new RegExp("\/" +txt+ "\/");
 		//var obj = new RegExp(txt);
 		//var obj = new RegExp("^"+txt+"$"); 
@@ -37,14 +40,23 @@ Template.monitorInfo.events =
 */
 Template.monitorInfolist.monitorInforesultlist = function()
 {
-		var queryobj = Session.get('query').id;
-		var obj = new RegExp(queryobj);
-		//var obj = new RegExp("^"+txt+"$"); 
-		//var reg = {sv_id:"/" txt "\/"};		
-		//console.log(Template.monitorInfolist.monitorInforesultlist);
-		
-		return SvseTree.find({sv_id:obj}).fetch();
-		//return QueryLists.find().fetch();
+	//var obj = new RegExp(queryobj);
+	//var obj = new RegExp("^"+txt+"$"); 
+	//var reg = {sv_id:"/" txt "\/"};		
+	//console.log(Template.monitorInfolist.monitorInforesultlist);
+	
+	//return SvseTree.find({sv_name:obj}).fetch();
+	//return QueryLists.find().fetch();
+	
+	//var queryobjand = {sv_name:new RegExp(Session.get('query').name), sv_id:new RegExp(Session.get('query').id),status:new RegExp(Session.get('query').status)};
+	//var queryobjor = {$or : [{sv_name:new RegExp(Session.get('query').name)}, {sv_id:new RegExp(Session.get('query').id)}, {status:new RegExp(Session.get('query').status)}]};
+	//var queryobj = {$querycond:new RegExp(Session.get('query').QueryValue)};
+	var queryobj = {};
+	queryobj[Session.get('query').QueryObj] = new RegExp(Session.get('query').QueryValue);
+	
+	var nodes = SvseTree.find(queryobj).fetch();
+	
+	return nodes;		
 }
 
 /*
@@ -52,24 +64,47 @@ Template.monitorInfolist.monitorInforesultlist = function()
 */
 var getEntityTree = function()
 { 
-	//查询条件
-	var queryobj = Session.get('query').id;
-	var obj = new RegExp(queryobj);
-
+	//查询条件	
+	//var obj = new RegExp(Session.get('query').name);
+	//var nodes = Svse.find({sv_name:obj}).fetch();
 	
-	//包含监视器	
-	var nodes = Svse.find({sv_id:obj}).fetch();
+	//var queryobjand = {sv_name:new RegExp(Session.get('query').name), sv_id:new RegExp(Session.get('query').id),status:new RegExp(Session.get('query').status)};
+	//var queryobjor = {$or : [{sv_name:new RegExp(Session.get('query').name)}, {sv_id:new RegExp(Session.get('query').id)}, {status:new RegExp(Session.get('query').status)}]};
+	
+	//var queryobj = {$querycond:new RegExp(Session.get('query').QueryValue)};
+	var basequeryobj = {};
+	basequeryobj["sv_id"] = new RegExp(Session.get('query').sv_id);
+	
+	var nodes = Svse.find(basequeryobj).fetch();
+	
+	//先组织出符合条件的sv_id及parentid数组?没有父亲的monitor等怎么处理?怎么展示到树上?设备及组下多余的子对象怎么
+	//过滤?此种树是否太难做?列表方式虽然简单但不直观, 是否继续?
+	
+	//用关联查询查出符合条件的sv_id?SvseTree是否都有了?没必要关联?
+	
+	//是否从组织好的全信息树数组里查询并剪切出来?
+	
+	//是否sv_id为基础条件， 如果没有默认为1 + 一个附加条件实现各种过滤 + 关联（sv_id关联报警报告等）。
+	//如果只搜索出一堆监测器怎么用树展示， 加上父亲设备等?
+	
+	//包含监视器		
 	var branch = [];
 	for(index in nodes)
 	{
 		var obj = nodes[index];
+		var otherqueryobj = {};
+		//otherqueryobj[Session.get('query').QueryObj] = new RegExp(Session.get('query').QueryValue);	
+		otherqueryobj["sv_id"]=obj["sv_id"];
+		//if(SvseTree.findOne(otherqueryobj).length == 0)
+		   //continue;
+		   
 		var branchNode = {};
 		branchNode["id"] = obj["sv_id"];
 		branchNode["pId"] = obj["parentid"];
 		branchNode["type"] = obj["type"];
-		branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]})["sv_name"];			
+		branchNode["name"] = SvseTree.findOne(otherqueryobj)["sv_name"];			
 		//branchNode["isParent"] = true;
-		branchNode["status"] = SvseTree.findOne({sv_id:obj["sv_id"]})["status"];
+		branchNode["status"] = SvseTree.findOne(otherqueryobj)["status"];
 		if(branchNode["pId"] === "0") branchNode["open"] = true;
 		branchNode["open"] = true;
 		if(obj["type"] === "entity" && obj["submonitor"] && obj["submonitor"].length)
@@ -78,14 +113,21 @@ var getEntityTree = function()
 			var submonitors = [];
 			for(subindex in submonitor)
 			{
+				otherqueryobj = {};
+				//otherqueryobj[Session.get('query').QueryObj] = new RegExp(Session.get('query').QueryValue);	
+				otherqueryobj["sv_id"]=submonitor[subindex];	
+				
+				//if(SvseTree.findOne(otherqueryobj).length == 0)
+				  // continue;
+				
 				var subobj = {};
 				subobj["id"] = submonitor[subindex];
 				//subobj["pId"] = obj["sv_id"];
-				subobj["type"] = SvseTree.findOne({sv_id:submonitor[subindex]})["sv_monitortype"];
-				subobj["name"] = SvseTree.findOne({sv_id:submonitor[subindex]})["sv_name"];
-				subobj["dstr"] = SvseTree.findOne({sv_id:submonitor[subindex]})["dstr"];
-				subobj["status"] = SvseTree.findOne({sv_id:submonitor[subindex]})["status"];
-				//subobj["status_disable"] = SvseTree.findOne({sv_id:submonitor[subindex]})["status_disable"];
+				subobj["type"] = SvseTree.findOne(otherqueryobj)["sv_monitortype"];
+				subobj["name"] = SvseTree.findOne(otherqueryobj)["sv_name"];
+				//subobj["dstr"] = SvseTree.findOne(therqueryobj)["dstr"];
+				subobj["status"] = SvseTree.findOne(otherqueryobj)["status"];
+				subobj["status_disable"] = SvseTree.findOne({sv_id:submonitor[subindex]})["status_disable"];
 				submonitors.push(subobj);
 			}
 			branchNode["submonitor"] = submonitors;
@@ -115,7 +157,7 @@ var getSearchTreeData = function()
 	];
 	
 	//查询条件
-	var queryobj = Session.get('query').id;
+	var queryobj = Session.get('query').QueryValue;
 	var obj = new RegExp(queryobj);
 
 	
