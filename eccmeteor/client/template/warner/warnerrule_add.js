@@ -51,7 +51,7 @@ Template.warnerruleofmessage.events={
 		SvseWarnerRuleDao.setWarnerRuleOfMesaage(nIndex,section,function(result){
 			if(result.status){
 				$('#messagewarnerdiv').modal('toggle');
-				$("#warnerruleofmessageform")[0].reset();
+				$("#warnerruleofmessageform")[0].reset();//重置表单（待修改）
 			}else{
 				SystemLogger(result.msg);
 			}

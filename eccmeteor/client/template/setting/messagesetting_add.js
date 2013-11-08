@@ -16,7 +16,7 @@ Template.messagebasicsettingofadd.rendered = function(){
 		var messagebasicsettingofbasciinfo = ClientUtils.formArrayToObject($("#messagebasicsettingofbasciinfo").serializeArray());
 		var nIndex = Utils.getUUID();
 		messagebasicsettingofbasciinfo["nIndex"] = nIndex
-	//	console.log(emailbasicsettingofaddressbasciinfo);
+		//console.log(messagebasicsettingofbasciinfo);
 		$(":checkbox[name='Status']").each(function(){
 			if(!this.checked) messagebasicsettingofbasciinfo["Status"]="Yes";
 		});

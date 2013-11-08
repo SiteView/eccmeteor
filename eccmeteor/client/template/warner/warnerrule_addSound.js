@@ -76,3 +76,36 @@ Template.warnerruleofsound.rendered=function(){
 		$.fn.zTree.init($("#svse_tree_check_addsound"), setting, data);
 	});
 }
+
+//编辑声音报警时的渲染
+Template.editwarnerruleofsound.rendered=function(){
+	//监视器选择树
+	$(function(){
+		var data = SvseDao.getDetailTree();
+		var setting = {
+			check:{
+				enable: true,
+				chkStyle: "checkbox",
+				chkboxType: { "Y": "ps", "N": "ps" }
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "id",
+					pIdKey: "pId",
+					rootPId: "0",
+				}
+			}
+		};
+		$.fn.zTree.init($("#svse_tree_check_editsound"), setting, data);
+	});
+}
+
+//编辑声音报警时的事件
+Template.editwarnerruleofsound.events({
+	"click #editwarnerruleofscriptcancelbtn":function(){
+		$("#soundwarnerdivedit").modal("hide");
+	},
+	//保存编辑
+	
+});

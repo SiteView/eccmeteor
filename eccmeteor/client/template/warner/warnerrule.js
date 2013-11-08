@@ -237,11 +237,11 @@ Template.warnerrulelist.events = {
 					return  node.id  === checkednodes[index];
 				}, true), true);
 			}
-		}
+		}else
 		//短信报警SmsAlert
 		if(alertType=="SmsAlert"){
 			console.log("SmsAlert");
-			console.log(result);
+			//console.log(result);
 			//填充表单
 			$("#messagewarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
 			$("#messagewarnerdivedit").find(":text[name='OtherNumber']:first").val(result.OtherNumber);
@@ -260,7 +260,7 @@ Template.warnerrulelist.events = {
 				}catch(e){}
 			}
 			var checkedSmsTemplate = result["SmsTemplate"].split(",");
-			console.log(checkedSmsTemplate);
+			//console.log(checkedSmsTemplate);
 			for(var etl = 0 ; etl < checkedSmsTemplate.length; etl ++){
 				$("#messagetemplatelistedit").find("option[value='"+checkedSmsTemplate[etl]+"']:first").attr("selected","selected").prop("selected",true);
 			}
@@ -271,6 +271,7 @@ Template.warnerrulelist.events = {
 				}
 			});
 			$("#messagewarnerdivedit").modal('show');
+			
 			var checkednodes = result.AlertTarget.split("\,")
 			//左边树的勾选
 			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_editsms");
@@ -285,13 +286,60 @@ Template.warnerrulelist.events = {
 		//脚本报警ScriptAlert
 		if(alertType=="ScriptAlert"){
 			console.log("ScriptAlert");
+			//console.log(result);
+			$("#warnerruleofscriptformedit").find(":text[name='AlertName']:first").val(result.AlertName);
+			$("#warnerruleofscriptformedit").find(":text[name='ScriptParam']:first").val(result.ScriptParam);
+			$("#warnerruleofscriptformedit").find(":text[name='Strategy']:first").val(result.Strategy);
+			$("#warnerruleofscriptformedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
+			
+			var checkedScriptFile = result["ScriptFile"].split(",");
+			for(var etl = 0 ; etl < checkedScriptFile.length; etl ++){
+				$("#selectscriptfile").find("option[value='"+checkedScriptFile[etl]+"']:first").attr("selected","selected").prop("selected",true);
+			}
+			
+			var AlertCategory = result.AlertCategory;
+			$("#warnerruleofscriptformsendconditionsedit").find(":radio[name='AlertCategory']").each(function(){
+				if($(this).val() === AlertCategory){
+					$(this).attr("checked",true);
+				}
+			});
+			$("#scriptwarnerdivedit").modal('show');
+			
+			var checkednodes = result.AlertTarget.split("\,");
+			//左边树的勾选
+			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_editscript");
+			treeObj.checkAllNodes(false);//清空上一个用户状态
+			//节点勾选
+			for(var index  = 0; index < checkednodes.length ; index++){
+				treeObj.checkNode(treeObj.getNodesByFilter(function(node){
+					return  node.id  === checkednodes[index];
+				}, true), true);
+			}
 		}
 		//声音报警SoundAlert
 		if(alertType=="SoundAlert"){
 			console.log("SoundAlert");
+			//console.log(result);
+			$("#warnerruleofsoundformedit").find(":text[name='AlertName']:first").val(result.AlertName);
+			$("#warnerruleofsoundformedit").find(":text[name='Server']:first").val(result.Server);
+			$("#warnerruleofsoundformedit").find(":text[name='LoginName']:first").val(result.LoginName);
+			$("#warnerruleofsoundformedit").find(":text[name='LoginPwd']:first").val(result.LoginPwd);
+			$("#warnerruleofsoundformedit").find(":text[name='Strategy']:first").val(result.Strategy);
+			$("#warnerruleofsoundformedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
+			
+			$("#soundwarnerdivedit").modal('show');
+			
+			var checkednodes = result.AlertTarget.split("\,");
+			//左边树的勾选
+			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_editsound");
+			treeObj.checkAllNodes(false);//清空上一个用户状态
+			//节点勾选
+			for(var index  = 0; index < checkednodes.length ; index++){
+				treeObj.checkNode(treeObj.getNodesByFilter(function(node){
+					return  node.id  === checkednodes[index];
+				}, true), true);
+			}
 		}
-		
-		
 		
 	}
 
