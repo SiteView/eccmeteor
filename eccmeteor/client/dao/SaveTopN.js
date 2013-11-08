@@ -6,7 +6,7 @@ SvseTopNDao = {
 	},
 	
 	"getTopNresultlist" : function(){
-		return SvseTopNresultlist.find().fetch()
+		return SvseTopNresultlist.find({nIndex:{$exists:true}}).fetch()
 	},
 	
 	"addTopN":function(addressname,address,fn){
@@ -39,7 +39,28 @@ SvseTopNDao = {
 	"getTopNById":function(id){
 	return SvseTopNresultlist.findOne({nIndex:id});
 	},
-
+	//根据title获取topN对象
+	"getTopNByName":function(title){
+		return SvseTopNresultlist.findOne({Title:title});
+	},
+	/*"getTopNByEmailSend":function(EmailSend){
+		return SvseTopNresultlist.findOne({EmailSend:emailSend});
+	},
+	*/
+	
+	"getMonitorTemplates":function(fn){
+		Meteor.call(SvseTopNDao.AGENT,"getMonitorTemplates",[],fn);
+	},
+	
+	/*
+	//根据报告标题与之前查看对比是否重复。
+    "getTitle":function(title){
+     return SvseTopNresultlist.findOne({Title:title});
+    },*/
+	//根据监视器id 获取该监视器相应的模板id
+	getMonitorTemplateIdByMonitorId : function(id){
+		return SvseTree.findOne({sv_id:id}).sv_monitortype;
+	},
 	"updateTopN":function(addressname,address,fn){
 		Meteor.call(SvseTopNDao.AGENT,'updateTopN',[addressname,address],function(err,result){
 			if(err){
@@ -56,7 +77,7 @@ SvseTopNDao = {
 		});
 	},
 	//批量更新topN报告状态
-	/*"updateTopNStatus": function(ids,status,fn){
+	"updateTopNStatus": function(ids,status,fn){
 		SystemLogger(typeof fn);
 		Meteor.call(SvseTopNDao.AGENT,"updateTopNStatus",[ids,status],function(err,result){
 			if(err){
@@ -69,9 +90,9 @@ SvseTopNDao = {
 				}
 			}
 		});
-	},*/
+	},
 	
-	"updateTopNStatus" : function(ids,status,fn){
+	/*"updateTopNStatus" : function(ids,status,fn){
 		Meteor.call(SvseTopNDao.AGENT,"updateTopNStatus",[ids,status],function(err,result){
 			if(err){
 				SystemLogger(err);
@@ -80,9 +101,9 @@ SvseTopNDao = {
 				fn(result);
 			}
 		});
-	},
+	},*/
 	//刷新同步
-	/*"sync":function(fn){
+	"sync":function(fn){
 		Meteor.call(SvseTopNDao.AGENT,"sync",function(err,result){
 			if(result && !result.status){
 				fn(result);
@@ -91,10 +112,10 @@ SvseTopNDao = {
 				fn({status:true});
 			}
 		});
-	}*/
-	"sync" : function(){
-		Meteor.call(SvseTopNDao.AGENT,"sync");
 	},
+	/*"sync" : function(){
+		Meteor.call(SvseTopNDao.AGENT,"sync");
+	},*/
 	//获取监视器模板名称 如：CPU ，ping等
 	getTypeById:function(id){
 		return SvseTopN.findOne({"return.id" : id}).property.sv_label;
@@ -136,7 +157,110 @@ SvseTopNDao = {
 			newparameters.push(parameters[index]);
 		}
 		return newparameters;
+		},
+	getMonityDynamicPropertyDataArray:function(entityId,templateMonitoryTemlpateIds,fn){
+		Meteor.call(
+			SvseMonitorTemplateDao.AGENT,
+			"getMonityDynamicPropertyDataArray",
+			[entityId,templateMonitoryTemlpateIds],
+			function(err,result){
+				if(err){
+					SystemLogger(err);
+					fn(false,err);
+				}else{
+					fn(true,result);
+				}
+			}
+		)
+	},
+	getMonityTemplateStatesById : function(id){//根据id获取监视器模板参数
+		var template = SvseMonitorTemplate.findOne({"return.id" : id});
+		var states = [];
+		states.push(template["error"]);
+		states.push(template["warning"]);
+		states.push(template["good"]);
+		return states;
+	},
+	getMonityTemplateStatesByIdAndStatus : function (id,status){
+		var template = SvseMonitorTemplate.findOne({"return.id" : id});
+		return template[status]||{};
+	},
+	getMonityTemplateAdvanceParametersById : function(id){//根据id获取监视器模板参数
+		var template = SvseMonitorTemplate.findOne({"return.id" : id});
+		var advanceParameters = [];
+		for(item in template){
+			if(item.indexOf("AdvanceParameterItem") == -1) continue;
+			var temp = template[item];
+			temp["sv_allownull"] = (temp["sv_allownull"] === 'false' ? false:true);
+			if(temp["sv_type"] !== "combobox"){//非下拉列表类型
+				advanceParameters.push(temp);
+				continue;
+			}
+			//组合下拉列表	
+			var selects = []; 
+			for(label in temp){
+				if(label.indexOf("sv_itemlabel") === -1) continue;
+				var select = {};
+				var sub = "sv_itemvalue"+label.substr(-1);
+				select.key = temp[label];
+				select.value = temp[sub];
+				selects.push(select);
+			}
+			temp["selects"] = selects;
+			advanceParameters.push(temp);
 		}
+		return advanceParameters;
+	},
+	getMonityTemplateReturnItemsById:function(id){//根据id获取返回参数
+		var template = SvseMonitorTemplate.findOne({"return.id" : id});
+		var returnItems = [];
+		for(item in template){
+			if(item.indexOf("ReturnItem") == -1) continue;
+			returnItems.push(template[item]);
+		}
+		//SystemLogger(returnItems);
+		return returnItems;
+	},
+	getMonityTemplateReturnItemLabelByIdAndName:function(id,name){
+		var template = SvseMonitorTemplate.findOne({"return.id" : id});
+		for(item in template){
+			if(item.indexOf("ReturnItem") == -1) continue;
+			if(template[item]["sv_name"] === name)
+				return template[item]["sv_label"];
+		}
+	},
+	getMonityDynamicPropertyData:function(panrentid,templateMonitoryId,fn){
+		console.log("getMonityDynamicPropertyData templateMonitoryId is:"+templateMonitoryId);
+		Meteor.call(
+			SvseMonitorTemplateDao.AGENT,
+			"getMonityDynamicPropertyData",
+			[panrentid,templateMonitoryId],
+			function(err,result){
+				if(err){
+					SystemLogger(err);
+					fn(false,err)
+				}else{
+					fn(true,result);
+				}
+			}
+		);
+	},
+	
+	getMonityDynamicPropertyDataArray:function(entityId,templateMonitoryTemlpateIds,fn){
+		Meteor.call(
+			SvseMonitorTemplateDao.AGENT,
+			"getMonityDynamicPropertyDataArray",
+			[entityId,templateMonitoryTemlpateIds],
+			function(err,result){
+				if(err){
+					SystemLogger(err);
+					fn(false,err);
+				}else{
+					fn(true,result);
+				}
+			}
+		)
+}
 }
 /*Meteor.autosubscribe(function () {
    Meteor.subscribe("marklists",Session.get("selected_Typelist"));
