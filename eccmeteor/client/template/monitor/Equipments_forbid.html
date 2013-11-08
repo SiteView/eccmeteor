@@ -1,0 +1,55 @@
+<Template name="ForbidEquipments">
+<div id="ForbidEquipmentsDiv" class="modal hide fade"
+	data-backdrop="static" data-keyboard="false" data-show="false" data-modalOverflow="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<span class="label label-info">禁止设备监视器组</span>
+	</div>
+	<div class="modal-body">
+		<form id="ForbidEquipmentsDivForm" class="well form-horizontal" submit="return fasle;">
+			<input type="hidden" name="equipmetType" data-value="" value=""/>
+			<fieldset>
+				<div class="control-group">
+				  	<label class="control-label">选择类型</label>
+				  	<div class="controls">
+						<label class="radio">
+							<input type="radio" name="forbidtype"  value="true">
+						  		永久禁止
+						</label>
+						<label class="radio">
+						  	<input type="radio" name="forbidtype" value="false" checked>
+						  		临时禁止
+						</label>
+				  	</div>
+				</div>
+				<div class="control-group">
+				  <label class="control-label">开始时间:</label>
+				  <div class="controls">
+						<div id="ForbidEquipmentsStartDate" class="input-append date">
+						      <input type="text" readOnly="readonly"></input>
+						      <span class="add-on">
+						        	<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+						      </span>
+					    </div>
+				  </div>
+				</div>
+				<div class="control-group">
+				  <label class="control-label">结束时间:</label>
+				  <div class="controls">
+				  		<div id="ForbidEquipmentsEndDate" class="input-append date">
+							<input type="text" readOnly="readonly"></input>
+						    <span class="add-on">
+						        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+						    </span>
+						</div>
+				  </div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="ForbidEquipmentsDivFormForbidBtn">禁止</button>
+		<button class="btn" id="ForbidEquipmentsDivFormCancelBtn">取消</button>
+	</div>
+</div>
+</Template>

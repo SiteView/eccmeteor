@@ -51,7 +51,7 @@ UserDaoOnServer = {
 			},
 			function(err){
 					if(err)
-						console.log(err)
+						Log4js.error(err)
 			});
 		return UserDaoOnServer.getReturn(true);
     },

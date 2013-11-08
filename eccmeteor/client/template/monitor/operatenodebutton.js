@@ -5,6 +5,11 @@ Template.operateNode.sv_name = function(){
 Template.operateNode.type = function(){
 	return SessionManage.getCheckedTreeNode() ? SessionManage.getCheckedTreeNode("type") :"";
 }
+
+Template.operateNode.sv_id = function(){
+	return SessionManage.getCheckedTreeNode() ? SessionManage.getCheckedTreeNode("id") :"";
+}
+
 Template.operateNode.statisticalData = function(){
 	var data  = {
 		entity:0,
@@ -25,8 +30,7 @@ Template.operateNode.events ={
 	"click .btn#addGroup":function(){
 		$("#showGroupAdddiv").modal('show');
 	},
-	"click .btn#editGroup":function(){
-	},
+	/*
 	"click a#forbidGroup" : function(e){
 		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
 	    if(!groupsIds.length)
@@ -42,12 +46,53 @@ Template.operateNode.events ={
 	    console.log("启用的组是：");
 	    console.log(groupsIds);
 	    SvseDao.enableNode(groupsIds,function(err){});
+	},*/
+	"click a#enabledEquipments":function(){  //启用组和设备
+		console.log("启用");
+		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
+		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
+		console.log(groupsIds);
+		console.log(entityIds);
+		var equipmentIds = groupsIds.concat(entityIds);
+		LoadingModal.loading();
+		var fid = SessionManage.getCheckedTreeNode("id");
+		SvseDao.enabledEquipments(fid,equipmentIds,function(result){
+			LoadingModal.loaded();
+			if(!result.status)
+				Message.error(result.msg);
+		});
+
+	},
+	"click a#forbidEquipments":function(){//禁用组和设备
+		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
+		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
+		var equipmentIds = groupsIds.concat(entityIds);
+		if(!equipmentIds.length){
+			Message.warn("请选择需要禁用的设备或组",{align:"center",time:1});
+			return;
+		}
+		$("#ForbidEquipmentsDiv").find(":hidden[name=equipmetType]").val("equipments").attr("data-value",equipmentIds.join());
+		$("#ForbidEquipmentsDiv").modal("show");		
+		/*
+		console.log("禁用");
+		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
+		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
+		console.log(groupsIds);
+		console.log(entityIds);
+		var equipmentIds = groupsIds.concat(entityIds);
+		LoadingModal.loading();
+		var fid = SessionManage.getCheckedTreeNode("id");
+		SvseDao.forbidEquipments(fid,equipmentIds,function(result){
+			LoadingModal.loaded();
+			if(!result.status)
+				Message.error(result.msg);
+		});
+		*/
 	},
 	"click .btn#addEntity":function(){
-	//	SwithcView.view(MONITORVIEW.ENTITYGROUP);//设置视图状态
-	//	SwithcView.render(MONITORVIEW.ENTITYGROUP,LAYOUTVIEW.NOTOPERATION);
 		$("#entitiesGroupByTypeDiv").modal('show');
 	},
+	/*
 	"click .btn#editEntity":function(){
 		if(!SessionManage.getCheckedTreeNode() || SessionManage.getCheckedTreeNode("type") !== "entity")
 			return;
@@ -76,7 +121,7 @@ Template.operateNode.events ={
 				console.log(result.msg)
 			}
 		});
-	},
+	},*/
 	"click a#removeNodes":function(){ 
 		//删除子节点
 		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");

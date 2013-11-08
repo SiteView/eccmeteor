@@ -1,13 +1,13 @@
 initTreeDataAtStartup = function(debug){
-	SystemLogger("初始化基本节点信息开始...");
+	Log4js.info("初始化基本节点信息开始...");
 	if(debug === -1)return;
 	if(debug === 0){
 		SvseTree.remove({});
-		SystemLogger("tree date is clear");
+		Log4js.info("tree date is clear");
 	}
 	var result = SvseMethodsOnServer.svGetTreeData();
 	if(!result){
-		SystemLogger("initTreeDataAtStartup failed，svGetTreeData exists errors",-1);
+		Log4js.info("initTreeDataAtStartup failed，svGetTreeData exists errors",-1);
 		return;
 	}
 	for(son in result){
@@ -18,9 +18,9 @@ initTreeDataAtStartup = function(debug){
 		}
 		SvseTree.insert(treeNode,function(err,r_id){
 			if(err){
-				SystemLogger(err);
+				Log4js.info(err);
 			}
 		});		
 	}
-	SystemLogger("初始化基本节点信息完成");
+	Log4js.info("初始化基本节点信息完成");
 }

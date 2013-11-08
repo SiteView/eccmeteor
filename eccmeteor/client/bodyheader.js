@@ -17,6 +17,7 @@ Template.multilanguage.events = {
 
 Template.userLogging.events({
     "click a[data-action='logout']":function(){
+    	Meteor.Router.to("/");    
         Meteor.logout();
         Session.set("MoitorContentTreeRendered",false);
     }

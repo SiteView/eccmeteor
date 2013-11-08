@@ -10,8 +10,8 @@ SysncDb =  {
 				{ $pushAll: { subgroup: arr },$set:{has_son : true} },
 				function(err){
 					if(!err) return;
-					SystemLogger("addSubGroupByIds  SvseTree.update 错误！\n syncDb.js 11 line");
-					SystemLogger(err,-1);
+					Log4js.info("addSubGroupByIds  SvseTree.update 错误！\n syncDb.js 11 line");
+					Log4js.info(err,-1);
 				}
 			);
 	},
@@ -21,8 +21,8 @@ SysncDb =  {
 				{ $pullAll: { subgroup: arr  } },
 				function(err){
 					if(!err) return;
-					SystemLogger("removeGroupByIds  SvseTree.update 错误！\n syncDb.js 22 line");
-					SystemLogger(err,-1);
+					Log4js.info("removeGroupByIds  SvseTree.update 错误！\n syncDb.js 22 line");
+					Log4js.info(err,-1);
 				}
 			);
 		var node = Svse.findOne({sv_id: id});
@@ -32,8 +32,8 @@ SysncDb =  {
 				{$set:{has_son : false}},
 				function(err){
 					if(!err) return;
-					SystemLogger("removeGroupByIds  SvseTree.update 错误！\n syncDb.js 32 line");
-					SystemLogger(err,-1);
+					Log4js.info("removeGroupByIds  SvseTree.update 错误！\n syncDb.js 32 line");
+					Log4js.info(err,-1);
 				}
 			);
 		}
@@ -52,8 +52,8 @@ SysncDb =  {
 				{ $pushAll: { subentity: arr } ,$set:{has_son : true} },
 				function(err){
 					if(!err) return;
-					SystemLogger("addSubEntityByIds  SvseTree.update 错误！\n syncDb.js 51 line");
-					SystemLogger(err,-1);
+					Log4js.info("addSubEntityByIds  SvseTree.update 错误！\n syncDb.js 51 line");
+					Log4js.info(err,-1);
 				}
 			);
 	},
@@ -63,8 +63,8 @@ SysncDb =  {
 				{ $pullAll: { subentity: arr  } },
 				function(err){
 					if(!err) return;
-					SystemLogger("removeSubEntityByIds  SvseTree.update 错误！\n syncDb.js 61 line");
-					SystemLogger(err,-1);
+					Log4js.info("removeSubEntityByIds  SvseTree.update 错误！\n syncDb.js 61 line");
+					Log4js.info(err,-1);
 				}
 			);
 		var node = Svse.findOne({sv_id: id});
@@ -74,8 +74,8 @@ SysncDb =  {
 				{$set:{has_son : false}},
 				function(err){
 					if(!err) return;
-					SystemLogger("removeSubEntityByIds  SvseTree.update 错误！\n syncDb.js 71 line");
-					SystemLogger(err,-1);
+					Log4js.info("removeSubEntityByIds  SvseTree.update 错误！\n syncDb.js 71 line");
+					Log4js.info(err,-1);
 				}
 			);
 		}
@@ -94,8 +94,8 @@ SysncDb =  {
 				{ $pushAll: { submonitor: arr } },
 				function(err){
 					if(!err) return;
-					SystemLogger("addMoniorByIds  SvseTree.update 错误！\n syncDb.js 90 line");
-					SystemLogger(err,-1);
+					Log4js.info("addMoniorByIds  SvseTree.update 错误！\n syncDb.js 90 line");
+					Log4js.info(err,-1);
 				}
 		);
 	},
@@ -105,8 +105,8 @@ SysncDb =  {
 				{ $pullAll: { submonitor: arr  } },
 				function(err){
 					if(!err) return;
-					SystemLogger("removeMonitorByIds  SvseTree.update 错误！\n syncDb.js 100 line");
-					SystemLogger(err,-1);
+					Log4js.info("removeMonitorByIds  SvseTree.update 错误！\n syncDb.js 100 line");
+					Log4js.info(err,-1);
 				}
 			)
 		for(index in arr){
@@ -117,11 +117,11 @@ SysncDb =  {
 		var id = node["sv_id"];
 		var target = SvseTree.findOne({sv_id:id});
 		if(!target){
-			SystemLogger("插入节点"+id);
+			Log4js.info("插入节点"+id);
 			SvseTree.insert(node,function(err){
 				if(!err) return;
-				SystemLogger("自动更新，updateGroupAndEntity  SvseTree.insert 错误！\n syncDb.js 81 line");
-				SystemLogger(err,-1);
+				Log4js.info("自动更新，updateGroupAndEntity  SvseTree.insert 错误！\n syncDb.js 81 line");
+				Log4js.info(err,-1);
 			});
 			return;
 		}
@@ -130,8 +130,8 @@ SysncDb =  {
 		}
 		SvseTree.update({sv_id:id},node,function(err){
 			if(!err) return;
-			SystemLogger("自动更新，updateGroupAndEntity  SvseTree.update 错误！\n syncDb.js 88 line");
-			SystemLogger(err,-1);
+			Log4js.info("自动更新，updateGroupAndEntity  SvseTree.update 错误！\n syncDb.js 88 line");
+			Log4js.info(err,-1);
 		});
 	},
 	isExistBranch : function(id){
@@ -140,8 +140,8 @@ SysncDb =  {
 	addBranchOnTree : function(node){
 		Svse.insert(node,function(err){
 			if(!err) return;
-			SystemLogger("自动更新，Svse.insert插入错误！\n sync.js 51 line");
-			SystemLogger(err,-1);
+			Log4js.info("自动更新，Svse.insert插入错误！\n sync.js 51 line");
+			Log4js.info(err,-1);
 		});
 	},
 	getEntityBranchs : function(){
