@@ -154,6 +154,8 @@ Template.statisticalofadd.rendered = function () {
 	 */
 	 	//$('#datetimepicker').datetimepicker();
 		 // $('#datepicker').datepicker();
+		 
+//鼠标悬停功能实现
 		$().tooltip();		 
 		$.fn.tooltip = function( options ) { 
 		return this.each(function(e) {        
@@ -203,6 +205,20 @@ Template.statisticalofadd.rendered = function () {
 }
 
 Template.statisticalofadd.events = {
+"change #reporttypePeriodlist":function(){
+		if(document.getElementById("reporttypePeriodlist").value=="Week"){
+			 document.getElementById("reporttypetemplatelist").disabled=false;
+		}else if(document.getElementById("reporttypePeriodlist").value=="Other"){
+			document.getElementById("form_datetime").style.display="";
+			document.getElementById("form_datetimes").style.display="";
+			//$("#form_datetime").attr("disabled","disabled");	
+		}else{
+		document.getElementById("form_datetime").style.display="none";
+		document.getElementById("form_datetimes").style.display="none";
+		document.getElementById("reporttypetemplatelist").disabled=true;
+		}
+
+},
 /*
 	function selectPeriod(){
 		if(document.getElementById("reporttypePeriodlist").value=="Week"){
@@ -211,6 +227,7 @@ Template.statisticalofadd.events = {
 		document.getElementById("reporttypetemplatelist").disabled=true;
 		}
 	}
+
 	function selectPeriod(){
 		if($("#reporttypePeriodlist").value=="Week"){
 		$("#reporttypetemplatelist").disabled=false;
@@ -287,6 +304,22 @@ Template.statisticallist.rendered = function () {
 }
 //根据id编辑报告表单
 Template.statisticallist.events({
+/*
+"change #reporttypePeriodlisted":function(){
+		if(document.getElementById("reporttypePeriodlisted").value=="Week"){
+			 document.getElementById("reporttypetemplatelisted").disabled=false;
+		}else if(document.getElementById("reporttypePeriodlisted").value=="Other"){
+			document.getElementById("editform_datetime").style.display="";
+			document.getElementById("editform_datetimes").style.display="";
+			//$("#form_datetime").attr("disabled","disabled");	
+		}else{
+		document.getElementById("editform_datetime").style.display="none";
+		document.getElementById("editform_datetimes").style.display="none";
+		document.getElementById("reporttypetemplatelisted").disabled=true;
+		}
+
+},
+*/
 	"click td .btn" : function (e) {
 		console.log(e.currentTarget.id);
 		var result = SvseStatisticalDao.getStatisticalById(e.currentTarget.id);
@@ -463,6 +496,20 @@ Template.statisticalofedit.rendered = function () {
 Template.statisticalofedit.events = {
 	"click #statisticalofeditcancelbtn" : function () {
 		$("#statisticalofadddivedit").modal('toggle');
+	},
+	"change #reporttypePeriodlisted":function(){
+		if(document.getElementById("reporttypePeriodlisted").value=="Week"){
+			 document.getElementById("reporttypetemplatelisted").disabled=false;
+		}else if(document.getElementById("reporttypePeriodlisted").value=="Other"){
+			document.getElementById("editform_datetime").style.display="";
+			document.getElementById("editform_datetimes").style.display="";
+			//$("#form_datetime").attr("disabled","disabled");	
+		}else{
+		document.getElementById("editform_datetime").style.display="none";
+		document.getElementById("editform_datetimes").style.display="none";
+		document.getElementById("reporttypetemplatelisted").disabled=true;
+		}
+
 	},
 	"click #statisticalofeditsavebtn" : function () {
 		var statisticalofaddformedit = ClientUtils.formArrayToObject($("#statisticalofaddformedit").serializeArray());

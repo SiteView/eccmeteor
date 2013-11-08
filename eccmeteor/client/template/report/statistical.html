@@ -117,7 +117,7 @@
 			<div class="control-group">
 				<label class="control-label">报告类型:</label>
 				<div class="controls">
-					<select id="reporttypePeriodlist" name="Period" onclick="selectPeriod()" title="请指定生成报告的时间周期">
+					<select id="reporttypePeriodlist" name="Period" title="请指定生成报告的时间周期">
 					<option value="Day" checked>日报</option>
 				    <option value="Week" checked>周报</option>
 				    <option value="Month" checked>月报</option>
@@ -192,10 +192,10 @@
 					</select>
 				</div>		
 			</div>
-			<div class="control-group">
+			<div class="control-group" id="form_datetime" style="display: none;">
 			<label class="control-label">开始时间:</label>
 				<div class="input-append date form_datetime">
-					<input size="10" type="text" value="" readonly>
+					<input size="10" type="text" value="" readonly name="OtherBeginTime">
 					<span class="add-on"><i class="icon-th"></i></span>
 				</div>
 		<!--	<input type="text" id="datepicker"/>
@@ -205,6 +205,13 @@
 				<span class="add-on"><i class="icon-th"></i></span>
 			</div>
 		-->
+			</div>
+			<div class="control-group" id="form_datetimes" style="display: none;">
+				<label class="control-label">结束时间:</label>
+				<div class="input-append date form_datetime">
+					<input size="10" type="text" value="" readonly name="OtherEndTime">
+					<span class="add-on"><i class="icon-th"></i></span>
+				</div>
 			</div>
 		</fieldset>
 	</form>
@@ -308,7 +315,7 @@
 			<div class="control-group">
 				<label class="control-label">周报截止时间:</label>
 				<div class="controls">
- 					<select id="reporttypetemplatelisted" name="WeekEndTime" title="周报截止时间，用户可以根据需要自己定义">
+ 					<select id="reporttypetemplatelisted" name="WeekEndTime" disabled="true" title="周报截止时间，用户可以根据需要自己定义">
 					<option value="1" checked>星期日</option>
 				    <option value="2" checked>星期一</option>
 				    <option value="3" checked>星期二</option>
@@ -319,7 +326,27 @@
 					</select>
 				</div>		
 			</div>
-
+			<div class="control-group" id="editform_datetime" style="display: none;">
+						<label class="control-label">开始时间:</label>
+							<div class="input-append date form_datetime">
+								<input size="10" type="text" value="" readonly name="OtherBeginTime">
+								<span class="add-on"><i class="icon-th"></i></span>
+							</div>
+					<!--	<input type="text" id="datepicker"/>
+					
+						<div class="input-append date" id="datetimepicker" data-date="11-04-2013" data-date-format="dd-mm-yyyy">
+							<input size="10" type="text" value="11-04-2013" readonly>
+							<span class="add-on"><i class="icon-th"></i></span>
+						</div>
+					-->
+			</div>
+			<div class="control-group" id="editform_datetimes" style="display: none;">
+				<label class="control-label">结束时间:</label>
+				<div class="input-append date form_datetime">
+					<input size="10" type="text" value="" readonly name="OtherEndTime">
+					<span class="add-on"><i class="icon-th"></i></span>
+				</div>
+			</div>
 		</fieldset>
 	</form>
 					</div>
