@@ -49,11 +49,11 @@ Object.defineProperty(Agent,"_PermissionType",{
 	    deleteMul : "deleteMul", //删除多个下属节点
 	    foribedMul : "foribedMul",//批量禁用下属节点 //新增
 	    enableMul : "enableMul", //批量启用下属节点//新增
-	    addMonitor ： "addMonitor", // 添加监视器
-		editMonitor ： "editMonitor", //编辑监视器
+	    addMonitor : "addMonitor", // 添加监视器
+		editMonitor : "editMonitor", //编辑监视器
 		deleteMonitor : "deleteMonitor", //删除监视器
-	   	foribedMonitor:true://批量禁用下属节点 //新增
-	    enableMonitor:true //批量启用下属节点//新增
+	   	foribedMonitor: "deleteMonitor",//批量禁用下属节点 //新增
+	    enableMonitor: "deleteMonitor" //批量启用下属节点//新增
 	}
 });
 

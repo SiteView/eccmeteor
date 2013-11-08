@@ -9,7 +9,7 @@ SyncFunction = {
 			fmap = SvseSyncData.svGetSVSE(id);
 		}
 		if(!fmap) {
-			SystemLogger("SyncFunction findTreeNodes fmap不存在");
+			Log4js.info("SyncFunction findTreeNodes fmap不存在");
 			return;
 		}
 		//获取子元素
@@ -33,7 +33,7 @@ SyncFunction = {
 		}
 		//添加不存在的分支
 		if(!SysncDb.isExistBranch(id)){//如果该设备分支没有存储过，则插入到数据库中。
-			SystemLogger("SyncFunction findTreeNodes 插入分支");
+			Log4js.info("SyncFunction findTreeNodes 插入分支");
 			var obj = {};
 			obj["type"] = type;
 			obj["parentid"] = parentid;
@@ -51,7 +51,7 @@ SyncFunction = {
 					obj["property"] = fmap["property"]
 				}
 			}
-			SystemLogger(obj);
+			Log4js.info(obj);
 			SysncDb.addBranchOnTree(obj);
 		}else{ //更新分支
 			if(subgroup && subgroup.length){
@@ -59,9 +59,9 @@ SyncFunction = {
 				if(!originalGroup) return;
 				var changeGroupObj = Utils.compareArray(originalGroup,subgroup);
 				if(changeGroupObj){
-					SystemLogger("SyncFunction findTreeNodes 更新新节点");
-					SystemLogger("changeGroupObj:");
-					SystemLogger(changeGroupObj);
+					Log4js.info("SyncFunction findTreeNodes 更新新节点");
+					Log4js.info("changeGroupObj:");
+					Log4js.info(changeGroupObj);
 					if(changeGroupObj["push"] && changeGroupObj["push"].length > 0)
 						SysncDb.addSubGroupByIds(id,changeGroupObj["push"]);
 					if(changeGroupObj["pop"] && changeGroupObj["pop"].length > 0)
@@ -74,8 +74,8 @@ SyncFunction = {
 				if(!originalEntity) return;
 				var changeEntityObj = Utils.compareArray(originalEntity,subentity);
 				if(changeEntityObj) {
-					SystemLogger("changeEntityObj:");
-					SystemLogger(changeEntityObj);
+					Log4js.info("changeEntityObj:");
+					Log4js.info(changeEntityObj);
 					if(changeEntityObj["push"] && changeEntityObj["push"].length > 0)
 						SysncDb.addSubEntityByIds(id,changeEntityObj["push"]);
 					if(changeEntityObj["pop"] && changeEntityObj["pop"].length > 0)
@@ -88,9 +88,9 @@ SyncFunction = {
 				if(!originalMonitor) return;
 				var changeMonitorObj = Utils.compareArray(originalMonitor,submonitor);
 				if(changeMonitorObj){//如果监视器个数变化
-					SystemLogger("更新分支的监视器:");
-					SystemLogger("changeMonitorObj:");
-					SystemLogger(changeMonitorObj);
+					Log4js.info("更新分支的监视器:");
+					Log4js.info("changeMonitorObj:");
+					Log4js.info(changeMonitorObj);
 					if(changeMonitorObj["push"] && changeMonitorObj["push"].length > 0)
 						SysncDb.addMoniorByIds(id,changeMonitorObj["push"]);
 					if(changeMonitorObj["pop"] && changeMonitorObj["pop"].length > 0)
@@ -113,10 +113,10 @@ SyncFunction = {
 		
 	},
 	'SyncTreeStructure' : function () { //更新树结构
-		SystemLogger("检查SyncTreeStructure变动开始。。");
+		Log4js.info("检查SyncTreeStructure变动开始。。");
 		var fmap = SvseSyncData.svGetDefaultTreeData('default',true);
 		if(!fmap){
-			SystemLogger("SyncTreeStructure fmap不存在");
+			Log4js.info("SyncTreeStructure fmap不存在");
 			return;
 		};
 		for(son in fmap){
@@ -133,10 +133,10 @@ SyncFunction = {
 				SysncDb.updateNode(entityFmap[son2]);
 			}
 		}
-		SystemLogger("检查SyncTreeStructure变动结束。。");
+		Log4js.info("检查SyncTreeStructure变动结束。。");
 	},
 	'SyncTreeNodeData' : function(){ 
-		SystemLogger("扫描 SyncTreeNodeData 变动开始。。");
+		Log4js.info("扫描 SyncTreeNodeData 变动开始。。");
 		//更新树节点。监视器节点除外，监视器节点更新应在树节点更新后进行
 		var fmap = SvseSyncData.svGetDefaultTreeData('default',false);
 		for(son in fmap){
@@ -145,14 +145,14 @@ SyncFunction = {
 				continue;
 			SysncDb.updateNode(node);
 		}
-		SystemLogger("扫描 SyncTreeNodeData 变动结束。。");
+		Log4js.info("扫描 SyncTreeNodeData 变动结束。。");
 	},
 	//同步邮件列表
 	'SyncEmailList':function(){
-		SystemLogger("扫描 SysncEmailList 变动开始。。");
+		Log4js.info("扫描 SysncEmailList 变动开始。。");
 		var list = SvseMethodsOnServer.svGetEmailList();
 		if(!list){
-			SystemLogger("初始化邮件列表失败",-1);
+			Log4js.info("初始化邮件列表失败",-1);
 			return;
 		}
 		for(itemname in list){
@@ -162,16 +162,16 @@ SyncFunction = {
 			if(flag) continue;
 			SvseEmailList.update({nIndex:item["nIndex"]},item);
 		}
-		SystemLogger("扫描 SysncEmailList 变动结束。。");
+		Log4js.info("扫描 SysncEmailList 变动结束。。");
 	},
 	
 	
 	//同步统计报告列表
 	'SyncStatisticalList':function(){
-		SystemLogger("扫描统计报告list开始！");
+		Log4js.info("扫描统计报告list开始！");
 		var list = SvseMethodsOnServer.svGetStatisticalList();
 		if(!list){
-		SystemLogger("初始化统计报告列表失败",-1);
+		Log4js.info("初始化统计报告列表失败",-1);
 		return;
 		}
 		for(itemname in list){
@@ -181,16 +181,16 @@ SyncFunction = {
 		if(flag) continue;
 		SvseStatisticalresultlist.update({nIndex:item["nIndex"]},item);
 		}
-		SystemLogger("扫描统计报告list结束！");
+		Log4js.info("扫描统计报告list结束！");
 	},
 	
 	
 	//同步报警规则
 	'SyncWarnerRules' : function(){
-		SystemLogger("扫描 SyncWarnerRules 变动开始。。");
+		Log4js.info("扫描 SyncWarnerRules 变动开始。。");
 		var list = SvseMethodsOnServer.svGetWarnerRule();
 		if(!list){
-			SystemLogger("初始化报警规则失败",-1);
+			Log4js.info("初始化报警规则失败",-1);
 			return;
 		}
 		for(itemname in list){
@@ -200,7 +200,7 @@ SyncFunction = {
 			if(flag) continue;
 			SvseWarnerRule.update({nIndex:item["nIndex"]},item);
 		}
-		SystemLogger("扫描 SyncWarnerRules 变动结束。。");
+		Log4js.info("扫描 SyncWarnerRules 变动结束。。");
 	},
 	/*
 Type： add | modify
@@ -210,10 +210,10 @@ Content:增加和修改 SyncTopNList
 */ 
 	//同步TopN报告列表
 	'SyncTopNList' : function(){
-		SystemLogger("扫描 SyncTopNList 变动开始。。");
+		Log4js.info("扫描 SyncTopNList 变动开始。。");
 		var list = SvseMethodsOnServer.svGetTopNList();
 		if(!list){
-			SystemLogger("初始化TopN报告失败",-1);
+			Log4js.info("初始化TopN报告失败",-1);
 			return;
 		}
 		for(itemname in list){
@@ -223,7 +223,7 @@ Content:增加和修改 SyncTopNList
 			if(flag) continue;
 			SvseTopNresultlist.update({nIndex:item["nIndex"]},item);
 		}
-		SystemLogger("扫描 SyncTopNresultlist 变动结束。。");
+		Log4js.info("扫描 SyncTopNresultlist 变动结束。。");
 	},
 	/*
 		Author:zhuqing
@@ -232,10 +232,10 @@ Content:增加和修改 SyncTopNList
 	*/
 	//同步短信列表
 	'SyncMessageList':function(){
-		SystemLogger("扫描 SyncMessageList 变动开始。。");
+		Log4js.info("扫描 SyncMessageList 变动开始。。");
 		var list = SvseMethodsOnServer.svGetMessageList();
 		if(!list){
-			SystemLogger("初始化短信列表失败",-1);
+			Log4js.info("初始化短信列表失败",-1);
 			return;
 		}
 		for(itemname in list){
@@ -245,18 +245,18 @@ Content:增加和修改 SyncTopNList
 			if(flag) continue;
 			SvseMessageList.update({nIndex:item["nIndex"]},item);
 		}
-		SystemLogger("扫描 SyncMessageList 变动结束。。");
+		Log4js.info("扫描 SyncMessageList 变动结束。。");
 	},
 	
 	'sync' : function(){
-		SystemLogger("扫描变动开始。。");
+		Log4js.info("扫描变动开始。。");
 		SyncFunction.SyncTreeNodeData();
 		SyncFunction.SyncTreeStructure();
 		SyncFunction.SyncEmailList();
 		SyncFunction.SyncWarnerRules();
 		SyncFunction.SyncTopNList();
 		SyncFunction.SyncMessageList();
-		SystemLogger("扫描变动结束。。");
+		Log4js.info("扫描变动结束。。");
 		SyncFunction.SyncStatisticalList();
 	}
 }

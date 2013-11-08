@@ -12,13 +12,13 @@ SvseEmailDaoOnServer = {
 		var result = SvseMethodsOnServer.svWriteEmailAddressIniFileSectionString(addressname,address);
 		if(!result){
 			var msg = "SvseEmailDaoOnServer's addEmailAddress  add " + addressname +" faild";
-			SystemLogger.log(msg,-1);
+			Log4js.error(msg);
 			throw new Meteor.Error(500,msg);
 		}
 		var addressresult = result[addressname];
 		SvseEmailList.insert(addressresult,function(err,r_id){
 			if(err){
-				SystemLogger(err,-1);
+				Log4js.error(err);
 				throw new Meteor.Error(500,err);
 			}
 		})
@@ -27,7 +27,7 @@ SvseEmailDaoOnServer = {
 		var result = SvseMethodsOnServer.svWriteEmailAddressIniFileSectionString(addressname,address);
 		if(!result){
 			var msg = "SvseEmailDaoOnServer's addEmailAddress  update " + addressname +" faild";
-			SystemLogger.log(msg,-1);
+			Log4js.error(msg,-1);
 			throw new Meteor.Error(500,msg);
 		}
 		var addressresult = result[addressname];
@@ -37,7 +37,7 @@ SvseEmailDaoOnServer = {
 		console.log(addressresult);
 		SvseEmailList.update(s_id,{$set:addressresult},function(err){
 			if(err){
-				SystemLogger(err,-1);
+				Log4js.error(err);
 				throw new Meteor.Error(500,err);
 			}
 		})
@@ -46,7 +46,7 @@ SvseEmailDaoOnServer = {
 		var result = SvseMethodsOnServer.svWriteEmailIniFileSectionString(setting);
 		if(!result){
 			var msg = "SvseEmailDaoOnServer's setEmailBasicSetting faild";
-			SystemLogger.log(msg,-1);
+			Log4js.error(msg);
 			throw new Meteor.Error(500,msg);
 		}
 		return SvseEmailDaoOnServer.getReturn(true);
@@ -56,7 +56,7 @@ SvseEmailDaoOnServer = {
 		var result = SvseMethodsOnServer.svDeleteEmailAddressIniFileSection(address);
 		if(!result){
 			var msg = "SvseEmailDaoOnServer's deleteEmailAddressByIds"+ids+" faild";
-			SystemLogger.log(msg,-1);
+			Log4js.error(msg);
 			throw new Meteor.Error(500,msg);
 		}
 		for(index in ids){
@@ -74,7 +74,7 @@ SvseEmailDaoOnServer = {
 				count = count+1;
 			}else{
 				var msg = "SvseEmailDaoOnServer's updateEmailAddressStatus "+index+" faild";
-				SystemLogger.log(msg,-1);
+				Log4js.error(msg);
 			}
 		}
 		return SvseEmailDaoOnServer.getReturn(true,1);

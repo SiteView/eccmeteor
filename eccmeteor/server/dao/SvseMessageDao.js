@@ -13,13 +13,13 @@ SvseMessageDaoOnServer = {
 		var result = SvseMethodsOnServer.svWriteMessageIniFileSectionString(sectionname,section);
 		if(!result){
 			var msg = "SvseMessageDaoOnServer's addMessage add " + sectionname +" faild";
-			SystemLogger.log(msg,-1);
+			Log4js.error(msg);
 			throw new Meteor.Error(500,msg);
 		}
 		var messageresult = result[sectionname];
 		SvseMessageList.insert(messageresult,function(err,r_id){
 			if(err){
-				SystemLogger(err,-1);
+				Log4js.error(err);
 				throw new Meteor.Error(500,err);
 			}
 		})
@@ -30,7 +30,7 @@ SvseMessageDaoOnServer = {
 		var result = SvseMethodsOnServer.svDeleteMessageIniFileSection(message);
 		if(!result){
 			var msg = "SvseMessageDaoOnServer's deleteMessageByIds"+ids+" faild";
-			SystemLogger.log(msg,-1);
+			Log4js.error(msg);
 			throw new Meteor.Error(500,msg);
 		}
 		for(index in ids){
@@ -52,7 +52,7 @@ SvseMessageDaoOnServer = {
 		console.log(messageresult);
 		SvseMessageList.update(s_id,{$set:messageresult},function(err){
 			if(err){
-				SystemLogger(err,-1);
+				Log4js.error(err);
 				throw new Meteor.Error(500,err);
 			}
 		})
@@ -71,7 +71,7 @@ SvseMessageDaoOnServer = {
 				count = count+1;
 			}else{
 				var msg = "SvseMessageDaoOnServer's updateMessageStatus "+index+" faild";
-				SystemLogger.log(msg,-1);
+				Log4js.error(msg);
 			}
 		}
 		return SvseMessageDaoOnServer.getReturn(true,1);
