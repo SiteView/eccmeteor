@@ -30,23 +30,6 @@ Template.operateNode.events ={
 	"click .btn#addGroup":function(){
 		$("#showGroupAdddiv").modal('show');
 	},
-	/*
-	"click a#forbidGroup" : function(e){
-		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
-	    if(!groupsIds.length)
-	        return;
-	    console.log("禁用的组是：");
-	    console.log(groupsIds);
-	    SvseDao.forbidNodeForever(groupsIds,function(result){});
-	},
-	"click a#allowGroup":function(e){
-	    var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
-	    if(!groupsIds.length)
-	        return;
-	    console.log("启用的组是：");
-	    console.log(groupsIds);
-	    SvseDao.enableNode(groupsIds,function(err){});
-	},*/
 	"click a#enabledEquipments":function(){  //启用组和设备
 		console.log("启用");
 		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
@@ -72,56 +55,18 @@ Template.operateNode.events ={
 			return;
 		}
 		$("#ForbidEquipmentsDiv").find(":hidden[name=equipmetType]").val("equipments").attr("data-value",equipmentIds.join());
-		$("#ForbidEquipmentsDiv").modal("show");		
-		/*
-		console.log("禁用");
-		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
-		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
-		console.log(groupsIds);
-		console.log(entityIds);
-		var equipmentIds = groupsIds.concat(entityIds);
-		LoadingModal.loading();
-		var fid = SessionManage.getCheckedTreeNode("id");
-		SvseDao.forbidEquipments(fid,equipmentIds,function(result){
-			LoadingModal.loaded();
-			if(!result.status)
-				Message.error(result.msg);
-		});
-		*/
+		var startPicker = $("#ForbidEquipmentsStartDate").data('datetimepicker');
+		var endPicker = $("#ForbidEquipmentsEndDate").data('datetimepicker');
+		var endDate = new Date();
+		var startDate = new Date();
+		endDate.setTime(endDate.getTime() + 1000*60*60*2);
+		startPicker.setDate(startDate);
+		endPicker.setDate(endDate);
+		$("#ForbidEquipmentsDiv").modal("show");
 	},
 	"click .btn#addEntity":function(){
 		$("#entitiesGroupByTypeDiv").modal('show');
 	},
-	/*
-	"click .btn#editEntity":function(){
-		if(!SessionManage.getCheckedTreeNode() || SessionManage.getCheckedTreeNode("type") !== "entity")
-			return;
-		SwithcView.view(MONITORVIEW.ENTITYEDIT);//设置视图状态
-	},
-	"click a#forbidEntity" : function(e){
-		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
-	    if(!entityIds.length)
-	        return;
-	    console.log("禁用的设备是：");
-	    console.log(entityIds);
-	    SvseDao.forbidNodeForever(entityIds,function(result){
-			if(!result.status){
-				console.log(result.msg)
-			}
-		});
-	},
-	"click a#allowEntity":function(){
-		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
-	    if(!entityIds.length)
-	        return;
-	    console.log("启用的设备是：");
-	    console.log(entityIds);
-	    SvseDao.enableNode(entityIds,function(result){
-			if(!result.status){
-				console.log(result.msg)
-			}
-		});
-	},*/
 	"click a#removeNodes":function(){ 
 		//删除子节点
 		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
@@ -166,6 +111,7 @@ Template.operateNode.events ={
 		})
 	},
 	"click a#forbidMonitor" : function(e){
+		/*
 		var montitorsids = ClientUtils.tableGetSelectedAll("showMonitorList");
 	    if(!montitorsids.length)
 	        return;
@@ -175,7 +121,22 @@ Template.operateNode.events ={
 			if(!result.status){
 				console.log(result.msg)
 			}
-		});
+		});*/
+		var monitorIds = ClientUtils.tableGetSelectedAll("showMonitorList");
+		if(!monitorIds.length){
+			Message.warn("请选择需要禁用监视器",{align:"center",time:1});
+			return;
+		}
+		$("#ForbidEquipmentsDiv").find(":hidden[name=equipmetType]").val("monitors").attr("data-value",monitorIds.join());
+		var startPicker = $("#ForbidEquipmentsStartDate").data('datetimepicker');
+		var endPicker = $("#ForbidEquipmentsEndDate").data('datetimepicker');
+		var endDate = new Date();
+		var startDate = new Date();
+		endDate.setTime(endDate.getTime() + 1000*60*60*2);
+		startPicker.setDate(startDate);
+		endPicker.setDate(endDate);
+		$("#ForbidEquipmentsDiv").modal("show");
+		
 	},
 	"click a#allowMonitor":function(){
 		var montitorsids = ClientUtils.tableGetSelectedAll("showMonitorList");

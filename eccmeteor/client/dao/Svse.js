@@ -365,9 +365,9 @@ Object.defineProperty(SvseDao,"enabledMonitors",{
 		cids:子节点数组
 		fn:回调函数 接收一个结果对象,{status:true|false,msg:"当status为false时，存在该属性",result:{}}
 **/
-Object.defineProperty(SvseDao,"forbidenabledMonitors",{
+Object.defineProperty(SvseDao,"forbidMonitors",{
 	value:function(fid,cids,fn){
-		Meteor.call(SvseDao.AGENT,'forbidenabledMonitors',[fid,cids],function(err,result){
+		Meteor.call(SvseDao.AGENT,'forbidMonitors',[fid,cids],function(err,result){
 			if(err){
 				Log4js.error(err);
 				fn({status:false,msg:err})

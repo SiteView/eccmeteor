@@ -16,3 +16,13 @@ Object.defineProperty(AssetsUtils,"getLanguages",{
 		return languages;
 	}
 });
+/*
+*获取开发相关配置
+*/
+Object.defineProperty(AssetsUtils,"getDevConfig",{
+	value:function(name){
+		var fs = EccSystem.require("fs");
+		var dev = EJSON.parse(Assets.getText("development.json"));
+		return dev[name];
+	}
+});

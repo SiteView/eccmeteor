@@ -28,37 +28,39 @@ Template.ForbidEquipments.rendered = function(){
 }
 
 Template.ForbidEquipments.events = {
-	"click #ForbidEquipmentsDivFormForbidBtn":function(e,t){
+	"click #ForbidEquipmentsDivFormForbidBtn":function(e,template){
 		LoadingModal.loading();
 		var fid = SessionManage.getCheckedTreeNode("id");
-		var equipmet = $(t.find("input:hidden[name=equipmetType]"));
+		var equipmet = $(template.find("input:hidden[name=equipmetType]"));
 		var equipmentIds = equipmet.attr("data-value").split('\,'); //获取批量禁止的节点id
 		var equipmentType = equipmet.val();//获取批量禁止的节点的类型 是 （组+设备）  equipments   还是 监视器  monitors
-		var type = t.find("input:radio[checked]").value;
-		//type  true 永久禁止 false 临时禁止
-		if(type){
+		var type = template.find("input:radio[checked]").value;
+		//type  forever 永久禁止 temporary 临时禁止
+		if(type === "forever"){
 			if(equipmentType === "equipments"){ //（组+设备）
 				SvseDao.forbidEquipments(fid,equipmentIds,function(result){
 					LoadingModal.loaded();
 					if(!result.status)
 						Message.error(result.msg);
 				});
-			}else{ // 监视器
-				SvseDao.forbidenabledMonitors(fid,equipmentIds,function(result){
+			}else if(equipmentType === "monitors"){ // 监视器
+				SvseDao.forbidMonitors(fid,equipmentIds,function(result){
 					LoadingModal.loaded();
 					if(!result.status)
 						Message.error(result.msg);
 				});
 			}
 		}else{
+			var startTime = $(template.find("#ForbidEquipmentsStartDate")).data('datetimepicker').getDate();
+			var endTime = $(template.find("#ForbidEquipmentsEndDate")).data('datetimepicker').getDate();
 			if(equipmentType === "equipments"){ //（组+设备）
-				SvseDao.forbidEquipmentsTemporary(fid,equipmentIds,function(result){
+				SvseDao.forbidEquipmentsTemporary(fid,equipmentIds,ClientUtils.dateToObject(startTime),ClientUtils.dateToObject(endTime),function(result){
 					LoadingModal.loaded();
 					if(!result.status)
 						Message.error(result.msg);
 				})
-			}else{ // 监视器
-				SvseDao.forbidMonitorsTemporary(fid,equipmentIds,function(result){
+			}else if(equipmentType === "monitors"){ // 监视器
+				SvseDao.forbidMonitorsTemporary(fid,equipmentIds,ClientUtils.dateToObject(startTime),ClientUtils.dateToObject(endTime),function(result){
 					LoadingModal.loaded();
 					if(!result.status)
 						Message.error(result.msg);
