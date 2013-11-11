@@ -2,7 +2,10 @@
 	<div id="messagewarnerdiv" class="modal hide fade" 
 	data-backdrop="true" data-keyboard="true" data-show="false" 
 	data-width="800" data-modalOverflow="true">
-		<div class="modal-header">{{language.warnerrulemodel.addmessagewarnerruletitle}}</div>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<label class="label label-info">{{language.warnerrulemodel.addmessagewarnerruletitle}}</label>{{ide "warnerrule"}}
+		</div>
 		<div class="modal-body">
 			<div class="row-fluid">
 				<div class="span4" style="overflow:auto">
@@ -33,7 +36,7 @@
 			<div class="control-group">
 				<label class="control-label">报警接收手机号:</label>
 				<div class="controls">
-					<select class="emailmultiselect" multiple="multiple" name="SmsNumber">
+					<select class="messagemultiselect" multiple="multiple" name="SmsNumber">
 						{{#each messagelist}}
 							 <option value="{{Name}}">{{Name}}</option>
 						{{/each}}
@@ -50,7 +53,7 @@
 				<label class="control-label">发送方式:</label>
 				<div class="controls">
 					<select id="messageSendModelist" name="SmsSendMode">
-						<option value="Web">Web</option>
+						<option value="Web" selected>Web</option>
 						<option value="Com">Com</option>
 						<option value="SelfDefine">SelfDefine</option>
 						<option value="Smsdll.dll">Smsdll.dll</option>
@@ -61,7 +64,7 @@
 			<div class="control-group">
 				<label class="control-label">短信模板:</label>
 				<div class="controls">
-					<select id="Messagetemplatelist" name="SmsTemplate">
+					<select id="messagetemplatelist" name="SmsTemplate">
 					</select>
 				</div>
 			</div>
@@ -118,7 +121,10 @@
 	<div id="messagewarnerdivedit" class="modal hide fade" 
 	data-backdrop="true" data-keyboard="true" data-show="false" 
 	data-width="800" data-modalOverflow="true">
-		<div class="modal-header">编辑短信报警</div>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<label class="label label-info">编辑短信报警</label>{{ide "warnerrule"}}
+		</div>
 		<div class="modal-body">
 			<div class="row-fluid">
 				<div class="span4" style="overflow:auto">
@@ -137,10 +143,8 @@
 							<div class="control-group">
 								<label class="control-label">报警接收手机号:</label>
 								<div class="controls">
-									<select class="emailmultiselect" multiple="multiple" name="SmsNumber">
-									{{#each messagelist}}
-										 <option value="{{Phone}}">{{Phone}}</option>
-									{{/each}}
+									<select class="messagemultiselectedit" multiple="multiple" name="SmsNumber">
+										
 									</select>
 								</div>
 							</div>
@@ -153,7 +157,7 @@
 							<div class="control-group">
 								<label class="control-label">短信模板:</label>
 								<div class="controls">
-									<select id="Messagetemplatelist" name="SmsTemplate">
+									<select id="messagetemplatelistedit" name="SmsTemplate">
 									</select>
 								</div>
 							</div>

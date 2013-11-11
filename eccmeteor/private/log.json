@@ -1,0 +1,8 @@
+{
+	"logDateformat":"yyyy-MM-dd hh:mm:ss",
+	"dateformat":"MM-dd",
+	"method4Server":"log2txt",
+    "method4Client":"log2Console",
+    "logRate":false,
+    "logDir":false
+}

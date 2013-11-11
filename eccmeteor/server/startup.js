@@ -41,7 +41,7 @@ function initAllDateStartUp(status){
 	initDateAtStartUp["initTopNListAtStartUp"](status);
 	initDateAtStartUp["initSettingNodes"]();
 	initDateAtStartUp["initLanguageAtStartUp"]();
-	SystemLogger("全部数据初始化完毕");
+	Log4js.info("全部数据初始化完毕");
 //	var timeloop = new UnrealThread(SyncFunction.sync,70*1000);
 //	timeloop.start();
 }
@@ -67,5 +67,5 @@ var SetSvdbAddr = function(){
 Meteor.startup(function(){
 	process.sv_init();
 	SetSvdbAddr();
-	initAllDateStartUp(0);	
+	initAllDateStartUp(-1);	
 });

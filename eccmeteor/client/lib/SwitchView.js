@@ -39,15 +39,20 @@ REPORT ={
 	TOPN:"topN"//topN报告
 }
 //视图切换
-SwithcView = {
-	view:function(viewName){
+SwithcView = {}
+Object.defineProperty(SwithcView,"view",{
+	value:function(viewName){
 		Session.set("viewstatus",viewName);
-	},
-	layout:function(layoutname){
+	}
+});
+Object.defineProperty(SwithcView,"layout",{
+	value:function(layoutname){
 	    Session.set("layout",layoutname);
-	},
-	render:function(viewName,layoutname){
+	}
+});
+Object.defineProperty(SwithcView,"render",{
+	value:function(viewName,layoutname){
 		Session.set("layout",layoutname);
 		Session.set("viewstatus",viewName);
 	}
-}
+});

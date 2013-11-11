@@ -2,7 +2,10 @@
 	<div id="scriptwarnerdiv" class="modal hide fade" 
 	data-backdrop="true" data-keyboard="true" data-show="false" 
 	data-width="800" data-modalOverflow="true">
-		<div class="modal-header">添加脚本报警</div>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<label class="label label-info">添加脚本报警</label>{{ide "warnerrule"}}
+		</div>
 		<div class="modal-body">
 			<div class="row-fluid">
 				<div class="span4" style="overflow:auto">
@@ -25,7 +28,7 @@
 	<form id="warnerruleofscriptform" class="well form-horizontal form-inline">
 		<fieldset>
 			<div class="control-group">
-				<label class="control-label">报警名称:</label>
+				<label class="control-label">报警名称*:</label>
 				<div class="controls">
 					<input type="text" class="span6" name="AlertName">
 				 </div>
@@ -33,16 +36,16 @@
 			<div class="control-group">
 				<label class="control-label">选择服务器*:</label>
 				<div class="controls">
-					<select class="emailmultiselect" multiple="multiple" name="ScriptServer">
-							 <option value="127.0.0.1" selected>127.0.0.1</option>
+					<select id="" name="ScriptServer">
+						<option value="127.0.0.1" selected>127.0.0.1</option>
 					</select>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">选择脚本*:</label>
 				<div class="controls">
-					<select id="" name="ScriptFile">
-						<option value="Reboot" selected>Reboot</option>
+					<select id="scriptfilelist" name="ScriptFile">
+						
 					</select>
 				</div>
 			</div>
@@ -77,23 +80,26 @@
 	</div>
 </Template>
 
-<!--编辑短信报警 -->
+<!--编辑脚本报警 -->
 <Template name="editwarnerruleofscript">
 	<div id="scriptwarnerdivedit" class="modal hide fade" 
 	data-backdrop="true" data-keyboard="true" data-show="false" 
 	data-width="800" data-modalOverflow="true">
-		<div class="modal-header">编辑脚本报警</div>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<label class="label label-info">编辑脚本报警</label>{{ide "warnerrule"}}
+		</div>
 		<div class="modal-body">
 			<div class="row-fluid">
 				<div class="span4" style="overflow:auto">
-					<ul id="svse_tree_check_editsms" class="ztree"></ul>
+					<ul id="svse_tree_check_editscript" class="ztree"></ul>
 				</div>
 				<div class="span8">
 					<form id="warnerruleofscriptformedit" class="well form-horizontal form-inline">
 						<input type="hidden" name="nIndex" >
 						<fieldset>
 							<div class="control-group">
-								<label class="control-label">报警名称:</label>
+								<label class="control-label">报警名称*:</label>
 									<div class="controls">
 										<input type="text" class="span6" name="AlertName">
 									 </div>
@@ -101,7 +107,7 @@
 							<div class="control-group">
 								<label class="control-label">选择服务器*:</label>
 								<div class="controls">
-									<select class="emailmultiselect" multiple="multiple" name="ScriptServer">
+									<select id="" name="ScriptServer">
 										 <option value="127.0.0.1">127.0.0.1</option>
 									</select>
 								</div>
@@ -109,7 +115,7 @@
 							<div class="control-group">
 								<label class="control-label">选择脚本*:</label>
 								<div class="controls">
-									<select id="messageSendModelist" name="ScriptFile">
+									<select id="selectscriptfile" name="ScriptFile">
 										<option value="Reboot" selected>Reboot</option>
 									</select>
 								</div>

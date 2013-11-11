@@ -26,3 +26,12 @@ Object.defineProperty(EccSystem,"getRootPath",{
 		return dir;
 	}
 });
+/*
+	忽略系统相关性,拼接目录
+*/
+Object.defineProperty(EccSystem,"joinPath",{
+	value:function(){
+		var path = EccSystem.require("path");
+		return path.join.apply(null,arguments);
+	}
+})

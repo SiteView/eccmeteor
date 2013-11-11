@@ -136,11 +136,11 @@ Template.sendingmessagemethods.events({
 	},
 	"click #webmessagesettingrecoverbtn":function(){
 		Meteor.call("svGetSMSWebConfigSetting",function(err,smsweb){
-		console.log(smsweb);
-		if(!smsweb) return;
-		$("#methodsendforweb :text[name=User]").val(smsweb["User"]);
-		$("#methodsendforweb :password[name=Pwd]").val(smsweb["Pwd"]);
-		$("#methodsendforweb :text[name=Length]").val(smsweb["Length"]);
+			console.log(smsweb);
+			if(!smsweb) return;
+			$("#methodsendforweb :text[name=User]").val(smsweb["User"]);
+			$("#methodsendforweb :password[name=Pwd]").val(smsweb["Pwd"]);
+			$("#methodsendforweb :text[name=Length]").val(smsweb["Length"]);
 		});
 	},
 	//以com方式发送短信
@@ -159,10 +159,10 @@ Template.sendingmessagemethods.events({
 	},
 	"click #commessagesettingrecoverbtn":function(){
 		Meteor.call("svGetSMSComConfigSetting",function(err,smscom){
-		console.log(smscom);
-		if(!smscom) return;
-		$("#comselectport").find("option[value='"+smscom["Port"]+"']:first").attr("selected","selected").prop("selected",true);
-		$("#methodsendforcom :text[name=length]").val(smscom["length"]);
+			console.log(smscom);
+			if(!smscom) return;
+			$("#comselectport").find("option[value='"+smscom["Port"]+"']:first").attr("selected","selected").prop("selected",true);
+			$("#methodsendforcom :text[name=length]").val(smscom["length"]);
 		});
 	}
 });

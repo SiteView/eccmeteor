@@ -87,7 +87,7 @@ Template.MonitorStatisticalDetailData.monitorStatisticalDetailTableData = functi
 //画图前 获取相关数据
 function drawImage(id,count){
 	if(!count) 
-		var count = 200;
+		var count =200;
 	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
 	if(!foreigkeys){
 		SystemLogger("监视器"+id+"不能获取画图数据");
@@ -96,7 +96,7 @@ function drawImage(id,count){
 	//获取画图数据
 	SvseMonitorDao.getMonitorRuntimeRecords(id,count,function(result){
 		if(!result.status){
-			SystemLogger(result.msg);
+			Log4js.error(result.msg);
 			return;
 		}
 		var records = result.content;
@@ -109,10 +109,11 @@ function drawImage(id,count){
 		var line = new DrawLine(
 							resultData,
 							{
-								key:foreigkeys["monitorPrimary"],
-								label:foreigkeys["monitorDescript"],
-								width:$(selector).parent().width(),
-								height:$(selector).parent().height()
+								'key':foreigkeys["monitorPrimary"],
+								'label':foreigkeys["monitorDescript"],
+								'width':$(selector).parent().width(),
+								'height':$(selector).parent().height(),
+								'dateformate':"%H:%M"
 							},
 							selector);
 
@@ -125,7 +126,6 @@ function drawImage(id,count){
 				{}
 			)
 		pie.draw();
-
 	*/
 		drawDie(recordsData,"svg#monitorStatisticalPieSvg");
 	});
