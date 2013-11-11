@@ -66,15 +66,7 @@ Template.topNofadd.events = {
             document.getElementById('marklist').disabled=true;
 				}
         },
-/*"change #Typelist":function(){
-      var index = document.getElementById('s1').selectedIndex; 
- 
- if(index==2){
-  document.getElementById('marklist').style.display="";
- }else{
-  document.getElementById('marklist').style.display="none";
- },
-*/
+
     "change #reporttypePeriodlist":function(){
 	  
                 if(document.getElementById("reporttypePeriodlist").value=="Week"){
@@ -119,14 +111,6 @@ Template.topNofadd.events = {
             Message.info("E-mail格式不正确");
             return;
      }
-		
-		/*//验证E-mail格式是否正确
-		var strEmail=SvseTopNDao.getTopNByName(EmailSend);
-		if (strEmail.search(/^w+((-w+)|(.w+))*@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+)*.[A-Za-z0-9]+$/) != -1){
-        return true; }
-         else {
-             alert("oh"); 
-		}*/
 		
 		
 		//邮箱  
@@ -464,18 +448,7 @@ Template.topNofadd.rendered = function(){
 			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
 		}
 		console.log("QQQQ99999");
-		
-      /*  function selectPeriod(x){
-		      var y=document.getElementById(x).value
-                if(document.getElementById("reporttypePeriodlist").value=="Week"){
-			   //if(document.getElementById("reporttypePeriodlist").value==y.toselectPeriod()){
-                         document.getElementById("reporttypetemplatelist").disabled=false;
-                }
-				else{
-				 document.getElementById("reporttypetemplatelist").disabled=true;
-				}
-        }*/
-		
+	
 }
 
 
