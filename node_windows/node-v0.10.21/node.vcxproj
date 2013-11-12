@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{93F00CD2-1EF7-077B-5AB9-908EC137929F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>node</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="PropertySheets">
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <ExecutablePath>$(ExecutablePath);$(MSBuildProjectDirectory)\.\bin\;$(MSBuildProjectDirectory)\.\bin\</ExecutablePath>
+    <IntDir>$(Configuration)\obj\$(ProjectName)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <TargetPath>$(OutDir)\$(ProjectName)$(TargetExt)</TargetPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>src;tools\msvs\genfiles;deps\uv\src\ares;..\sv_addon;$(OutDir)obj\global_intermediate;deps\openssl\openssl\include;deps\v8\include;deps\zlib;deps\http_parser;deps\cares\include;deps\uv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <MinimalRebuild>false</MinimalRebuild>
+      <OmitFramePointers>false</OmitFramePointers>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;BUILDING_V8_SHARED=1;BUILDING_UV_SHARED=1;NODE_WANT_INTERNALS=1;ARCH="ia32";PLATFORM="win";NODE_TAG="";HAVE_OPENSSL=1;HAVE_ETW=1;HAVE_PERFCTR=1;FD_SETSIZE=1024;PLATFORM="win32";_UNICODE=1;DEBUG;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <StringPooling>true</StringPooling>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(OutDir)..\..\..\bin\addonsv.lib;$(OutDir)..\..\..\bin\addon.lib;$(OutDir)..\..\..\bin\libutil.lib;$(OutDir)..\..\..\bin\ccgnu2.lib;gdi32.lib;user32.lib;winmm.lib;advapi32.lib;iphlpapi.lib;psapi.lib;shell32.lib;ws2_32.lib</AdditionalDependencies>
+      <AllowIsolation>true</AllowIsolation>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>$(OutDir)$(ProjectName)$(TargetExt)</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>src;tools\msvs\genfiles;deps\uv\src\ares;..\sv_addon;$(OutDir)obj\global_intermediate;deps\openssl\openssl\include;deps\v8\include;deps\zlib;deps\http_parser;deps\cares\include;deps\uv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;BUILDING_V8_SHARED=1;BUILDING_UV_SHARED=1;NODE_WANT_INTERNALS=1;ARCH="ia32";PLATFORM="win";NODE_TAG="";HAVE_OPENSSL=1;HAVE_ETW=1;HAVE_PERFCTR=1;FD_SETSIZE=1024;PLATFORM="win32";_UNICODE=1;DEBUG;_DEBUG;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>src;tools\msvs\genfiles;deps\uv\src\ares;..\sv_addon;$(OutDir)obj\global_intermediate;deps\openssl\openssl\include;deps\v8\include;deps\zlib;deps\http_parser;deps\cares\include;deps\uv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>false</ExceptionHandling>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <OmitFramePointers>true</OmitFramePointers>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;BUILDING_V8_SHARED=1;BUILDING_UV_SHARED=1;NODE_WANT_INTERNALS=1;ARCH="ia32";PLATFORM="win";NODE_TAG="";HAVE_OPENSSL=1;HAVE_ETW=1;HAVE_PERFCTR=1;FD_SETSIZE=1024;PLATFORM="win32";_UNICODE=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>$(OutDir)..\..\bin\addonsv.lib;$(OutDir)..\..\bin\addon.lib;$(OutDir)..\..\bin\libutil.lib;$(OutDir)..\..\bin\ccgnu2.lib;gdi32.lib;user32.lib;winmm.lib;advapi32.lib;iphlpapi.lib;psapi.lib;shell32.lib;ws2_32.lib</AdditionalDependencies>
+      <AllowIsolation>true</AllowIsolation>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)$(ProjectName)$(TargetExt)</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>src;tools\msvs\genfiles;deps\uv\src\ares;..\sv_addon;$(OutDir)obj\global_intermediate;deps\openssl\openssl\include;deps\v8\include;deps\zlib;deps\http_parser;deps\cares\include;deps\uv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;BUILDING_V8_SHARED=1;BUILDING_UV_SHARED=1;NODE_WANT_INTERNALS=1;ARCH="ia32";PLATFORM="win";NODE_TAG="";HAVE_OPENSSL=1;HAVE_ETW=1;HAVE_PERFCTR=1;FD_SETSIZE=1024;PLATFORM="win32";_UNICODE=1;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="node.gyp" />
+    <None Include="common.gypi" />
+    <None Include="src\node.js" />
+    <None Include="lib\fs.js" />
+    <None Include="lib\os.js" />
+    <None Include="lib\path.js" />
+    <None Include="lib\freelist.js" />
+    <None Include="lib\vm.js" />
+    <None Include="lib\url.js" />
+    <None Include="lib\_debugger.js" />
+    <None Include="lib\net.js" />
+    <None Include="lib\buffer.js" />
+    <None Include="lib\querystring.js" />
+    <None Include="lib\_stream_passthrough.js" />
+    <None Include="lib\zlib.js" />
+    <None Include="lib\console.js" />
+    <None Include="lib\_linklist.js" />
+    <None Include="lib\readline.js" />
+    <None Include="lib\domain.js" />
+    <None Include="lib\dns.js" />
+    <None Include="lib\timers.js" />
+    <None Include="lib\_stream_writable.js" />
+    <None Include="lib\child_process.js" />
+    <None Include="lib\https.js" />
+    <None Include="lib\tty.js" />
+    <None Include="lib\_stream_duplex.js" />
+    <None Include="lib\module.js" />
+    <None Include="lib\punycode.js" />
+    <None Include="lib\sys.js" />
+    <None Include="lib\events.js" />
+    <None Include="lib\stream.js" />
+    <None Include="lib\_stream_readable.js" />
+    <None Include="lib\repl.js" />
+    <None Include="lib\_stream_transform.js" />
+    <None Include="lib\cluster.js" />
+    <None Include="lib\assert.js" />
+    <None Include="lib\util.js" />
+    <None Include="lib\string_decoder.js" />
+    <None Include="lib\crypto.js" />
+    <None Include="lib\constants.js" />
+    <None Include="lib\dgram.js" />
+    <None Include="lib\tls.js" />
+    <None Include="lib\http.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\node_win32_etw_provider-inl.h" />
+    <ClInclude Include="src\node_counters.h" />
+    <ClInclude Include="src\string_bytes.h" />
+    <ClInclude Include="src\node_os.h" />
+    <ClInclude Include="src\node_script.h" />
+    <ClInclude Include="src\node_buffer.h" />
+    <ClInclude Include="src\tty_wrap.h" />
+    <ClInclude Include="src\pipe_wrap.h" />
+    <ClInclude Include="src\udp_wrap.h" />
+    <ClInclude Include="src\slab_allocator.h" />
+    <ClInclude Include="src\node.h" />
+    <ClInclude Include="src\handle_wrap.h" />
+    <ClInclude Include="src\tcp_wrap.h" />
+    <ClInclude Include="src\stream_wrap.h" />
+    <ClInclude Include="src\node_string.h" />
+    <ClInclude Include="src\node_file.h" />
+    <ClInclude Include="src\v8_typed_array.h" />
+    <ClInclude Include="src\node_win32_etw_provider.h" />
+    <ClInclude Include="src\node_version.h" />
+    <ClInclude Include="src\node_root_certs.h" />
+    <ClInclude Include="src\node_extensions.h" />
+    <ClInclude Include="src\ngx-queue.h" />
+    <ClInclude Include="src\node_win32_perfctr_provider.h" />
+    <ClInclude Include="src\node_http_parser.h" />
+    <ClInclude Include="src\node_crypto.h" />
+    <ClInclude Include="src\tree.h" />
+    <ClInclude Include="src\node_constants.h" />
+    <ClInclude Include="src\node_javascript.h" />
+    <ClInclude Include="src\req_wrap.h" />
+    <ClInclude Include="tools\msvs\genfiles\node_etw_provider.h" />
+    <ClInclude Include="deps\v8\include\v8.h" />
+    <ClInclude Include="deps\v8\include\v8-debug.h" />
+    <ClInclude Include="deps\http_parser\http_parser.h" />
+    <ClInclude Include="$(OutDir)obj\global_intermediate\node_natives.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\handle_wrap.cc" />
+    <ClCompile Include="src\udp_wrap.cc" />
+    <ClCompile Include="src\pipe_wrap.cc" />
+    <ClCompile Include="src\node_zlib.cc" />
+    <ClCompile Include="src\v8_typed_array.cc" />
+    <ClCompile Include="src\node.cc" />
+    <ClCompile Include="src\process_wrap.cc" />
+    <ClCompile Include="src\tty_wrap.cc" />
+    <ClCompile Include="src\node_counters.cc" />
+    <ClCompile Include="src\cares_wrap.cc" />
+    <ClCompile Include="src\node_dtrace.cc" />
+    <ClCompile Include="src\node_win32_perfctr_provider.cc" />
+    <ClCompile Include="src\node_file.cc" />
+    <ClCompile Include="src\node_javascript.cc" />
+    <ClCompile Include="src\node_buffer.cc" />
+    <ClCompile Include="src\signal_wrap.cc" />
+    <ClCompile Include="src\node_win32_etw_provider.cc" />
+    <ClCompile Include="src\node_stat_watcher.cc" />
+    <ClCompile Include="src\fs_event_wrap.cc" />
+    <ClCompile Include="src\node_constants.cc" />
+    <ClCompile Include="src\node_os.cc" />
+    <ClCompile Include="src\string_bytes.cc" />
+    <ClCompile Include="src\slab_allocator.cc" />
+    <ClCompile Include="src\node_script.cc" />
+    <ClCompile Include="src\node_main.cc" />
+    <ClCompile Include="src\stream_wrap.cc" />
+    <ClCompile Include="src\tcp_wrap.cc" />
+    <ClCompile Include="src\node_string.cc" />
+    <ClCompile Include="src\timer_wrap.cc" />
+    <ClCompile Include="src\node_extensions.cc" />
+    <ClCompile Include="src\node_http_parser.cc" />
+    <ClCompile Include="src\node_crypto.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\res\node.rc" />
+    <ResourceCompile Include="tools\msvs\genfiles\node_etw_provider.rc" />
+    <ResourceCompile Include="tools\msvs\genfiles\node_perfctr_provider.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="node_js2c.vcxproj">
+      <Project>{4DCBA3DB-4989-EAB7-0252-907D0C8A5A33}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="deps\openssl\openssl.vcxproj">
+      <Project>{5C6460DB-F7B1-5315-A0DE-79A9DFC525A1}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="node_etw.vcxproj">
+      <Project>{F6F4AF82-6B99-6964-D7F3-CF38A17D3F8B}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="node_perfctr.vcxproj">
+      <Project>{E0426E6D-33CD-5201-39EF-B614814AC019}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="deps\v8\tools\gyp\v8.vcxproj">
+      <Project>{5F03D104-10BB-B3BA-7021-6A64E7AA221F}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="deps\zlib\zlib.vcxproj">
+      <Project>{7FF6F247-3828-69AF-7EDB-FB0A9FF393E1}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="deps\http_parser\http_parser.vcxproj">
+      <Project>{3D75A4D7-C52C-EA52-8959-BDF659A0ED66}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="deps\cares\cares.vcxproj">
+      <Project>{74CF319D-6651-E4ED-35FD-B82D47DC2516}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="deps\uv\libuv.vcxproj">
+      <Project>{603C6853-166F-A229-0CE7-B001CAF96C76}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="deps\v8\tools\gyp\v8_base.vcxproj">
+      <Project>{49E7EEAF-9054-48C6-88AE-03D0F4968B76}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="deps\v8\tools\gyp\v8_snapshot.vcxproj">
+      <Project>{A9E66316-6483-BD43-8FC3-020655427237}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="deps\v8\tools\gyp\js2c.vcxproj">
+      <Project>{B5211BC6-68D3-792F-117F-B0C5D46CCBEE}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

@@ -4,8 +4,8 @@
 # User-specific files
 *.suo
 *.user
-*.sln.docstates
-.project
+#*.sln.docstates
+#.project
 
 # Build results
 
@@ -60,5 +60,4 @@ node-v0.10.0/
 stack/
 
 *.suo
-node.sln
 stack.*

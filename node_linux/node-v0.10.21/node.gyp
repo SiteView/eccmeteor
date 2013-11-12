@@ -81,8 +81,8 @@
       'libraries': [ 
         '<(PRODUCT_DIR)/../../../bin/libaddonsv.a',
         '<(PRODUCT_DIR)/../../../bin/libaddon.a',
-        '<(PRODUCT_DIR)/../../../libutil.a',
-		'<(PRODUCT_DIR)/../../../libccgnu2.a',
+        '<(PRODUCT_DIR)/../../../bin/libutil.a',
+		'<(PRODUCT_DIR)/../../../bin/libccgnu2.a',
       ],
 	  
       'sources': [
