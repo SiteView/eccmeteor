@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{8CDEE807-BC53-E450-C8B8-4DEBB66742D4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\win">
+      <UniqueIdentifier>{47FC5EC4-15EB-E92F-89D7-AFE51CF838A9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ares">
+      <UniqueIdentifier>{A1A95533-2AFE-E4CE-1580-75145A69D9D1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ares\config_win32">
+      <UniqueIdentifier>{74BE68CE-B591-61E3-4B4C-65CE4E2BA553}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{57CA55B8-BCC5-4000-CE3A-58972F82E9CB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\uv-private">
+      <UniqueIdentifier>{10A83D82-F968-F903-35F9-64A3EE283D98}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="uv.gyp"/>
+    <None Include="common.gypi"/>
+    <ClCompile Include="src\uv-common.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClInclude Include="src\uv-common.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClCompile Include="src\cares.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fs-poll.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\loop-watcher.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\process.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\util.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\stream.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\getaddrinfo.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\poll.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\threadpool.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClInclude Include="src\win\internal.h">
+      <Filter>src\win</Filter>
+    </ClInclude>
+    <ClCompile Include="src\win\fs-event.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\handle.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\tty.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClInclude Include="src\win\winapi.h">
+      <Filter>src\win</Filter>
+    </ClInclude>
+    <ClCompile Include="src\win\timer.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\dl.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\winapi.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\udp.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\thread.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\req.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\fs.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\pipe.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\tcp.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\core.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\async.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win\process-stdio.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClInclude Include="src\win\stream-inl.h">
+      <Filter>src\win</Filter>
+    </ClInclude>
+    <ClInclude Include="src\win\handle-inl.h">
+      <Filter>src\win</Filter>
+    </ClInclude>
+    <ClCompile Include="src\win\error.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClInclude Include="src\win\winsock.h">
+      <Filter>src\win</Filter>
+    </ClInclude>
+    <ClCompile Include="src\win\winsock.c">
+      <Filter>src\win</Filter>
+    </ClCompile>
+    <ClInclude Include="src\win\req-inl.h">
+      <Filter>src\win</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_parse_ptr_reply.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_timeout.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\inet_net_pton.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_process.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\inet_net_pton.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_version.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\ares_library_init.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_init.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_gethostbyname.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\ares_setup.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ares\ares_ipv6.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_getsock.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\ares_getenv.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_free_hostent.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_getenv.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\ares_dns.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ares\ares_writev.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ares\setup_once.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_cancel.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_strcasecmp.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_writev.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\ares_strcasecmp.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ares\ares_private.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_mkquery.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_destroy.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_parse_txt_reply.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_gethostbyaddr.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_parse_mx_reply.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_expand_name.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares__close_sockets.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_getopt.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\ares_getopt.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\inet_ntop.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_library_init.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_fds.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\inet_ntop.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_expand_string.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_strdup.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_llist.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_parse_a_reply.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_free_string.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\ares_llist.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ares\ares_strdup.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_platform.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\ares_platform.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ares\ares_iphlpapi.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_options.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_parse_aaaa_reply.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_parse_srv_reply.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares__timeval.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares__read_line.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\nameser.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\bitncmp.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_parse_ns_reply.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\bitncmp.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_search.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\ares_data.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares__get_hostent.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\ares_nowarn.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_strerror.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\windows_port.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_data.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_nowarn.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_send.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ares\ares_getnameinfo.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\ares_rules.h">
+      <Filter>src\ares</Filter>
+    </ClInclude>
+    <ClCompile Include="src\ares\ares_query.c">
+      <Filter>src\ares</Filter>
+    </ClCompile>
+    <ClInclude Include="src\ares\config_win32\ares_config.h">
+      <Filter>src\ares\config_win32</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ares.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\uv.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ares_version.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\uv-private\tree.h">
+      <Filter>include\uv-private</Filter>
+    </ClInclude>
+    <ClInclude Include="include\uv-private\uv-win.h">
+      <Filter>include\uv-private</Filter>
+    </ClInclude>
+    <ClInclude Include="include\uv-private\ngx-queue.h">
+      <Filter>include\uv-private</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
