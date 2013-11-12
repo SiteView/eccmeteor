@@ -34,12 +34,22 @@ Template.showGroupAndEntity.events({
     },
     "click #showGroupAndEntityTableEntityList button[name='trash']":function(e){
 		var id = e.currentTarget.id;
+        /*
 		console.log("删除设备id:"+id);
 		SvseDao.removeNodesById(id,function(result){
 			if(!result.status){
 				console.log(result.msg);
 			}
-		});
+		});*/
+        LoadingModal.loading();
+        SvseDao.deletEquipment(id,function(result){
+            LoadingModal.loaded();
+            if(!result.status){
+                Message.error(result.msg);
+            }else{
+                Message.success("删除成功！");
+            }
+        });
     },
     "click #showGroupAndEntityTableEntityList button[name='edit']":function(e){
         var id = e.currentTarget.id;
@@ -57,7 +67,7 @@ Template.showGroupAndEntity.events({
             type:node.type,
             name:node.sv_name
         }
-        SwithcView.layout(LAYOUTVIEW.NODE);
+        SwithcView.layout(LAYOUTVIEW.EquipmentsLayout);
         //记录点击的节点。根据该节点获取 编辑增加设备时的基本信息; 
         SessionManage.setCheckedTreeNode(checkedTreeNode);
         if(node.type === "group"){

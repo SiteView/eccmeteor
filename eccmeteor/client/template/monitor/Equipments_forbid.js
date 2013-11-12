@@ -26,6 +26,14 @@ Template.ForbidEquipments.rendered = function(){
 		endPicker.setDate(endDate);
 	});
 }
+/**处理设备的禁止，启用等回调结果*/
+var dealwithEquipmentsReturnResult = function(result){
+	LoadingModal.loaded();
+	if(!result.status)
+		Message.error(result.msg);
+	$("#ForbidEquipmentsDiv").modal("hide");
+
+}
 
 Template.ForbidEquipments.events = {
 	"click #ForbidEquipmentsDivFormForbidBtn":function(e,template){
@@ -39,31 +47,23 @@ Template.ForbidEquipments.events = {
 		if(type === "forever"){
 			if(equipmentType === "equipments"){ //（组+设备）
 				SvseDao.forbidEquipments(fid,equipmentIds,function(result){
-					LoadingModal.loaded();
-					if(!result.status)
-						Message.error(result.msg);
+					dealwithEquipmentsReturnResult(result);
 				});
 			}else if(equipmentType === "monitors"){ // 监视器
 				SvseDao.forbidMonitors(fid,equipmentIds,function(result){
-					LoadingModal.loaded();
-					if(!result.status)
-						Message.error(result.msg);
+					dealwithEquipmentsReturnResult(result);
 				});
 			}
 		}else{
 			var startTime = $(template.find("#ForbidEquipmentsStartDate")).data('datetimepicker').getDate();
 			var endTime = $(template.find("#ForbidEquipmentsEndDate")).data('datetimepicker').getDate();
 			if(equipmentType === "equipments"){ //（组+设备）
-				SvseDao.forbidEquipmentsTemporary(fid,equipmentIds,ClientUtils.dateToObject(startTime),ClientUtils.dateToObject(endTime),function(result){
-					LoadingModal.loaded();
-					if(!result.status)
-						Message.error(result.msg);
+				SvseDao.forbidEquipmentsTemporary(fid,equipmentIds,startTime.format("yyyy-MM-dd-hh:mm"),endTime.format("yyyy-MM-dd-hh:mm"),function(result){
+					dealwithEquipmentsReturnResult(result);
 				})
 			}else if(equipmentType === "monitors"){ // 监视器
-				SvseDao.forbidMonitorsTemporary(fid,equipmentIds,ClientUtils.dateToObject(startTime),ClientUtils.dateToObject(endTime),function(result){
-					LoadingModal.loaded();
-					if(!result.status)
-						Message.error(result.msg);
+				SvseDao.forbidMonitorsTemporary(fid,equipmentIds,startTime.format("yyyy-MM-dd-hh:mm"),endTime.format("yyyy-MM-dd-hh:mm"),function(result){
+					dealwithEquipmentsReturnResult(result);
 				});
 			}
 		}

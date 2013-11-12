@@ -7,7 +7,7 @@ Deps.autorun(function(c){
 	if(SessionManage.isCollectionCompleted(CONLLECTIONMAP.SVSETREE)){
 		/*/*
 		*首次记载页面展示你内容*/	
-		SwithcView.layout(LAYOUTVIEW.NODE);
+		SwithcView.layout(LAYOUTVIEW.EquipmentsLayout);
 		SessionManage.setCheckedTreeNode({
 			id : "1",
 			type:"se",

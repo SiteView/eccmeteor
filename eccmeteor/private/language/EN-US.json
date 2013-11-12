@@ -29,6 +29,15 @@
 		"disable":"Disable",
 		"warning":"Warning",
 		"error":"Error",
+		"EquipmentStatus":{
+			"status":"Status",
+			"ok":"OK",
+			"bad":"Bad",
+			"disable":"Disable",
+			"warning":"Warning",
+			"error":"Error",
+			"time_disable":"Disable"
+		},
 		"emailsettingmodel":{
 			"sendserverSMTPlab":"Server SMTP",
 			"sendemailAddresslab":"Email",

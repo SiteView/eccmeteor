@@ -29,6 +29,15 @@
 		"error":"错误",
 		"disable":"禁用",
 		"warning":"警告",
+		"EquipmentStatus":{
+			"status":"状态",
+			"ok":"正常",
+			"bad":"错误",
+			"error":"错误",
+			"disable":"禁用",
+			"warning":"警告",
+			"time_disable":"禁用"
+		},
 		"emailsettingmodel":{
 			"sendserverSMTPlab":"发送服务器SMTP",
 			"sendemailAddresslab":"发送方Email地址",

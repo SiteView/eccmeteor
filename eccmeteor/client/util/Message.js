@@ -37,7 +37,7 @@ var setContent = function(content,type,setting){
 		}
 	}
 /**信息弹窗工具类
-1. error | warn | info
+1. error | warn | info | success
 	使用方法:
 	Message.error("这是错误提示");
 	此方法会弹出一个看见窗体
@@ -75,6 +75,11 @@ Object.defineProperties(Message,{
   "close":{
   	"value":function(){
 		setContent(null,"close");
+  	}
+  },
+  "success":{
+  	"value":function(){
+  		setContent(content,"success",setting);
   	}
   }
 });

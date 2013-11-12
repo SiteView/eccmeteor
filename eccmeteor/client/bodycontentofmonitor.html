@@ -9,7 +9,7 @@
 				</div>
 				<div class="span10">
 					<div style="overflow:auto" id="ContentLayout">		
-						{{> layout}}
+						{{> ControlViewLayout}}
 					</div>
 				</div>
 			</div>
@@ -23,34 +23,35 @@
 	{{> EntitiesGroupByType}} <!--添加设备时设备类别选择-->
 	{{> ForbidEquipments}} <!--禁止组设备和监视器-->
 </Template>
-
-<Template name="layout">
-    {{#if layout}}
-        {{renderPage layout}}
+<!--决定渲染 SettingLayout 或者 EquipmentsLayout-->
+<Template name="ControlViewLayout">
+    {{#if viewlayout}}
+        {{renderPage viewlayout}}
     {{/if}}
 </Template>
 
-<Template name="settingLayout">
+<Template name="SettingLayout">
     <div class="row-fluid">
-	{{#if viewstatus}}
-		{{renderPage viewstatus}}
+	{{#if viewType}}
+		{{renderPage viewType}}
 	{{/if}}
 	</div>
 </Template>
 
-<Template name="nodeLayout"><!-- 视图选择 -->
+<Template name="EquipmentsLayout"><!-- 设备或者组或者监视器的视图 -->
     {{> operateNode}}
 	<div class="row-fluid">
-	{{#if viewstatus}}
-		{{renderPage viewstatus}}
+	{{#if viewType}}
+		{{renderPage viewType}}
 	{{/if}}
 	</div>
 </Template>
-
-<Template name="notOperationNodeLayout">
+<!--
+Template name="notOperationNodeLayout"
 	<div class="row-fluid">
 		{{#if viewstatus}}
 			{{renderPage viewstatus}}
 		{{/if}}
 	</div>
-</Template>
+Template
+-->
