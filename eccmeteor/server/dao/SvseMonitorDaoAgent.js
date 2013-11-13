@@ -9,13 +9,13 @@ SvseMonitorDaoAgent = {
 				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">editMonitor");
 				break;
 			case "deleteMonitor":
-				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">deleteMonitor");
+				flag =  Agent.getEquipmentsOpratePermission(args[0],Agent._PermissionType.deleteMonitor);
 				break;
 			case "addMultiMonitor":
-				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">addMonitor");
+				flag =  Agent.getEquipmentsOpratePermission(args[0],Agent._PermissionType.addMonitor);
 				break;
 			case "deleteMultMonitors":
-				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">deleteMonitor");
+				flag =  Agent.getEquipmentsOpratePermission(args[0],Agent._PermissionType.deleteMonitor);
 				break;
 			default : flag = true;
 		}

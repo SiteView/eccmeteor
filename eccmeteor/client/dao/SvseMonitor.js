@@ -44,7 +44,7 @@ SvseMonitorDao = {
 	},
 	addMultiMonitor : function(monitors,parentid,fn){
 		for(index in monitors){
-			Meteor.call(SvseMonitorDao.AGENT,"addMultiMonitor",[monitors,parentid],function(err,result){
+			Meteor.call(SvseMonitorDao.AGENT,"addMultiMonitor",[parentid,monitors],function(err,result){
 				if(err){
 				SystemLogger(err);
 				fn({status:false,msg:err})
@@ -87,7 +87,7 @@ SvseMonitorDao = {
 	},
 	deleteMonitor : function(monitorid,parentid,fn){
 		fn = Utils.checkReCallFunction(fn);
-		Meteor.call(SvseMonitorDao.AGENT,"deleteMonitor",[monitorid,parentid],function (err,result){
+		Meteor.call(SvseMonitorDao.AGENT,"deleteMonitor",[parentid,monitorid],function (err,result){
 			if(err){
 				console.log(err);
 				fn({status:false,msg:err})
@@ -102,7 +102,7 @@ SvseMonitorDao = {
 		});
 	},
 	deleteMultMonitors : function(monitorIds,parentid,fn){
-		Meteor.call(SvseMonitorDao.AGENT,"deleteMultMonitors",[monitorIds,parentid],function (err,result){
+		Meteor.call(SvseMonitorDao.AGENT,"deleteMultMonitors",[parentid,monitorIds],function (err,result){
 			if(err){
 				console.log(err);
 				fn({status:false,msg:err})

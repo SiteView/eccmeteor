@@ -377,7 +377,7 @@ Object.defineProperty(SvseDao,"forbidMonitorsTemporary",{
 		fn:回调函数 接收一个结果对象,{status:true|false,msg:"当status为false时，存在该属性",result:{}}
 */
 Object.defineProperty(SvseDao,"deletEquipment",{
-	value:function(id){
+	value:function(id,fn){
 		Meteor.call(SvseDao.AGENT,'deletEquipment',[id],function(err,result){
 			if(err){
 				Log4js.error(err);

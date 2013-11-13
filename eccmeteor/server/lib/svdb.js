@@ -501,6 +501,7 @@ svAllowNode = function (ids) {
 svDeleteMonitor = function (id){
 	var robj = process.sv_univ({'dowhat':'DelChildren','parentid':id}, 0);
 	if(!robj.isok(0)){
+		Log4js.error(robj.isok(0));
 		Log4js.error(robj.estr(0));
 		return false;
 	}

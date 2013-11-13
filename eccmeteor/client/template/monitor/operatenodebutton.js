@@ -81,14 +81,6 @@ Template.operateNode.events ={
 			return;
 		}
 		LoadingModal.loading();
-		/*
-		SvseDao.removeNodesByIds(ids,parentid,function(result) {
-			if(result.status){
-				console.log("删除成功");
-			}else{
-				console.log("删除失败");
-			}
-		});*/
 		SvseDao.deletEquipmentsMul(parentid,ids,function(result){
 			LoadingModal.loaded();
 			if(!result.status){
@@ -114,8 +106,6 @@ Template.operateNode.events ={
 	"click a#deleteMonitor" : function(){
 		var monitorIds =  ClientUtils.tableGetSelectedAll("showMonitorList");
 		var parentid = SessionManage.getCheckedTreeNode("id");
-		console.log("delete monitorids:");
-		console.log(monitorIds);
 		if(!monitorIds.length){
 			Message.warn("请选择需要删除的监视器",{align:"center",time:1});
 			return;
@@ -175,8 +165,7 @@ Template.operateNode.events ={
 			name:upLayoutNode["sv_name"]
 		}
 		SessionManage.setCheckedTreeNode(checkedTreeNode);
-		if(MONITORVIEW.GROUPANDENTITY !== "group")
-			SwithcView.view(MONITORVIEW.GROUPANDENTITY);
+		SwithcView.view(MONITORVIEW.GROUPANDENTITY);
 	},
 	"click .unstyled.inline a":function(e){
 		/**样式操作*/

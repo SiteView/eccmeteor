@@ -20,8 +20,6 @@ SvseMonitorDaoOnServer = {
 			}
 			//3 插入到父节点（更新父节点）
 			var parentNode = Svse.findOne({sv_id:parentid});
-			Log4js.error("找到的父节点是");
-			Log4js.error(parentNode);
 			Svse.update(parentNode._id,{$push:{submonitor:sv_id}},function(err){
 				if(err){					
 					var msg = "SvseMonitorDaoOnServer's addMonitor  Svse.update faild";
@@ -61,7 +59,7 @@ SvseMonitorDaoOnServer = {
 			}
 		});
 	},
-	deleteMonitor : function (monitorid,parentid) {
+	deleteMonitor : function (parentid,monitorid) {
 		var fmap = SvseMethodsOnServer.svDeleteMonitor(monitorid);
 		if(!fmap) throw new Meteor.Error(500,"SvseMonitorDaoOnServer deleteMonitor has error");
 		SvseTree.remove({sv_id:monitorid},function(err){
@@ -77,15 +75,32 @@ SvseMonitorDaoOnServer = {
 			});
 		});
 	},
-	addMultiMonitor : function(monitors,parentid){
+	addMultiMonitor : function(parentid,monitors){
 		for(index in monitors){
 			SvseMonitorDaoOnServer.addMonitor(monitors[index],parentid);
 		}
 	},
-	deleteMultMonitors : function(monitorids,parentid){
+	deleteMultMonitors : function(parentid,monitorids){
+		/*
 		for(index in monitorids){
 			SvseMonitorDaoOnServer.deleteMonitor(monitorids[index],parentid);
-		}
+		}*/
+		var id = monitorids.join("\,");
+		var fmap = SvseMethodsOnServer.svDeleteMonitor(monitorid);
+		if(!fmap) throw new Meteor.Error(500,"SvseMonitorDaoOnServer deleteMonitor has error");
+		SvseTree.remove({sv_id:{$in:monitorids}});
+		Svse.update({sv_id:parentid},{
+			$pull:{
+					submonitor:{
+						$in:monitorids
+					}
+				}
+			},function (err){
+				if(err) {
+					Log4js.error(err);
+					throw new Meteor.Error(500,"SvseMonitorDaoOnServer deleteMonitor Svse.update has error");
+				}
+			});
 	},
 	getMonitorRuntimeRecords : function(monitorid,count){
 		return SvseMethodsOnServer.svGetMonitorRuntimeRecords(monitorid,count);
