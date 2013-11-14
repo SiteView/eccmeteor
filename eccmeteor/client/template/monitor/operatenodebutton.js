@@ -93,8 +93,11 @@ Template.operateNode.events ={
 	},
 	"click .btn#addMonitor":function(){
 		//设置视图状态 监视器模板选择
-		$("#chooseMonitorTemplateDiv").modal('show');
-
+		//$("#chooseMonitorTemplateDiv").modal('show');
+		var id = SessionManage.getCheckedTreeNode("id");
+		var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);
+		var monitorTemplates =  SvseEntityTemplateDao.getEntityMonitorByDevicetype(devicetype);
+		RenderTemplate.show("#chooseMonitorTemplateDiv","ChooseMonitorTemplateForm",{monities:monitorTemplates});
 	},
 	"click .btn#editMonitor" : function(){//编辑监视，应该先获取 监视器添加时的模板，然后填充数据
 		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;
