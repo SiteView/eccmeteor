@@ -1,16 +1,11 @@
 SvseMonitorDaoOnServer = {
-	addMonitor : function(monitor,parentid){
+	addMonitor : function(parentid,monitor){
 		var r_monitor = SvseMethodsOnServer.svSubmitMonitor(monitor,parentid);
-		if(!r_monitor)throw new Meteor.Error(500,"SvseMonitorDaoOnServer.addMonitor");
-		Log4js.info("添加监视器成功，监视器是：");
-		Log4js.info(r_monitor);
-		Log4js.info("刷新监视");
+		if(!r_monitor)
+			throw new Meteor.Error(500,"SvseMonitorDaoOnServer.addMonitor");
 		var selfId = r_monitor["return"]["id"];
-		Log4js.error("selfId is "+selfId+ "===== parentid is" + parentid);
 		up_monitor = SvseMethodsOnServer.svRefreshMonitors(selfId,parentid,false);
-		Log4js.info("刷新后的监视器是");
 		r_monitor = up_monitor[selfId];
-//		return up_monitor[selfId];
 		var sv_id = r_monitor["sv_id"];
 		SvseTree.insert(r_monitor,function(err,r_id){
 			if(err){					
@@ -77,7 +72,7 @@ SvseMonitorDaoOnServer = {
 	},
 	addMultiMonitor : function(parentid,monitors){
 		for(index in monitors){
-			SvseMonitorDaoOnServer.addMonitor(monitors[index],parentid);
+			SvseMonitorDaoOnServer.addMonitor(parentid,monitors[index]);
 		}
 	},
 	deleteMultMonitors : function(parentid,monitorids){

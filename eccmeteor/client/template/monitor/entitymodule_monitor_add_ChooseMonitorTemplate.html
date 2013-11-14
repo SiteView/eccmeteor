@@ -1,0 +1,26 @@
+<Template name="ChooseMonitorTemplate">
+	<div id="chooseMonitorTemplateDiv" class="modal hide fade">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<label class="label label-info">选择监视器类型</label>
+		</div>
+		<div class="modal-body">
+			<table class="table table-striped table-bordered table-condensed table-hover">
+				<thead>
+					<tr>   
+						<th>监视器类型</th>
+						<th>描述</th>
+					</tr>
+				</thead>
+				<tbody>
+				{{#each monities}}
+					<tr>
+						<td><a href="#" id="{{return.id}}">{{property.sv_label}}</a></td>
+						<td>{{property.sv_description}}</td>
+					</tr>
+				{{/each}}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</Template>

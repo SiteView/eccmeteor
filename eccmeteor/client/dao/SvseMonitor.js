@@ -1,7 +1,7 @@
 SvseMonitorDao = {
 	AGENT:"svseMonitorDaoAgent",
 	addMonitor:function(monitor,parentid,fn){ //添加监视器
-		Meteor.call(SvseMonitorDao.AGENT,"addMonitor",[monitor,parentid],function(err,result){
+		Meteor.call(SvseMonitorDao.AGENT,"addMonitor",[parentid,monitor],function(err,result){
 			if(err){
 				SystemLogger(err);
 				fn({status:false,msg:err})
@@ -27,7 +27,7 @@ SvseMonitorDao = {
 	},
 	editMonitor : function(monitor,parentid,fn){
 		Utils.checkReCallFunction(fn);
-		Meteor.call(SvseMonitorDao.AGENT,'editMonitor',[monitor,parentid],function(err,result){
+		Meteor.call(SvseMonitorDao.AGENT,'editMonitor',[parentid,monitor],function(err,result){
 			if(err){
 				SystemLogger(err);
 				fn({status:false,msg:err})
@@ -43,21 +43,21 @@ SvseMonitorDao = {
 		});
 	},
 	addMultiMonitor : function(monitors,parentid,fn){
-		for(index in monitors){
-			Meteor.call(SvseMonitorDao.AGENT,"addMultiMonitor",[parentid,monitors],function(err,result){
-				if(err){
-				SystemLogger(err);
-				fn({status:false,msg:err})
+		//for(index in monitors){
+		Meteor.call(SvseMonitorDao.AGENT,"addMultiMonitor",[parentid,monitors],function(err,result){
+			if(err){
+			SystemLogger(err);
+			fn({status:false,msg:err})
+			}else{
+				if(result && !reult[status]){ // 无权限
+					SystemLogger(err);
+					fn(result);
 				}else{
-					if(result && !reult[status]){ // 无权限
-						SystemLogger(err);
-						fn(result);
-					}else{
-						fn({status:true})
-					}
+					fn({status:true})
 				}
-			});
-		}
+			}
+		});
+		//}
 	},
 	getMonitorForeignKeys: function(tree_id){
 		var monitor = SvseTree.findOne({sv_id:tree_id});//找到该监视器所依赖的监视器模板

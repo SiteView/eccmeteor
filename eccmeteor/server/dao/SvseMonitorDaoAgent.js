@@ -3,7 +3,7 @@ SvseMonitorDaoAgent = {
 		var flag = false;
 		switch(fn){
 			case "addMonitor": 
-				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">addMonitor");
+				flag =  Agent.getEquipmentsOpratePermission(args[0],Agent._PermissionType.addMonitor);
 				break;
 			case "editMonitor":
 				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">editMonitor");

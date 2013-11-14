@@ -78,7 +78,7 @@ Object.defineProperties(Message,{
   	}
   },
   "success":{
-  	"value":function(){
+  	"value":function(content,setting){
   		setContent(content,"success",setting);
   	}
   }
