@@ -1,35 +1,30 @@
+var getEmailSelectAll = function(){
+	return ClientUtils.tableGetSelectedAll("emailSettingList");
+}
+
 Template.emailsetting.events  = {
 	"click #addemailsetting" : function(){
 		$('#emailaddresssettingdiv').modal('toggle');
 	},
 	"click #delemailsetting" : function(){
-		var checks = $("#emailSettingList :checkbox[checked]");
-		var ids = [];
-		for(var i = 0 ; i < checks.length; i++){
-			ids.push($(checks[i]).attr("id"));
-		}
+		var ids = getEmailSelectAll();
+		SvseEmailDao.checkEmailSelect(ids);
 		if(ids.length)
 			SvseEmailDao.deleteEmailAddressByIds(ids,function(result){
 				SystemLogger(result);
 			});
 	},
 	"click #allowemailsetting" : function(){  //启用邮件地址
-		var checks = $("#emailSettingList :checkbox[checked]");
-		var ids = [];
-		for(var i = 0 ; i < checks.length; i++){
-			ids.push($(checks[i]).attr("id"));
-		}
+		var ids = getEmailSelectAll();
+		SvseEmailDao.checkEmailSelect(ids);
 		if(ids.length)
 			SvseEmailDao.updateEmailAddressStatus(ids,"0",function(result){
 				SystemLogger(result);
 			});
 	},
 	"click #forbidemailsetting" : function(){ //禁用邮件地址
-		var checks = $("#emailSettingList :checkbox[checked]");
-		var ids = [];
-		for(var i = 0 ; i < checks.length; i++){
-			ids.push($(checks[i]).attr("id"));
-		}
+		var ids = getEmailSelectAll();
+		SvseEmailDao.checkEmailSelect(ids);
 		if(ids.length)
 			SvseEmailDao.updateEmailAddressStatus(ids,"1",function(result){
 				SystemLogger(result);

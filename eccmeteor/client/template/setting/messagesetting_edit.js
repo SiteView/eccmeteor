@@ -35,7 +35,32 @@ Template.editmessagebasicsetting.rendered = function(){
 			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
 			$("#editmessagePlanlist").append(option);
 		}
-		
+		//改变模板类型(com和web),对应不同的信息模板
+		$("#editmessageTemplateTypelist").change(function(){
+			var type=$(this).val();
+			//web模板
+			if(type=="web"){
+				$("#messagebasicsettingofmessagetemplatelistedit").empty();//清空select的option
+				SvseMessageDao.getWebMessageTemplates(function(err,result){
+					for(name in result){
+						//console.log(name);
+						var option=$("<option value"+name+"></option>").html(name)
+						$("#messagebasicsettingofmessagetemplatelistedit").append(option);
+					}
+				});
+			}
+			//com模板
+			if(type=="com"){
+				$("#messagebasicsettingofmessagetemplatelistedit").empty();//清空select的option
+				SvseMessageDao.getMessageTemplates(function(err,result){
+					for(name in result){
+						//console.log(name);
+						var option = $("<option value="+name+"></option>").html(name)
+						$("#messagebasicsettingofmessagetemplatelistedit").append(option);
+					}
+				});
+			}
+		});
 	});
 	
 }

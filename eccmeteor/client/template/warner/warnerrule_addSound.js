@@ -107,5 +107,51 @@ Template.editwarnerruleofsound.events({
 		$("#soundwarnerdivedit").modal("hide");
 	},
 	//保存编辑
-	
+	"click #editwarnerruleofscriptsavebtn":function(){
+		var warnerruleofsoundformedit = ClientUtils.formArrayToObject($("#warnerruleofsoundformedit").serializeArray());
+		var warnerruleofsoundformsendconditionsedit = ClientUtils.formArrayToObject($("#warnerruleofsoundformsendconditionsedit").serializeArray());
+		for(param in warnerruleofsoundformsendconditionsedit){
+			warnerruleofsoundformedit[param] = warnerruleofsoundformsendconditionsedit[param];
+		}
+		warnerruleofsoundformedit["AlertCond"] = 3;
+		warnerruleofsoundformedit["SelTime1"] = 2;
+		warnerruleofsoundformedit["SelTime2"] = 3;
+		warnerruleofsoundformedit["AlertState"] = "Enable";
+		warnerruleofsoundformedit["AlertType"] = "SoundAlert";
+		warnerruleofsoundformedit["AlwaysTimes"] = 1;
+		warnerruleofsoundformedit["OnlyTimes"] = 1;
+		//check
+		var alertName=warnerruleofsoundformedit["AlertName"];
+		if(!alertName){
+			Message.info("请填写名称");
+			return;
+		}
+		var result=SvseWarnerRuleDao.getWarnerRule(warnerruleofsoundformedit["nIndex"]);
+		var alertresult=SvseWarnerRuleDao.getAlertByName(alertName);
+		if(result["AlertName"]!=alertName)
+		{
+			if(alertresult){
+			Message.info("报警名称已经存在");
+			return;
+			}
+		}
+		
+		var targets = [];
+		var arr = $.fn.zTree.getZTreeObj("svse_tree_check_editsound").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
+		for(index in arr){
+			targets.push(arr[index].id);
+		}
+		warnerruleofsoundformedit["AlertTarget"] = targets.join();
+		if(!warnerruleofsoundformedit["AlertTarget"]){
+			Message.info("监测范围不能为空");
+			return;
+		}
+		console.log(warnerruleofsoundformedit);
+		var section = {};
+		section[warnerruleofsoundformedit["nIndex"]] = warnerruleofsoundformedit;
+		console.log(section);
+		SvseWarnerRuleDao.updateWarnerRule(warnerruleofsoundformedit["nIndex"],section,function(result){
+			$('#soundwarnerdivedit').modal('hide');
+		});
+	},
 });

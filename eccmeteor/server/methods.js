@@ -56,7 +56,7 @@ Meteor.methods({
 /*
 	Type:add and modify some methods at cilent and server
 	Author:zhuqing
-	Date:2013-11-1
+	Date:2013-11-12
 	Content:在客户端和服务端添加一些定义的方法
 */
 //给服务端调用的。//调用 /lib/svdb.js中定义的方法
@@ -103,6 +103,7 @@ SvseMethodsOnServer = {
 	"svWriteMessageIniFileSectionString":svWriteMessageIniFileSectionString,
 	"svDeleteMessageIniFileSection":svDeleteMessageIniFileSection,
 	"svGetMessageTemplates":svGetMessageTemplates,
+	"svGetWebMessageTemplates":svGetWebMessageTemplates,
 	"svWriteMessageStatusInitFilesection":svWriteMessageStatusInitFilesection,
 	"svWriteSMSWebConfigIniFileSectionString":svWriteSMSWebConfigIniFileSectionString,
 	"svWriteSMSCommConfigIniFileSectionString":svWriteSMSCommConfigIniFileSectionString,
