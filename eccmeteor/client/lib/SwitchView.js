@@ -55,6 +55,7 @@ REPORT ={
 	TOPN:"topN",//topN报告
 	TREND:"trend", //趋势报告
 	STATUSSTATISTICAL:"statusStatistical"//"状态统计报告"
+	MONITORINFO:"monitorInfo"//监测器信息报告, 搜索测试
 }
 //视图切换
 SwithcView = {}
