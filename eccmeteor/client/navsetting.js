@@ -2,10 +2,10 @@ var NavigationSettionTreeEvents = {
 	"alert":function(){},
 	"setting":function(){},
 	"AlertRule":function(){
-		SwithcView.view(SETTINGVIEW.WARNERRULE);
+		SwithcView.view(ALERTVIEW.WARNERRULE);
 	},
 	"AlertLog":function(){
-		console.log("执行了 AlertLog");
+		SwithcView.view(ALERTVIEW.ALERTLOG);
 	},
 	"AlertPlan":function(){
 		console.log("执行了 warnerplan");

@@ -42,13 +42,10 @@ Template.messagebasicsettingofadd.rendered = function(){
 		});
 		console.log("保存");
 		});
-		//获取任务计划列表
-		var tasks=SvseTaskDao.getAllTaskNames();
-		console.log(tasks);
-		for(var i=0;i<tasks.length;i++){
-			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
-			$("#tasknamelist").append(option);
-		}
+		
+		//调用获取加载任务计划的方法
+		getloadTaskName();
+		
 		//改变模板类型(com和web),对应不同的信息模板
 		$("#changtemplatetype").change(function(){
 			var type=$(this).val();
@@ -75,9 +72,50 @@ Template.messagebasicsettingofadd.rendered = function(){
 				});
 			}
 		});
+		
+		//任务计划类型改变的change事件，对应不同的任务计划
+		$("#smstasktypelist").change(function(){
+			getTaskName();
+		});
 	});
 	
 }
+
+//获取加载时的任务计划
+var getloadTaskName = function(){
+	var tasktype = $("#smstasktypelist").val();
+	console.log("tasktype:"+tasktype);
+	//获取任务计划列表
+	if(tasktype){
+		$("#tasknamelist").empty();//清空上一个状态的任务计划值
+		var tasks = SvseTaskDao.getTaskNameByType(tasktype);
+		console.log(tasks);
+		for(var i=0;i<tasks.length;i++){
+			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
+			$("#tasknamelist").append(option);
+		}
+	}
+};
+
+//获取任务计划
+var getTaskName = function(){
+	var tasktype = $("#smstasktypelist").val();
+	console.log("tasktype:"+tasktype);
+	//获取任务计划列表
+	if(tasktype){
+		$("#tasknamelist").empty();//清空上一个状态的任务计划值
+		var tasks = SvseTaskDao.getTaskNameByType(tasktype);
+		console.log(tasks);
+		if(!tasks || tasks == ""){
+			Message.info("任务计划没有设值！");
+			return;
+		}
+		for(var i=0;i<tasks.length;i++){
+			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
+			$("#tasknamelist").append(option);
+		}
+	}
+};
 /*
 Template.messagebasicsettingofadd.events({
 

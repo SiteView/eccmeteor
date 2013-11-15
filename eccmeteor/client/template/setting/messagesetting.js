@@ -13,6 +13,8 @@ Template.messagesetting.events={
 		var ids = getMessageSelectAll();
 		SvseMessageDao.checkMessageSelect(ids);
 		if(ids.length)
+			$("#confirmTipModalDiv").modal("show");
+			
 			SvseMessageDao.deleteMessageByIds(ids,function(result){
 				SystemLogger(result);
 			});

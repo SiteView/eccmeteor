@@ -73,7 +73,46 @@ Template.emailbasicsettingofaddress.rendered = function(){
 			$("#emailbasicsettingofaddressemailtemplatelist").append(option);
 		}
 	});
+	
+	//获取任务计划列表
+	getlLoadEmailTaskName("emailTaskTypelist","emailSchedulelist");
 }
+
+//获取任务计划
+var getlLoadEmailTaskName = function(id1,id2){
+	var tasktype = $("#"+id1).val();
+	console.log("tasktype:"+tasktype);
+	//获取任务计划列表
+	if(tasktype){
+		$("#"+id2).empty();//清空上一个状态的任务计划值
+		var tasks = SvseTaskDao.getTaskNameByType(tasktype);
+		console.log(tasks);
+		for(var i=0;i<tasks.length;i++){
+			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
+			$("#"+id2).append(option);
+		}
+	}
+};
+
+//获取任务计划
+var getEmailTaskName = function(id1,id2){
+	var tasktype = $("#"+id1).val();
+	console.log("tasktype:"+tasktype);
+	//获取任务计划列表
+	if(tasktype){
+		$("#"+id2).empty();//清空上一个状态的任务计划值
+		var tasks = SvseTaskDao.getTaskNameByType(tasktype);
+		console.log(tasks);
+		if(!tasks || tasks == ""){
+			Message.info("任务计划没有设值！");
+			return;
+		}
+		for(var i=0;i<tasks.length;i++){
+			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
+			$("#"+id2).append(option);
+		}
+	}
+};
 
 Template.emailbasicsettingofaddress.events = {
 	"click #emailbasicsettingofaddresscancelbtn":function(){
@@ -90,7 +129,11 @@ Template.emailbasicsettingofaddress.events = {
 			SystemLogger(result);
 			$('#emailaddresssettingdiv').modal('toggle');
 		});
-	}
+	},
+	//任务计划类型改变事件，对应任务计划
+	"change #emailTaskTypelist":function(){
+		getEmailTaskName("emailTaskTypelist","emailSchedulelist");
+	},
 }
 
 Template.emailbasicsettingofaddressedit.emailbasicsettingofaddressbasciinfoeditform = function(){
@@ -110,7 +153,11 @@ Template.emailbasicsettingofaddressedit.events = {
 		SvseEmailDao.updateEmailAddress(nIndex,address,function(){
 			$('#emailaddresssettingdivedit').modal('toggle');
 		});
-	}
+	},
+	//任务计划类型改变事件，对应任务计划
+	"change #editemailTaskTypelist":function(){
+		getEmailTaskName("editemailTaskTypelist","editemailSchedulelist");
+	},
 }
 
 Template.emailbasicsettingofaddressedit.rendered = function(){
@@ -122,6 +169,9 @@ Template.emailbasicsettingofaddressedit.rendered = function(){
 			$("#emailbasicsettingofaddressemailtemplatelistedit").append(option);
 		}
 	});
+	
+	//获取任务计划列表
+	getlLoadEmailTaskName("editemailTaskTypelist","editemailSchedulelist");
 }
 
 Template.emailsettingList.events({

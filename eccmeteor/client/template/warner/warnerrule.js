@@ -250,7 +250,7 @@ Template.warnerrulelist.events = {
 				return Template.messagewarnerformedit(result);
 			})
 			$("#messagewarnerdivedit").html(html);
-/* 			$("#messagewarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
+ 			/* $("#messagewarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
 			$("#messagewarnerdivedit").find(":text[name='OtherNumber']:first").val(result.OtherNumber);
 			$("#messagewarnerdivedit").find(":text[name='Upgrade']:first").val(result.Upgrade);
 			$("#messagewarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.UpgradeTo);
@@ -284,7 +284,6 @@ Template.warnerrulelist.events = {
 			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_editsms");
 			treeObj.checkAllNodes(false);//清空上一个用户状态
 			//节点勾选
-			console.log("000");
 			for(var index  = 0; index < checkednodes.length ; index++){
 				treeObj.checkNode(treeObj.getNodesByFilter(function(node){
 					return  node.id  === checkednodes[index];
