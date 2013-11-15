@@ -30,12 +30,29 @@ div#tooltip p {
 }
 
 div#rMenu {
+	position:absolute; 
+	visibility:hidden; 
+	top:0; 
+	background-color: #CECECE;
+	text-align:left;
+	padding: 2px;
+	}
+div#rMenu ul li{
+	text-align:left;
+	margin: 0;
+	padding: 0 ;
+	cursor: pointer;
+	list-style: none ;
+	background-color: #DFDFDF;
+}
+
+div#rMenu {
 	background-color:#555555;
 	text-align: left;
 	padding:2px;
 	width:100px;
 	position:absolute;
-	display:none;
+	display:block;
 }
 div#rMenu ul {
 	margin:1px 0;
@@ -43,7 +60,7 @@ div#rMenu ul {
 	cursor: pointer;
 	list-style: none outside none;
 	background-color:#DFDFDF;
-	display:none;
+	display:block;
 }
 div#rMenu ul li {
 	margin:0;
