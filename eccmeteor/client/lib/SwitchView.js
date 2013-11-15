@@ -34,10 +34,17 @@ LAYOUTVIEW = {
 	NOTOPERATION:"notOperationNodeLayout" //无操作按钮的节点布局
 }
 //报表
+/*
+Type： add 
+Author：xuqiang
+Date:2013-11-13 09:40
+Content:增加trend趋势报告
+*/ 
 REPORT ={
 	STATISTICAL:"statistical",
-	TOPN:"topN"//topN报告
-}
+	TOPN:"topN",//topN报告
+	TREND:"trend" //趋势报告
+	}
 //视图切换
 SwithcView = {}
 Object.defineProperty(SwithcView,"view",{
