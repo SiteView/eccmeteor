@@ -6,7 +6,8 @@ SvseTopNDao = {
 	},
 	
 	"getTopNresultlist" : function(){
-		return SvseTopNresultlist.find({nIndex:{$exists:true}}).fetch()
+		return SvseTopNresultlist.find({nIndex:{$exists:true}}).fetch();
+		//return SvseTopNresultlist.find().fetch();
 	},
 	
 	"addTopN":function(addressname,address,fn){
@@ -27,8 +28,9 @@ SvseTopNDao = {
 	//批量删除
 	"deleteTopNByIds":function(ids,fn){
 		Meteor.call(SvseTopNDao.AGENT,"deleteTopNByIds",[ids],function(err,result){
-			if(err){
+			if(err == ""){
 				SystemLogger(err);
+				 Message.info("检查删除操作时是否勾选对象");
 				fn({status:false,msg:err})
 			}else{
 				fn(result);
@@ -43,24 +45,20 @@ SvseTopNDao = {
 	"getTopNByName":function(title){
 		return SvseTopNresultlist.findOne({Title:title});
 	},
-	/*"getTopNByEmailSend":function(EmailSend){
-		return SvseTopNresultlist.findOne({EmailSend:emailSend});
-	},
-	*/
 	
-	"getMonitorTemplates":function(fn){
-		Meteor.call(SvseTopNDao.AGENT,"getMonitorTemplates",[],fn);
-	},
+	/*"getMonitorTemplate":function(fn){
+		Meteor.call(SvseTopNDao.AGENT,"getMonitorTemplate",[],fn);
+	},*/
 	
-	/*
-	//根据报告标题与之前查看对比是否重复。
+	
+	/*//根据报告标题与之前查看对比是否重复。
     "getTitle":function(title){
      return SvseTopNresultlist.findOne({Title:title});
-    },*/
+    },
 	//根据监视器id 获取该监视器相应的模板id
 	getMonitorTemplateIdByMonitorId : function(id){
 		return SvseTree.findOne({sv_id:id}).sv_monitortype;
-	},
+	},*/
 	"updateTopN":function(addressname,address,fn){
 		Meteor.call(SvseTopNDao.AGENT,'updateTopN',[addressname,address],function(err,result){
 			if(err){
@@ -91,17 +89,13 @@ SvseTopNDao = {
 			}
 		});
 	},
-	
-	/*"updateTopNStatus" : function(ids,status,fn){
-		Meteor.call(SvseTopNDao.AGENT,"updateTopNStatus",[ids,status],function(err,result){
-			if(err){
-				SystemLogger(err);
-				fn({status:false,msg:err})
-			}else{
-				fn(result);
-			}
-		});
-	},*/
+	//检查操作时是否勾选对象
+   "checkTopNresultlistSelect":function(getTopNresultlistSelectAll){
+     if(getTopNresultlistSelectAll == ""){
+       Message.info("检查操作时是否勾选对象");
+       return;
+     }
+    },
 	//刷新同步
 	"sync":function(fn){
 		Meteor.call(SvseTopNDao.AGENT,"sync",function(err,result){
@@ -113,11 +107,37 @@ SvseTopNDao = {
 			}
 		});
 	},
-	/*"sync" : function(){
-		Meteor.call(SvseTopNDao.AGENT,"sync");
-	},*/
 	//获取监视器模板名称 如：CPU ，ping等
-	getTypeById:function(id){
+	getTemplateTypeById:function(id){
+		return SvseMonitorTemplate.findOne({"return.id" : id}).property.sv_label;
+	},
+	getMonityTemplateParameters:function(id){//根据id获取监视器模板参数
+		var template = SvseMonitorTemplate.findOne({"return.id" : id});
+		var parameters = [];
+		for(item in template){
+			if(item.indexOf("ParameterItem") == -1 || item.indexOf("AdvanceParameterItem") != -1) continue;
+			var temp = template[item];
+			temp["sv_allownull"] = (temp["sv_allownull"] === 'false' ? false:true);
+			if(temp["sv_type"] !== "combobox"){//非下拉列表类型
+				parameters.push(temp);
+				continue;
+			}
+			//组合下拉列表	
+			var selects = []; 
+			for(label in temp){
+				if(label.indexOf("sv_itemlabel") === -1) continue;
+				var select = {};
+				var sub = "sv_itemvalue"+label.substr(-1);
+				select.key = temp[label];
+				select.value = temp[sub];
+				selects.push(select);
+			}
+			temp["selects"] = selects;
+			parameters.push(temp);
+		}
+		return parameters;
+	},
+	/*getTypeById:function(id){
 		return SvseTopN.findOne({"return.id" : id}).property.sv_label;
 	},
 	getTopNParameters:function(id){//根据id获取监视器类型
@@ -143,11 +163,11 @@ SvseTopNDao = {
 			}
 			temp["selects"] = selects;
 			parameters.push(temp);
-			console.log("》》");
+			console.log("》11/》");
 		}
 		return parameters;
-	},
-	getMonityTemplateParametersById:function(id){
+	},*/
+	/*getMonityTemplateParametersById:function(id){
 		var parameters = SvseTopNDao.getMonityTemplateParameters(id);
 		var newparameters = [];
 		for(index in parameters){
@@ -248,7 +268,7 @@ SvseTopNDao = {
 	
 	getMonityDynamicPropertyDataArray:function(entityId,templateMonitoryTemlpateIds,fn){
 		Meteor.call(
-			SvseMonitorTemplateDao.AGENT,
+			SvseTDao.AGENT,
 			"getMonityDynamicPropertyDataArray",
 			[entityId,templateMonitoryTemlpateIds],
 			function(err,result){
@@ -260,7 +280,7 @@ SvseTopNDao = {
 				}
 			}
 		)
-}
+}*/
 }
 /*Meteor.autosubscribe(function () {
    Meteor.subscribe("marklists",Session.get("selected_Typelist"));
