@@ -789,13 +789,26 @@ svDeleteMessageIniFileSection = function(ids){
 	var robj = process.sv_univ(dowhat,0);
 	return robj.fmap(0);
 }
-//获取发送短信模板
+//获取发送com短信模板
 svGetMessageTemplates = function(){
 	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"TXTtemplate.ini",
 			"user":"default","sections":"SMS"}, 0);
 	var fmap= robj.fmap(0);
 	return fmap["SMS"];
 }
+
+//获取发送web短信模板--by zhuqing add
+svGetWebMessageTemplates=function(){
+	var robj = process.sv_univ({
+		'dowhat':'GetSvIniFileBySections',
+		'filename':'TXTTemplate.ini',
+		'user':'default',
+		'sections':'WebSmsConfige'
+	},0);
+	var fmap = robj.fmap(0);
+	return fmap["WebSmsConfige"];
+}
+
 //更改短信状态
 svWriteMessageStatusInitFilesection = function(sectionName,status){
 	var robj = process.sv_univ({

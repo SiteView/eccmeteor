@@ -89,5 +89,12 @@ SvseWarnerRuleDao = {
 	//获取脚本报警的脚本
 	"getScriptFiles":function(fn){
 		Meteor.call(SvseWarnerRuleDao.AGENT,"getScriptFiles",[],fn);
+	},
+	//检查操作时是否勾选对象
+	"checkWarnerSelect":function(getWarnerRuleListSelectAll){
+		if(getWarnerRuleListSelectAll == ""){
+			Message.info("请选择你要操作的对象！");
+			return;
+		}
 	}
 }

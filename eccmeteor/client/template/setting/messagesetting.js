@@ -1,3 +1,7 @@
+var getMessageSelectAll = function(){
+	return ClientUtils.tableGetSelectedAll("messageSettingList");
+}
+
 Template.messagesetting.events={
 	//点击添加按钮弹出框
 	"click #addmessagesetting": function(){
@@ -6,23 +10,19 @@ Template.messagesetting.events={
 	},
 	//删除短信
 	"click #delmessagesetting" : function(){
-		var checks = $("#messageSettingList :checkbox[checked]");
-		var ids = [];
-		for(var i = 0 ; i < checks.length; i++){
-			ids.push($(checks[i]).attr("id"));
-		}
+		var ids = getMessageSelectAll();
+		SvseMessageDao.checkMessageSelect(ids);
 		if(ids.length)
+			$("#confirmTipModalDiv").modal("show");
+			
 			SvseMessageDao.deleteMessageByIds(ids,function(result){
 				SystemLogger(result);
 			});
 	},
 	//改变状态-允许
 	"click #allowmessagesetting" : function(){  //启用邮件地址
-		var checks = $("#messageSettingList :checkbox[checked]");
-		var ids = [];
-		for(var i = 0 ; i < checks.length; i++){
-			ids.push($(checks[i]).attr("id"));
-		}
+		var ids = getMessageSelectAll();
+		SvseMessageDao.checkMessageSelect(ids);
 		if(ids.length)
 			SvseMessageDao.updateMessageStatus(ids,"Yes",function(result){
 				SystemLogger(result);
@@ -30,11 +30,8 @@ Template.messagesetting.events={
 	},
 	//改变状态-禁止
 	"click #forbidmessagesetting" : function(){ //禁用邮件地址
-		var checks = $("#messageSettingList :checkbox[checked]");
-		var ids = [];
-		for(var i = 0 ; i < checks.length; i++){
-			ids.push($(checks[i]).attr("id"));
-		}
+		var ids = getMessageSelectAll();
+		SvseMessageDao.checkMessageSelect(ids);
 		if(ids.length)
 			SvseMessageDao.updateMessageStatus(ids,"No",function(result){
 				SystemLogger(result);
@@ -71,6 +68,9 @@ Template.messagesettingList.rendered=function(){
 		ClientUtils.trOfTableClickedChangeColor("messageSettingList");
 		//tr 鼠标悬停显示操作按钮效果
 		ClientUtils.showOperateBtnInTd("messageSettingList");
+		//实现模板的拖拽
+		ModalDrag.draggable("#addmessagesettingdiv");
+		ModalDrag.draggable("#editmessagesettingdiv");
 	});
 }
 
@@ -122,9 +122,20 @@ Template.messagesettingList.events({
 Template.sendingmessagemethods.events({
 	//以web方式发送短信
 	"click #webmessagesettingapplybtn":function(){
+		var username=$("#methodsendforweb").find(":text[name=User]").val();
+		if(!username){
+			Message.info("用户名不能为空");
+			return;
+		}
+		var pwd=$("#methodsendforweb").find(":password[name=Pwd]").val();
+		if(!pwd){
+			Message.info("密码不能为空");
+			return;
+		}
 		var weblength=$("#methodsendforweb :text[name=Length]").val();
-		if(weblength > 70){
+		if(weblength == 0 || weblength > 70){
 			 Message.warn("请输入长度大于0并且小于等于70的信息！"); 
+			 $("#methodsendforweb :text[name=Length]").val(0);
 			 return;
 		}
 		var methodsendforweb = ClientUtils.formArrayToObject($("#methodsendforweb").serializeArray());
@@ -146,8 +157,9 @@ Template.sendingmessagemethods.events({
 	//以com方式发送短信
 	"click #commessagesettingapplybtn":function(){
 		var comlength=$("#methodsendforcom :text[name=length]").val();
-		if(comlength > 70){
+		if(comlength == 0 || comlength > 70){
 			Message.warn("请输入长度大于0并且小于等于70的信息！"); 
+			$("#methodsendforcom :text[name=length]").val(0);
 			return;
 		}
 		var methodsendforcom = ClientUtils.formArrayToObject($("#methodsendforcom").serializeArray());

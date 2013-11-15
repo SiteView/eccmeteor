@@ -35,7 +35,10 @@ Template.warnerruleofmessage.events={
 		
 		var targets = [];
 		var arr = $.fn.zTree.getZTreeObj("svse_tree_check_add").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
+		console.log(arr);
 		for(index in arr){
+			console.log("index:"+arr[index].id);
+			console.log("name:"+arr[index].name);
 			targets.push(arr[index].id);
 		}
 		warnerruleofmessageform["AlertTarget"] = targets.join();
@@ -51,13 +54,37 @@ Template.warnerruleofmessage.events={
 		SvseWarnerRuleDao.setWarnerRuleOfMesaage(nIndex,section,function(result){
 			if(result.status){
 				$('#messagewarnerdiv').modal('toggle');
-				$("#warnerruleofmessageform")[0].reset();//重置表单（待修改）
+				//$("#messagewarnerdiv")[0].reset();//重置表单（待修改）
 			}else{
 				SystemLogger(result.msg);
 			}
 			
 		});
-	}
+	},
+	//待修改
+	"change #messageSendModelist":function(){
+		var type = $("#messageSendModelist").val()
+		//console.log("type:" + type);
+		if(type == "Web"){
+			$("#messagetemplatelist").empty();//清空select的option
+			SvseMessageDao.getWebMessageTemplates(function(err,result){
+				for(name in result){
+					//console.log(name);
+					var option=$("<option value"+name+"></option>").html(name)
+					$("#messagetemplatelist").append(option);
+				}
+			});
+		}else{
+			$("#messagetemplatelist").empty();//清空select的option
+			SvseMessageDao.getMessageTemplates(function(err,result){
+				for(name in result){
+					//console.log(name);
+					var option = $("<option value="+name+"></option>").html(name)
+					$("#messagetemplatelist").append(option);
+				}
+			});
+		}
+	},
 }
 
 Template.warnerruleofmessage.rendered = function(){
@@ -107,10 +134,10 @@ Template.warnerruleofmessageform.rendered=function(){
 			}
 		});
 		//填充短信模板列表
-		SvseMessageDao.getMessageTemplates(function(err,result){
+		SvseMessageDao.getWebMessageTemplates(function(err,result){
 			for(name in result){
-				//console.log(name);
-				var option = $("<option value="+name+"></option>").html(name)
+				console.log(name);
+				var option=$("<option value"+name+"></option>").html(name)
 				$("#messagetemplatelist").append(option);
 			}
 		});
@@ -121,17 +148,21 @@ Template.warnerruleofmessageform.messagelist = function(){
 	return SvseMessageDao.getMessageList();
 }
 
+Template.messagewarnerformedit.messagelist = function(){
+	return SvseMessageDao.getMessageList();
+}
+
 //编辑时的渲染
-Template.editwarnerruleofmessage.rendered=function(){
+Template.messagewarnerformedit.rendered=function(){
 	$(function(){
 		//填充报警接收手机号下拉列表
 		var messagelist = SvseMessageDao.getMessageList();
-		var smsnumberselect = $("#messagewarnerdivedit").find(".messagemultiselectedit:first");
+		//var smsnumberselect = t.find("#warnersmsnumber");
 		for(var l = 0 ; l < messagelist.length ; l++){
 			console.log(messagelist[l]);
 			var name = messagelist[l].Name;
 			var option = $("<option value="+name+"></option>").html(name);
-			smsnumberselect.append(option);
+			$("#warnersmsnumber").append(option);
 		}
 		$('.messagemultiselectedit').multiselect({
 			buttonClass : 'btn',
@@ -149,6 +180,7 @@ Template.editwarnerruleofmessage.rendered=function(){
 					options.each(function () {
 						selected += $(this).text() + ', ';
 					});
+					console.log("load...");
 					return selected.substr(0, selected.length - 2) + ' <b class="caret"></b>';
 				}
 			}
@@ -176,15 +208,29 @@ Template.editwarnerruleofmessage.rendered=function(){
 		$.fn.zTree.init($("#svse_tree_check_editsms"), setting, data);
 	});
 	
-	//填充短信模板列表
+	/*  //填充短信模板列表
 	SvseMessageDao.getMessageTemplates(function(err,result){
 		for(name in result){
 			//console.log(name);
 			var option = $("<option value="+name+"></option>").html(name)
 			$("#messagetemplatelistedit").append(option);
 		}
-	});
+	}); */
 }
+Template.messagewarnerformedit.smstemplate=function(){
+	SvseMessageDao.getMessageTemplates(function(err,result){
+		var smstemplate=[];
+		for(name in result){
+			console.log(name);
+			smstemplate.push(name);
+		} 
+		console.log(smstemplate);
+		Session.set("smstemplate",smstemplate);
+	});
+	console.log(Session.get("smstemplate"));
+	return Session.get("smstemplate");
+}
+
 //编辑时的事件
 Template.editwarnerruleofmessage.events({
 	"click #editwarnerruleofmessagecancelbtn":function(){

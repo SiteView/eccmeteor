@@ -18,9 +18,13 @@ MONITORVIEW = {
 SETTINGVIEW = {
 	BASICSETTING:"basicsetting",//基本设置
 	EMAILSETTING:"emailsetting", //邮箱设置
-	WARNERRULE :"warnerrule", // 报警
 	MESSAGESETTING:"messagesetting",//短信设置
 	USERSETTING:"usersetting" //用户设置
+}
+//报警试图
+ALERTVIEW = {
+	WARNERRULE:"warnerrule", // 报警规则
+	ALERTLOG:"warnerrulelog"	//报警日志
 }
 //整体模块视图
 MODULEVIEW = {

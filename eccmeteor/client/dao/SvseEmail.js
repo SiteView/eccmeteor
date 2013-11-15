@@ -73,5 +73,12 @@ SvseEmailDao = {
 	},
 	getEmailTemplates : function(fn){
 		Meteor.call(SvseEmailDao.AGENT,"getEmailTemplates",[],fn);
+	},
+	//检查邮件列表是否选中
+	"checkEmailSelect":function(ids){
+		if(ids.length == 0){
+			Message.info("请选择你要操作的对象！");
+			return;
+		}
 	}
 }

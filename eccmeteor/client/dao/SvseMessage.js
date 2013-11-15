@@ -5,7 +5,7 @@ SvseMessageDao = {
 	},
 	//获取短信集合列表
 	"getMessageList": function(){
-		return SvseMessageList.find({nIndex:{$exists:true}}).fetch();
+		return SvseMessageList.find().fetch();
 	},
 	//添加短信信息
 	"addMessage":function(messagename,message,fn){
@@ -57,8 +57,13 @@ SvseMessageDao = {
 			}
 		});
 	},
+	//获取com类型的短信模板
 	"getMessageTemplates":function(fn){
 		Meteor.call(SvseMessageDao.AGENT,"getMessageTemplates",[],fn);
+	},
+	//获取web类型的短信模板
+	"getWebMessageTemplates":function(fn){
+		Meteor.call(SvseMessageDao.AGENT,"getWebMessageTemplates",[],fn);
 	},
 	//批量更新短信状态
 	"updateMessageStatus" : function(ids,status,fn){
@@ -91,4 +96,11 @@ SvseMessageDao = {
 			}
 		});
 	},
+	//检查短信列表是否选中
+	"checkMessageSelect":function(ids){
+		if(ids.length == 0){
+			Message.info("请选择你要操作的对象！");
+			return;
+		}
+	}
 }

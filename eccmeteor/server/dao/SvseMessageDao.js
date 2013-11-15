@@ -60,6 +60,9 @@ SvseMessageDaoOnServer = {
 	"getMessageTemplates" : function(){
 		return SvseMethodsOnServer.svGetMessageTemplates();
 	},
+	"getWebMessageTemplates": function(){
+		return SvseMethodsOnServer.svGetWebMessageTemplates();
+	},
 	"updateMessageStatus":function(ids,status){
 		var count = 0;
 		for(index in ids){

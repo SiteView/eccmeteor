@@ -15,9 +15,11 @@ Template.warnerrule.events = {
 		$("#soundwarnerdiv").modal("show");
 	},
 	"click #delwarnerrule" : function(){
+		SvseWarnerRuleDao.checkWarnerSelect(getWarnerRuleListSelectAll());
 		SvseWarnerRuleDao.deleteWarnerRules(getWarnerRuleListSelectAll());
 	},
 	"click #allowewarnerrule":function(){
+		SvseWarnerRuleDao.checkWarnerSelect(getWarnerRuleListSelectAll());
 		SvseWarnerRuleDao.updateWarnerRulesStatus(getWarnerRuleListSelectAll(),"Enable",function(result){
 			if(result.status){
 				SystemLogger("改变状态"+result.option.count+"条");
@@ -25,6 +27,7 @@ Template.warnerrule.events = {
 		});
 	},
 	"click #forbidwarnerrule":function(){
+		SvseWarnerRuleDao.checkWarnerSelect(getWarnerRuleListSelectAll());
 		SvseWarnerRuleDao.updateWarnerRulesStatus(getWarnerRuleListSelectAll(),"Disable",function(result){
 			if(result.status){
 				SystemLogger("改变状态"+result.option.count+"条");
@@ -243,14 +246,18 @@ Template.warnerrulelist.events = {
 			console.log("SmsAlert");
 			//console.log(result);
 			//填充表单
-			$("#messagewarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
+			var html=Meteor.render(function(){
+				return Template.messagewarnerformedit(result);
+			})
+			$("#messagewarnerdivedit").html(html);
+ 			/* $("#messagewarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
 			$("#messagewarnerdivedit").find(":text[name='OtherNumber']:first").val(result.OtherNumber);
 			$("#messagewarnerdivedit").find(":text[name='Upgrade']:first").val(result.Upgrade);
 			$("#messagewarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.UpgradeTo);
 			$("#messagewarnerdivedit").find(":text[name='Stop']:first").val(result.Stop);
 			$("#messagewarnerdivedit").find(":text[name='WatchSheet']:first").val(result.WatchSheet);
 			$("#messagewarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.Strategy);
-			$("#messagewarnerdivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
+			$("#messagewarnerdivedit").find(":hidden[name='nIndex']:first").val(result.nIndex); */
 			var checkedSmsNumber = result["SmsNumber"].split(",");
 			$(".messagemultiselectedit").attr("value","");
 			$(".messagemultiselectedit").multiselect("refresh");
@@ -271,7 +278,7 @@ Template.warnerrulelist.events = {
 				}
 			});
 			$("#messagewarnerdivedit").modal('show');
-			
+			console.log(result.AlertTarget);
 			var checkednodes = result.AlertTarget.split("\,")
 			//左边树的勾选
 			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_editsms");
@@ -282,6 +289,8 @@ Template.warnerrulelist.events = {
 					return  node.id  === checkednodes[index];
 				}, true), true);
 			}
+			
+			
 		}
 		//脚本报警ScriptAlert
 		if(alertType=="ScriptAlert"){

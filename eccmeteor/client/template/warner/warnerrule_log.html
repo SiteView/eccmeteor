@@ -1,0 +1,56 @@
+<Template name="warnerrulelog">
+	<div class="form-horizontal">
+		<span class="label label-info">报警日志</span>
+		<br/>
+		<span class="label label-info">查询条件</span>
+		<div class="control-group">
+			<div class="control-group">
+				<label class="control-label">报警名称:</label>
+				<div class="controls">
+					<select class="messagemultiselect" name="AlertName">
+						<option value="">全部</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">报警接收人:</label>
+				<div class="controls">
+					<select class="messagemultiselect" name="SmsNumber">
+						<option value="">全部</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">报警开始时间:</label>
+				<div id="AlertdatetimepickerStartDate" class="input-append date">
+				  <input type="text" name="startTime"></input>
+				  <span class="add-on">
+					<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+				  </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">报警结束时间:</label>
+				<div id="AlertdatetimepickerEndDate" class="input-append date">
+				  <input type="text" name="endTime"></input>
+				  <span class="add-on">
+					<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+				  </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">报警类型:</label>
+				<div class="controls">
+					<select class="messagemultiselect" name="type">
+						<option value="">全部</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group" style="padding-left:88px">
+				<button class="btn" id="selectalertlogbtn">查询</button>
+				<button class="btn" id="alertloghelpbtn">帮助</button>
+			</div>
+		</div>
+	</div>
+	
+</Template>

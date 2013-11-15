@@ -121,99 +121,117 @@
 	<div id="messagewarnerdivedit" class="modal hide fade" 
 	data-backdrop="true" data-keyboard="true" data-show="false" 
 	data-width="800" data-modalOverflow="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<label class="label label-info">编辑短信报警</label>{{ide "warnerrule"}}
-		</div>
-		<div class="modal-body">
-			<div class="row-fluid">
-				<div class="span4" style="overflow:auto">
-					<ul id="svse_tree_check_editsms" class="ztree"></ul>
-				</div>
-				<div class="span8">
-					<form id="warnerruleofmessageformedit" class="well form-horizontal form-inline">
-						<input type="hidden" name="nIndex" >
+		
+		<!-- <div class="modal-footer" align="right">
+			<button class="btn btn-large" id="editwarnerruleofmessagecancelbtn">{{language.warnerrulemodel.cancelemailwarnerrulesettingbtn}}</button>
+			<button class="btn btn-primary btn-large" id="editwarnerruleofmessagesavebtn">{{language.warnerrulemodel.saveemailwarnerrulesettingbtn}}</button>
+		</div> -->
+	</div>
+	
+</Template>
+
+<Template name="messagewarnerformedit">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<label class="label label-info">编辑短信报警</label>{{ide "warnerrule"}}
+	</div>
+	<div class="modal-body">
+		<div class="row-fluid">
+			<div class="span4" style="overflow:auto">
+				<ul id="svse_tree_check_editsms" class="ztree"></ul>
+			</div>
+			<div class="span8">
+				<form id="warnerruleofmessageformedit" class="well form-horizontal form-inline">
+					<input type="hidden" name="nIndex" value={{nIndex}}>
+					<fieldset>
+						<div class="control-group">
+							<label class="control-label">报警名称:</label>
+							<div class="controls">
+								<input type="text" class="span6" name="AlertName" value={{AlertName}}>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">报警接收手机号:</label>
+							<div class="controls">
+								<select class="messagemultiselectedit" multiple="multiple" name="SmsNumber" id="warnersmsnumber">
+									{{#each messagelist}}
+										<option value="{{Name}}">{{Name}}</option>
+									{{/each}}
+								</select>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">其他手机号:</label>
+							<div class="controls">
+								<input type="text" class="span6" name="OtherNumber" value="{{OtherNumber}}">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">短信模板:</label>
+							<div class="controls">
+								<select id="messagetemplatelistedit" name="SmsTemplate">
+									{{#each smstemplate}}
+										<option value="{{this}}">{{this}}</option>
+									{{/each}}
+									{{#each smstemplate}}
+										{{#if equal this SmsTemplate}}
+											<option value="{{SmsTemplate}}" selected>{{SmsTemplate}}</option>
+										{{/if}}
+									{{/each}}
+								</select>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >升级次数:</label>
+							<div class="controls">
+								<input type="text" class="span6" name="Upgrade" value="{{Upgrade}}">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >升级接收人地址:</label>
+							<div class="controls">
+								<input type="text" class="span6" name="UpgradeTo" value="{{UpgradeTo}}">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >停止次数:</label>
+							<div class="controls">
+								<input type="text" class="span6" name="Stop" value="{{Stop}}">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >值班报警列表:</label>
+							<div class="controls">
+								<input type="text" class="span6" name="WatchSheet" value="{{WatchSheet}}">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >报警策略:</label>
+							<div class="controls">
+								<input type="text" class="span6" name="Strategy" value="{{Strategy}}">
+							</div>
+						</div>
+					</fieldset>
+				</form>
+
+				<div>
+					<form class="well form-horizontal form-inline" id="warnerruleofmessageformsendconditionsedit">
 						<fieldset>
 							<div class="control-group">
-								<label class="control-label">报警名称:</label>
+							<label class="control-label" >报警事件:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="AlertName">
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label">报警接收手机号:</label>
-								<div class="controls">
-									<select class="messagemultiselectedit" multiple="multiple" name="SmsNumber">
-										
-									</select>
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label">其他手机号:</label>
-								<div class="controls">
-									<input type="text" class="span6" name="OtherNumber">
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label">短信模板:</label>
-								<div class="controls">
-									<select id="messagetemplatelistedit" name="SmsTemplate">
-									</select>
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label" >升级次数:</label>
-								<div class="controls">
-									<input type="text" class="span6" name="Upgrade">
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label" >升级接收人地址:</label>
-								<div class="controls">
-									<input type="text" class="span6" name="UpgradeTo">
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label" >停止次数:</label>
-								<div class="controls">
-									<input type="text" class="span6" name="Stop">
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label" >值班报警列表:</label>
-								<div class="controls">
-									<input type="text" class="span6" name="WatchSheet">
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label" >报警策略:</label>
-								<div class="controls">
-									<input type="text" class="span6" name="Strategy">
+									<input type="radio" name="AlertCategory" value="危险">危险</td>
+									<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
 								</div>
 							</div>
 						</fieldset>
 					</form>
-	
-					<div>
-						<form class="well form-horizontal form-inline" id="warnerruleofmessageformsendconditionsedit">
-							<fieldset>
-								<div class="control-group">
-								<label class="control-label" >报警事件:</label>
-									<div class="controls">
-										<input type="radio" name="AlertCategory" value="危险">危险</td>
-										<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
-									</div>
-								</div>
-							</fieldset>
-						</form>
-					</div>
 				</div>
-		  	</div>
-		</div>
-		<div class="modal-footer" align="right">
-			<button class="btn btn-large" id="editwarnerruleofmessagecancelbtn">{{language.warnerrulemodel.cancelemailwarnerrulesettingbtn}}</button>
-			<button class="btn btn-primary btn-large" id="editwarnerruleofmessagesavebtn">{{language.warnerrulemodel.saveemailwarnerrulesettingbtn}}</button>
+			</div>
 		</div>
 	</div>
-	
+	<div class="modal-footer" align="right">
+		<button class="btn btn-large" id="editwarnerruleofmessagecancelbtn">{{language.warnerrulemodel.cancelemailwarnerrulesettingbtn}}</button>
+		<button class="btn btn-primary btn-large" id="editwarnerruleofmessagesavebtn">{{language.warnerrulemodel.saveemailwarnerrulesettingbtn}}</button>
+	</div>
 </Template>
