@@ -66,10 +66,11 @@ SvseMonitorTemplateDao ={
 	},
 	getMonityTemplateStatesById : function(id){//根据id获取监视器模板参数
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});
-		var states = [];
-		states.push(template["error"]);
-		states.push(template["warning"]);
-		states.push(template["good"]);
+		var states = {
+			Error : template["error"],
+			Warning: template["warning"],
+			Good : template["good"]
+		};
 		return states;
 	},
 	getMonityTemplateStatesByIdAndStatus : function (id,status){

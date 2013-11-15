@@ -1,4 +1,4 @@
-var NavigationSettionTreeEvents = {
+var NavigationSettingTreeEvents = {
 	"alert":function(){},
 	"setting":function(){},
 	"AlertRule":function(){
@@ -49,7 +49,7 @@ var NavigationSettionTreeEvents = {
        SwithcView.view(REPORT.STATUSSTATISTICAL);
     }
 }
-NavigationSettionTree = {
+NavigationSettingTree = {
 	getTreeData:function(){
 		var nodes = [];
 		SvseSettingNodes.find().forEach(function(node){
@@ -59,6 +59,6 @@ NavigationSettionTree = {
 		return nodes;
 	},
 	execute:function(action){
-		NavigationSettionTreeEvents[action]();
+		NavigationSettingTreeEvents[action]();
 	}
 }

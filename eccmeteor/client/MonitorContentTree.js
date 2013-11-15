@@ -16,9 +16,9 @@ var drawSvseSettingTree = function(){
 		callback:{
 			onClick:function(event, treeId, treeNode){
 			    //设置布局
-			    SwithcView.layout(LAYOUTVIEW.SETTING);
+			    SwithcView.layout(LAYOUTVIEW.SettingLayout);
 			    //引用 navsetting.js中的函数
-				NavigationSettionTree.execute(treeNode.action);
+				NavigationSettingTree.execute(treeNode.action);
 				SessionManage.clear();//清空一些Session值
 			},
 			/*
@@ -36,7 +36,7 @@ var drawSvseSettingTree = function(){
 		},
 	};
 	if($.fn.zTree)
-		$.fn.zTree.init($("#setting_tree"), setting, expandSimpleTreeNode(NavigationSettionTree.getTreeData(),SettingNodeRemenber.get()));
+		$.fn.zTree.init($("#setting_tree"), setting, expandSimpleTreeNode(NavigationSettingTree.getTreeData(),SettingNodeRemenber.get()));
 }
 
 /*
@@ -74,7 +74,7 @@ var drawSvseSimpleTree = function(){
 		callback:{
 			onClick:function(event, treeId, treeNode){
 			    //设置布局
-				SwithcView.layout(LAYOUTVIEW.NODE);
+				SwithcView.layout(LAYOUTVIEW.EquipmentsLayout);
 				var id= treeNode.id;
 				var type = treeNode.type;
 				var checkedTreeNode = {};

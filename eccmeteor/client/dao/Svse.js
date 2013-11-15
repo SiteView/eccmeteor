@@ -70,7 +70,7 @@ SvseDao = {
 		
 	},	
 	removeNodesById:function(id,fn){  //根据ID删除节点 返回删除的节点数
-		//同时删除SvseTree和Svse中的数据而且删除其子节点。 //先删除服务器中的节点再删本地数据库中的节点
+		//同时删除SvseTree和Svse中的数据而且删除其子节点。
 		Meteor.call(SvseDao.AGENT,'removeNodesById',[id,true],function(err,result){
 			if(err){
 				console.log(err);
@@ -85,7 +85,7 @@ SvseDao = {
 			}
 			
 		});
-	},
+	},/*
 	removeNodesByIds:function(ids,panrenid,fn){
 		Meteor.call(SvseDao.AGENT, "removeNodesByIds", [ids,panrenid], function(err, result) {
 			if (err) {
@@ -106,7 +106,7 @@ SvseDao = {
 			}
 
 		});
-	},
+	},*/
 	addGroup:function(group,parentid,fn){
 		fn = Utils.checkReCallFunction(fn);
 		Meteor.call(SvseDao.AGENT,'addGroup',[group,parentid],function(err,result){
@@ -146,41 +146,9 @@ SvseDao = {
 			return {};
 		return group["property"];
 	},
-	/*
-	forbidNodeForever : function(ids,fn){
-		console.log("forbiNode ids is ");
-		console.log(ids);
-		fn = Utils.checkReCallFunction(fn);
-		Meteor.call(SvseDao.AGENT,'forbidNodeForever',[ids],function(err,result){
-			if(err){
-				console.log(err);
-				fn({status:false,msg:err})
-			}else{
-				fn({status:true})
-			}
-		});
-	},
-	enableNode : function(ids,fn){
-		Meteor.call(SvseDao.AGENT,'allowNode',[ids],function(err,result){
-			if(err){
-				console.log(err);
-				fn({status:false,msg:err})
-			}else{
-				fn({status:true})
-			}
-		});
-	},*/
 	refreshTreeData : function(){
 		Meteor.call(SvseDao.AGENT,'syncAll');
-	},/*
-	forbidNodeTemporary : function(ids,starttime,endtime,fn){ //temporary
-		console.log("forbiNode ids is ");
-		console.log(ids);
-		fn = Utils.checkReCallFunction(fn);
-		Meteor.call(SvseDao.AGENT,[ids,starttime,endtime],function(err,result){
-			fn(result)
-		});
-	},*/
+	},
 	/**
 		Type:fix bug
 		Author:huyinghuan
@@ -231,7 +199,10 @@ SvseDao = {
 					continue;
 				data["monitor"] = data["monitor"] +submonitors.length;
 				for(i in obj["submonitor"]){
-					var ms = SvseTree.findOne({sv_id:obj["submonitor"][i]}).status;
+					var treeMonitor = SvseTree.findOne({sv_id:obj["submonitor"][i]});
+					if(!treeMonitor)
+						continue;
+					var ms =treeMonitor.status;
 					data[ms] = data[ms] +1;
 				}
 			}else if(obj["type"] == "group"){
@@ -365,9 +336,9 @@ Object.defineProperty(SvseDao,"enabledMonitors",{
 		cids:子节点数组
 		fn:回调函数 接收一个结果对象,{status:true|false,msg:"当status为false时，存在该属性",result:{}}
 **/
-Object.defineProperty(SvseDao,"forbidenabledMonitors",{
+Object.defineProperty(SvseDao,"forbidMonitors",{
 	value:function(fid,cids,fn){
-		Meteor.call(SvseDao.AGENT,'forbidenabledMonitors',[fid,cids],function(err,result){
+		Meteor.call(SvseDao.AGENT,'forbidMonitors',[fid,cids],function(err,result){
 			if(err){
 				Log4js.error(err);
 				fn({status:false,msg:err})
@@ -399,3 +370,40 @@ Object.defineProperty(SvseDao,"forbidMonitorsTemporary",{
 		});
 	}
 });
+/*
+	删除单个设备或组
+	参数
+		fid：节点id
+		fn:回调函数 接收一个结果对象,{status:true|false,msg:"当status为false时，存在该属性",result:{}}
+*/
+Object.defineProperty(SvseDao,"deletEquipment",{
+	value:function(id,fn){
+		Meteor.call(SvseDao.AGENT,'deletEquipment',[id],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn({status:true});
+			}
+		});
+	}
+});
+/*
+	批量删除设备或组
+	参数
+		fid：这些节点的父节点id
+		cids:子节点数组
+		fn:回调函数 接收一个结果对象,{status:true|false,msg:"当status为false时，存在该属性",result:{}}
+*/
+Object.defineProperty(SvseDao,"deletEquipmentsMul",{
+	value:function(fid,cids,fn){
+		Meteor.call(SvseDao.AGENT,'deletEquipmentsMul',[fid,cids],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn({status:true});
+			}
+		});
+	}
+})

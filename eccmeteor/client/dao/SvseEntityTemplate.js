@@ -56,7 +56,7 @@ SvseEntityTemplateDao = {
 	},
 	getSvseEntityDevicetypeBySvseTreeId:function(id){//根据设备在SvseTree的id获取该设备的类型
 		var node = SvseTree.findOne({sv_id:id});
-		return node.sv_devicetype;
+		return node ? node.sv_devicetype : "";
 	},
 	getItemsAndDefaultValueBySvIdAndDevicetype:function(id,type){//根据设备的id和类型 分别在SvseEntityInfo中获取设备的属性信息和需要编辑的属性字段。
 		SystemLogger("SvseEntityTemplate.js 的方法getItemsAndDefaultValueBySvIdAndDevicetype打印：")

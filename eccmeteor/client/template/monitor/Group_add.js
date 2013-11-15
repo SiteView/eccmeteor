@@ -10,8 +10,8 @@ Template.GroupAdd.events ={
 		SvseDao.addGroup(group,parentid,function(result){
 			if(!result.status){
 				SystemLogger(result.msg);
-				$("#showGroupAdddiv").modal('hide');
 			}
+			$("#showGroupAdddiv").modal('hide');
 		});
 	},
 	"click #showGroupAddFormCancelBtn":function(){

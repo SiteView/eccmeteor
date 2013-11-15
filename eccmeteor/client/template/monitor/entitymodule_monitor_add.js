@@ -1,73 +1,55 @@
-Template.ChooseMonitorTemplate.monities = function(){
-//	var id = Session.get("checkedTreeNode")["id"];
-	var id = SessionManage.getCheckedTreeNode("id");
-	var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);
-	return SvseEntityTemplateDao.getEntityMonitorByDevicetype(devicetype);
-}
-Template.ChooseMonitorTemplate.events = {
-	"click tr a":function(e){
-	//	SwithcView.view(MONITORVIEW.MONITORADD);//设置视图状态 选择监视器模板的视图
-		Session.set("monityTemplateId",e.target.id);
-	//	var  checkedMonityTemolate = SvseMonitorTemplateDao.getTemplateById(e.target.id);
-	//	Session.set("checkedMonityTemolate",checkedMonityTemolate);//存储选中的监视器模板信息
-		Session.set("monitorStatus","添加");
-		$("#chooseMonitorTemplateDiv").modal('hide');
-		$("#showMonitorInfoDiv").modal('show');
-	} 
-}
 
-Template.showMonitorInfo.monitorStatus = function(){
+/*
+Template.AddMonitorInfo.monitorStatus = function(){
 	return  Session.get("monitorStatus") ? Session.get("monitorStatus") : "";
 }
 
-Template.showMonitorInfo.getMonityTemplateParameters = function(){
+Template.AddMonitorInfo.MonityTemplateParameters = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateParametersById(Session.get("monityTemplateId"))
 			: []
 	
 }
 
-Template.showMonitorInfo.getMonityTemplateAdvanceParameters = function(){
+Template.AddMonitorInfo.MonityTemplateAdvanceParameters = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(Session.get("monityTemplateId"))
 			: []
 	
 }
 
-Template.monitorTemplateStatus.getMonityTemplateReturnItemsById = function(){
+Template.monitorTemplateStatus.MonityTemplateReturnItems = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("monityTemplateId"))
 			: []
 	
 }
-
-Template.showMonitorInfo.getMonityTemplateStates = function(){
+// ?????  Template未出现？
+Template.AddMonitorInfo.getMonityTemplateStates = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"))
 			: {}
 	
 }
 
-Template.showMonitorInfo.getMonityTemplateStatesByStatus = function(status){
+Template.AddMonitorInfo.getMonityTemplateStatesByStatus = function(status){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateStatesByIdAndStatus(Session.get("monityTemplateId"),status)
 			: {}
-	
-
 }
 
-Template.showMonitorInfo.devicename = function(){
+Template.AddMonitorInfo.devicename = function(){
 	return SessionManage.getCheckedTreeNode("name");
 }
 
-Template.showMonitorInfo.monitorType = function(){
+Template.AddMonitorInfo.monitorType = function(){
 	return Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getTemplateTypeById(Session.get("monityTemplateId"))
 			: ""
-	
 }
+
 //获取监视频率的Label标签
-Template.showMonitorInfo.getMonityFrequencyLabel = function(){
+Template.AddMonitorInfo.MonityFrequencyLabel = function(){
 	return  Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateParameterByName(Session.get("monityTemplateId"),"_frequency").sv_label
 			: ""
@@ -75,14 +57,18 @@ Template.showMonitorInfo.getMonityFrequencyLabel = function(){
 }
 
 //获取监视频率的Dom元素
-Template.showMonitorInfo.getMonityFrequencyDom = function(){
+Template.AddMonitorInfo.MonityFrequencyDom = function(){
 	return  Session.get("monityTemplateId") 
 			? SvseMonitorTemplateDao.getMonityTemplateFrequencyParameters(Session.get("monityTemplateId"))
 			: []
 	
 }
 
-Template.showMonitorInfo.events({
+Template.AddMonitorInfo.AllTaskNames = function(){
+	return SvseTaskDao.getAllTaskNames();
+}
+*/
+Template.AddMonitorInfo.events({
 	"submit form":function(){
 		return false;
 	},
@@ -216,8 +202,8 @@ Template.showMonitorInfo.events({
 		//console.log(div);
 	}
 });
-
-Template.showMonitorInfo.rendered = function(){
+/*
+Template.AddMonitorInfo.rendered = function(){
 	if(!this._rendered) {
 			this._rendered = true;
 	}
@@ -260,10 +246,7 @@ Template.showMonitorInfo.rendered = function(){
 		}
 	});
 }
-Template.showMonitorInfo.getAllTaskNames = function(){
-	return SvseTaskDao.getAllTaskNames();
-}
-
+*/
 Template.monitorTemplateStatus.events({
 	//添加报警条件
 	"click button":function(e){ 

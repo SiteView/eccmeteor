@@ -137,13 +137,10 @@ svGetMonitorRuntimeRecords = function(id,count){
 		throw new Meteor.Error(500,robj.estr(0));
 	}
 	var fmap = robj.fmap(0);
-	Log4js.info(fmap);
-	Log4js.info("===========================");
 	var runtiomeRecords = [];
 	for(r in fmap){
 		runtiomeRecords.push(fmap[r]);
 	}
-	Log4js.info(runtiomeRecords);
 	return runtiomeRecords;
 }
 
@@ -504,6 +501,7 @@ svAllowNode = function (ids) {
 svDeleteMonitor = function (id){
 	var robj = process.sv_univ({'dowhat':'DelChildren','parentid':id}, 0);
 	if(!robj.isok(0)){
+		Log4js.error(robj.isok(0));
 		Log4js.error(robj.estr(0));
 		return false;
 	}

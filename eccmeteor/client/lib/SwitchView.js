@@ -33,8 +33,8 @@ MODULEVIEW = {
 }
 //
 LAYOUTVIEW = {
-	SETTING:"settingLayout",//设置布局
-	NODE:"nodeLayout",//带操作按钮的节点布局
+	SettingLayout:"SettingLayout",//设置布局
+	EquipmentsLayout:"EquipmentsLayout",//带操作按钮的节点布局
 	NOTOPERATION:"notOperationNodeLayout" //无操作按钮的节点布局
 }
 //报表
@@ -61,7 +61,7 @@ REPORT ={
 SwithcView = {}
 Object.defineProperty(SwithcView,"view",{
 	value:function(viewName){
-		Session.set("viewstatus",viewName);
+		Session.set("ViewType",viewName);
 	}
 });
 Object.defineProperty(SwithcView,"layout",{
@@ -72,6 +72,6 @@ Object.defineProperty(SwithcView,"layout",{
 Object.defineProperty(SwithcView,"render",{
 	value:function(viewName,layoutname){
 		Session.set("layout",layoutname);
-		Session.set("viewstatus",viewName);
+		Session.set("ViewType",viewName);
 	}
 });
