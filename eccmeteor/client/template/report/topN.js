@@ -40,7 +40,7 @@ Template.topN.events = {
 				SystemLogger(result);
 			});*/
 			 SvseTopNDao.checkTopNresultlistSelect(getTopNListSelectAll());
-                SvseTopNDao.updateTopNStatus(getTopNListSelectAll()," Yes",function(result){
+                SvseTopNDao.updateTopNStatus(getTopNListSelectAll()," on",function(result){
                         if(result.status){
                                 SystemLogger("改变状态"+result.option.count+"条");
                         }
@@ -154,20 +154,20 @@ Template.topNofadd.events = {
 		//报告标题是否为空
 		var Title=basicinfooftopNadd["Title"];
 		   if(!Title){
-			Message.info("请填写标题！");
+			Message.info("请填写标题！",{align:"center",time:3});
 			return;
 		}
 		//报告标题是否重复判断
 		var result=SvseTopNDao.getTopNByName(Title);
 		   if(result){
-			Message.info("报告标题已经存在!");
+			Message.info("报告标题已经存在!",{align:"center",time:3});
 			return;
 		}
 		//E-mail的判断
 		var email=basicinfooftopNadd["EmailSend"];
 		
            if(!email){
-            Message.info("E-mail不能为空！");
+            Message.info("E-mail不能为空！",{align:"center",time:3});
 			 //alert("邮件中必须包含@");
             return;
          }
@@ -249,7 +249,7 @@ return 'true';
 		}
 		basicinfooftopNadd["AlertTarget"] = targets.join();
 		if(!basicinfooftopNadd["AlertTarget"]){
-			Message.info("监测范围不能为空");
+			Message.info("监测范围不能为空",{align:"center",time:3});
 			return;
 		}
 			
@@ -754,7 +754,7 @@ Template.topNofedit.events = {
 	     var email=topNofaddfromedit["EmailSend"];
 		
            if(!email){
-            Message.info("E-mail不能为空！");
+            Message.info("E-mail不能为空！",{align:"center",time:3});
 			 //alert("邮件中必须包含@");
             return;
          }
@@ -763,7 +763,7 @@ Template.topNofedit.events = {
 		 var mail_arr =mailStr.split(";");
 		 //if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email))      {  
 		 if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*([,;][,;\s]*(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)*)*$/.test(email))      {   
-             Message.info("E-mail格式错误!");   
+             Message.info("E-mail格式错误!",{align:"center",time:3});   
              return false;
         }
        var nIndex = topNofaddfromedit["nIndex"];
