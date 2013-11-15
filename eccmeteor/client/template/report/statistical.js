@@ -91,7 +91,7 @@ Template.statisticalofadd.rendered = function () {
 		$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
 	function showRMenu(type, x, y) {
-		$("#rMenu ul").show();
+		//$("#rMenu ul").show();
 		$("#rMenu").css({
 			"top" : y + 10 + "px",
 			"left" : x + 10 + "px",
@@ -99,7 +99,6 @@ Template.statisticalofadd.rendered = function () {
 		});
 		$("body").bind("mousedown", onBodyMouseDown);
 	}
-
 	function hideRMenu() {
 		if (rMenu)
 			$("#rMenu").css({
@@ -202,6 +201,8 @@ Template.statisticalofadd.rendered = function () {
         todayBtn: true,
         pickerPosition: "bottom-left"
     });
+	//弹窗移动
+	ModalDrag.draggable("#statisticalofadddiv");
 }
 
 Template.statisticalofadd.events = {
@@ -219,21 +220,6 @@ Template.statisticalofadd.events = {
 		}
 
 },
-/*
-	function selectPeriod(){
-		if(document.getElementById("reporttypePeriodlist").value=="Week"){
-			 document.getElementById("reporttypetemplatelist").disabled=false;
-		}else{
-		document.getElementById("reporttypetemplatelist").disabled=true;
-		}
-	}
-
-	function selectPeriod(){
-		if($("#reporttypePeriodlist").value=="Week"){
-		$("#reporttypetemplatelist").disabled=false;
-		}
-	},
-*/
 	"click #statisticalofaddcancelbtn" : function () {
 		$('#statisticalofadddiv').modal('toggle');
 	},
@@ -242,13 +228,13 @@ Template.statisticalofadd.events = {
 		//表单数据校验。
 		var Title = basicinfoofstatisticaladd["Title"];
 			if(!Title){
-			Message.info("报告标题不能为空，请重新输入！");
+			Message.warn("报告标题不能为空，请重新输入！");
 			return;
 		}
 		//报告标题是否重复判断
 		var result =SvseStatisticalDao.getTitle(Title);
 			if(result){
-				Message.info("报告名称已存在，请重新输入！");
+				Message.warn("报告名称已存在，请重新输入！");
 			return;
 		}
 		var targets = [];
@@ -301,6 +287,55 @@ Template.statisticallist.rendered = function () {
 		//tr 鼠标悬停显示操作按钮效果
 		ClientUtils.showOperateBtnInTd("statisticallist");
 	});
+//list分页实现
+	$(function(){
+		var init = {
+				pagePre:	6,	//单页条数
+				pageMax:	3	//页数分类基数
+			};
+		var getPager = function(p,a,b,c){
+			var pages = a;
+			var pageHide = b;
+			var parentBox = p;
+			var lis = parentBox.find('tr');
+			var html = '';
+			if(pageHide){
+				var index = (c || 1) < 4 ? 4 : ((c > (pages - 3)) ? (pages - 3) : c);
+				html += '<a href="###">1</a>\n';
+				index > 4 ? html += '<span>....</span>\n' : html += '';
+				for(var i=(index-2);i<=(index+2);i++){
+					html += '<a href="###">'+i+'</a>\n';
+				}
+				index < pages - 3 ? html += '<span>....</span>\n' : html += '';
+				html += '<a href="###">'+pages+'</a>\n';
+			}else{
+				if(pages != 1){
+					for(var i=0;i<pages;i++){
+						html += '<a href="###">'+(i+1)+'</a>\n';
+					}
+				}
+			}
+			lis.hide();
+			parentBox.find('tr[flag="'+c+'"]').show();
+			return html;
+		}
+	
+	$('.eventList').each(function(){
+		//var _this = $(this);
+		var tr = $(this).find('tr'),liNum = tr.length;
+		var pages = Math.ceil(liNum/init.pagePre);
+		for(var i=0;i<liNum;i++){
+			$(tr[i]).attr('flag',parseInt(i/init.pagePre)+1);
+		}
+		var pageHide = pages > init.pageMax ? 1 : 0;
+		$(this).find('.pager').append(getPager($(this),pages,pageHide,1));
+		$(this).find('a').live('click',function(){
+			var index = parseInt($(this).html());
+			$(this).find('.pager').empty();
+			$(this).find('.pager').append(getPager($(this),pages,pageHide,index));
+		});
+	});
+});
 }
 //根据id编辑报告表单
 Template.statisticallist.events({
@@ -479,7 +514,18 @@ Template.statisticalofedit.rendered = function () {
 					"N" : "ps"
 				}
 			},
-
+			callback : {
+				onRightClick : function (event, treeId, treeNode) {
+					zTree = $.fn.zTree.getZTreeObj("svse_tree_check_edit");
+					if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
+						zTree.cancelSelectedNode();
+						showRMenu("root", event.clientX, event.clientY);
+					} else if (treeNode && !treeNode.noR) {
+						zTree.selectNode(treeNode);
+						showRMenu("node", event.clientX, event.clientY);
+					}
+				}
+			},
 			data : {
 				simpleData : {
 					enable : true,
@@ -491,6 +537,69 @@ Template.statisticalofedit.rendered = function () {
 		};
 		$.fn.zTree.init($("#svse_tree_check_edit"), setting, data);
 	});
+		function showRMenu(type, x, y) {
+				//$("#rMenu ul").show();
+				$("#rMenu").css({
+					"top" : y + 10 + "px",
+					"left" : x + 10 + "px",
+					"visibility" : "visible"
+				});
+				$("body").bind("mousedown", onBodyMouseDown);
+			}
+			function hideRMenu() {
+				if (rMenu)
+					$("#rMenu").css({
+						"visibility" : "hidden"
+					});
+				$("body").unbind("mousedown", onBodyMouseDown);
+			}
+			function onBodyMouseDown(event) {
+				if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length > 0)) {
+					$("#rMenu").css({
+						"visibility" : "hidden"
+					});
+				}
+			}
+			/*	function addTreeNode() {
+			hideRMenu();
+			var newNode = { name:"增加" + (addCount++)};
+			if (zTree.getSelectedNodes()[0]) {
+			newNode.checked = zTree.getSelectedNodes()[0].checked;
+			zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
+			} else {
+			zTree.addNodes(null, newNode);
+			}
+			}
+			function removeTreeNode() {
+			hideRMenu();
+			var nodes = zTree.getSelectedNodes();
+			if (nodes && nodes.length>0) {
+			if (nodes[0].children && nodes[0].children.length > 0) {
+			var msg = "要删除的节点是父节点，如果删除将连同子节点一起删掉。\n\n请确认！";
+			if (confirm(msg)==true){
+			zTree.removeNode(nodes[0]);
+			}
+			} else {
+			zTree.removeNode(nodes[0]);
+			}
+			}
+			}
+			function checkTreeNode(checked) {
+			var nodes = zTree.getSelectedNodes();
+			if (nodes && nodes.length>0) {
+			zTree.checkNode(nodes[0], checked, true);
+			}
+			hideRMenu();
+			}
+			function resetTree() {
+			hideRMenu();
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+			}
+
+			}
+			 */
+	//弹窗可移动
+	ModalDrag.draggable("#statisticalofadddivedit");
 }
 
 Template.statisticalofedit.events = {
