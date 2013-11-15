@@ -37,7 +37,7 @@ var NavigationSettingTreeEvents = {
 	*/ 
 	"trend":function(){
 		SwithcView.view(REPORT.TREND)
-	}
+	},
 
 	/*
 	Type：add

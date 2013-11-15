@@ -43,18 +43,17 @@ Type： add
 Author：xuqiang
 Date:2013-11-13 09:40
 Content:增加trend趋势报告
-*/ 
-REPORT ={
-	STATISTICAL:"statistical",
-	TOPN:"topN",//topN报告
-	TREND:"trend" //趋势报告
-	}
-	/*
+
+=========================
 	Type：add
 	Author：renjie
 	Date:2013-11-14 09:20
 	Content:"状态统计报告"statusStatistical
 */ 
+REPORT ={
+	STATISTICAL:"statistical",
+	TOPN:"topN",//topN报告
+	TREND:"trend", //趋势报告
 	STATUSSTATISTICAL:"statusStatistical"//"状态统计报告"
 }
 //视图切换

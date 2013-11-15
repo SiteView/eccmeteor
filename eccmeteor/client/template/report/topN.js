@@ -561,49 +561,6 @@ Template.topNofedit.rendered = function(e,t){
 
  ModalDrag.draggable("#topNofadddivedit")
 }
-Template.showMonitorInfo.rendered = function(){
-	if(!this._rendered) {
-			this._rendered = true;
-	}
-	$(function(){
-		$("thead .span1 :checkbox").each(function(){//全选，全不选
-			$(this).bind("click",function(){
-				var flag = this.checked; 
-				$(this).closest("table").find("tbody :checkbox").each(function(){
-					this.checked = flag//$(this).attr("checked",flag);该写法有bug无法再界面上显示钩
-				});
-			});
-		});
-		//在HelperRegister.js中createDomeByPropertyHelper 创建监视器属性时，可能出现dll(通过Class="dynamicDll")类型动态属性，此时需要重新处理该属性对应的Dom元素
-		if($("select.dynamicDll:first").length){
-			(function(){		
-			//	var panrentid = Session.get("checkedTreeNode")["id"];
-				var entityId = SessionManage.getCheckedTreeNode("id");
-				var monitorstatus = ($("#monitorstatus").val() === "true" || $("#monitorstatus").val() === true) ;
-				if(monitorstatus){ //编辑状态
-				//	var monitorid = Session.get("checkedMonitorId")["id"];
-					var monitorTemplateType = SessionManage.setCheckedMonitorId();
-					var templateMonitoryId = SvseTreeDao.getMonitorTypeById(monitorTemplateType); //获取需编辑监视器的模板id
-				}else{
-					templateMonitoryId = Session.get("monityTemplateId");
-				}			
-				console.log(entityId+" : "+templateMonitoryId);
-				//获取某个监视器的动态属性
-				SvseMonitorTemplateDao.getMonityDynamicPropertyData(entityId,templateMonitoryId,function(status,result){
-					if(!status){
-						SystemLogger(result,-1);
-						return;
-					}
-					var optionObj = result["DynamicData"];
-					for(name in optionObj){
-						var option = $("<option value='"+optionObj[name]+"'>"+name+"</option>");
-						$("select.dynamicDll:first").append(option);
-					}
-				});
-			})();
-		}
-	});
-}
 
 Template.topNofadd.rendered = function(){
 
