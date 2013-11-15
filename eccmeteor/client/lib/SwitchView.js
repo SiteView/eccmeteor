@@ -36,7 +36,14 @@ LAYOUTVIEW = {
 //报表
 REPORT ={
 	STATISTICAL:"statistical",
-	TOPN:"topN"//topN报告
+	TOPN:"topN",//topN报告
+	/*
+	Type：add
+	Author：renjie
+	Date:2013-11-14 09:20
+	Content:"状态统计报告"statusStatistical
+*/ 
+	STATUSSTATISTICAL:"statusStatistical"//"状态统计报告"
 }
 //视图切换
 SwithcView = {}

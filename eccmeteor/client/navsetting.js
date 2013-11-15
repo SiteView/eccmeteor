@@ -27,7 +27,16 @@ var NavigationSettionTreeEvents = {
 	},
 	"statistical":function(){
 		SwithcView.view(REPORT.STATISTICAL);
-	}
+	},
+	/*
+	Type：add
+	Author：renjie
+	Date:2013-11-14 09:20
+	Content:添加 SwithcView.view(REPORT.STATUSSTATISTICAL);
+*/ 
+   "statusStatistical":function(){
+       SwithcView.view(REPORT.STATUSSTATISTICAL);
+    }
 }
 NavigationSettionTree = {
 	getTreeData:function(){
