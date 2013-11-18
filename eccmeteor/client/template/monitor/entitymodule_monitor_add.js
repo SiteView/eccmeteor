@@ -68,7 +68,7 @@ Template.AddMonitorInfo.AllTaskNames = function(){
 	return SvseTaskDao.getAllTaskNames();
 }
 */
-Template.AddMonitorInfo.events({
+Template.showMonitorInfoForm.events({
 	"submit form":function(){
 		return false;
 	},

@@ -22,7 +22,7 @@
 	{{> showQuickMonityTemplate}}<!--快速添加监视器-->
 	{{> EntitiesGroupByType}} <!--添加设备时设备类别选择-->
 	{{> ForbidEquipments}} <!--禁止组设备和监视器-->
-	{{> AddMonitorInfo}}<!-- 添加监视器信息弹窗填写-->
+	{{!-- > AddMonitorInfo--}}<!-- 添加监视器信息弹窗填写-->
 </Template>
 <!--决定渲染 SettingLayout 或者 EquipmentsLayout-->
 <Template name="ControlViewLayout">
@@ -46,6 +46,7 @@
 		{{renderPage viewType}}
 	{{/if}}
 	</div>
+	<div id="AddMoniorModal"></div>
 </Template>
 <!--
 Template name="notOperationNodeLayout"

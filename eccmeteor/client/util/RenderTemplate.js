@@ -53,3 +53,33 @@ Object.defineProperty(RenderTemplate,"show",{
 		});
 	}
 });
+
+/*
+*代理弹窗的modal("show") 父窗口
+*接收一个Jquery选择器
+*/
+Object.defineProperty(RenderTemplate,"showParents",{
+	value:function(selector,template,context){
+		var _self = this;
+		$(selector).empty().html(Meteor.render(function(){
+			return Template[template](context);
+		}));
+		var modal = $(selector).children("div:first");
+		modal.modal("show");
+		modal.on("hidden",function(){
+			modal.unbind('hidden')
+			_self.destroyParents(selector);
+		});
+	}
+});
+
+/*
+*清空模板
+*/
+Object.defineProperty(RenderTemplate,"destroyParents",{
+	value:function(selector){
+		var modal = $(selector).children("div:first");
+		modal.empty();
+		modal.removeAttr("tabindex").removeAttr("style").removeAttr("aria-hidden");
+	}
+})

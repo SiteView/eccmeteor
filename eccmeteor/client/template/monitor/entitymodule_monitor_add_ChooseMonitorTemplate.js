@@ -36,7 +36,8 @@ Template.ChooseMonitorTemplateForm.events({
 		var context = getMonitorInfoContext(id,monityTemplateName);
 		if(!context)
 			return;
-		RenderTemplate.show("#showMonitorInfoDiv","showMonitorInfoForm",context);
+		//RenderTemplate.show("#showMonitorInfoDiv","showMonitorInfoForm",context);
+		RenderTemplate.showParents("#AddMoniorModal","showMonitorInfoForm",context);
 	}
 });
 var getMonitorInfoContext = function(monityTemplateId,monityTemplateName){
