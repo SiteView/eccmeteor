@@ -210,7 +210,7 @@ Template.userPromissionSettingTree.rendered = function(){
 		
 		$.fn.zTree.init($("#svse_tree_promission_check"), svsesetting, data);
 		//其他设置的树
-		var settingdata = NavigationSettionTree.getTreeData();
+		var settingdata = NavigationSettingTree.getTreeData();
 		var othersetting ={
 			check:{
 				enable: true,

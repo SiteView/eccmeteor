@@ -88,15 +88,6 @@ Handlebars.registerHelper('currentUsername',function(){
     return Meteor.user()  ? Meteor.user().profile.aliasname : "Cryptonym"
 });
 
-/*当前Session存储的视图状态*/
-Handlebars.registerHelper('viewstatus',function(){
-    return Session.get("viewstatus");
-});
-/*当前Session存储的布局状态*/
-Handlebars.registerHelper('layout',function(){
-    return Session.get("layout");
-});
-
 Handlebars.registerHelper('getSession',function(arg){
     return Session.get(arg);
 });

@@ -53,7 +53,7 @@ var getQuicklyMonitorsDynamicParams = function(entityId,monitors){
 	SvseMonitorTemplateDao.getMonityDynamicPropertyDataArray(entityId,dynamicMonitors,function(status,result){
 		LoadingModal.loaded();
 		if(!status){
-			Messsage.error(result);
+			Message.error(result);
 			return;
 		}
 		console.log(result);
@@ -164,7 +164,7 @@ var getTheCheckedDynamicServices = function(){
 
 Template.QuickMonitorDynamicService.events({
 	"click div.QuickMonitorDynamicServiceSelectParent :checkbox":function(e){
-		var checked = e.currentTarget.checked
+		var checked = e.currentTarget.checked;
 		$(e.currentTarget).parents("div.QuickMonitorDynamicService")
 							.children("div.QuickMonitorDynamicServiceSelectChildren")
 							.find(":checkbox")
@@ -187,11 +187,16 @@ Template.showQuickMonityTemplate.events = {
 	"click #showQuickMonityTemplateSaveBtn" : function () {
 		var templates = getTheCheckedDynamicServices();
 		console.log(templates);
+		if(!templates.length){
+			$("#showQuickMonityTemplatediv").modal("hide");
+			return;
+		}
+			
 		LoadingModal.loading();
 		SvseMonitorDao.addMultiMonitor(templates,SessionManage.getAddedEntityId(),function(result){
 			LoadingModal.loaded();
 			if(!result.status){
-				Messsage.error(result.msg);
+				Message.error(result.msg);
 			}else{
 		//		SwithcView.render(MONITORVIEW.GROUPANDENTITY,LAYOUTVIEW.NODE); //切换视图和布局
 			}

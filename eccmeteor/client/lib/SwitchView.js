@@ -33,20 +33,35 @@ MODULEVIEW = {
 }
 //
 LAYOUTVIEW = {
-	SETTING:"settingLayout",//设置布局
-	NODE:"nodeLayout",//带操作按钮的节点布局
+	SettingLayout:"SettingLayout",//设置布局
+	EquipmentsLayout:"EquipmentsLayout",//带操作按钮的节点布局
 	NOTOPERATION:"notOperationNodeLayout" //无操作按钮的节点布局
 }
 //报表
+/*
+Type： add 
+Author：xuqiang
+Date:2013-11-13 09:40
+Content:增加trend趋势报告
+
+=========================
+	Type：add
+	Author：renjie
+	Date:2013-11-14 09:20
+	Content:"状态统计报告"statusStatistical
+*/ 
 REPORT ={
 	STATISTICAL:"statistical",
-	TOPN:"topN"//topN报告
+	TOPN:"topN",//topN报告
+	TREND:"trend", //趋势报告
+	STATUSSTATISTICAL:"statusStatistical",//"状态统计报告"
+	MONITORINFO:"monitorInfo"//监测器信息报告, 搜索测试
 }
 //视图切换
 SwithcView = {}
 Object.defineProperty(SwithcView,"view",{
 	value:function(viewName){
-		Session.set("viewstatus",viewName);
+		Session.set("ViewType",viewName);
 	}
 });
 Object.defineProperty(SwithcView,"layout",{
@@ -57,6 +72,6 @@ Object.defineProperty(SwithcView,"layout",{
 Object.defineProperty(SwithcView,"render",{
 	value:function(viewName,layoutname){
 		Session.set("layout",layoutname);
-		Session.set("viewstatus",viewName);
+		Session.set("ViewType",viewName);
 	}
 });

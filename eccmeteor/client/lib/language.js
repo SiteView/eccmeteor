@@ -12,14 +12,16 @@ LanguageModel.getLanguage().link
 	Demo: LanguageModel.getLanguage("warnerrulemodel").emailwarner
 */
 Object.defineProperty(LanguageModel,"getLanaguage",{
-	value:function(modul){
+	value:function(modul,key){
 		var language =  SvseLanguage.findOne({name:Session.get("language")});
 		if(!language){
 			return "";
 		}
 		if(!modul)
 			return language["value"];
-		return language["value"][modul];
+		if(typeof key === "undefined")
+			return language["value"][modul];
+		return language["value"][modul][key];
 	}
 });
 /*

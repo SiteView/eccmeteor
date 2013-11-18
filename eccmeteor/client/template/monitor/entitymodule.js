@@ -100,6 +100,8 @@ function drawImage(id,count){
 			return;
 		}
 		var records = result.content;
+		if(!records)
+			return;
 		var dataProcess = new DataProcess(records,foreigkeys["monitorForeignKeys"]);
 		var resultData = dataProcess.getData();
 		var recordsData = dataProcess.getRecordsDate();

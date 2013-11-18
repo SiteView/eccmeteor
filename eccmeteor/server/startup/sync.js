@@ -260,3 +260,18 @@ Content:增加和修改 SyncTopNList
 		SyncFunction.SyncStatisticalList();
 	}
 }
+
+/*
+	Type： add
+	Author：huyinghuan
+	Date:2013-11-12 09:40
+	Content:同步设备，节点数。监视器状态
+*/ 
+Object.defineProperty(SyncFunction,"syncEquipments",{
+	value:function(){
+		Log4js.info("扫描设备变动开始。。");
+		SyncFunction.SyncTreeNodeData();
+		SyncFunction.SyncTreeStructure();
+		Log4js.info("扫描设备变动结束。。");
+	}
+});

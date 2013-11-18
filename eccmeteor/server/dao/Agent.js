@@ -52,8 +52,6 @@ Object.defineProperty(Agent,"_PermissionType",{
 	    addMonitor : "addMonitor", // 添加监视器
 		editMonitor : "editMonitor", //编辑监视器
 		deleteMonitor : "deleteMonitor", //删除监视器
-	   	foribedMonitor: "deleteMonitor",//批量禁用下属节点 //新增
-	    enableMonitor: "deleteMonitor" //批量启用下属节点//新增
 	}
 });
 
