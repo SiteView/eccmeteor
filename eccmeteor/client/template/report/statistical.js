@@ -1,3 +1,16 @@
+//分页的实现
+var page = new Pagination("statisticalPagination");
+/*
+Template.statisticallist.statisticalresultlist = function(){
+  return SvseStatisticalresultlist.find({},page.skip());
+}
+*/
+Template.statisticallist.pager = function(){  //Note : pager was  surrounded by three '{}'. example {{{pager}}} 
+  return page.create(SvseStatisticalresultlist.find().count());
+}
+Template.statisticallist.destroyed = function(){
+  page.destroy();
+}
 //单击添加按钮事件
 Template.statistical.events = {
 	"click #statisticalofadd" : function (e) {
@@ -274,7 +287,8 @@ Content:初始化statistical 列表
  */
 Template.statisticallist.statisticalresultlist = function () {
 	console.log(SvseStatisticalDao.getStatisticalresultlist());
-	return SvseStatisticalDao.getStatisticalresultlist();
+	 return SvseStatisticalresultlist.find({},page.skip());
+	//return SvseStatisticalDao.getStatisticalresultlist();
 }
 Template.statisticallist.rendered = function () {
 	$(function () {
@@ -287,55 +301,6 @@ Template.statisticallist.rendered = function () {
 		//tr 鼠标悬停显示操作按钮效果
 		ClientUtils.showOperateBtnInTd("statisticallist");
 	});
-//list分页实现
-	$(function(){
-		var init = {
-				pagePre:	6,	//单页条数
-				pageMax:	3	//页数分类基数
-			};
-		var getPager = function(p,a,b,c){
-			var pages = a;
-			var pageHide = b;
-			var parentBox = p;
-			var lis = parentBox.find('tr');
-			var html = '';
-			if(pageHide){
-				var index = (c || 1) < 4 ? 4 : ((c > (pages - 3)) ? (pages - 3) : c);
-				html += '<a href="###">1</a>\n';
-				index > 4 ? html += '<span>....</span>\n' : html += '';
-				for(var i=(index-2);i<=(index+2);i++){
-					html += '<a href="###">'+i+'</a>\n';
-				}
-				index < pages - 3 ? html += '<span>....</span>\n' : html += '';
-				html += '<a href="###">'+pages+'</a>\n';
-			}else{
-				if(pages != 1){
-					for(var i=0;i<pages;i++){
-						html += '<a href="###">'+(i+1)+'</a>\n';
-					}
-				}
-			}
-			lis.hide();
-			parentBox.find('tr[flag="'+c+'"]').show();
-			return html;
-		}
-	
-	$('.eventList').each(function(){
-		//var _this = $(this);
-		var tr = $(this).find('tr'),liNum = tr.length;
-		var pages = Math.ceil(liNum/init.pagePre);
-		for(var i=0;i<liNum;i++){
-			$(tr[i]).attr('flag',parseInt(i/init.pagePre)+1);
-		}
-		var pageHide = pages > init.pageMax ? 1 : 0;
-		$(this).find('.pager').append(getPager($(this),pages,pageHide,1));
-		$(this).find('a').live('click',function(){
-			var index = parseInt($(this).html());
-			$(this).find('.pager').empty();
-			$(this).find('.pager').append(getPager($(this),pages,pageHide,index));
-		});
-	});
-});
 }
 //根据id编辑报告表单
 Template.statisticallist.events({
