@@ -30,7 +30,6 @@ Object.defineProperty(RenderTemplate,"destroy",{
 Object.defineProperty(RenderTemplate,"hide",{
 	value:function(selector){
 		$(selector).modal("hide");
-		$(selector).empty();
 	}
 });
 
@@ -53,9 +52,9 @@ Object.defineProperty(RenderTemplate,"show",{
 		});
 	}
 });
-
+//===========================父节点为div的情况  
 /*
-*代理弹窗的modal("show") 父窗口
+*代理弹窗的modal("show") 
 *接收一个Jquery选择器
 */
 Object.defineProperty(RenderTemplate,"showParents",{
@@ -78,8 +77,16 @@ Object.defineProperty(RenderTemplate,"showParents",{
 */
 Object.defineProperty(RenderTemplate,"destroyParents",{
 	value:function(selector){
-		var modal = $(selector).children("div:first");
-		modal.empty();
-		modal.removeAttr("tabindex").removeAttr("style").removeAttr("aria-hidden");
+		$(selector).empty();
 	}
 })
+
+/*
+*代理弹窗的modal("hide")
+*接收一个Tempalte实例
+*/
+Object.defineProperty(RenderTemplate,"hideParents",{
+	value:function(t){
+		$(t.find("div.modal")).modal("hide");
+	}
+});

@@ -1,78 +1,8 @@
-
-/*
-Template.AddMonitorInfo.monitorStatus = function(){
-	return  Session.get("monitorStatus") ? Session.get("monitorStatus") : "";
-}
-
-Template.AddMonitorInfo.MonityTemplateParameters = function(){
-	return Session.get("monityTemplateId") 
-			? SvseMonitorTemplateDao.getMonityTemplateParametersById(Session.get("monityTemplateId"))
-			: []
-	
-}
-
-Template.AddMonitorInfo.MonityTemplateAdvanceParameters = function(){
-	return Session.get("monityTemplateId") 
-			? SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(Session.get("monityTemplateId"))
-			: []
-	
-}
-
-Template.monitorTemplateStatus.MonityTemplateReturnItems = function(){
-	return Session.get("monityTemplateId") 
-			? SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("monityTemplateId"))
-			: []
-	
-}
-// ?????  Template未出现？
-Template.AddMonitorInfo.getMonityTemplateStates = function(){
-	return Session.get("monityTemplateId") 
-			? SvseMonitorTemplateDao.getMonityTemplateStatesById(Session.get("monityTemplateId"))
-			: {}
-	
-}
-
-Template.AddMonitorInfo.getMonityTemplateStatesByStatus = function(status){
-	return Session.get("monityTemplateId") 
-			? SvseMonitorTemplateDao.getMonityTemplateStatesByIdAndStatus(Session.get("monityTemplateId"),status)
-			: {}
-}
-
-Template.AddMonitorInfo.devicename = function(){
-	return SessionManage.getCheckedTreeNode("name");
-}
-
-Template.AddMonitorInfo.monitorType = function(){
-	return Session.get("monityTemplateId") 
-			? SvseMonitorTemplateDao.getTemplateTypeById(Session.get("monityTemplateId"))
-			: ""
-}
-
-//获取监视频率的Label标签
-Template.AddMonitorInfo.MonityFrequencyLabel = function(){
-	return  Session.get("monityTemplateId") 
-			? SvseMonitorTemplateDao.getMonityTemplateParameterByName(Session.get("monityTemplateId"),"_frequency").sv_label
-			: ""
-	
-}
-
-//获取监视频率的Dom元素
-Template.AddMonitorInfo.MonityFrequencyDom = function(){
-	return  Session.get("monityTemplateId") 
-			? SvseMonitorTemplateDao.getMonityTemplateFrequencyParameters(Session.get("monityTemplateId"))
-			: []
-	
-}
-
-Template.AddMonitorInfo.AllTaskNames = function(){
-	return SvseTaskDao.getAllTaskNames();
-}
-*/
-Template.showMonitorInfoForm.events({
+Template.AddMoniorFormModal.events({
 	"submit form":function(){
 		return false;
 	},
-	"click #monityTemplateFormsSavelBtn":function(){
+	"click #monityTemplateFormsSavelBtn":function(e,t){
 		var monityTemplateParameter = ClientUtils.formArrayToObject($("#monityTemplateParameter").serializeArray());
 	//	var monityTemplateStates = ClientUtils.formArrayToObject($("#monityTemplateStates").serializeArray());
 		var monityTemplateAdvanceParameters = ClientUtils.formArrayToObject($("#monityTemplateAdvanceParameters").serializeArray());
@@ -129,7 +59,8 @@ Template.showMonitorInfoForm.events({
 				else{
 				}
 			//	Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
-				$("#showMonitorInfoDiv").modal('hide');
+			//	$("#showMonitorInfoDiv").modal('hide');
+				RenderTemplate.hideParents(t);
 			});
 		//如果编辑监视器
 		}else{
@@ -144,12 +75,14 @@ Template.showMonitorInfoForm.events({
 					SystemLogger("刷新监视器完成....");
 				}
 			//	Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
-				$("#showMonitorInfoDiv").modal('hide');
+				//$("#showMonitorInfoDiv").modal('hide');
+				RenderTemplate.hideParents(t);
 			});
 		}
 	},
-	"click #monityTemplateFormsCancelBtn":function(){
-		$("#showMonitorInfoDiv").modal('hide');
+	"click #monityTemplateFormsCancelBtn":function(e,t){
+		//$("#showMonitorInfoDiv").modal('hide');
+		RenderTemplate.hideParents(t);
 	},
 	"click i.icon-trash":function(e){
 		var i = $(e.target); //转Jquery对象
