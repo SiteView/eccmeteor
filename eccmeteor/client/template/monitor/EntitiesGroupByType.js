@@ -12,7 +12,7 @@ Template.EntitiesGroupByType.events({
 		var id = e.currentTarget.id;
 		if(!id)return;
 		//Session.set("_showEntityId",id);
-		//Session.set(SessionManage.MAP.CHECKEDENTITYTEMPLATEID,id);
+		Session.set(SessionManage.MAP.CHECKEDENTITYTEMPLATEID,id);
 		//Session.set("viewstatus",MONITORVIEW.ENTITYITEM);//设置视图状态
 		//$("#entitiesGroupByTypeDiv").modal('hide');
 		RenderTemplate.hideParents(t);
