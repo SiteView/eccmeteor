@@ -15,14 +15,9 @@
 			</div>
 		</div>	
 	</div>
-	{{> GroupAdd}}<!--组添加-->
-	{{> GroupEdit}}<!--组编辑-->
-	{{> AddEntity}}<!--设备添加-->
 	{{> EditEntity}}<!--设备编辑-->
 	{{> showQuickMonityTemplate}}<!--快速添加监视器-->
-	{{> EntitiesGroupByType}} <!--添加设备时设备类别选择-->
 	{{> ForbidEquipments}} <!--禁止组设备和监视器-->
-	{{!-- > AddMonitorInfo--}}<!-- 添加监视器信息弹窗填写-->
 </Template>
 <!--决定渲染 SettingLayout 或者 EquipmentsLayout-->
 <Template name="ControlViewLayout">
@@ -47,12 +42,3 @@
 	{{/if}}
 	</div>
 </Template>
-<!--
-Template name="notOperationNodeLayout"
-	<div class="row-fluid">
-		{{#if viewstatus}}
-			{{renderPage viewstatus}}
-		{{/if}}
-	</div>
-Template
--->

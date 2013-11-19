@@ -1,13 +1,13 @@
-Template.showMonitor.entityid = function () {
+Template.MonitorList.entityid = function () {
 	return SessionManage.getCheckedTreeNode("id");
 }
 
-Template.showMonitor.getChildrenNodesByIdAndType = function(id,subtype){
+Template.MonitorList.getChildrenNodesByIdAndType = function(id,subtype){
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,subtype);
     return SvseTreeDao.getNodesByIds(childrenIds);
 }
 
-Template.showMonitor.events={
+Template.MonitorList.events={
 	"click tbody tr":function(e){
 		var id  = e.currentTarget.id;
 		if(SessionManage.getCheckedMonitorId() === id)
@@ -44,7 +44,7 @@ Template.showMonitor.events={
     }
 }
 
-Template.showMonitor.rendered = function(){ //默认选中第一个监视进行绘图
+Template.MonitorList.rendered = function(){ //默认选中第一个监视进行绘图
 	//初始化checkbox全选效果
 	$(function(){
         //隐藏所有操作按钮

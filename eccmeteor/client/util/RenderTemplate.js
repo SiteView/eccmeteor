@@ -52,7 +52,9 @@ Object.defineProperty(RenderTemplate,"show",{
 		});
 	}
 });
-//===========================父节点为div的情况  
+//===========================
+//父节点为div存在的情况下,Tempalte 
+//已经包含所有的modal,modal-head,modal-body,modal-head.
 /*
 *代理弹窗的modal("show") 
 *接收一个Jquery选择器

@@ -28,7 +28,8 @@ Template.operateNode.statisticalData = function(){
 //增删改操作Template
 Template.operateNode.events ={
 	"click .btn#addGroup":function(){
-		$("#showGroupAdddiv").modal('show');
+		//$("#showGroupAdddiv").modal('show');
+		RenderTemplate.showParents("#AddGroupModal","GroupAdd");
 	},
 	"click a#enabledEquipments":function(){  //启用组和设备
 		console.log("启用");
@@ -67,7 +68,9 @@ Template.operateNode.events ={
 		$("#ForbidEquipmentsDiv").modal("show");
 	},
 	"click .btn#addEntity":function(){
-		$("#entitiesGroupByTypeDiv").modal('show');
+		//$("#entitiesGroupByTypeDiv").modal('show');
+		var group = SvseEntityTemplateDao.getEntityGroup();
+		RenderTemplate.showParents("#ChooseEntityTemplateForAddEntity","EntitiesGroupByType",{entityGroup:group});
 	},
 	"click a#removeEquipments":function(){ //删除多个组和设备
 		//删除子节点

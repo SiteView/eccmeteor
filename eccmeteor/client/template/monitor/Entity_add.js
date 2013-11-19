@@ -1,3 +1,4 @@
+/*
 Template.AddEntity.getEntityItemsById = function(id){
 	if(!id)
 		return [];
@@ -8,9 +9,9 @@ Template.AddEntity.showEntityId = function(){
 	//return Session.get("_showEntityId");
 	return Session.get(SessionManage.MAP.CHECKEDENTITYTEMPLATEID);
 }
-
+*/
 Template.AddEntity.events = {
-	"click #showEntityFormSaveBtn":function(){
+	"click #showEntityFormSaveBtn":function(e,t){
 	//	var checkedTreeNode =  Session.get("checkedTreeNode");//该node为父节点
 		var checkedTreeNode = SessionManage.getCheckedTreeNode();
 		var arr = $("#showEntityForm").serializeArray();
@@ -22,14 +23,15 @@ Template.AddEntity.events = {
 			property["sv_dependson"] = "";
 		}
 	//	property["sv_devicetype"] = Session.get("_showEntityId");
-		property["sv_devicetype"] = Session.get(SessionManage.MAP.CHECKEDENTITYTEMPLATEID);
+	//	property["sv_devicetype"] = Session.get(SessionManage.MAP.CHECKEDENTITYTEMPLATEID);
+		property["sv_devicetype"] =  t.find("input:hidden").value;
 		var parentid =checkedTreeNode.id;
 		var entity ={"property":property};
 		SystemLogger(entity);
 		LoadingModal.loading();
 		SvseEntityTemplateDao.addEntity(entity,parentid,function(result){
 			LoadingModal.loaded();
-			$("#showAddEntityDiv").modal("hide");
+			RenderTemplate.hideParents(t);
 			if(!result.status){
 				Log4js.error("SvseEntityTemplateDao.addEntity 捕捉到错误");
 				Log4js.error(result);
@@ -42,10 +44,14 @@ Template.AddEntity.events = {
 		});
 	},
 	"click #showEntityFormCancelBtn":function(){
-		$("#showAddEntityDiv").modal("hide");
+		//$("#showAddEntityDiv").modal("hide");
+		RenderTemplate.hideParents(t);
 	},
-	"click #showEntityTemplateAgainBtn":function(){
-		$("#showAddEntityDiv").modal("hide");
-		$("#entitiesGroupByTypeDiv").modal('show');
+	"click #showEntityTemplateAgainBtn":function(e,t){
+		//$("#showAddEntityDiv").modal("hide");
+		RenderTemplate.hideParents(t);
+	//	$("#entitiesGroupByTypeDiv").modal('show');
+		var group = SvseEntityTemplateDao.getEntityGroup();
+		RenderTemplate.showParents("#ChooseEntityTemplateForAddEntity","EntitiesGroupByType",{entityGroup:group});
 	}
 };

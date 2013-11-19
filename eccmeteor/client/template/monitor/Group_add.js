@@ -1,24 +1,19 @@
 Template.GroupAdd.events ={
-	"click #showGroupAddFormSaveBtn":function(){
+	"click #showGroupAddFormSaveBtn":function(e,t){
 		var arr = $("#showGroupAddForm").serializeArray();
 		var property = ClientUtils.formArrayToObject(arr);
 		if(!property["sv_dependson"])
 			property["sv_dependson"] = "";
-	//	var parentid = Session.get("checkedTreeNode")["id"];
 		var parentid = SessionManage.getCheckedTreeNode("id");
 		var group = {'property':property};
 		SvseDao.addGroup(group,parentid,function(result){
 			if(!result.status){
-				SystemLogger(result.msg);
+				Log4js.error(result.msg);
 			}
-			$("#showGroupAdddiv").modal('hide');
+			RenderTemplate.hideParents(t);
 		});
 	},
 	"click #showGroupAddFormCancelBtn":function(){
-	    $("#showGroupAdddiv").modal('hide');
+		RenderTemplate.hideParents(t);
 	}
-}
-
-Template.GroupAdd.rendered = function(){
-    $("#showGroupAdddiv").modal('hide');
 }

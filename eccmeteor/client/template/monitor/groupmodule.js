@@ -28,9 +28,8 @@ Template.showGroupAndEntity.events({
     },
     "click #showGroupAndEntityTableGroupList button[name='edit']":function(e){
         var id = e.currentTarget.id;
-        Session.set("showGroupAndEntityEditGroupId",id);
-        console.log("编辑组id:"+id);
-        $("#showGroupEditdiv").modal('show');
+        var context = {Group:SvseDao.getGroup(id),id:id};
+        RenderTemplate.showParents("#EditGroupModal","GroupEdit",context);
     },
     "click #showGroupAndEntityTableEntityList button[name='trash']":function(e){
 		var id = e.currentTarget.id;
@@ -60,7 +59,6 @@ Template.showGroupAndEntity.events({
     "click tbody tr td a":function(e){ //dblclick tbody tr, 
         e.stopPropagation();
         var id = e.currentTarget.id;
-        console.log(id);
         var node = SvseTreeDao.getNodeById(id);
         var checkedTreeNode = {
             id:id,

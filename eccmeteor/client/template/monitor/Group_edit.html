@@ -1,9 +1,10 @@
 <Template name="GroupEdit">
-<div id="showGroupEditdiv" class="modal hide fade">
-    <div class="modal-header">添加组{{ide "showGroupAdd"}}</div>
+<div class="modal hide fade">
+    <div class="modal-header">编辑组</div>
 	<div class="modal-body">
+		<input type="hidden" value="{{id}}">
         <form id="showGroupEditForm">
-	        {{#with getGroup}}
+	        {{#with Group}}
 	        <label>*组名称</label>
 	        <input name="sv_name" value="{{sv_name}}"/>
 	        <br>======================</br>
