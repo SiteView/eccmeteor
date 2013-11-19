@@ -21,6 +21,12 @@
 		};
 		$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
+			$(".form_datetime").datetimepicker({
+			format: "yyyy MM dd hh:mm",
+			autoclose: true,
+			todayBtn: true,
+			pickerPosition: "bottom-left"
+		});
 }
 Template.trend_status.events = {
 	"click #queryDetailLineData" : function(){
