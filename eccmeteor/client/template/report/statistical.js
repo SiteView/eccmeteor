@@ -1,10 +1,17 @@
-//分页的实现
-var page = new Pagination("statisticalPagination");
 /*
-Template.statisticallist.statisticalresultlist = function(){
-  return SvseStatisticalresultlist.find({},page.skip());
+Type： add
+Author：xuqiang
+Date:2013-10-15
+Content:初始化statistical 列表
+ */
+Template.statisticallist.statisticalresultlist = function () {
+	console.log(SvseStatisticalDao.getStatisticalresultlist());
+	 return SvseStatisticalresultlist.find({},page.skip());
+	//return SvseStatisticalDao.getStatisticalresultlist();
 }
-*/
+//分页的实现
+
+var page = new Pagination("statisticalPagination");
 Template.statisticallist.pager = function(){  //Note : pager was  surrounded by three '{}'. example {{{pager}}} 
   return page.create(SvseStatisticalresultlist.find().count());
 }
@@ -208,12 +215,12 @@ Template.statisticalofadd.rendered = function () {
 		});
 		
 	};
-		 $(".form_datetime").datetimepicker({
-        format: "dd MM yyyy",
-        autoclose: true,
-        todayBtn: true,
-        pickerPosition: "bottom-left"
-    });
+		$(".form_datetime").datetimepicker({
+			format: "dd MM yyyy",
+			autoclose: true,
+			todayBtn: true,
+			pickerPosition: "bottom-left"
+		});
 	//弹窗移动
 	ModalDrag.draggable("#statisticalofadddiv");
 }
@@ -279,17 +286,7 @@ Template.statisticalofadd.events = {
 	}
 }
 
-/*
-Type： add
-Author：xuqiang
-Date:2013-10-15
-Content:初始化statistical 列表
- */
-Template.statisticallist.statisticalresultlist = function () {
-	console.log(SvseStatisticalDao.getStatisticalresultlist());
-	 return SvseStatisticalresultlist.find({},page.skip());
-	//return SvseStatisticalDao.getStatisticalresultlist();
-}
+
 Template.statisticallist.rendered = function () {
 	$(function () {
 		//隐藏所有操作按钮
