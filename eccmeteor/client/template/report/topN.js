@@ -178,71 +178,8 @@ Template.topNofadd.events = {
 		 if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*([,;][,;\s]*(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)*)*$/.test(email))      {   
              Message.info("E-mail格式错误!");   
              return false;
-}
+        }
 
-//验正邮箱格式要正确 20080602_heyitang
-//var email=document. getElementById_r("trans_email").value;
-//如果，用户入了邮箱才需要进行判断
-/*var email=basicinfooftopNadd["EmailSend"];
-if (email!=null)
-{if (email.indexOf(",")==-1)
-{
-if(!Email(email))
-{
-alert("您输入的单个邮件格式有误，请重新核对后再输入");
-document.getElementById_r("trans_email").focus();
-return false;
-}
-}
-else
-{
-var emailArray=email.split(",");
-for(i=0;i<emailArray.length;i++)
-{
-//这里防止出现heyitang@qq.com;heyitang@163.com;;多加了;这时候，数组中可能有元素没有内容
-if(emailArray[i]!=null || emailArray[i]!="")
-{
-if(!Email(emailArray[i]))
-{
-alert("您输入的多个邮箱格式中有邮箱格式不 正确，请重新核对后再输入");
-document.getElementById_r("trans_email").focus();
-return false;
-}
-}
-}
-}
- } */
- 
-       
-/*var mailStr =  'aa@bb.com;bb@aa.com;cc@aa.com';
-先将字符串转换为数组
-var mail_arr =mailStr.split(";");
-然后用正则表达式逐个判断是否合法
-for(var i=0;i<mail_arr.length;i++){
- if(!/([a-zA-Z]|[0-9]|_)+@([a-zA-Z]|[0-9]|_)+.com/.test(mail_arr[i]))
-{
-如果当中有一个邮箱格式错误。。则返回false
-  return 'false';
-}
-return 'true';
-}*/
-	/* if(email.indexOf(".")==-1)  {
-         Message.info("邮箱地址中必须包含."); 
-     //document.myform.userEmail.focus();
-     //document.myform.userEmail.select();
-          return false;
-     document.getElementById("24").style.display="block";
-     document.getElementById("14").style.display="none";
-    }   
-    var email = document.getElementById("email").value; //获取邮箱地址  
-     //判断邮箱格式是否正确  
-       if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email))      {   
-              Message.info("E-mail格式错误!");   
-              document.getElementById("email").focus();       //让邮箱文本框获得焦点  
-              return false;
-             document.getElementById("24").style.display="block";
-             document.getElementById("14").style.display="none";    
-       }  */
 		var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
 		for(index in arr){
 			targets.push(arr[index].id);
@@ -265,72 +202,6 @@ return 'true';
 			console.log(result); //控制台打印添加的信息
           $('#topNofadddiv').modal('toggle');
               });
-	
-	
-	
-	//topN报告分页
-		/* $(function index(pos)
-		{
-		window.location = "pageUrl.aspx?page=" + pos;
-		}),
-		$(function gopage()
-		{
-		var pInput = document.getElementById('pInput').value;
-		index(pInput);
-		}),
-		//curpage当前页码,totalpage总共页数,totalnum总记录数
-		$(function ShowPages(curpage,totalpage,totalnum)
-		{
-		var str = "";
-		str += "<table border=\"0\" align=\"center\" cellspacing=\"0\" cellpadding=\"3\">";
-		str += "<tr>";
-		str += "<td>第" + curpage + "页/共[" + totalpage + "]页 [" + totalnum + "]条记录</td>";
-		str += "<td>";
-
-		if(curpage > 1)
-		{
-		var last_page = curpage - 1;
-		str += "<a href=\"javascript:index(" + last_page + ")\" class=\"fclblack\"><img
-		src=\"images/prev.gif\" alt=\"上一页\" align=\"absmiddle\" border=\"0\"/></a>";
-		}
-
-		str += "</td>";
-
-		var show_pages = 2;
-
-		var start_page = curpage - show_pages;
-		if(start_page < 1)
-		{
-		start_page = 1;
-		}
-
-		var end_page = curpage + show_pages;
-		if(end_page > totalpage)
-		{
-		end_page = totalpage;
-		}
-
-		for(var i=start_page;i<=end_page;i++)
-		{
-		str += "<td><a href=\"javascript:index(" + i + ")\" class=\"fclblack\">[" + i + "]</a></td>";
-		}
-
-		if(curpage < totalpage)
-		{
-		var next_page = curpage + 1;
-		str += "<td><a href=\"javascript:index(" + next_page + ")\" class=\"fclblack\"><img
-		src=\"images/next.gif\" alt=\"下一页\" align=\"absmiddle\" border=\"0\"/></a></td>";
-		}
-
-		str += "<td>跳转到&nbsp;<input id=\"pInput\" type=\"text\" name=\"pInput\"
-		style=\"width:20px;height:15px;border:1px solid #606060;line-height:16px;\"/>&nbsp;页&nbsp;<a
-		href=\"javascript:gopage();\" class=\"fclblack\">GO</a></td>";
-		str += "</tr>";
-		str += "</table>";
-
-		document.write(str);
-
-		})*/
 			  
             }
        }
@@ -362,14 +233,30 @@ Template.topNofaddform.rendered = function(){
 				$("#typelist").append(option);
 			}
 		});
-		ModalDrag.draggable("#topNofadddiv")
+		
 	}
 //获取topNlist的集合
 Template.topNlist.topNresultlist = function(){
 	console.log(SvseTopNDao.getTopNresultlist());
-	return SvseTopNDao.getTopNresultlist();
+	//return SvseTopNDao.getTopNresultlist();
+	return SvseTopNresultlist.find({},page.skip());
+	
 }
 
+//分页列表
+var page = new Pagination("topNPagination",{perPage:2});
+
+Template.topNlist.svseTopNresultlist = function(){
+  return SvseTopNresultlist.find({},page.skip());
+}
+  
+Template.topNlist.pager = function(){
+  return page.create(SvseTopNresultlist.find().count());
+}
+
+Template.topNlist.destroyed = function(){
+  page.destroy();
+}
 
 Template.topNlist.rendered = function(){
    
@@ -384,6 +271,55 @@ Template.topNlist.rendered = function(){
 		//tr 鼠标悬停显示操作按钮效果
 		ClientUtils.showOperateBtnInTd("topNlist");
 	});
+	//list分页实现
+	/*$(function(){
+		var init = {
+				pagePre:	6,	//单页条数
+				pageMax:	3	//页数分类基数
+			};
+		var getPager = function(p,a,b,c){
+			var pages = a;
+			var pageHide = b;
+			var parentBox = p;
+			var lis = parentBox.find('tr');
+			var html = '';
+			if(pageHide){
+				var index = (c || 1) < 4 ? 4 : ((c > (pages - 3)) ? (pages - 3) : c);
+				html += '<a href="###">1</a>\n';
+				index > 4 ? html += '<span>....</span>\n' : html += '';
+				for(var i=(index-2);i<=(index+2);i++){
+					html += '<a href="###">'+i+'</a>\n';
+				}
+				index < pages - 3 ? html += '<span>....</span>\n' : html += '';
+				html += '<a href="###">'+pages+'</a>\n';
+			}else{
+				if(pages != 1){
+					for(var i=0;i<pages;i++){
+						html += '<a href="###">'+(i+1)+'</a>\n';
+					}
+				}
+			}
+			lis.hide();
+			parentBox.find('tr[flag="'+c+'"]').show();
+			return html;
+		}
+	
+	$('.eventList').each(function(){
+		//var _this = $(this);
+		var tr = $(this).find('tr'),liNum = tr.length;
+		var pages = Math.ceil(liNum/init.pagePre);
+		for(var i=0;i<liNum;i++){
+			$(tr[i]).attr('flag',parseInt(i/init.pagePre)+1);
+		}
+		var pageHide = pages > init.pageMax ? 1 : 0;
+		$(this).find('.pager').append(getPager($(this),pages,pageHide,1));
+		$(this).find('a').live('click',function(){
+			var index = parseInt($(this).html());
+			$(this).find('.pager').empty();
+			$(this).find('.pager').append(getPager($(this),pages,pageHide,index));
+		});
+	});
+});*/
 
 }
 
@@ -603,6 +539,9 @@ Template.topNofadd.rendered = function(){
 		};
 		$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
+	//弹窗移动
+	ModalDrag.draggable("#topNofadddiv");
+	///////读取检测器
 	Meteor.call("svGetMonitorTemplate",function(err,result){
 		for(name in result){
 			console.log(name);

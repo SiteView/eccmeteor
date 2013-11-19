@@ -6,8 +6,8 @@ SvseTopNDao = {
 	},
 	
 	"getTopNresultlist" : function(){
-		return SvseTopNresultlist.find({nIndex:{$exists:true}}).fetch();
-		//return SvseTopNresultlist.find().fetch();
+		//return SvseTopNresultlist.find({nIndex:{$exists:true}}).fetch();
+		return SvseTopNresultlist.find().fetch();
 	},
 	
 	"addTopN":function(addressname,address,fn){

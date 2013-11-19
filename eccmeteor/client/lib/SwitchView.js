@@ -54,6 +54,12 @@ REPORT ={
 	STATISTICAL:"statistical",
 	TOPN:"topN",//topN报告
 	TREND:"trend", //趋势报告
+	/*Type：add
+	Author：renjie
+	Date:2013-11-14 09:20
+	Content:增加contrast对比报告
+	*/
+	CONTRAST:"contrast",//对比报告
 	STATUSSTATISTICAL:"statusStatistical",//"状态统计报告"
 	MONITORINFO:"monitorInfo"//监测器信息报告, 搜索测试
 }

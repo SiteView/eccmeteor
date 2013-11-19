@@ -47,6 +47,15 @@ var NavigationSettingTreeEvents = {
 	*/ 
    "statusStatistical":function(){
        SwithcView.view(REPORT.STATUSSTATISTICAL);
+    },
+	/*
+	Type：add
+	Author：renjie
+	Date:2013-11-18 15:20
+	Content:添加contrast对比报告
+	*/ 
+	"contrast":function(){
+       SwithcView.view(REPORT.CONTRAST);
     }
 }
 NavigationSettingTree = {
