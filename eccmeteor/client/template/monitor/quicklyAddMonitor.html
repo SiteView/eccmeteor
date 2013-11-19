@@ -1,40 +1,41 @@
 <Template name="showQuickMonityTemplate">
-	<div id="showQuickMonityTemplatediv" class="modal hide"
+	<div class="modal hide"
 		data-backdrop="static" data-keyboard="true" data-show="false" 
 		data-modalOverflow="true" data-maxHeight='600'>
 	    <div class="modal-header">添加监视器</div>
 		<div class="modal-body" style="max-height:600px;overflow:auto">
-			{{> QuickMonitorDynamicService}}
+			{{!-- QuickMonitorDynamicService --}}
+			{{#each monitors}}
+				<div class="QuickMonitorDynamicService">
+					<div class="QuickMonitorDynamicServiceSelectParent">
+						<input type="checkbox" id="MonitorDynamicPropertyCheckBox{{return.id}}" data-id="{{return.id}}"
+							data-name="{{property.sv_name}}" data-extra="{{property.sv_extrasave}}"
+						 >
+						{{property.sv_description}}
+					</div>
+					<div class="QuickMonitorDynamicServiceSelectChildren" style="max-height:200px;overflow:auto">
+						<div>
+							{{#if isDynamicProperty}}
+								{{#each DynamicProperties}}
+									<p><input type="checkbox" value="{{this}}"><span>{{this}}</span></p>
+								{{/each}}
+								{{else}}
+								<p>
+									<input type="checkbox" value="{{property.sv_name}}"/>
+									<span>{{property.sv_name}}</span>
+								</p>
+							{{/if}}
+							
+						</div>
+					</div>
+				</div>
+			{{/each}}
 		</div>
 		<div class="modal-footer">	
 			<button id="chooseallqucikmonitor" class="btn">全选</button>
 			<button id="unchooseallqucikmonitor" class="btn">反选</button>
-			<!---->
 			<button id="showQuickMonityTemplateSaveBtn" class="btn btn-primary">{{language.save}}</button>
 			<button id="showQuickMonityTemplateCancelBtn" class="btn">{{language.cancel}}</button>
 		</div>
 	</div>
-</Template>
-<Template name="QuickMonitorDynamicService">
-	{{#each monities}}
-		<div class="QuickMonitorDynamicService">
-			<div class="QuickMonitorDynamicServiceSelectParent">
-				<input type="checkbox" id="MonitorDynamicPropertyCheckBox{{return.id}}" data-id="{{return.id}}"
-					data-name="{{property.sv_name}}" data-extra="{{property.sv_extrasave}}"
-				 >
-				{{property.sv_description}}
-			</div>
-			<div class="QuickMonitorDynamicServiceSelectChildren" style="max-height:200px;overflow:auto">
-				<div id="MonitorDynamicProperty{{return.id}}">
-					<p><input type="checkbox" value="{{property.sv_name}}"><span>{{property.sv_name}}</span></p>
-				</div>
-			</div>
-		</div>
-	{{/each}}
-</Template>
-
-<Template name="QuickMonitorDynamicProperty">
-	{{#each DynamicProperties}}
-		<p><input type="checkbox" value="{{this}}"><span>{{this}}</span></p>
-	{{/each}}
 </Template>

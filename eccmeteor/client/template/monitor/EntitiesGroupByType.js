@@ -9,15 +9,9 @@ Template.EntitiesGroupByType.getEntityPropertyById = function(id){
 
 Template.EntitiesGroupByType.events({
 	"click tr":function(e,t){
-		var id = e.currentTarget.id;
-		if(!id)return;
-		//Session.set("_showEntityId",id);
-		Session.set(SessionManage.MAP.CHECKEDENTITYTEMPLATEID,id);
-		//Session.set("viewstatus",MONITORVIEW.ENTITYITEM);//设置视图状态
-		//$("#entitiesGroupByTypeDiv").modal('hide');
+		var id = e.currentTarget.id;//模板类型id
+		//Session.set(SessionManage.MAP.CHECKEDENTITYTEMPLATEID,id);
 		RenderTemplate.hideParents(t);
-	//	$("#showAddEntityDiv").modal("show");
-
 		var EntityItems = SvseEntityTemplateDao.getEntityItemsById(id);
 		RenderTemplate.showParents("#AddEntityModal","AddEntity",{EntityItems:EntityItems,id:id});
 	}

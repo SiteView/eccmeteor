@@ -4,7 +4,7 @@ var setContent = function(content,type,setting){
 			$(selector).modal("hide");
 			return;
 		}
-		Log4js[type](content);
+	//	Log4js[type](content);
 		type = type === "warn" ? "block" : type;//转成相应样式
 		var obj = {
 			align:"left",
