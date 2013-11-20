@@ -1,10 +1,15 @@
-Template.MonitorList.entityid = function () {
-	return SessionManage.getCheckedTreeNode("id");
+var PagerMonitor = new Pagination("subentitylist",{currentPage: 1,perPage:5});
+
+Template.MonitorList.pagerMonitor = function(){
+	var entityId = SessionManage.getCheckedTreeNode("id");
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
+	return PagerMonitor.create(SvseTreeDao.getNodeCountsByIds(childrenIds));
 }
 
-Template.MonitorList.getChildrenNodesByIdAndType = function(id,subtype){
-    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,subtype);
-    return SvseTreeDao.getNodesByIds(childrenIds);
+Template.MonitorList.Monitors = function(){
+	var entityId = SessionManage.getCheckedTreeNode("id");
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
+    return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip());
 }
 
 Template.MonitorList.events={

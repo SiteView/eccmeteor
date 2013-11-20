@@ -13,8 +13,8 @@
 			</tr>
 		</thead>
 		<tbody id="showMonitorList">
-		{{#if getChildrenNodesByIdAndType entityid "submonitor"}}
-		{{#each getChildrenNodesByIdAndType entityid "submonitor"}}
+		{{#if Monitors}}
+		{{#each Monitors}}
 			<tr id="{{sv_id}}" data-status="{{status}}">
 			    <td><input type="checkbox" id="{{sv_id}}"></td>
 				<td>
@@ -66,6 +66,9 @@
 		{{/if}}
 		</tbody>
 	</table>
+	{{#if Monitors}}
+		{{{pagerMonitor}}}
+	{{/if}}
 </Template>
 
 <Template name="svg"><!-- svg 图像展示-->
@@ -99,7 +102,7 @@
 	</div>
 	<div class="row-fluid" style="height:50px;overflow:auto">
 	{{>MonitorStatisticalDetailData}}
-	<div>
+	</div>
 </Template>
 	
 <Template name="MonitorStatisticalDetailData">

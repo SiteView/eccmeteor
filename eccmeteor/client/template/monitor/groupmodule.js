@@ -1,30 +1,36 @@
-var PagerGroup = new Pagination("subgrouplist",{currentPage: 1,perPage:8});
-
-
+var PagerGroup = new Pagination("subgrouplist",{currentPage: 1,perPage:5});
+var PagerEntity = new Pagination("subentitylist",{currentPage: 1,perPage:5});
+//子组分页
 Template.showGroupAndEntity.groupPager = function(){
     var id = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subgroup");
     var status = SessionManage.getEntityListFilter();
-    return status ? page.create(SvseTreeDao.getNodesByIds(childrenIds,status))
-                    : page.create(SvseTreeDao.getNodesByIds(childrenIds,status).length);
+    return PagerGroup.create(SvseTreeDao.getNodeCountsByIds(childrenIds,status));
+}
+//设备分页
+Template.showGroupAndEntity.entityPager = function(){
+    var id = SessionManage.getCheckedTreeNode("id");
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subentity");
+    var status = SessionManage.getEntityListFilter();
+    return PagerGroup.create(SvseTreeDao.getNodeCountsByIds(childrenIds,status));
 }
 
 Template.showGroupAndEntity.getEntityTemplateNameByType = function(type){
-    return SvseEntityTemplateDao.getEntityPropertyById(type,"sv_name",PagerGroup.skip());
+    return SvseEntityTemplateDao.getEntityPropertyById(type,"sv_name");
 }
 
 Template.showGroupAndEntity.subgroup = function(){
     var id = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subgroup");
     var status = SessionManage.getEntityListFilter();
-    return status ? SvseTreeDao.getNodesByIds(childrenIds,status) : SvseTreeDao.getNodesByIds(childrenIds);
+    return SvseTreeDao.getNodesByIds(childrenIds,status,PagerGroup.skip());
 }
 
 Template.showGroupAndEntity.subentity = function(){
     var id = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subentity");
     var status = SessionManage.getEntityListFilter();
-    return status ? SvseTreeDao.getNodesByIds(childrenIds,status) : SvseTreeDao.getNodesByIds(childrenIds);
+    return SvseTreeDao.getNodesByIds(childrenIds,status,PagerEntity.skip());
 }
 
 Template.showGroupAndEntity.events({
