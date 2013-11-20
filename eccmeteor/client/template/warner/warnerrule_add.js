@@ -61,7 +61,7 @@ Template.warnerruleofmessage.events={
 			
 		});
 	},
-	//待修改
+	//短信模板的改变事件
 	"change #messageSendModelist":function(){
 		var type = $("#messageSendModelist").val()
 		//console.log("type:" + type);
@@ -156,14 +156,13 @@ Template.messagewarnerformedit.messagelist = function(){
 Template.messagewarnerformedit.rendered=function(){
 	$(function(){
 		//填充报警接收手机号下拉列表
-		var messagelist = SvseMessageDao.getMessageList();
-		//var smsnumberselect = t.find("#warnersmsnumber");
-		for(var l = 0 ; l < messagelist.length ; l++){
-			console.log(messagelist[l]);
-			var name = messagelist[l].Name;
-			var option = $("<option value="+name+"></option>").html(name);
-			$("#warnersmsnumber").append(option);
-		}
+		// var messagelist = SvseMessageDao.getMessageList();
+		// for(var l = 0 ; l < messagelist.length ; l++){
+			// console.log(messagelist[l]);
+			// var name = messagelist[l].Name;
+			// var option = $("<option value="+name+"></option>").html(name);
+			// $("#warnersmsnumber").append(option);
+		// }
 		$('.messagemultiselectedit').multiselect({
 			buttonClass : 'btn',
 			buttonWidth : 'auto',
@@ -221,13 +220,13 @@ Template.messagewarnerformedit.smstemplate=function(){
 	SvseMessageDao.getMessageTemplates(function(err,result){
 		var smstemplate=[];
 		for(name in result){
-			console.log(name);
+			//console.log(name);
 			smstemplate.push(name);
 		} 
-		console.log(smstemplate);
+		//console.log(smstemplate);
 		Session.set("smstemplate",smstemplate);
 	});
-	console.log(Session.get("smstemplate"));
+	//console.log(Session.get("smstemplate"));
 	return Session.get("smstemplate");
 }
 

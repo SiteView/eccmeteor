@@ -27,35 +27,38 @@
 <Template name="warnerruleofsoundform">
 	<form id="warnerruleofsoundform" class="well form-horizontal form-inline">
 		<fieldset>
+			<label class="label label-info" align="left">设置声音报警</label>
 			<div class="control-group">
 				<label class="control-label">报警名称*:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="AlertName">
+					<input type="text" name="AlertName">
 				 </div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">服务器名*:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Server" value="127.0.0.1">
+					<input type="text" name="Server" value="127.0.0.1">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">登录名*:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="LoginName" value="Administrator">
+					<input type="text" name="LoginName" value="Administrator">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" >登陆密码:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="LoginPwd">
+					<input type="text" name="LoginPwd">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" >报警策略:</label>
-					<div class="controls">
-						<input type="text" class="span6" name="Strategy">
-					</div>
+				<div class="controls">
+					<select id="soundalertStrategylist" name="Strategy">
+						<option vlaue="0">空</option>
+					</select>
+				</div>
 			</div>
 			
 		</fieldset>
@@ -64,13 +67,50 @@
 	<div>
 		<form class="well form-horizontal form-inline" id="warnerruleofsoundformsendconditions">
 			<fieldset>
+				<label class="label label-info" align="left">发送条件</label>
 				<div class="control-group">
-				<label class="control-label" >报警事件:</label>
-				<div class="controls">
-					<input type="radio" name="AlertCategory" value="危险">危险</td>
-					<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
+					<label class="control-label" >报警事件:</label>
+					<div class="controls">
+						<input type="radio" name="AlertCategory" value="危险">危险</td>
+						<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
+					</div>
 				</div>
-			</div>
+				<div class="row">
+					<div class="control-group" style="padding-left:10px;margin:5px">
+						<span>
+							<input type="radio" name="AlertCond">
+						</span>
+						<label>连续不断发送警告</label>
+					</div>
+					<div class="control-group">
+						<span style="padding:20px">
+							总是发送，从第<input type="text" name="AlwaysTimes" style="width:28px;height:12px" value="1">次符合报警发送条件开始发送报警
+						</span>
+					</div>
+					<div class="control-group" style="padding-left:10px;margin:5px">
+						<span>
+							<input type="radio" name="AlertCond">
+						</span>
+						<label>报警只发送一次</label>
+					</div>
+					<div class="control-group">
+						<span style="padding:20px">
+							发送一次，当第<input type="text" name="OnlyTimes" style="width:28px;height:12px" value="1">次符合报警发送条件发送报警
+						</span>
+					</div>
+					<div class="control-group" style="padding-left:10px;margin:5px">
+						<span class="input-group-addon">
+							<input type="radio" name="AlertCond" checked>
+						</span>
+						<label>选择性发送报警</label>
+					</div>
+					<div class="control-group">
+						<span style="padding:20px">
+							当第<input type="text" style="width:28px;height:12px" name="SelTime1" value="2">次符合报警发送条件时及其以后每重复
+							<input type="text" style="width:28px;height:12px" name="SelTime2" value="3">次时发送报警
+						</span>
+					</div>
+				</div>
 			</fieldset>
 		</form>
 	</div>
@@ -94,35 +134,38 @@
 					<form id="warnerruleofsoundformedit" class="well form-horizontal form-inline">
 						<input type="hidden" name="nIndex" >
 						<fieldset>
+							<label class="label label-info" align="left">设置声音报警</label>
 							<div class="control-group">
 								<label class="control-label">报警名称*:</label>
-									<div class="controls">
-										<input type="text" class="span6" name="AlertName">
-									 </div>
+								<div class="controls">
+									<input type="text" name="AlertName">
+								 </div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">服务器名*:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="Server">
+									<input type="text" name="Server">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">登录名*:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="LoginName">
+									<input type="text" name="LoginName">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >登陆密码:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="LoginPwd">
+									<input type="text" name="LoginPwd">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >报警策略:</label>
-									<div class="controls">
-										<input type="text" class="span6" name="Strategy">
-									</div>
+								<div class="controls">
+									<select id="soundalertStrategylistedit" name="Strategy">
+										<option vlaue="0">空</option>
+									</select>
+								</div>
 							</div>
 						</fieldset>
 					</form>
@@ -130,11 +173,48 @@
 					<div>
 						<form class="well form-horizontal form-inline" id="warnerruleofsoundformsendconditionsedit">
 							<fieldset>
+								<label class="label label-info" align="left">发送条件</label>
 								<div class="control-group">
-								<label class="control-label" >报警事件:</label>
+									<label class="control-label" >报警事件:</label>
 									<div class="controls">
 										<input type="radio" name="AlertCategory" value="危险">危险</td>
 										<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
+									</div>
+								</div>
+								<div class="row">
+									<div class="control-group" style="padding-left:10px;margin:5px">
+										<span>
+											<input type="radio" name="AlertCond">
+										</span>
+										<label>连续不断发送警告</label>
+									</div>
+									<div class="control-group">
+										<span style="padding:20px">
+											总是发送，从第<input type="text" name="AlwaysTimes" style="width:28px;height:12px" value="1">次符合报警发送条件开始发送报警
+										</span>
+									</div>
+									<div class="control-group" style="padding-left:10px;margin:5px">
+										<span>
+											<input type="radio" name="AlertCond">
+										</span>
+										<label>报警只发送一次</label>
+									</div>
+									<div class="control-group">
+										<span style="padding:20px">
+											发送一次，当第<input type="text" name="OnlyTimes" style="width:28px;height:12px" value="1">次符合报警发送条件发送报警
+										</span>
+									</div>
+									<div class="control-group" style="padding-left:10px;margin:5px">
+										<span class="input-group-addon">
+											<input type="radio" name="AlertCond" checked>
+										</span>
+										<label>选择性发送报警</label>
+									</div>
+									<div class="control-group">
+										<span style="padding:20px">
+											当第<input type="text" style="width:28px;height:12px" name="SelTime1" value="2">次符合报警发送条件时及其以后每重复
+											<input type="text" style="width:28px;height:12px" name="SelTime2" value="3">次时发送报警
+										</span>
 									</div>
 								</div>
 							</fieldset>

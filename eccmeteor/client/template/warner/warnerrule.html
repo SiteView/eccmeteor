@@ -2,6 +2,9 @@
 {{> alertoperation}}
 <br/>
 {{> warnerrulelist}}
+<br/>
+{{> warnerloglist}}
+
 {{> warnerruleofemail}}
 {{> warnerruleofemailedit}}
 {{> warnerruleofmessage}}
@@ -50,6 +53,9 @@
 </Template>
 
 <Template name="warnerrulelist">
+	<div style="padding-bottom:8px">
+		<span class="label label-info">报警规则列表</span>
+	</div>
 	<table class="table table-striped table-condensed table-hover">
 		<thead>
 			<tr></tr>
@@ -79,6 +85,7 @@
 			{{/each}}
 		</tbody>
 	</table>
+	{{{pager}}}
 </Template>
 
 <Template name="warnerruleofemail">
@@ -110,11 +117,12 @@
 <Template name="warnerruleofemailform">
 	<form id="warnerruleofemailform" class="well form-horizontal form-inline">
 		<fieldset>
+			<label class="label label-info" align="left">设置Email报警</label>
 			<div class="control-group">
 				<label class="control-label">报警名称:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="AlertName">
-				 </div>
+					<input type="text" name="AlertName">
+				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">邮件接收地址:</label>
@@ -129,7 +137,7 @@
 			<div class="control-group">
 				<label class="control-label">其他邮件地址:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="OtherAdress">
+					<input type="text" name="OtherAdress">
 				</div>
 			</div>
 			<div class="control-group">
@@ -142,31 +150,35 @@
 			<div class="control-group">
 				<label class="control-label" >升级次数:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Upgrade">
+					<input type="text" name="Upgrade">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" >升级接收人地址:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="UpgradeTo">
+					<input type="text" name="UpgradeTo">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" >停止次数:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Stop">
+					<input type="text" name="Stop">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" >值班报警列表:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="WatchSheet">
+					<select id="emailwatchsheetlist" name="WatchSheet">
+						<option vlaue="0">空</option>
+					</select>	
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" >报警策略:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="Strategy">
+					<select id="emailalertStrategylist" name="Strategy">
+						<option vlaue="0">空</option>
+					</select>
 				</div>
 			</div>
 		</fieldset>
@@ -175,13 +187,52 @@
 	<div>
 		<form class="well form-horizontal form-inline" id="warnerruleofemailformsendconditions">
 			<fieldset>
+				<label class="label label-info" align="left">发送条件</label>
 				<div class="control-group">
-				<label class="control-label" >报警事件:</label>
-				<div class="controls">
-					<input type="radio" name="AlertCategory" value="危险">危险</td>
-					<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
+					<label class="control-label" >报警事件:</label>
+					<div class="controls">
+						<input type="radio" name="AlertCategory" value="危险">危险</td>
+						<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
+					</div>
 				</div>
-			</div>
+				
+				<div class="row">
+					<div class="control-group" style="padding-left:10px;margin:5px">
+						<span>
+							<input type="radio" name="AlertCond">
+						</span>
+						<label>连续不断发送警告</label>
+					</div>
+					<div class="control-group">
+						<span style="padding:20px">
+							总是发送，从第<input type="text" name="AlwaysTimes" style="width:28px;height:12px" value="1">次符合报警发送条件开始发送报警
+						</span>
+					</div>
+					<div class="control-group" style="padding-left:10px;margin:5px">
+						<span>
+							<input type="radio" name="AlertCond">
+						</span>
+						<label>报警只发送一次</label>
+					</div>
+					<div class="control-group">
+						<span style="padding:20px">
+							发送一次，当第<input type="text" name="OnlyTimes" style="width:28px;height:12px" value="1">次符合报警发送条件发送报警
+						</span>
+					</div>
+					<div class="control-group" style="padding-left:10px;margin:5px">
+						<span class="input-group-addon">
+							<input type="radio" name="AlertCond" checked>
+						</span>
+						<label>选择性发送报警</label>
+					</div>
+					<div class="control-group">
+						<span style="padding:20px">
+							当第<input type="text" style="width:28px;height:12px" name="SelTime1" value="2">次符合报警发送条件时及其以后每重复
+							<input type="text" style="width:28px;height:12px" name="SelTime2" value="3">次时发送报警
+						</span>
+					</div>
+				</div>
+				
 			</fieldset>
 		</form>
 	</div>
@@ -207,11 +258,12 @@
 					<form id="warnerruleofemailformedit" class="well form-horizontal form-inline">
 						<input type="hidden" name="nIndex" >
 						<fieldset>
+							<label class="label label-info" align="left">设置Email报警</label>
 							<div class="control-group">
 								<label class="control-label">报警名称:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="AlertName">
-								 </div>
+									<input type="text" name="AlertName">
+								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">邮件接收地址:</label>
@@ -223,7 +275,7 @@
 							<div class="control-group">
 								<label class="control-label">其他邮件地址:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="OtherAdress">
+									<input type="text" name="OtherAdress">
 								</div>
 							</div>
 							<div class="control-group">
@@ -236,31 +288,35 @@
 							<div class="control-group">
 								<label class="control-label" >升级次数:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="Upgrade">
+									<input type="text" name="Upgrade">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >升级接收人地址:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="UpgradeTo">
+									<input type="text" name="UpgradeTo">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >停止次数:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="Stop">
+									<input type="text" name="Stop">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >值班报警列表:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="WatchSheet">
+									<select id="emailwatchsheetlistedit" name="WatchSheet">
+										<option vlaue="0">空</option>
+									</select>	
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >报警策略:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="Strategy">
+									<select id="emailalertStrategylistedit" name="Strategy">
+										<option vlaue="0">空</option>
+									</select>
 								</div>
 							</div>
 						</fieldset>
@@ -268,13 +324,51 @@
 					<div>
 						<form class="well form-horizontal form-inline" id="warnerruleofemailformsendconditionsedit">
 							<fieldset>
+								<label class="label label-info" align="left">发送条件</label>
 								<div class="control-group">
-								<label class="control-label" >报警事件:</label>
-								<div class="controls">
-									<input type="radio" name="AlertCategory" value="危险">危险</td>
-									<input type="radio" name="AlertCategory" value="错误">错误</td>
+									<label class="control-label" >报警事件:</label>
+									<div class="controls">
+										<input type="radio" name="AlertCategory" value="危险">危险</td>
+										<input type="radio" name="AlertCategory" value="错误">错误</td>
+									</div>
 								</div>
-							</div>
+								
+								<div class="row">
+									<div class="control-group" style="padding-left:10px;margin:5px">
+										<span>
+											<input type="radio" name="AlertCond">
+										</span>
+										<label>连续不断发送警告</label>
+									</div>
+									<div class="control-group">
+										<span style="padding:20px">
+											总是发送，从第<input type="text" name="AlwaysTimes" style="width:28px;height:12px" value="1">次符合报警发送条件开始发送报警
+										</span>
+									</div>
+									<div class="control-group" style="padding-left:10px;margin:5px">
+										<span>
+											<input type="radio" name="AlertCond">
+										</span>
+										<label>报警只发送一次</label>
+									</div>
+									<div class="control-group">
+										<span style="padding:20px">
+											发送一次，当第<input type="text" name="OnlyTimes" style="width:28px;height:12px" value="1">次符合报警发送条件发送报警
+										</span>
+									</div>
+									<div class="control-group" style="padding-left:10px;margin:5px">
+										<span class="input-group-addon">
+											<input type="radio" name="AlertCond" checked>
+										</span>
+										<label>选择性发送报警</label>
+									</div>
+									<div class="control-group">
+										<span style="padding:20px">
+											当第<input type="text" style="width:28px;height:12px" name="SelTime1" value="2">次符合报警发送条件时及其以后每重复
+											<input type="text" style="width:28px;height:12px" name="SelTime2" value="3">次时发送报警
+										</span>
+									</div>
+								</div>
 							</fieldset>
 						</form>
 					</div>
@@ -286,4 +380,41 @@
 			<button class="btn btn-primary btn-large" id="warnerruleofemailsavebtnedit">{{language.warnerrulemodel.saveemailwarnerrulesettingbtn}}</button>
 		</div>
 	</div>
+</Template>
+
+<Template name="warnerloglist">
+	<div style="padding-bottom:8px">
+		<span class="label label-info">报警日志列表</span>
+	</div>
+	<table class="table table-striped table-condensed table-hover">
+		<thead>
+			<tr></tr>
+			<tr>
+				<th>报警时间</th>
+				<th>报警名称</th>
+				<th>设备名称</th>
+				<th>监视器名称</th>
+				<th>报警类型</th>
+				<th>报警接收人</th>
+				<th>报警状态</th>
+			</tr>
+		</thead>
+		<tbody id="warnerloglist">
+			<!-- {{#each warnerloglist}}
+			<tr>
+				<td><input type="checkbox" id="{{nIndex}}"/></td>
+				<td>{{AlertName}}</td>
+				<td>{{AlertType}}</td>
+				<td>{{AlertCategory}}</td>
+				<td>{{AlertState}}</td>
+				<td>
+					<div class="btn-group">
+						<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+					</div>
+				</td>
+			</tr>
+			{{/each}} -->
+		</tbody>
+	</table>
+	
 </Template>

@@ -1,6 +1,8 @@
 var getMessageSelectAll = function(){
 	return ClientUtils.tableGetSelectedAll("messageSettingList");
 }
+//定义分页
+var page = new Pagination("messagePage",{perPage:5});
 
 Template.messagesetting.events={
 	//点击添加按钮弹出框
@@ -15,9 +17,9 @@ Template.messagesetting.events={
 		if(ids.length)
 			$("#confirmTipModalDiv").modal("show");
 			
-			SvseMessageDao.deleteMessageByIds(ids,function(result){
-				SystemLogger(result);
-			});
+			// SvseMessageDao.deleteMessageByIds(ids,function(result){
+				// SystemLogger(result);
+			// });
 	},
 	//改变状态-允许
 	"click #allowmessagesetting" : function(){  //启用邮件地址
@@ -77,7 +79,16 @@ Template.messagesettingList.rendered=function(){
 //获取messagelist的集合
 Template.messagesettingList.messagelist = function(){
 	console.log(SvseMessageDao.getMessageList());
-	return SvseMessageDao.getMessageList();
+	//return SvseMessageDao.getMessageList();
+	return SvseMessageList.find({},page.skip());
+}
+//分页的使用
+Template.messagesettingList.pager = function(){
+	return page.create(SvseMessageList.find().count());
+}
+
+Template.messagesettingList.destroyed = function(){
+	page.destroy();
 }
 
 Template.messagesettingList.events({
