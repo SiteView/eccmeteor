@@ -9,12 +9,12 @@ SvseTreeDao = {
 		return SvseTree.findOne({sv_id:id});
 	},
 	/*
-	*根据ids数组和状态获取
+	*根据ids数组和状态获取  另外接收一个分页参数
 	*/
-	getNodesByIds:function(ids,status){
+	getNodesByIds:function(ids,status,page){
 		if(!status)
-			return SvseTree.find({sv_id:{$in:ids}}).fetch();
-		return SvseTree.find({sv_id:{$in:ids},status:status}).fetch();
+			return SvseTree.find({sv_id:{$in:ids}},page)
+		return SvseTree.find({sv_id:{$in:ids},status:status},page);
 	},
 	getMonitorTypeById :function(id){
 		var node = SvseTree.findOne({sv_id:id});
