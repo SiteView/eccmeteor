@@ -53,7 +53,8 @@ var showQuickMonityTemplate = function(entityDevicetype,addedEntityId){
 		monitors[i]["isDynamicProperty"] = true ; //添加一个属性表明此监视器有动态属性 ####重要
 	}
 	if(!dynamicMonitorIds.length){ //如果动态属性不存在
-
+		RenderTemplate.showParents("#QuickAddMonitorModal","showQuickMonityTemplate",{monitors:monitors,addedEntityId:addedEntityId});
+		return;
 	}
 	//等待后台返回数据
 	LoadingModal.loading();
@@ -79,6 +80,6 @@ var showQuickMonityTemplate = function(entityDevicetype,addedEntityId){
 				}
 			}
 		}
-		RenderTemplate.showParents("#QuickAddMonitorModal","showQuickMonityTemplate",{monitors:monitors});
+		RenderTemplate.showParents("#QuickAddMonitorModal","showQuickMonityTemplate",{monitors:monitors,addedEntityId:addedEntityId});
 	});
 }

@@ -33,20 +33,13 @@ Template.showGroupAndEntity.events({
     },
     "click #showGroupAndEntityTableEntityList button[name='trash']":function(e){
 		var id = e.currentTarget.id;
-        /*
-		console.log("删除设备id:"+id);
-		SvseDao.removeNodesById(id,function(result){
-			if(!result.status){
-				console.log(result.msg);
-			}
-		});*/
         LoadingModal.loading();
         SvseDao.deletEquipment(id,function(result){
             LoadingModal.loaded();
             if(!result.status){
                 Message.error(result.msg);
             }else{
-                Message.success("删除成功！");
+                Message.success("删除成功！",{time:1});
             }
         });
     },

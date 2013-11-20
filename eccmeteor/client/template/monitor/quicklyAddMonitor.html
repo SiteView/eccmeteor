@@ -4,7 +4,7 @@
 		data-modalOverflow="true" data-maxHeight='600'>
 	    <div class="modal-header">添加监视器</div>
 		<div class="modal-body" style="max-height:600px;overflow:auto">
-			{{!-- QuickMonitorDynamicService --}}
+			<input type="hidden" value="{{addedEntityId}}"/>
 			{{#each monitors}}
 				<div class="QuickMonitorDynamicService">
 					<div class="QuickMonitorDynamicServiceSelectParent">
@@ -17,10 +17,12 @@
 						<div>
 							{{#if isDynamicProperty}}
 								{{#each DynamicProperties}}
-									<p><input type="checkbox" value="{{this}}"><span>{{this}}</span></p>
+								<p style="margin-left:20px">
+									<input type="checkbox" value="{{this}}"><span>{{this}}</span>
+								</p>
 								{{/each}}
 								{{else}}
-								<p>
+								<p style="margin-left:20px">
 									<input type="checkbox" value="{{property.sv_name}}"/>
 									<span>{{property.sv_name}}</span>
 								</p>

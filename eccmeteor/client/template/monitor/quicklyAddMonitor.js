@@ -2,7 +2,6 @@
 var getQuicklyMonitorsParamsForSave = function(id){
 	console.log("getQuicklyMonitorsParamsForSave " + id);
 	var template =  SvseMonitorTemplateDao.getTemplateById(id);
-	//return template;
 	var error  = template["error"];
 	var saveAttr = ["conditioncount","expression","paramname","paramvalue","operate"];
 	error = ClientUtils.deleteAttributeFromObject(error,saveAttr);
@@ -50,8 +49,9 @@ var getQuicklyMonitorsParamsForSave = function(id){
 /*
 	获取选中的checkbox //保存监视器时调用
 */
-var getTheCheckedDynamicServicesForSave = function(){
-	var children = $("div.QuickMonitorDynamicServiceSelectChildren");
+var getTheCheckedDynamicServicesForSave = function(t){
+	//var children = $("div.QuickMonitorDynamicServiceSelectChildren");
+	var children = t.findAll("div.QuickMonitorDynamicServiceSelectChildren");
 	var c_len = children.length;
 	var quickMonitorLists = [];
 	for(var index = 0 ; index < c_len ; index++){
@@ -87,25 +87,27 @@ var getTheCheckedDynamicServicesForSave = function(){
 }
 
 Template.showQuickMonityTemplate.events = {
-	"click #chooseallqucikmonitor" : function () { //选择所有
-		$("#quickMonitorList :checkbox").each(function(){
-			this.checked = true;
+	"click #chooseallqucikmonitor" : function (e,t) { //选择所有
+		t.findAll("input:checkbox").forEach(function(item){
+			item.checked = true;
 		});
 	},
-	"click #unchooseallqucikmonitor" : function(){ //反选
-		$("#quickMonitorList :checkbox").each(function(){
-			this.checked = !this.checked;
+	"click #unchooseallqucikmonitor" : function(e,t){ //反选
+		t.findAll("input:checkbox").forEach(function(item){
+			item.checked = !item.checked;
 		});
 	},
 	"click #showQuickMonityTemplateSaveBtn" : function (e,t) { //保存按钮
-		var templates = getTheCheckedDynamicServicesForSave();
+		var addedEntityId = t.find("input:hidden").value; //监视器所属的设备id
+		var templates = getTheCheckedDynamicServicesForSave(t);
 		console.log(templates);
+		console.log(addedEntityId);
 		if(!templates.length){
-			$("#showQuickMonityTemplatediv").modal("hide");
+			RenderTemplate.hideParents(t);
 			return;
 		}
 		LoadingModal.loading();
-		SvseMonitorDao.addMultiMonitor(templates,SessionManage.getAddedEntityId(),function(result){
+		SvseMonitorDao.addMultiMonitor(templates,addedEntityId,function(result){
 			LoadingModal.loaded();
 			if(!result.status){
 				Message.error(result.msg);
@@ -126,11 +128,10 @@ Template.showQuickMonityTemplate.events = {
 			.children("div.QuickMonitorDynamicServiceSelectChildren")
 			.find(":checkbox")
 			.each(function(){
-					this.checked = checked;
+				this.checked = checked;
 			});
 	}
 }
-
 
 Template.showQuickMonityTemplate.rendered = function(){
 	ModalDrag.draggable($(this.find(".modal")));

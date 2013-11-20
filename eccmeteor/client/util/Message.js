@@ -28,10 +28,8 @@ var setContent = function(content,type,setting){
 		var html = Meteor.render(function(){
 					return Template.AlerBox(obj);
 				})
-			console.log("4");
 		$(selector).empty().append(html);
 		$(selector).modal("show");
-		console.log(obj.time);
 		if(obj.time){
   			Meteor.setTimeout(Message.close,obj.time*1000);
 		}
