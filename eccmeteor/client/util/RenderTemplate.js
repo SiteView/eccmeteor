@@ -30,7 +30,6 @@ Object.defineProperty(RenderTemplate,"destroy",{
 Object.defineProperty(RenderTemplate,"hide",{
 	value:function(selector){
 		$(selector).modal("hide");
-		$(selector).empty();
 	}
 });
 
@@ -51,5 +50,45 @@ Object.defineProperty(RenderTemplate,"show",{
 			_self.destroy(selector);
 
 		});
+	}
+});
+//===========================
+//父节点为div存在的情况下,Tempalte 
+//已经包含所有的modal,modal-head,modal-body,modal-head.
+/*
+*代理弹窗的modal("show") 
+*接收一个Jquery选择器
+*/
+Object.defineProperty(RenderTemplate,"showParents",{
+	value:function(selector,template,context){
+		var _self = this;
+		$(selector).empty().html(Meteor.render(function(){
+			return Template[template](context);
+		}));
+		var modal = $(selector).children("div:first");
+		modal.modal("show");
+		modal.on("hidden",function(){
+			modal.unbind('hidden')
+			_self.destroyParents(selector);
+		});
+	}
+});
+
+/*
+*清空模板
+*/
+Object.defineProperty(RenderTemplate,"destroyParents",{
+	value:function(selector){
+		$(selector).empty();
+	}
+})
+
+/*
+*代理弹窗的modal("hide")
+*接收一个Tempalte实例
+*/
+Object.defineProperty(RenderTemplate,"hideParents",{
+	value:function(t){
+		$(t.find("div.modal")).modal("hide");
 	}
 });

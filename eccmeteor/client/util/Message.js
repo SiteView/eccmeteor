@@ -4,7 +4,7 @@ var setContent = function(content,type,setting){
 			$(selector).modal("hide");
 			return;
 		}
-		Log4js[type](content);
+	//	Log4js[type](content);
 		type = type === "warn" ? "block" : type;//转成相应样式
 		var obj = {
 			align:"left",
@@ -28,10 +28,8 @@ var setContent = function(content,type,setting){
 		var html = Meteor.render(function(){
 					return Template.AlerBox(obj);
 				})
-			console.log("4");
 		$(selector).empty().append(html);
 		$(selector).modal("show");
-		console.log(obj.time);
 		if(obj.time){
   			Meteor.setTimeout(Message.close,obj.time*1000);
 		}

@@ -1,11 +1,14 @@
 <Template name="GroupAdd">
-<div id="showGroupAdddiv" class="modal hide fade">
-    <div class="modal-header">添加组 {{ide "showGroupAdd"}} </div>
+<div class="modal hide fade">
+    <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<label class="label label-info">添加组</label>
+    </div>
 	<div class="modal-body">
         <form id="showGroupAddForm" class="well form-horizontal">
 	        <label>*组名称</label>
 	        <input name="sv_name"/>
-	        <br>======================</br>
+	        <br />======================<br />
 	        <label>描述</label>
 	        <textarea name="sv_description"></textarea>
 	        <label>依赖</label>

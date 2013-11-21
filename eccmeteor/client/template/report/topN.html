@@ -26,6 +26,7 @@
 {{> topNofedit}}
 {{> helpmessage}} 
 </Template>
+<<<<<<< HEAD
  
 <Template name="topNlist"> 
 <a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
@@ -67,6 +68,63 @@
     <!--显示分页部分-->
     <div class="pagination"> </div>
     {{{pager}}} </div>
+=======
+
+<template name="topNlist">
+<div class="label label-info">TopN报告信息列表</div>
+	<table class="table table-striped table-condensed table-hover">
+	<thead>
+		<tr></tr>
+		<tr>
+		    <th><input type="checkbox" id="topNlistselectall"/></th>
+			<th>名称</th>
+			<th>描述</th>
+			<th>时间段</th>
+		    <th>格式</th>
+		    <th>状态</th>
+		    <th></th>		
+		</tr>
+	</thead>
+	<tbody id="topNlist">
+		{{#each topNresultlist}}
+		<tr>
+			<td><input type="checkbox" id="{{nIndex}}"/></td>
+			<td>{{Title}}</td>
+			<td>{{Descript}}</td>
+			<td>{{Period}}</td>
+			<td>{{fileType}}</td>
+			<td>{{Deny}}</td>
+			<td>
+				<div class="btn-group">
+					<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+				</div>
+			</td>
+		</tr>
+		{{/each}}
+</tbody>
+</table>
+<div class="pagination">
+  <ul>
+    <li><a href="#">上一页</a></li>
+    <li>
+      <a href="#">1</a>
+    </li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">下一页</a></li>
+  </ul>
+</div>
+<div style="text-align:right;">
+<table class="table"><tr><button class="btn" >批量删除日志</button></tr>
+        <tr><span>日志每页</span> <select style="width:60px">
+               <option value="10" checked>10</option>  
+               <option value="20" checked>20</option>
+            </select> 
+			         </tr>
+
+</table>
+>>>>>>> meteorite
 </div>
 </template>
 
@@ -172,9 +230,13 @@
         <select id="marklist" name="Mark"  title="选择要统计的检测器指标">
           
 			          {{#each monitortypelist}}
+<<<<<<< HEAD
   	                  
            <option value="{{sv_name}}">{{sv_label}}</option>
           
+=======
+  	                  <option value="{{sv_name}}">{{sv_label}}</option>
+>>>>>>> meteorite
   	                  {{/each}}
                    
         </select>
@@ -309,10 +371,79 @@
                 <select id="marklisted" name="Mark" title="选择要统计的检测器指标">
                   
 				 {{#each monitortypelist}}
+<<<<<<< HEAD
   	                  
                    <option value="{{sv_name}}">{{sv_label}}</option>
                   
   	                  {{/each}}
+=======
+  	                  <option value="{{sv_name}}">{{sv_label}}</option>
+  	                  {{/each}}
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >排序方式:</label>
+				<div class="controls">
+					<input type="radio" name="Sort" value="升序" title="选择排序方式" />升序
+					<input type="radio" name="Sort" value="降序" title="选择排序方式" checked />降序
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >数量:</label>
+				    <div class="controls">
+                    <input type="number" name="Count" min="01" max="500" title="数量"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">报告类型:</label>
+				   <div class="controls">
+					<select id="reporttypePeriodlisted" name="Period" title="请指定生成报告的时间周期">
+					<option value="Day" checked>日报</option>
+				    <option value="Week" checked>周报</option>
+				    <option value="Month" checked>月报</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >报告文件格式:</label>
+				  <div class="controls">
+					<select id="topNoutputtyped" name="fileType">
+					<option value="html" checked>html</option>
+					<option value="word" checked>word</option>
+					<option value="pdf" checked>pdf</option>
+					<option value="Excel" checked>Excel</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >取值方式:</label>
+				  <div class="controls">
+					<select id="GetValuelisted" name="GetValue">
+					<option value="0" checked>平均</option>
+					<option value="1" checked>最新</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >报告生成时间:</label>
+				  <div class="controls">
+				 <input type="number" name="Generate" min="01" max="23" title="当选择某项后，报告将在指定时间后生成，单位：时"/>
+				 </div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" >以E-mail方式发送报告:</label>
+				  <div class="controls">
+					<input type="email" name="EmailSend" title="输入接受报告的E-mail地址，可以录入多个地址，多个地址之间用英文的逗号分隔，当报告产生，所设定的邮箱就会接收到新产生的报告" />
+			   </div>
+			</div>
+			<div class="control-group">
+					            <label class="control-label" >禁止报告:</label>
+                <div class="controls">
+           <input type="checkbox" name="Deny" title="勾选此项后,报告将停止自动生成"/>
+           </div>
+        </div>
+>>>>>>> meteorite
 					
                 </select>
               </div>
