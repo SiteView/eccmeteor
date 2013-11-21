@@ -1,7 +1,8 @@
 <Template name="trend">
 <div class="container-fluid">
 	<div class="row-fluid">
-		<div  class="span3" >
+	<div>
+		<div id="div1" class="span3" >
 		<div>
 			<span class="label label-info">趋势报告</span>
 		</div>
@@ -9,8 +10,11 @@
 				<ul id="svse_tree_check" class="ztree"></ul>	
 			</div>
 		</div>
+		<div id="div2" style="display: none;">
 		
-		<div class="span9">
+		</div>
+	</div>
+		<div id="div3" class="span9">
 			{{> trend_status}}
 		</div>
 	</div>
@@ -22,9 +26,9 @@
 		<li><a href="#home2" data-toggle="tab">数据</a></li>
 	</ul>
 	
-	<div id="mytabcontent" class="tab-content">
+<div id="mytabcontent" class="tab-content">
 	<div class="tab-pane active" id="home1">
-			<div class="accordion"> 
+			<div class="accordion">         
 			
 				<div class="accordion-group">
 					<div class="accordion-heading">
@@ -32,7 +36,7 @@
 						查询条件
 						</a>
 					</div>
-					<div id="showGroupAndEntityTableGroupListCollapseOne" class="accordion-body collapse {{#if subgroup}}in{{/if}}">
+					<div id="showGroupAndEntityTableGroupListCollapseOne" class="accordion-body collapse in">
 						<div class="well">
 							<ul class="breadcrumb">
 							  <li><a href="###" name='{"hours":-2}'>2小时</a><span class="divider"></span></li>
@@ -141,7 +145,7 @@
 					运行情况表
 			</a>
 		</div>
-		<div id="showGroupAndEntityTableEntityListCollapseTwo" class="accordion-body collapse {{#if subentity}}in{{/if}}">
+		<div id="showGroupAndEntityTableEntityListCollapseTwo" class="accordion-body collapse in">
 			<table class="table table-striped table-condensed table-hover">
 				<thead>
 					<tr></tr>
@@ -185,7 +189,7 @@
               监测器统计报表
             </a>
 			</div>
-		<div id="showGroupAndEntityTableEntityListCollapseThree" class="accordion-body collapse {{#if subentity}}in{{/if}}">
+		<div id="showGroupAndEntityTableEntityListCollapseThree" class="accordion-body collapse in">
 			<table class="table table-striped table-condensed table-hover">
 				<thead>
 					<tr></tr>
@@ -231,7 +235,7 @@
 				  图表
 				</a>
 			</div>
-			<div id="showGroupAndEntityTableEntityListCollapseTwo" class="accordion-body collapse {{#if subentity}}in{{/if}}">
+			<div id="showGroupAndEntityTableEntityListCollapseTwo" class="accordion-body collapse in">
 			</div>
 	<!--此处显示图表
 			<table class="table table-striped table-condensed table-hover">
@@ -269,9 +273,9 @@
 				</tbody>
 			</table>
 	-->
+			</div>
 		</div>
 	</div>
-</div>
 	<div class="tab-pane" id="home2">
 			222
 		<form class="form-horizontal">
@@ -287,7 +291,7 @@
 			</fieldset>
 		</form>
 	</div>
-	</div>
+</div>
 </Template>
 
 <Template name="trend_date">
