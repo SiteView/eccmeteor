@@ -1,6 +1,6 @@
 [root@centos remote-ctrl]# ./lib/remote-ctrl
 set svdb addr by: ./svapi.ini
-svdb addr is:127.0.0.1
+svdb addr is:10.0.0.5
 
 GetMonitorTemplet, sv_id= 5
 sv_description= 监测Ping指定服务器状况
