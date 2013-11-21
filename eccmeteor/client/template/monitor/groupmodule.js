@@ -1,3 +1,20 @@
+var PagerGroup = new Pagination("subgrouplist",{currentPage: 1,perPage:5});
+var PagerEntity = new Pagination("subentitylist",{currentPage: 1,perPage:5});
+//子组分页
+Template.showGroupAndEntity.groupPager = function(){
+    var id = SessionManage.getCheckedTreeNode("id");
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subgroup");
+    var status = SessionManage.getEntityListFilter();
+    return PagerGroup.create(SvseTreeDao.getNodeCountsByIds(childrenIds,status));
+}
+//设备分页
+Template.showGroupAndEntity.entityPager = function(){
+    var id = SessionManage.getCheckedTreeNode("id");
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subentity");
+    var status = SessionManage.getEntityListFilter();
+    return PagerGroup.create(SvseTreeDao.getNodeCountsByIds(childrenIds,status));
+}
+
 Template.showGroupAndEntity.getEntityTemplateNameByType = function(type){
     return SvseEntityTemplateDao.getEntityPropertyById(type,"sv_name");
 }
@@ -6,14 +23,14 @@ Template.showGroupAndEntity.subgroup = function(){
     var id = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subgroup");
     var status = SessionManage.getEntityListFilter();
-    return status ? SvseTreeDao.getNodesByIds(childrenIds,status) : SvseTreeDao.getNodesByIds(childrenIds);
+    return SvseTreeDao.getNodesByIds(childrenIds,status,PagerGroup.skip());
 }
 
 Template.showGroupAndEntity.subentity = function(){
     var id = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subentity");
     var status = SessionManage.getEntityListFilter();
-    return status ? SvseTreeDao.getNodesByIds(childrenIds,status) : SvseTreeDao.getNodesByIds(childrenIds);
+    return SvseTreeDao.getNodesByIds(childrenIds,status,PagerEntity.skip());
 }
 
 Template.showGroupAndEntity.events({
@@ -28,39 +45,33 @@ Template.showGroupAndEntity.events({
     },
     "click #showGroupAndEntityTableGroupList button[name='edit']":function(e){
         var id = e.currentTarget.id;
-        Session.set("showGroupAndEntityEditGroupId",id);
-        console.log("编辑组id:"+id);
-        $("#showGroupEditdiv").modal('show');
+        var context = {Group:SvseDao.getGroup(id),id:id};
+        RenderTemplate.showParents("#EditGroupModal","GroupEdit",context);
     },
     "click #showGroupAndEntityTableEntityList button[name='trash']":function(e){
 		var id = e.currentTarget.id;
-        /*
-		console.log("删除设备id:"+id);
-		SvseDao.removeNodesById(id,function(result){
-			if(!result.status){
-				console.log(result.msg);
-			}
-		});*/
         LoadingModal.loading();
         SvseDao.deletEquipment(id,function(result){
             LoadingModal.loaded();
             if(!result.status){
                 Message.error(result.msg);
             }else{
-                Message.success("删除成功！");
+                Message.success("删除成功！",{time:1});
             }
         });
     },
     "click #showGroupAndEntityTableEntityList button[name='edit']":function(e){
         var id = e.currentTarget.id;
-        console.log("编辑设备id:"+id);
-        Session.set("showGroupAndEntityEditEntityId",id);
-        $("#showEditEntityDiv").modal('show');
+        var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);//根据SvseTree中的sv_id获取获取设备类型（即SvseEntityTempalate中的return.id）;
+        var DynamicEntityItems = SvseEntityTemplateDao.getDynamicEntityItems(id,devicetype);
+        var StaticEnitityItems = SvseEntityTemplateDao.getStaticEntityItems(id);
+        var context = {DynamicEntityItems:DynamicEntityItems,entityId:id,StaticEnitityItems:StaticEnitityItems};
+        Log4js.info(StaticEnitityItems);
+        RenderTemplate.showParents("#EditEntityModal","EditEntity",context);
     },
     "click tbody tr td a":function(e){ //dblclick tbody tr, 
         e.stopPropagation();
         var id = e.currentTarget.id;
-        console.log(id);
         var node = SvseTreeDao.getNodeById(id);
         var checkedTreeNode = {
             id:id,

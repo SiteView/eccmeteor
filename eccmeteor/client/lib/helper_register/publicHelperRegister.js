@@ -112,3 +112,12 @@ Handlebars.registerHelper('isNodeEnabled',function(nid,permission){
 	var nodeOpratePermissions = user.profile.nodeOpratePermission;
 	return nodeOpratePermissions && nodeOpratePermissions[nid] && nodeOpratePermissions[nid][permission]
 });
+
+/*
+	求数组长度
+*/
+Handlebars.registerHelper('arrayLengthHelper',function(array){
+	if(!array)
+		return 0;
+	return array.length;
+});
