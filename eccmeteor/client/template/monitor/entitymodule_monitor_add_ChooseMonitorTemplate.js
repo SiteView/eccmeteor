@@ -1,24 +1,5 @@
-/*
-Template.ChooseMonitorTemplate.monities = function(){
-//	var id = Session.get("checkedTreeNode")["id"];
-	var id = SessionManage.getCheckedTreeNode("id");
-	var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);
-	return SvseEntityTemplateDao.getEntityMonitorByDevicetype(devicetype);
-}
-Template.ChooseMonitorTemplate.events = {
-	"click tr a":function(e){
-	//	SwithcView.view(MONITORVIEW.MONITORADD);//设置视图状态 选择监视器模板的视图
-		Session.set("monityTemplateId",e.target.id);
-	//	var  checkedMonityTemolate = SvseMonitorTemplateDao.getTemplateById(e.target.id);
-	//	Session.set("checkedMonityTemolate",checkedMonityTemolate);//存储选中的监视器模板信息
-		Session.set("monitorStatus","添加");
-		$("#chooseMonitorTemplateDiv").modal('hide');
-		$("#showMonitorInfoDiv").modal('show');
-	} 
-}
-*/
-Template.ChooseMonitorTemplateForm.events({
-	"click tr a":function(){
+Template.ChooseeMonitorTemplateModal.events({
+	"click tr a":function(e,t){
 	//	SwithcView.view(MONITORVIEW.MONITORADD);//设置视图状态 选择监视器模板的视图
 		var data = this;//this为上下文环境
 		if(!data)
@@ -29,14 +10,15 @@ Template.ChooseMonitorTemplateForm.events({
 	//	var  checkedMonityTemolate = SvseMonitorTemplateDao.getTemplateById(e.target.id);
 	//	Session.set("checkedMonityTemolate",checkedMonityTemolate);//存储选中的监视器模板信息
 		Session.set("monitorStatus","添加"); //后修改版本中尽量删除此变量
-	//	$("#chooseMonitorTemplateDiv").modal('hide');
-		RenderTemplate.hide("#chooseMonitorTemplateDiv");
+		//$("#chooseMonitorTemplateDiv").modal('hide');
+		RenderTemplate.hideParents(t);
 	//=====================
 	//	$("#showMonitorInfoDiv").modal('show');
 		var context = getMonitorInfoContext(id,monityTemplateName);
 		if(!context)
 			return;
-		RenderTemplate.show("#showMonitorInfoDiv","showMonitorInfoForm",context);
+		//RenderTemplate.show("#showMonitorInfoDiv","showMonitorInfoForm",context);
+		RenderTemplate.showParents("#AddMoniorFormModal","AddMoniorFormModal",context);
 	}
 });
 var getMonitorInfoContext = function(monityTemplateId,monityTemplateName){
