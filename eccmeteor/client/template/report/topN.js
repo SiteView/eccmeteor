@@ -65,6 +65,16 @@ Template.topN.events = {
                         }
                 });
 	},
+	//topN报告生成
+	"click #generatereport" : function(){
+	   LoadingModal.loading();
+		SvseTopNDao.checkTopNresultlistSelect(getTopNListSelectAll());
+                SvseTopNDao.updateTopNStatus(getTopNListSelectAll()," No",function(result){
+                        if(result.status){
+                                SystemLogger("改变状态"+result.option.count+"条");
+                        }
+                });
+	},
 	//topN报告同步
 	"click #topNrefresh" : function(){
 		SvseTopNDao.sync();

@@ -20,11 +20,11 @@ SvseTopNDaoAgent = {
 			case "updateTopNStatus":
 				flag = Agent.getPermission("settingOperatePermission>topN>update");
 				break;
-			/*
-			case "sync": 
-				flag = Agent.getPermission("settingOperatePermission>emailsetting>sync");
+			
+			case "generatereport": 
+				flag = Agent.getPermission("settingOperatePermission>topN>generate");
 				break;
-			*/	
+				
 			default : flag = true;
 		}
 		if(!SvseTopNOnServer[fn]){

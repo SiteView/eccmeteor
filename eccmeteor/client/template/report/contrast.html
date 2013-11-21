@@ -1,27 +1,27 @@
 <Template name="contrast">
-	<div id="contrastdiv" 
-	data-backdrop="true" data-keyboard="true" data-show="false" 
+	<div id="contrastdiv"
+	data-backdrop="true" data-keyboard="true" data-show="false"
 	data-width="800" data-modalOverflow="true">
-		
+
 		<div class="modal-body">
 			<div class="row-fluid">
 				<div class="span4" style="overflow:auto" id="treeDemo">
 				<div class="accordion-group"
-				<a>对比报告</a>
+				 <a id="main-container">对比报告</a>
 					<ul id="svse_tree_check" class="ztree" style="height: 488px; width: 248px;"></ul>
 				</div>
-				<a href="#1" data-toggle="tab">组名：</a>
+				   <a href="#2" data-toggle="tab">组名：</a>
 				<div class="control-group" align="right">
 				  <div class="controls">
-					<select id="r" name="P">
+					<select id="line" class="span5">
 					<option value="p" checked>默认视图</option>
 					</select>
 				</div>
 			</div>
 				</div>
-				
 				<div class="span8">
 					{{> contrast_status}}
+					 {{> rMenu1}}
 				</div>
 			</div>
 		</div>
@@ -29,49 +29,49 @@
 </Template>
 
 <Template name="contrast_status">
-	<ul id="myTab" class="nav nav-tabs">
-<li class="active"><a href="#home1" data-toggle="tab">查询</a></li>
-</ul>
-    <div id="mytabcontent" class="tab-content"></div>
-    <div class="tab-pane active" id="home1"></div>
-    <div class="accordion-group">
-    <a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#contrastListCollapseOne"> 查询条件 </a>
-    <div class="panel-group" id="accordion"> </div>
-    <div id="contrastListCollapseOne" class="panel-collapse collapse in">
-    <form class="well form-horizontal form-inline>
-			<fieldset>
-<div>
-
-  <div class="form-inline">
-        <div class="control-group" id="form_datetime"> 
-		  <span title="开始时间：">{{language.startTime}}:</span>
-      <div class="input-append date form_datetime">
-            <input type="text">
-            </input>
-            <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span> </div>
-      <br>
-         <span>{{language.endTime}}:</span>
-      <div class="input-append date form_datetime">
-            <input type="text">
-            </input>
-            <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span> </div>
-    </div>
-        <div> </div>
-        <div>
-      <label class="control-label"></label>
-      <button id="sel" class="btn">查询</button>
-      &nbsp;&nbsp;
-      <button id="sel" class="btn">导出报表</button>
-      &nbsp;&nbsp;
-      <button id="sel" class="btn">帮助</button>
-    </div>
-      </div>
-
-  </div>
-  </fieldset>
-</form>
-    </div>
-    </div>
+	  <ul id="myTab" class="nav nav-tabs">
+                  <li class="active"><a href="#2" data-toggle="tab">查询</a></li>
+                 </ul>
+                <div id="mytabcontent" class="tab-content"></div>
+                      <div class="tab-pane active" id="home1"></div>
+                        <div class="accordion-group">
+                           <a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#contrastListCollapseOne"> 查询条件 </a>
+                             <div class="panel-group" id="accordion"> </div>
+                              <div id="contrastListCollapseOne" class="panel-collapse collapse in">
+                         <form class="well form-horizontal form-inline>
+			               <fieldset>
+                              <div>
+                           <div class="form-inline">
+									<span>{{language.startTime}}:</span>
+									<div id="form_datetime" class="input-append date form_datetime">
+									  <input type="text" readOnly="readonly"></input>
+									  <span class="add-on">
+										<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+									  </span>
+									</div>
+								<br>
+									<span>{{language.endTime}}:</span>
+									<div id="form_datetime" class="input-append date form_datetime">
+									  <input type="text" readOnly="readonly"></input>
+									  <span class="add-on">
+										<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+									  </span>
+									</div>
+									<div>
+									</div>
+									<div>
+										<label class="control-label"></label>
+										<button id="sel" class="btn">查询</button>&nbsp;&nbsp;
+										<button id="sel" class="btn">导出报表</button>&nbsp;&nbsp;
+										<button id="sel" class="btn">帮助</button>
+									</div>
+							</div>
+						  </div>
+					  </div>
+				   </fieldset>
+                </form>
+             </div>
+       </div>
     <div style="overflow-y: auto; left: 0px;height: 150px;">
   <div class="accordion-group">
         <div class="accordion-heading"> <a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseTwo"> 运行报表情况表 </a> </div>
@@ -91,7 +91,7 @@
             </tr>
               </thead>
           <tbody id="statisticallist" class="eventList">
-              
+
           {{#each contrastlist}}
           <tr>
                 <td>{{nameTh}}</td>
@@ -107,7 +107,7 @@
               </tr>
           {{/each}}
             </tbody>
-          
+
         </table>
           </div>
     </div>

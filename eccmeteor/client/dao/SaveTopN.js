@@ -89,6 +89,21 @@ SvseTopNDao = {
 			}
 		});
 	},
+	"generatereport":function(addressname,address,fn){
+		Meteor.call(SvseTopNDao.AGENT,'generatereport',[addressname,address],function(err,result){
+			if(err){
+	 			SystemLogger(err);
+	 			fn({status:false,msg:err})
+	 		}else{
+	 			if(result && !result[status]){
+	 				SystemLogger(err);
+	 				fn(result);
+	 			}else{
+	 				fn({status:true})
+				}
+			}
+		});
+	},
 	//检查操作时是否勾选对象
    "checkTopNresultlistSelect":function(getTopNresultlistSelectAll){
      if(getTopNresultlistSelectAll == ""){

@@ -69,6 +69,34 @@ SvseTopNOnServer = {
 				}
 			})
 	},
+	"generatereport":function(addressname,address){
+	        
+			Log4js.info("SvseTopNOnServer generatereport");
+			
+			var result = SvseMethodsOnServer.svWriteTopNIniFileSectionString(addressname,address);
+		   	if(!result){
+				var msg = "SvseTopNDaoOnServer's addTopN  generate " + addressname +"faild";
+				SystemLogger.log(msg,-1);
+				throw new Meteor.Error(500,msg);
+			}
+			var addressresult = result[addressname];
+		    if(!SvseTopNresultlist.findOne({nIndex:addressname})){
+	            console.log(addressname+"is not exists");
+	            return;
+	        }
+			var s_id = SvseTopNresultlist.findOne({nIndex:addressname})._id;
+			console.log("s_id is" + s_id);
+			console.log("addressresult is");
+			console.log(addressresult);
+	
+			SvseTopNresultlist.update(s_id,{$set:addressresult},function(err){
+				if(err){
+					Log4js.error(err);
+			    	throw new Meteor.Error(500,err);
+					
+				}
+			})
+	},
 	"getMonitorTemplate" : function(){
 		return SvseMethodsOnServer.svGetMonitorTemplate();
 		console.log("MMMM");
