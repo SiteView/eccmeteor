@@ -14,17 +14,17 @@ Template.MonitorList.Monitors = function(){
 
 Template.MonitorList.events={
 	"click tbody tr":function(e){
-		var id  = e.currentTarget.id;
-		if(SessionManage.getCheckedMonitorId() === id)
+		var checkedMonitorId = this.sv_id;
+		if(SessionManage.getCheckedMonitorId() === checkedMonitorId)
 			return;
-	//	var status = $(e.currentTarget).attr("data-status");
-		if(!id || id=="") return;
+	//	var status = this.status;
+		if(!checkedMonitorId || checkedMonitorId=="") return;
 		//存储选中监视器的id
-		SessionManage.setCheckedMonitorId(id);
-		drawImage(id);
+		SessionManage.setCheckedMonitorId(checkedMonitorId);
+		drawImage(checkedMonitorId);
 	},
     "click #showMonitorList button[name='trash']":function(e){
-		var id = e.currentTarget.id;
+		var id = this.sv_id;
 		console.log("删除监视器id:"+id);
 		var parentid  = SessionManage.getCheckedTreeNode("id");
 		SvseMonitorDao.deleteMonitor(id,parentid,function(result){
@@ -32,14 +32,18 @@ Template.MonitorList.events={
 		});
     },
  	"click #showMonitorList button[name='edit']":function(e){
-        var id = e.currentTarget.id;
+      //  var id = e.currentTarget.id;
+      	var id = this.sv_id;
         console.log("编辑监视器id:"+id);
-        SessionManage.setCheckedMonitorId(id);
+       // SessionManage.setCheckedMonitorId(id);
         var monitorTemplateId = SvseMonitorDao.getMonitorTemplateIdByMonitorId(id);
         //设置监视器模板id
-    	Session.set("monityTemplateId",monitorTemplateId);
-        Session.set("monitorStatus","编辑");
-        $("#showMonitorInfoDiv").modal('show');
+    	//Session.set("monityTemplateId",monitorTemplateId);
+      //  Session.set("monitorStatus","编辑");
+
+      	var context = getMonitorInfoContext(monitorTemplateId,monityTemplateName);
+     //   $("#showMonitorInfoDiv").modal('show');
+     	getEditMonitorDynamicData();
     },
     "mouseenter #showMonitorList img":function(e){
     	$(e.currentTarget).popover('show');
@@ -156,4 +160,20 @@ function emptyImage(){
 		.attr("y","50%")
 		.text("暂无数据")
 		.style("text-anchor", "middle");	
+}
+
+var getMonitorInfoContext = function(){}
+var getEditMonitorDynamicData = function(checkedMonitorId){
+	SvseMonitorDao.getMonitor(checkedMonitorId,function(err,monitor){
+			if(err){
+				Log4js.error(err);
+				Message.error("获取监视器信息失败！");
+				return;
+			}
+			console.log(monitor);
+			var advance_parameter = monitor["advance_parameter"];
+			var parameter = monitor["parameter"];
+			var error = monitor["error"];
+			var good = monitor["good"];
+			var warning = monitor["warning"];//定义一个checkbox。
 }
