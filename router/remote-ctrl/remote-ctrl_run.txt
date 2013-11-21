@@ -1,0 +1,35 @@
+[root@centos remote-ctrl]# ./lib/remote-ctrl
+set svdb addr by: ./svapi.ini
+svdb addr is:127.0.0.1
+
+GetMonitorTemplet, sv_id= 5
+sv_description= 监测Ping指定服务器状况
+sv_dll= msping.dll
+
+GetTreeData, sv_id= 1.9
+sv_name= 其他设备
+status= disable
+
+
+xmpp
+j_sess_init 1
+[1383895570S-000429MS]xmpp_main.c-t_init_jid-65:xmpp_main.c,65->xmpp server ipaddr "220.168.30.14"
+[1383895570S-000429MS]xmpp_main.c-t_init_jid-67:xmpp_main.c,67->jid=000C29C02B4E@xmpp.siteview.com
+---------- debug, username:000C29C02B4E, password:96f9bee43fc2e9f3dd95cb9f649a9fbe
+[1383895570S-000430MS]xmpp_main.c-xmpp_main-859:xmpp_main.c,859->Jabber session init ... OK!
+[1383895570S-000430MS]xmpp_main.c-j_connect-699:xmpp_main.c,699->connectting server[xmpp.siteview.com] port[5222] ...
+SEND[<?xml version='1.0'?><stream:stream xmlns:stream='http://etherx.jabber.org/streams' xmlns='jabber:client' to='xmpp.siteview.com' version='1.0'>]
+[1383810154S-000797MS]xmpp_main.c-j_connect-704:xmpp_main.c,704->connect server[xmpp.siteview.com] port[5222] ...OK
+[1383810154S-000797MS]xmpp_main.c-xmpp_main-866:xmpp_main.c,866->jabber connect OK!
+RECV[<?xml version='1.0' encoding='UTF-8'?><stream:stream xmlns:stream="http://etherx.jabber.org/streams" xmlns="jabber:client" from="xmpp.siteview.com" id="25048d9c" xml:lang="en" version="1.0">]
+SEND[<iq type='set' id='auth'><query xmlns='jabber:iq:auth'><username>000C29C02B4E</username><resource>remote-ctrl</resource><digest>dc758e512c268fbb90acccaa328a4f60d327eb69</digest></query></iq>]
+
+RECV[<stream:features><starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls"></starttls><mechanisms xmlns="urn:ietf:params:xml:ns:xmpp-sasl"><mechanism>DIGEST-MD5</mechanism><mechanism>PLAIN</mechanism><mechanism>CRAM-MD5</mechanism></mechanisms><auth xmlns="http://jabber.org/features/iq-auth"/><register xmlns="http://jabber.org/features/iq-register"/></stream:features>]
+RECV[<iq type="result" id="auth" to="000c29c02b4e@xmpp.siteview.com/remote-ctrl"/>]
+SEND[<presence><show>chat</show><status>online</status><priority>5</priority></presence>]
+SEND[<iq type='get' id='getroster'><query xmlns='jabber:iq:roster'/></iq>]
+sh: nvram: command not found
+SEND[<iq type='set' id='set-vCard' from='000C29C02B4E@xmpp.siteview.com/remote-ctrl'><vCard xmlns='vcard-temp'><NICKNAME>unknow;V1.0.0.8_1.0.4PRRU</NICKNAME></vCard></iq>]
+[1383810155S-000029MS]xmpp.c-p_ready-123:xmpp.c,123->jabber ready 
+RECV[<iq type="result" id="getroster" to="000c29c02b4e@xmpp.siteview.com/remote-ctrl"><query xmlns="jabber:iq:roster"/></iq>]
+RECV[<iq type="result" id="set-vCard" to="000c29c02b4e@xmpp.siteview.com/remote-ctrl"/>]

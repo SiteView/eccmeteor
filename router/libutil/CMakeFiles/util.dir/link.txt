@@ -1,0 +1,2 @@
+/usr/bin/ar cr /root/qtln/bin/libutil.a  CMakeFiles/util.dir/bstree.cpp.o CMakeFiles/util.dir/buffer.cpp.o CMakeFiles/util.dir/exception.cpp.o CMakeFiles/util.dir/hashtable.cpp.o CMakeFiles/util.dir/strkey.cpp.o
+/usr/bin/ranlib /root/qtln/bin/libutil.a
