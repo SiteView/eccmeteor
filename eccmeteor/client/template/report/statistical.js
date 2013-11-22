@@ -1,3 +1,23 @@
+/*
+Type： add
+Author：xuqiang
+Date:2013-10-15
+Content:初始化statistical 列表
+ */
+Template.statisticallist.statisticalresultlist = function () {
+	console.log(SvseStatisticalDao.getStatisticalresultlist());
+	 return SvseStatisticalresultlist.find({},page.skip());
+	//return SvseStatisticalDao.getStatisticalresultlist();
+}
+//分页的实现
+
+var page = new Pagination("statisticalPagination");
+Template.statisticallist.pager = function(){  //Note : pager was  surrounded by three '{}'. example {{{pager}}} 
+  return page.create(SvseStatisticalresultlist.find().count());
+}
+Template.statisticallist.destroyed = function(){
+  page.destroy();
+}
 //单击添加按钮事件
 Template.statistical.events = {
 	"click #statisticalofadd" : function (e) {
@@ -195,12 +215,12 @@ Template.statisticalofadd.rendered = function () {
 		});
 		
 	};
-		 $(".form_datetime").datetimepicker({
-        format: "dd MM yyyy",
-        autoclose: true,
-        todayBtn: true,
-        pickerPosition: "bottom-left"
-    });
+		$(".form_datetime").datetimepicker({
+			format: "dd MM yyyy",
+			autoclose: true,
+			todayBtn: true,
+			pickerPosition: "bottom-left"
+		});
 	//弹窗移动
 	ModalDrag.draggable("#statisticalofadddiv");
 }
@@ -266,16 +286,7 @@ Template.statisticalofadd.events = {
 	}
 }
 
-/*
-Type： add
-Author：xuqiang
-Date:2013-10-15
-Content:初始化statistical 列表
- */
-Template.statisticallist.statisticalresultlist = function () {
-	console.log(SvseStatisticalDao.getStatisticalresultlist());
-	return SvseStatisticalDao.getStatisticalresultlist();
-}
+
 Template.statisticallist.rendered = function () {
 	$(function () {
 		//隐藏所有操作按钮
@@ -287,55 +298,6 @@ Template.statisticallist.rendered = function () {
 		//tr 鼠标悬停显示操作按钮效果
 		ClientUtils.showOperateBtnInTd("statisticallist");
 	});
-//list分页实现
-	$(function(){
-		var init = {
-				pagePre:	6,	//单页条数
-				pageMax:	3	//页数分类基数
-			};
-		var getPager = function(p,a,b,c){
-			var pages = a;
-			var pageHide = b;
-			var parentBox = p;
-			var lis = parentBox.find('tr');
-			var html = '';
-			if(pageHide){
-				var index = (c || 1) < 4 ? 4 : ((c > (pages - 3)) ? (pages - 3) : c);
-				html += '<a href="###">1</a>\n';
-				index > 4 ? html += '<span>....</span>\n' : html += '';
-				for(var i=(index-2);i<=(index+2);i++){
-					html += '<a href="###">'+i+'</a>\n';
-				}
-				index < pages - 3 ? html += '<span>....</span>\n' : html += '';
-				html += '<a href="###">'+pages+'</a>\n';
-			}else{
-				if(pages != 1){
-					for(var i=0;i<pages;i++){
-						html += '<a href="###">'+(i+1)+'</a>\n';
-					}
-				}
-			}
-			lis.hide();
-			parentBox.find('tr[flag="'+c+'"]').show();
-			return html;
-		}
-	
-	$('.eventList').each(function(){
-		//var _this = $(this);
-		var tr = $(this).find('tr'),liNum = tr.length;
-		var pages = Math.ceil(liNum/init.pagePre);
-		for(var i=0;i<liNum;i++){
-			$(tr[i]).attr('flag',parseInt(i/init.pagePre)+1);
-		}
-		var pageHide = pages > init.pageMax ? 1 : 0;
-		$(this).find('.pager').append(getPager($(this),pages,pageHide,1));
-		$(this).find('a').live('click',function(){
-			var index = parseInt($(this).html());
-			$(this).find('.pager').empty();
-			$(this).find('.pager').append(getPager($(this),pages,pageHide,index));
-		});
-	});
-});
 }
 //根据id编辑报告表单
 Template.statisticallist.events({
@@ -418,86 +380,6 @@ Template.statisticallist.events({
 					return node.id === checkednodes[index];
 				}, true), true);
 		}
-		/*
-		function OnRightClick(event, treeId, treeNode) {
-		if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
-		zTree.cancelSelectedNode();
-		showRMenu("root", event.clientX, event.clientY);
-		} else if (treeNode && !treeNode.noR) {
-		zTree.selectNode(treeNode);
-		showRMenu("node", event.clientX, event.clientY);
-		}
-		}
-
-		function showRMenu(type, x, y) {
-		$("#rMenu ul").show();
-		if (type=="root") {
-		$("#m_del").hide();
-		$("#m_check").hide();
-		$("#m_unCheck").hide();
-		} else {
-		$("#m_del").show();
-		$("#m_check").show();
-		$("#m_unCheck").show();
-		}
-		rMenu.css({"top":y+"px", "left":x+"px", "visibility":"visible"});
-
-		$("body").bind("mousedown", onBodyMouseDown);
-		}
-		function hideRMenu() {
-		if (rMenu) rMenu.css({"visibility": "hidden"});
-		$("body").unbind("mousedown", onBodyMouseDown);
-		}
-		function onBodyMouseDown(event){
-		if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length>0)) {
-		rMenu.css({"visibility" : "hidden"});
-		}
-		}
-		var addCount = 1;
-		function addTreeNode() {
-		hideRMenu();
-		var newNode = { name:"增加" + (addCount++)};
-		if (zTree.getSelectedNodes()[0]) {
-		newNode.checked = zTree.getSelectedNodes()[0].checked;
-		zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
-		} else {
-		zTree.addNodes(null, newNode);
-		}
-		}
-		function removeTreeNode() {
-		hideRMenu();
-		var nodes = zTree.getSelectedNodes();
-		if (nodes && nodes.length>0) {
-		if (nodes[0].children && nodes[0].children.length > 0) {
-		var msg = "要删除的节点是父节点，如果删除将连同子节点一起删掉。\n\n请确认！";
-		if (confirm(msg)==true){
-		zTree.removeNode(nodes[0]);
-		}
-		} else {
-		zTree.removeNode(nodes[0]);
-		}
-		}
-		}
-		function checkTreeNode(checked) {
-		var nodes = zTree.getSelectedNodes();
-		if (nodes && nodes.length>0) {
-		zTree.checkNode(nodes[0], checked, true);
-		}
-		hideRMenu();
-		}
-		function resetTree() {
-		hideRMenu();
-		$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-		}
-
-		var zTree, rMenu;
-		$(document).ready(function(){
-		$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-		zTree = $.fn.zTree.getZTreeObj("treeDemo");
-		rMenu = $("#rMenu");
-		});
-
-		 */
 	}
 });
 
@@ -632,8 +514,15 @@ Template.statisticalofedit.events = {
 		});
 	}
 }
-
-Template.rMenu.monitortypelist = function () {
+/*
+Template.statistical_detail.entityid = function () {
+	return SessionManage.getCheckedTreeNode("id");
+	console.log("12333333");
+}
+*/
+Template.statistical_detail.monitortypelist = function (treeId,subtype) {
+	var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(treeId,subtype);
+    return SvseTreeDao.getNodesByIds(childrenIds);
 	/*		var nodes = Svse.find().fetch();
 	console.log(nodes);
 	console.log("123");
