@@ -514,8 +514,15 @@ Template.statisticalofedit.events = {
 		});
 	}
 }
-
-Template.rMenu.monitortypelist = function () {
+/*
+Template.statistical_detail.entityid = function () {
+	return SessionManage.getCheckedTreeNode("id");
+	console.log("12333333");
+}
+*/
+Template.statistical_detail.monitortypelist = function (treeId,subtype) {
+	var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(treeId,subtype);
+    return SvseTreeDao.getNodesByIds(childrenIds);
 	/*		var nodes = Svse.find().fetch();
 	console.log(nodes);
 	console.log("123");
