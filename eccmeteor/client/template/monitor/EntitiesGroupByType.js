@@ -13,6 +13,8 @@ Template.EntitiesGroupByType.events({
 		//Session.set(SessionManage.MAP.CHECKEDENTITYTEMPLATEID,id);
 		RenderTemplate.hideParents(t);
 		var EntityItems = SvseEntityTemplateDao.getEntityItemsById(id);
+		console.log("Items:");
+		console.log(EntityItems);
 		RenderTemplate.showParents("#AddEntityModal","AddEntity",{EntityItems:EntityItems,id:id});
 	}
 })

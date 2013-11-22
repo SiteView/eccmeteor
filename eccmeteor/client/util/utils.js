@@ -24,22 +24,38 @@
 				obj["sv_paramvalue"] =  property["sv_paramvalue"+i];
 				obj["sv_relation"] =  property["sv_relation"+i];
 				objArr.push(obj);
-		}	
-		if(objArr.length === 1 || objArr === 0){
-			robj["sv_expression"] = 1;
-		}else{
-			robj["sv_expression"] = "1#"+objArr[objArr.length-2]["sv_relation"]+"2#";
 		}
-		robj["sv_conditioncount"] = objArr.length;
-		for (j=1;j< robj["sv_conditioncount"]+1;j++){
-		    var tobj = objArr[j-1];
-			robj["sv_paramname"+j] = tobj["sv_paramname"];
-			robj["sv_operate"+j] = tobj["sv_operate"];
-			robj["sv_paramvalue"+j] = tobj["sv_paramvalue"];
+		var objArrLength = objArr.length;
+		if(objArrLength === 0)
+			return {sv_conditioncount:0};
+		if(objArrLength === 1){
+			var tobj = objArr[0];
+			var robj = {};
+			robj["sv_conditioncount"] =1 ;
+			robj["sv_expression"] = 1;
+			robj["sv_paramname1"] = tobj["sv_paramname"];
+			robj["sv_operate1"] = tobj["sv_operate"];
+			robj["sv_paramvalue1"] = tobj["sv_paramvalue"];
+			return robj
+		}
+		var sv_relation = "";
+		robj["sv_conditioncount"] = objArrLength;
+		for (j=0;j< objArrLength;j++){
+		    var tobj = objArr[j];
+		    var i = j+1;
+			robj["sv_paramname"+i] = tobj["sv_paramname"];
+			robj["sv_operate"+i] = tobj["sv_operate"];
+			robj["sv_paramvalue"+i] = tobj["sv_paramvalue"];
+			/*
 			if(tobj["sv_relation"]){
+				robj["sv_relation"+i] = tobj["sv_relation"];
+			}*/
+			if(i !== 1 ){
 				robj["sv_relation"+j] = tobj["sv_relation"];
+				sv_relation = tobj["sv_relation"];
 			}
 		}
+		robj["sv_expression"] = "1#"+sv_relation+"#2";
 		return robj;
 	},
 	"objectCoalescence":function(obj1,obj2){

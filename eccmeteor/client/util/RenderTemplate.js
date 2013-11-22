@@ -13,15 +13,6 @@ Object.defineProperty(RenderTemplate,"renderIn",{
 		}));
 	}
 });
-/*
-*清空模板
-*/
-Object.defineProperty(RenderTemplate,"destroy",{
-	value:function(selector){
-		$(selector).empty();
-		$(selector).removeAttr("tabindex").removeAttr("style").removeAttr("aria-hidden");
-	}
-})
 
 /*
 *代理弹窗的modal("hide")
@@ -29,7 +20,11 @@ Object.defineProperty(RenderTemplate,"destroy",{
 */
 Object.defineProperty(RenderTemplate,"hide",{
 	value:function(selector){
-		$(selector).modal("hide");
+		var modal = $(selector);
+		modal.on("hidden",function(){
+			modal.parent("div").remove();
+		});
+		modal.modal("hide");
 	}
 });
 
@@ -44,12 +39,6 @@ Object.defineProperty(RenderTemplate,"show",{
 			return Template[template](context);
 		}));
 		$(selector).modal("show");
-		$(selector).on("hidden",function(){
-			$(selector).unbind('hidden')
-			console.log("destroy "+selector);
-			_self.destroy(selector);
-
-		});
 	}
 });
 //===========================
@@ -67,21 +56,8 @@ Object.defineProperty(RenderTemplate,"showParents",{
 		}));
 		var modal = $(selector).children("div:first");
 		modal.modal("show");
-		modal.on("hidden",function(){
-			modal.unbind('hidden')
-			_self.destroyParents(selector);
-		});
 	}
 });
-
-/*
-*清空模板
-*/
-Object.defineProperty(RenderTemplate,"destroyParents",{
-	value:function(selector){
-		$(selector).empty();
-	}
-})
 
 /*
 *代理弹窗的modal("hide")
@@ -89,6 +65,10 @@ Object.defineProperty(RenderTemplate,"destroyParents",{
 */
 Object.defineProperty(RenderTemplate,"hideParents",{
 	value:function(t){
-		$(t.find("div.modal")).modal("hide");
+		var modal = $(t.find("div.modal"));
+		modal.on("hidden",function(){
+			modal.parent("div").remove();
+		});
+		modal.modal("hide");
 	}
 });

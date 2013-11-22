@@ -16,7 +16,10 @@ SvseMonitorDao = {
 		});
 	},
 	getMonitor : function(id,fn){
-		Utils.checkReCallFunction(fn);
+		if(!id){
+			fn(true,id+" is not exist");
+			return;
+		}
 		Meteor.call(SvseMonitorDao.AGENT,"getMonitorInfoById",[id],function(err,result){
 			if(err){
 				fn(err)

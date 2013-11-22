@@ -159,3 +159,31 @@ SvseMonitorTemplateDao ={
 		)
 	}
 }
+
+//编辑监视器时根据 监视器的id获取该监视器的模板类型
+/**
+	svid：监视器的id
+*/
+Object.defineProperty(SvseMonitorTemplateDao,"getMonitorTemplateIdBySvid",{
+	value:function(svid){
+		var monitor = SvseTree.findOne({sv_id:svid});
+		if(!monitor){
+			return false;
+		}
+		return monitor.sv_monitortype;
+	}
+});
+
+//编辑监视器时根据 监视器的id获取该监视器的模板类型名称
+/**
+	templateId:监视器模板id
+*/
+Object.defineProperty(SvseMonitorTemplateDao,"getMonitorTemplateNameByTemplateId",{
+	value:function(templateId){
+		var template = SvseMonitorTemplate.findOne({"return.id":templateId})
+		if(!template){
+			return false;
+		}
+		return template.property.sv_label;
+	}
+});
