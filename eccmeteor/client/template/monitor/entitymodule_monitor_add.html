@@ -22,7 +22,6 @@
 					{{MonityFrequencyLabel}}
 				</td>
 				<td>
-					{{!-- createDomByObjListHelper MonityFrequencyDom --}}
 					{{#each MonityFrequencyDom}}
 						{{#if equal sv_type "textbox"}}
 							<input type="text" name="{{sv_name}}" value="{{sv_value}}"
@@ -44,7 +43,6 @@
 						{{#unless sv_allownull}}*{{/unless}}{{sv_label}}:
 					</td>
 					<td>
-						{{!-- createDomeByPropertyHelper this--}}
 						{{#if equal sv_type "textbox"}}
 							<input type="text" name="{{sv_name}}" value="{{sv_value}}" {{#if equal sv_isreadonly "true"}}readonly{{/if}}/>
 						{{/if}}
