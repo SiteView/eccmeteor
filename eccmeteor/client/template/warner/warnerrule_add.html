@@ -1,7 +1,7 @@
 <Template name="warnerruleofmessage">
 	<div id="messagewarnerdiv" class="modal hide fade" 
 	data-backdrop="true" data-keyboard="true" data-show="false" 
-	data-width="800" data-modalOverflow="true">
+	data-width="800" data-height="600" data-maxHeight="500" data-modalOverflow="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<label class="label label-info">{{language.warnerrulemodel.addmessagewarnerruletitle}}</label>{{ide "warnerrule"}}
@@ -120,7 +120,7 @@
 				<div class="row">
 					<div class="control-group" style="padding-left:10px;margin:5px">
 						<span>
-							<input type="radio" name="AlertCond">
+							<input type="radio" name="AlertCond" value="1">
 						</span>
 						<label>连续不断发送警告</label>
 					</div>
@@ -131,7 +131,7 @@
 					</div>
 					<div class="control-group" style="padding-left:10px;margin:5px">
 						<span>
-							<input type="radio" name="AlertCond">
+							<input type="radio" name="AlertCond" value="2">
 						</span>
 						<label>报警只发送一次</label>
 					</div>
@@ -142,7 +142,7 @@
 					</div>
 					<div class="control-group" style="padding-left:10px;margin:5px">
 						<span class="input-group-addon">
-							<input type="radio" name="AlertCond" checked>
+							<input type="radio" name="AlertCond" value="3" checked>
 						</span>
 						<label>选择性发送报警</label>
 					</div>
@@ -162,7 +162,7 @@
 <Template name="editwarnerruleofmessage">
 	<div id="messagewarnerdivedit" class="modal hide fade" 
 	data-backdrop="true" data-keyboard="true" data-show="false" 
-	data-width="800" data-modalOverflow="true">
+	data-width="800" data-height="600" data-maxHeight="500" data-modalOverflow="true">
 		
 		<div class="modal-footer" align="right">
 			<button class="btn btn-large" id="editwarnerruleofmessagecancelbtn">{{language.warnerrulemodel.cancelemailwarnerrulesettingbtn}}</button>
@@ -197,7 +197,7 @@
 							<label class="control-label">报警接收手机号:</label>
 							<div class="controls">
 								<select class="messagemultiselectedit" multiple="multiple" name="SmsNumber" id="warnersmsnumber">
-									{{#each messagelist}}
+									 {{#each messagelist}}
 										<option value="{{Name}}">{{Name}}</option>
 									{{/each}}
 								</select>

@@ -8,13 +8,13 @@ Template.warnerruleofmessage.events={
 		for(param in warnerruleofmessageformsendconditions){
 			warnerruleofmessageform[param] = warnerruleofmessageformsendconditions[param];
 		}
-		warnerruleofmessageform["AlertCond"] = 3;
-		warnerruleofmessageform["SelTime1"] = 2;
-		warnerruleofmessageform["SelTime2"] = 3;
+		//warnerruleofmessageform["AlertCond"] = 3;
+		//warnerruleofmessageform["SelTime1"] = 2;
+		//warnerruleofmessageform["SelTime2"] = 3;
 		warnerruleofmessageform["AlertState"] = "Enable";
 		warnerruleofmessageform["AlertType"] = "SmsAlert";
-		warnerruleofmessageform["AlwaysTimes"] = 1;
-		warnerruleofmessageform["OnlyTimes"] = 1;
+		//warnerruleofmessageform["AlwaysTimes"] = 1;
+		//warnerruleofmessageform["OnlyTimes"] = 1;
 		
 		var alertName=warnerruleofmessageform["AlertName"];
 		if(!alertName){
@@ -156,13 +156,13 @@ Template.messagewarnerformedit.messagelist = function(){
 Template.messagewarnerformedit.rendered=function(){
 	$(function(){
 		//填充报警接收手机号下拉列表
-		// var messagelist = SvseMessageDao.getMessageList();
-		// for(var l = 0 ; l < messagelist.length ; l++){
-			// console.log(messagelist[l]);
-			// var name = messagelist[l].Name;
-			// var option = $("<option value="+name+"></option>").html(name);
-			// $("#warnersmsnumber").append(option);
-		// }
+		var messagelist = SvseMessageDao.getMessageList();
+		for(var l = 0 ; l < messagelist.length ; l++){
+			console.log(messagelist[l]);
+			var name = messagelist[l].Name;
+			var option = $("<option value="+name+"></option>").html(name);
+			$("#warnersmsnumber").append(option);
+		}
 		$('.messagemultiselectedit').multiselect({
 			buttonClass : 'btn',
 			buttonWidth : 'auto',

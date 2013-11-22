@@ -28,9 +28,9 @@ Template.warnerrulelog.rendered = function(){
 		//接收手机号下拉列表多选框
 		$('.messagemultiselect').multiselect({
 			buttonClass : 'btn',
-			buttonWidth : 200,
+			buttonWidth : "auto",
 			buttonContainer : '<div class="btn-group" />',
-			maxHeight : 400,
+			maxHeight : 200,
 			//textAlign: left,
 			enableFiltering : true,
 			buttonText : function (options) {
@@ -47,11 +47,38 @@ Template.warnerrulelog.rendered = function(){
 				}
 			}
 		});
+		alertReceiver();
 	});
 }
 
 //获取报警规则列表
-Template.warnerrulelog.warnerrulelist = function(){
+Template.warnerrulelog.warnerruleoflist = function(){
 	console.log(SvseWarnerRuleDao.getWarnerRuleList());
 	return SvseWarnerRuleDao.getWarnerRuleList();
+}
+
+//获取报警规则的类型
+Template.warnerrulelog.alertTypes = function(){
+	var alertType = ["EmailAlert","SmsAlert","ScriptAlert","SoundAlert"];
+	return alertType;
+}
+
+//获取报警接收人地址
+var alertReceiver = function(){
+	var allalerts = SvseWarnerRuleDao.getWarnerRuleList();
+	//console.log(allalerts);
+	var alertReceiver = [];
+	for(var i = 0;i < allalerts.length;i++){
+		var recevier = allalerts[i];
+		if(recevier.EmailAdress){
+			console.log(recevier.EmailAdress);		
+		}else if(recevier.SmsNumber){
+			console.log(recevier.SmsNumber);		
+		}else if(recevier.ScriptServer){
+			console.log(recevier.ScriptServer);		
+		}else if(recevier.Server){
+			console.log(recevier.Server);
+		}
+		
+	}
 }

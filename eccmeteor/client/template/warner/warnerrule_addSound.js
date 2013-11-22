@@ -8,13 +8,13 @@ Template.warnerruleofsound.events({
 		for(param in warnerruleofsoundformsendconditions){
 			warnerruleofsoundform[param] = warnerruleofsoundformsendconditions[param];
 		}
-		warnerruleofsoundform["AlertCond"] = 3;
-		warnerruleofsoundform["SelTime1"] = 2;
-		warnerruleofsoundform["SelTime2"] = 3;
+		//warnerruleofsoundform["AlertCond"] = 3;
+		//warnerruleofsoundform["SelTime1"] = 2;
+		//warnerruleofsoundform["SelTime2"] = 3;
 		warnerruleofsoundform["AlertState"] = "Enable";
 		warnerruleofsoundform["AlertType"] = "SoundAlert";
-		warnerruleofsoundform["AlwaysTimes"] = 1;
-		warnerruleofsoundform["OnlyTimes"] = 1;
+		//warnerruleofsoundform["AlwaysTimes"] = 1;
+		//warnerruleofsoundform["OnlyTimes"] = 1;
 		
 		var alertName=warnerruleofsoundform["AlertName"];
 		if(!alertName){

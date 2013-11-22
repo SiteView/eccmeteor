@@ -87,9 +87,9 @@ Template.messagesettingList.pager = function(){
 	return page.create(SvseMessageList.find().count());
 }
 
-Template.messagesettingList.destroyed = function(){
-	page.destroy();
-}
+// Template.messagesettingList.destroyed = function(){
+	// page.destroy();
+// }
 
 Template.messagesettingList.events({
 	"click td .btn":function(e){
