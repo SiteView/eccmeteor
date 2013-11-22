@@ -36,14 +36,14 @@ Template.MonitorList.events={
       	var id = this.sv_id;
         console.log("编辑监视器id:"+id);
        // SessionManage.setCheckedMonitorId(id);
-        var monitorTemplateId = SvseMonitorDao.getMonitorTemplateIdByMonitorId(id);
+        var monitorTemplateId = SvseMonitorTemplateDao.getMonitorTemplateIdBySvid(id);
         //设置监视器模板id
     	//Session.set("monityTemplateId",monitorTemplateId);
       //  Session.set("monitorStatus","编辑");
 
-      	var context = getMonitorInfoContext(monitorTemplateId,monityTemplateName);
+      	var context = getMonitorInfoContext(monitorTemplateId);
      //   $("#showMonitorInfoDiv").modal('show');
-     	getEditMonitorDynamicData();
+     	getEditMonitorDynamicData(id);
     },
     "mouseenter #showMonitorList img":function(e){
     	$(e.currentTarget).popover('show');
@@ -66,16 +66,15 @@ Template.MonitorList.rendered = function(){ //默认选中第一个监视进行�
 		ClientUtils.showOperateBtnInTd("showMonitorList");
     });
 	//默认选中第一个监视器，展示数据
-	$(function(){
-		var tr = $("#showMonitorList tr:first").addClass("success");
-		var id = tr.attr("id");
-		if(id && id !=""){
-			SessionManage.setCheckedMonitorId(id);
-			drawImage(id);
-		}else{
-			emptyImage();
-		}
-	});
+	//console.log("默认画图id是："+this.find("td input:checkbox").id);
+	var defaultMonitorId = this.find("td input:checkbox").id ;
+	$(this.find("tbody tr")).addClass("success");
+	if(defaultMonitorId && defaultMonitorId !== ""){
+		drawImage(defaultMonitorId);
+	}else{
+		emptyImage();
+	}
+	
 }
 
 Template.MonitorStatisticalSimpleData.recordsData = function(){
@@ -141,6 +140,7 @@ function drawImage(id,count){
 		drawDie(recordsData,"svg#monitorStatisticalPieSvg");
 	});
 }
+
 function emptyImage(){
 	SessionManage.setMonitorStatisticalDetailTableData(null);
 	SessionManage.setMonitorRuntimeTableData({
@@ -164,16 +164,18 @@ function emptyImage(){
 
 var getMonitorInfoContext = function(){}
 var getEditMonitorDynamicData = function(checkedMonitorId){
-	SvseMonitorDao.getMonitor(checkedMonitorId,function(err,monitor){
+	SvseMonitorDao.getMonitor(checkedMonitorId,function(err,result){
 			if(err){
 				Log4js.error(err);
-				Message.error("获取监视器信息失败！");
+				Message.error(result);
 				return;
 			}
+			var monitor = result;
 			console.log(monitor);
 			var advance_parameter = monitor["advance_parameter"];
 			var parameter = monitor["parameter"];
 			var error = monitor["error"];
 			var good = monitor["good"];
 			var warning = monitor["warning"];//定义一个checkbox。
+	});
 }

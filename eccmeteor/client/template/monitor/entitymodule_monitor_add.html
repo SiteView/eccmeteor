@@ -99,7 +99,7 @@
 									<th>关系</th>
 								</tr>
 							</thead>
-							<tbody id="warnigStatusTable">
+							<tbody id="errorsStatusTable">
 								{{#with Error}}
 									{{> monitorTemplateInitStatusTableTr}}
 								{{/with}}
@@ -210,7 +210,17 @@
 					{{sv_label}}:
 					</td>
 					<td>
-					{{createDomeByPropertyHelper this}}
+					{{#if equal sv_type "textbox"}}
+						<input type="text" name="{{sv_name}}" value="{{sv_value}}"
+							{{#if equal sv_isreadonly "true"}}readonly{{/if}}
+						/>
+						{{else}}
+						<select name="{{sv_name}}">
+							{{#each selects}}
+								<option value="{{value}}">{{key}}</option>
+							{{/each}}
+						</select>
+					{{/if}}
 					</td>
 				</tr>
 				{{/each}}

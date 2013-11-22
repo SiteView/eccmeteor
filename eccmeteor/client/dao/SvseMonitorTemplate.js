@@ -159,3 +159,17 @@ SvseMonitorTemplateDao ={
 		)
 	}
 }
+
+//编辑监视器时根据 监视器的id获取该监视器的模板类型
+/**
+	svid：监视器的id
+*/
+Object.defineProperty(SvseMonitorTemplateDao,"getMonitorTemplateIdBySvid",{
+	value:function(svid){
+		var monitor = SvseTree.findOne({sv_id:svid});
+		if(!monitor){
+			return false;
+		}
+		return monitor.sv_monitortype;
+	}
+});
