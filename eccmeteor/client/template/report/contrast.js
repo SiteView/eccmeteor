@@ -1,18 +1,63 @@
+var getContrastListSelectAll = function(){
+	return ClientUtils.tableGetSelectedAll("contrastlist");
+}
+
+Template.contrast.events = {
+    //查询
+	   "click #queryDetailLineData":function(e){
+	   var queryCondition = {
+	   datetimepickerStartDate: $("#datetimepickerStartDate").val(), datetimepickerEndDate:$("#datetimepickerEndDate").val()
+	   };
+		   drawDetailLineAgain();
+		   Session.set('query', queryCondition);
+		   
+		   
+		  },
+	//导出报告
+	   "click #exportreport":function(e){
+	    /* SvseContrastDao.checkContrastresultlistSelect(getContrastListSelectAll());
+            SvseContrastDao.updateTopNStatus(getContrastListSelectAll()," No",function(result){
+                if(result.status){
+                    SystemLogger("改变状态"+result.option.count+"条");
+                        }
+                });*/
+			$('#exportdiv').modal('toggle');
+		  },
+	//帮助
+	   "click #helpmessagebtn":function(e){
+		   //LoadingModal.loading();
+			$('#helpmessagediv').modal('toggle');
+		  }
+		  
+}
+	/*
+	 查询结果数据列表
+	*/	
+	/*Template.contrastlist.contrastresultlist = function()‌{‌
+		/*var queryobj = {};‌
+		queryobj[Session.get('query').QueryObj] = new RegExp(Session.get('query').QueryValue);‌
+		‌
+		var nodes = SvseTree.find(queryobj).fetch();‌
+		‌
+		return nodes;		‌
+	}‌*/
+
 Template.contrast.rendered = function(){
-	//监视器选择树
+//监视器选择树
 	$(function(){
 		var data = SvseDao.getDetailTree();
 		var setting = {
 			check:{
 				enable: true,
 				chkStyle: "checkbox",
-				chkboxType: { "Y": "ps", "N": "ps" }
+				chkboxType: { "Y": "ps",
+ 				              "N": "ps" }
 			},
 			callback : {
-				onRightClick : function (event, treeId, treeNode) {
-				console.log("45");
+				    onRightClick : function (event, treeId, treeNode) {
+				     console.log("45");
 					zTree = $.fn.zTree.getZTreeObj("svse_tree_check");
-					if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
+					 if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
 						zTree.cancelSelectedNode();
 						showRMenu("root", event.clientX, event.clientY);
 					} else if (treeNode && !treeNode.noR) {
@@ -32,29 +77,30 @@ Template.contrast.rendered = function(){
 		};
 		$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
-	function showRMenu(type, x, y) {
-		//$("#rMenu ul").show();
-		$("#rMenu1").css({
-			"top" : y + 10 + "px",
-			"left" : x + 10 + "px",
-			"visibility" : "visible"
-		});
-		$("body").bind("mousedown", onBodyMouseDown);
-	}
-	function hideRMenu() {
-		if (rMenu1)
-			$("#rMenu1").css({
-				"visibility" : "hidden"
+	
+		function showRMenu(type, x, y) {
+			//$("#rMenu ul").show();
+			$("#rMenu").css({
+				"top" : y + 10 + "px",
+				"left" : x + 10 + "px",
+				"visibility" : "visible"
 			});
-		$("body").unbind("mousedown", onBodyMouseDown);
-	}
-	function onBodyMouseDown(event) {
-		if (!(event.target.id == "rMenu1" || $(event.target).parents("#rMenu1").length > 0)) {
-			$("#rMenu1").css({
-				"visibility" : "hidden"
-			});
+			$("body").bind("mousedown", onBodyMouseDown);
 		}
-	}
+		function hideRMenu() {
+			if (rMenu1)
+				$("#rMenu").css({
+					"visibility" : "hidden"
+				});
+			$("body").unbind("mousedown", onBodyMouseDown);
+		}
+		function onBodyMouseDown(event) {
+			if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length > 0)) {
+				$("#rMenu").css({
+					"visibility" : "hidden"
+				});
+			}
+		}
 //鼠标悬停功能实现
 		$().tooltip();		 
 		$.fn.tooltip = function( options ) { 
@@ -66,13 +112,15 @@ Template.contrast.rendered = function(){
 			}
 			var tooltip = "";
 			var title = "";
-			$(this).mouseover(function(e){						 
+			$(this).mouseover(function(e){
+		
 				title = $(this).attr("title");
 				if(title== ""){
 					 tooltip = "";
 				}else{
 					tooltip = "<div id='tooltip'><p>"+title+"</p></div>";
 					$(this).attr("title","");
+					
 				}		
 				$('body').append(tooltip);
 				$('#tooltip')
@@ -96,18 +144,51 @@ Template.contrast.rendered = function(){
 		});
 		
 	};
-	 $(".form_datetime").datetimepicker({
-        format: "dd-MM-yyyy hh:mm",
-        autoclose: true,
-        todayBtn: true,
-		language: 'en',  
-        pickDate: true,  
-        pickTime: true,  
-        hourStep: 1, 
-        minuteStep: 15,  
-        secondStep: 30,  
-        inputMask: true 
-    });
+
+	 var template = this;
+        $(function() { //初始化日期选择器
+                var endDate = new Date();
+                var startDate = new Date();
+                startDate.setTime(startDate.getTime() - 1000*60*60*24);
+                $(template.find("#datetimepickerStartDate")).datetimepicker({
+                        format: 'yyyy-MM-dd hh:mm:ss',
+                        language: 'zh-CN',
+                        maskInput: false
+                });
+                $(template.find("#datetimepickerEndDate")).datetimepicker({
+                        format: 'yyyy-MM-dd hh:mm:ss',
+                        language: 'zh-CN',
+                        endDate : endDate,
+                        maskInput: false,
+                });
+                var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
+                var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
+                startPicker.setDate(startDate);
+                endPicker.setDate(endDate);
+				// $('#AlertdatetimepickerStartDate').on('changeDate', function(e) {
+				//  endPicker.setstartDate(e.date);
+				// });
+				// $('#AlertdatetimepickerEndDate').on('changeDate', function(e) {
+				// startPicker.setEndDate(e.date);
+				// });
+});
+/*//判断是否选择选择监测器
+      var targets = [];
+	    var contrastdiv = ClientUtils.formArrayToObject($("#contrastdiv").serializeArray());
+	    var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
+			for(index in arr){
+			targets.push(arr[index].id);
+			}
+			contrastdiv["GroupRight"] = targets.join();
+			
+			$(":checkbox[name='Status']").each(function(){
+			if(!this.checked) contrastdiv["Status"]="Yes";
+		});
+        contrastdiv["AlertTarget"] = targets.join();
+		if(!contrastdiv["AlertTarget"]){
+			Message.info("请选择选择选择监测器！",{align:"center",time:3});
+			return;
+		}*/
 }
 /*Template.contrast.events = {
 	"click #queryDetailLineData" : function(){
@@ -136,37 +217,7 @@ Template.contrast.rendered = function(){
 		drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endPicker.getDate()));
 	}
 }
-Template.contrast.rendered = function(){
-	var template = this;
-	$(function() { //初始化日期选择器
-		var endDate = new Date();
-		var startDate = new Date();
-		startDate.setTime(startDate.getTime() - 1000*60*60*24);
-		$(template.find("#datetimepickerStartDate")).datetimepicker({
-			format: 'yyyy-MM-dd hh:mm:ss',
-			language: 'zh-CN',
-			maskInput: false
-		});
-		$(template.find("#datetimepickerEndDate")).datetimepicker({
-			format: 'yyyy-MM-dd hh:mm:ss',
-			language: 'zh-CN',
-			endDate : endDate,
-			maskInput: false,
-		});
-		var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
-		var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
-		startPicker.setDate(startDate);
-		endPicker.setDate(endDate);
-//		$('#datetimepickerstartDate').on('changeDate', function(e) {
-//			endPicker.setstartDate(e.date);
-//		});
-//		$('#datetimepickerEndDate').on('changeDate', function(e) {
-//			startPicker.setEndDate(e.date);
-//		});
-		drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate));
-	});
-}*/
-
-Template.rMenu1.monitortypelist = function () {
+*/
+Template.rMenu.monitortypelist = function () {
 	
 }

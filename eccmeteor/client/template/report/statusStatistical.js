@@ -331,7 +331,7 @@ Template.statusStatistical.rendered = function(){
 		};
 		$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
-	 $(".form_datetime").datetimepicker({
+	/*$(".form_datetime").datetimepicker({
         format: "dd-MM-yyyy hh:mm",
         autoclose: true,
         todayBtn: true,
@@ -343,5 +343,33 @@ Template.statusStatistical.rendered = function(){
         secondStep: 30,  
         inputMask: true 
         //pickerPosition: "bottom-left"
-    });
+    });*/
+	var template = this;
+        $(function() { //初始化日期选择器
+                var endDate = new Date();
+                var startDate = new Date();
+                startDate.setTime(startDate.getTime() - 1000*60*60*24);
+                $(template.find("#datetimepickerStartDate")).datetimepicker({
+                        format: 'yyyy-MM-dd hh:mm:ss',
+                        language: 'zh-CN',
+                        maskInput: false
+                });
+                $(template.find("#datetimepickerEndDate")).datetimepicker({
+                        format: 'yyyy-MM-dd hh:mm:ss',
+                        language: 'zh-CN',
+                        endDate : endDate,
+                        maskInput: false,
+                });
+                var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
+                var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
+                startPicker.setDate(startDate);
+                endPicker.setDate(endDate);
+//                $('#AlertdatetimepickerStartDate').on('changeDate', function(e) {
+//                        endPicker.setstartDate(e.date);
+//                });
+//                $('#AlertdatetimepickerEndDate').on('changeDate', function(e) {
+//                        startPicker.setEndDate(e.date);
+//                });
+});
+
 }

@@ -21,11 +21,11 @@ Template.topN.events = {
 	  });*/
 	  
 	  var ids = getTopNListSelectAll();
-                SvseTopNDao.checkTopNresultlistSelect(ids);
-        if(ids.length)
-            SvseTopNDao.deleteTopNByIds(ids,function(result){
-              SystemLogger(result);
-                });
+            SvseTopNDao.checkTopNresultlistSelect(ids);
+				if(ids.length)
+					SvseTopNDao.deleteTopNByIds(ids,function(result){
+					SystemLogger(result);
+						});
 	  
 	},
 	 //启用TopN地址
@@ -39,10 +39,10 @@ Template.topN.events = {
 			SvseTopNDao.updateTopNStatus(ids,"on",function(result){
 				SystemLogger(result);
 			});*/
-			 SvseTopNDao.checkTopNresultlistSelect(getTopNListSelectAll());
-                SvseTopNDao.updateTopNStatus(getTopNListSelectAll()," on",function(result){
-                        if(result.status){
-                                SystemLogger("改变状态"+result.option.count+"条");
+			SvseTopNDao.checkTopNresultlistSelect(getTopNListSelectAll());
+            SvseTopNDao.updateTopNStatus(getTopNListSelectAll()," on",function(result){
+                if(result.status){
+                    SystemLogger("改变状态"+result.option.count+"条");
                         }
                 });
 			
@@ -59,19 +59,19 @@ Template.topN.events = {
 				SystemLogger(result);
 			});*/
 			SvseTopNDao.checkTopNresultlistSelect(getTopNListSelectAll());
-                SvseTopNDao.updateTopNStatus(getTopNListSelectAll()," No",function(result){
-                        if(result.status){
-                                SystemLogger("改变状态"+result.option.count+"条");
+            SvseTopNDao.updateTopNStatus(getTopNListSelectAll()," No",function(result){
+                if(result.status){
+                    SystemLogger("改变状态"+result.option.count+"条");
                         }
                 });
 	},
 	//topN报告生成
 	"click #generatereport" : function(){
 	   LoadingModal.loading();
-		SvseTopNDao.checkTopNresultlistSelect(getTopNListSelectAll());
-                SvseTopNDao.updateTopNStatus(getTopNListSelectAll()," No",function(result){
-                        if(result.status){
-                                SystemLogger("改变状态"+result.option.count+"条");
+		    SvseTopNDao.checkTopNresultlistSelect(getTopNListSelectAll());
+            SvseTopNDao.updateTopNStatus(getTopNListSelectAll()," No",function(result){
+                if(result.status){
+                    SystemLogger("改变状态"+result.option.count+"条");
                         }
                 });
 	},
@@ -137,7 +137,7 @@ Template.topNofadd.events = {
 	  
                 if(document.getElementById("reporttypePeriodlist").value=="Week"){
 			   
-                         document.getElementById("topNtypetemplatelist").disabled=false;
+                     document.getElementById("topNtypetemplatelist").disabled=false;
            }
 		   else{
 				 document.getElementById("topNtypetemplatelist").disabled=true;
@@ -468,7 +468,7 @@ Template.topNofedit.rendered = function(e,t){
 				$("#Typelist").append(option);
 			}
 		});*/
-	Meteor.call("svGetEmailTemplates",function(err,result){
+	Meteor.call("svGetEntityDynamicPropertyData",function(err,result){
 		for(name in result){
 			console.log(name);
 			var option = $("<option value="+name+"></option>").html(name)

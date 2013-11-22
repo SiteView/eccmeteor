@@ -30,6 +30,7 @@
 		"disable":"禁用",
 		"warning":"警告",
 		"generatereport":"生成报告",
+		"exportreport":"导出报告",
 		"EquipmentStatus":{
 			"status":"状态",
 			"ok":"正常",

@@ -1,66 +1,69 @@
 <Template name="statusStatistical">
-<div id="statusStatisticaldiv"
-	data-backdrop="true" data-keyboard="true" data-show="false" 
-	data-width="800" data-modalOverflow="true">
-  <div class="modal-body">
-    <div class="row-fluid">
-      <div class="span4" style="overflow:auto" id="treeDemo">
-        <label class="label label-info">状态统计报告</label>
-        <ul id="svse_tree_check" class="ztree">
-        </ul>
-      </div>
-      <div class="span8"> {{> statusStatisticalform}}
-        {{> statusStatisticallist}} </div>
-    </div>
-  </div>
-</div>
+		<div id="statusStatisticaldiv"
+			data-backdrop="true" data-keyboard="true" data-show="false" 
+			data-width="800" data-modalOverflow="true">
+		  <div class="modal-body">
+			<div class="row-fluid">
+			  <div class="span4" style="overflow:auto" id="treeDemo">
+				<label class="label label-info">状态统计报告</label>
+				<ul id="svse_tree_check" class="ztree">
+				</ul>
+			  </div>
+			  <div class="span8"> 
+			  {{> statusStatisticalform}}
+			  {{> statusStatisticallist}} 
+			  </div>
+			</div>
+		  </div>
+		</div>
 </Template>	
 
 <Template name="statusStatisticalform">
-<div class="tabbable">
-  <ul class="nav nav-tabs">
-    <li class="active"><a href="#1" data-toggle="tab">查询</a></li>
-  </ul>
-</div>
-<div class="accordion-group">
-<a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"> 查询条件 </a>
-<div class="panel-group" id="accordion"> </div>
-<div id="collapseOne" class="panel-collapse collapse in">
-<form class="well form-horizontal form-inline>
-			<fieldset>
-				<div>
-						<div class="well">
-  <div class="form-inline">
-    <div class="control-group" id="form_datetime"> <span>{{language.startTime}}:</span>
-      <div class="input-append date form_datetime">
-        <input type="text">
-        </input>
-        <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span> </div>
-      <br>
-      <span>{{language.endTime}}:</span>
-      <div class="input-append date form_datetime">
-        <input type="text">
-        </input>
-        <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span> </div>
-    </div>
-    <div> </div>
-    <div>
-      <label class="control-label"></label>
-      <button id="sel" class="btn">查询</button>
-      &nbsp;&nbsp;
-      <button id="sel" class="btn">导出报表</button>
-      &nbsp;&nbsp;
-      <button id="sel" class="btn">帮助</button>
-    </div>
-  </div>
-<<<<<<< HEAD
-  </div>
-  </div>
-  </fieldset>
-</form>
-</div>
-</div>
-=======
+		<div class="tabbable">
+				<ul class="nav nav-tabs">
+					   <li class="active"><a href="#1" data-toggle="tab">查询</a></li>
+				</ul>
+		</div>
+		<div class="accordion-group">
+				<a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"> 查询条件 </a>
+		<div class="panel-group" id="accordion"> </div>
+				<div id="collapseOne" class="panel-collapse collapse in">
+				<form class="well form-horizontal form-inline>
+						 <fieldset>
+							<div>
+								<div class="well">
+						  <div class="form-inline">
+									<span>{{language.startTime}}:</span>
+									<div id="datetimepickerStartDate" class="input-append date">
+									  <input type="text" readOnly="readonly"></input>
+									  <span class="add-on">
+										<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+									  </span>
+									</div>
+								<br>
+									<span>{{language.endTime}}:</span>
+									<div id="datetimepickerEndDate" class="input-append date">
+									  <input type="text" readOnly="readonly"></input>
+									  <span class="add-on">
+										<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+									  </span>
+									</div>
+									<div>
+									</div>
+									<div>
+										<label class="control-label"></label>
+										<button id="sel" class="btn">查询</button>
+										<button id="sel" class="btn">导出报表</button>
+										<button id="sel" class="btn">帮助</button>
+									</div>
+							</div>
+
+						</div>
+					</div>
+				  </fieldset>
+				</form>
+			</div>
+		</div>
   <!--<div id="statusStatisticalform" class="well form-horizontal form-inline">
 		
 		<div class="label label-info">查询条件</div>
@@ -91,7 +94,6 @@
 		</div>
 	</div>	-->
 	</div>
->>>>>>> meteorite
 </Template>
 
 <Template name="statusStatisticallist">
