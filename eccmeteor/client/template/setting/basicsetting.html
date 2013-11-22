@@ -3,16 +3,17 @@
 		<span class="label label-info">基本设置</span>{{ide "basicsetting"}}
 		<br/>
 		<span class="label label-info">基本设置详细信息</span>
-		<div  class="controls">	
+		<div  class="controls" style="padding:0px">	
 			<div class="controls">
 				<input type="checkbox" nmae="isornochexk" />是否需要IP验证
 			</div>
 			<br/>
-			<div class="controls">
-				<label>允许访问IP地址：</label>
-				<input type="text" name="allowvisitIP" />
+			<div class="control-group">
+				<label class="control-label">允许访问IP地址：</label>
+				<div  class="controls">	
+					<input type="text" name="allowvisitIP" />
+				</div>
 			</div>
-			<br/>
 			<div class="controls">
 				<button class="btn" id="addbasicsetting">{{language.BasicModel.applybtn}}</button>
 				<button class="btn" id="delbasicsetting">{{language.BasicModel.againgetbtn}}</button>
@@ -29,7 +30,9 @@
 
 <Template name="tuipuinfo">
 	<div class="form-horizontal">
-		<span class="label label-info">拓扑信息</span>
+		<div style="padding-bottom:8px">
+			<span class="label label-info">拓扑信息</span>
+		</div>
 		<table class="table table-striped table-condensed table-hover">
 			<thead>
 				<tr></tr>

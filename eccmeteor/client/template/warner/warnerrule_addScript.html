@@ -27,11 +27,12 @@
 <Template name="warnerruleofscriptform">
 	<form id="warnerruleofscriptform" class="well form-horizontal form-inline">
 		<fieldset>
+			<label class="label label-info" align="left">设置脚本报警</label>
 			<div class="control-group">
 				<label class="control-label">报警名称*:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="AlertName">
-				 </div>
+					<input type="text" name="AlertName">
+				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">选择服务器*:</label>
@@ -52,14 +53,16 @@
 			<div class="control-group">
 				<label class="control-label" >附加参数:</label>
 				<div class="controls">
-					<input type="text" class="span6" name="ScriptParam">
+					<input type="text" name="ScriptParam">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" >报警策略:</label>
-					<div class="controls">
-						<input type="text" class="span6" name="Strategy">
-					</div>
+				<div class="controls">
+					<select id="scriptalertStrategylist" name="Strategy">
+						<option value="0">空</option>
+					</select>
+				</div>
 			</div>
 			
 		</fieldset>
@@ -68,13 +71,50 @@
 	<div>
 		<form class="well form-horizontal form-inline" id="warnerruleofscriptformsendconditions">
 			<fieldset>
+				<label class="label label-info" align="left">发送条件</label>
 				<div class="control-group">
-				<label class="control-label" >报警事件:</label>
-				<div class="controls">
-					<input type="radio" name="AlertCategory" value="危险">危险</td>
-					<input type="radio" name="AlertCategory" value="错误" checked>错误</td>
+					<label class="control-label" >报警事件:</label>
+					<div class="controls">
+						<input type="radio" name="AlertCategory" value="危险" />危险
+						<input type="radio" name="AlertCategory" value="错误" checked />错误
+					</div>
 				</div>
-			</div>
+				<div class="row">
+					<div class="control-group" style="padding-left:10px;margin:5px">
+						<span>
+							<input type="radio" name="AlertCond" value="1">
+						</span>
+						<label>连续不断发送警告</label>
+					</div>
+					<div class="control-group">
+						<span style="padding:20px">
+							总是发送，从第<input type="text" name="AlwaysTimes" style="width:28px;height:12px" value="1">次符合报警发送条件开始发送报警
+						</span>
+					</div>
+					<div class="control-group" style="padding-left:10px;margin:5px">
+						<span>
+							<input type="radio" name="AlertCond" value="2">
+						</span>
+						<label>报警只发送一次</label>
+					</div>
+					<div class="control-group">
+						<span style="padding:20px">
+							发送一次，当第<input type="text" name="OnlyTimes" style="width:28px;height:12px" value="1">次符合报警发送条件发送报警
+						</span>
+					</div>
+					<div class="control-group" style="padding-left:10px;margin:5px">
+						<span class="input-group-addon">
+							<input type="radio" name="AlertCond" value="3" checked>
+						</span>
+						<label>选择性发送报警</label>
+					</div>
+					<div class="control-group">
+						<span style="padding:20px">
+							当第<input type="text" style="width:28px;height:12px" name="SelTime1" value="2">次符合报警发送条件时及其以后每重复
+							<input type="text" style="width:28px;height:12px" name="SelTime2" value="3">次时发送报警
+						</span>
+					</div>
+				</div>
 			</fieldset>
 		</form>
 	</div>
@@ -98,11 +138,12 @@
 					<form id="warnerruleofscriptformedit" class="well form-horizontal form-inline">
 						<input type="hidden" name="nIndex" >
 						<fieldset>
+							<label class="label label-info" align="left">设置脚本报警</label>
 							<div class="control-group">
 								<label class="control-label">报警名称*:</label>
-									<div class="controls">
-										<input type="text" class="span6" name="AlertName">
-									 </div>
+								<div class="controls">
+									<input type="text" name="AlertName">
+								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">选择服务器*:</label>
@@ -123,14 +164,16 @@
 							<div class="control-group">
 								<label class="control-label" >附加参数:</label>
 								<div class="controls">
-									<input type="text" class="span6" name="ScriptParam">
+									<input type="text" name="ScriptParam">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >报警策略:</label>
-									<div class="controls">
-										<input type="text" class="span6" name="Strategy">
-									</div>
+								<div class="controls">
+									<select id="scriptalertStrategylistedit" name="Strategy">
+										<option value="0">空</option>
+									</select>
+								</div>
 							</div>
 						</fieldset>
 					</form>
@@ -138,11 +181,48 @@
 					<div>
 						<form class="well form-horizontal form-inline" id="warnerruleofscriptformsendconditionsedit">
 							<fieldset>
+								<label class="label label-info" align="left">发送条件</label>
 								<div class="control-group">
-								<label class="control-label" >报警事件:</label>
+									<label class="control-label" >报警事件:</label>
 									<div class="controls">
 										<input type="radio" name="AlertCategory" value="危险" />危险
 										<input type="radio" name="AlertCategory" value="错误" checked />错误
+									</div>
+								</div>
+								<div class="row">
+									<div class="control-group" style="padding-left:10px;margin:5px">
+										<span>
+											<input type="radio" name="AlertCond">
+										</span>
+										<label>连续不断发送警告</label>
+									</div>
+									<div class="control-group">
+										<span style="padding:20px">
+											总是发送，从第<input type="text" name="AlwaysTimes" style="width:28px;height:12px" value="1">次符合报警发送条件开始发送报警
+										</span>
+									</div>
+									<div class="control-group" style="padding-left:10px;margin:5px">
+										<span>
+											<input type="radio" name="AlertCond">
+										</span>
+										<label>报警只发送一次</label>
+									</div>
+									<div class="control-group">
+										<span style="padding:20px">
+											发送一次，当第<input type="text" name="OnlyTimes" style="width:28px;height:12px" value="1">次符合报警发送条件发送报警
+										</span>
+									</div>
+									<div class="control-group" style="padding-left:10px;margin:5px">
+										<span class="input-group-addon">
+											<input type="radio" name="AlertCond" checked>
+										</span>
+										<label>选择性发送报警</label>
+									</div>
+									<div class="control-group">
+										<span style="padding:20px">
+											当第<input type="text" style="width:28px;height:12px" name="SelTime1" value="2">次符合报警发送条件时及其以后每重复
+											<input type="text" style="width:28px;height:12px" name="SelTime2" value="3">次时发送报警
+										</span>
 									</div>
 								</div>
 							</fieldset>

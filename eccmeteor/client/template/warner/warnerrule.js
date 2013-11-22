@@ -1,6 +1,10 @@
 var getWarnerRuleListSelectAll = function(){
 	return ClientUtils.tableGetSelectedAll("warnerrulelist");
 }
+
+//定义分页
+var page = new Pagination("alertPage",{perPage:5});
+
 Template.warnerrule.events = {
 	"click #emailwarner":function(e){
 		$('#emailwarnerdiv').modal('toggle');
@@ -19,7 +23,6 @@ Template.warnerrule.events = {
 		SvseWarnerRuleDao.deleteWarnerRules(getWarnerRuleListSelectAll());
 	},
 	"click #allowewarnerrule":function(){
-		SvseWarnerRuleDao.checkWarnerSelect(getWarnerRuleListSelectAll());
 		SvseWarnerRuleDao.updateWarnerRulesStatus(getWarnerRuleListSelectAll(),"Enable",function(result){
 			if(result.status){
 				SystemLogger("改变状态"+result.option.count+"条");
@@ -27,7 +30,6 @@ Template.warnerrule.events = {
 		});
 	},
 	"click #forbidwarnerrule":function(){
-		SvseWarnerRuleDao.checkWarnerSelect(getWarnerRuleListSelectAll());
 		SvseWarnerRuleDao.updateWarnerRulesStatus(getWarnerRuleListSelectAll(),"Disable",function(result){
 			if(result.status){
 				SystemLogger("改变状态"+result.option.count+"条");
@@ -60,13 +62,13 @@ Template.warnerruleofemail.events = {
 		for(param in warnerruleofemailformsendconditions){
 			warnerruleofemailform[param] = warnerruleofemailformsendconditions[param];
 		}
-		warnerruleofemailform["AlertCond"] = 3;
-		warnerruleofemailform["SelTime1"] = 2;
-		warnerruleofemailform["SelTime2"] = 3;
+		//warnerruleofemailform["AlertCond"] = 3;
+		//warnerruleofemailform["SelTime1"] = 2;
+		//warnerruleofemailform["SelTime2"] = 3;
 		warnerruleofemailform["AlertState"] = "Enable";
 		warnerruleofemailform["AlertType"] = "EmailAlert";
-		warnerruleofemailform["AlwaysTimes"] = 1;
-		warnerruleofemailform["OnlyTimes"] = 1;
+		//warnerruleofemailform["AlwaysTimes"] = 1;
+		//warnerruleofemailform["OnlyTimes"] = 1;
 		
 		var alertName=warnerruleofemailform["AlertName"];
 		if(!alertName){
@@ -82,6 +84,18 @@ Template.warnerruleofemail.events = {
 		if(!emailAdress){
 			Message.info("报警邮件接收地址不能为空");
 			return;
+		}
+		//判断停止次数不能小于升级次数，且不能为空
+		var stop = warnerruleofemailform["Stop"];
+		var upgrade = warnerruleofemailform["Upgrade"];
+		if(stop == "" || upgrade == ""){
+			Message.info("停止次数与升级次数不能为空！");
+			return;
+		}else{
+			if(stop < upgrade){
+				Message.info("停止次数不能小于升级次数！");
+				return;
+			}
 		}
 		
 		var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
@@ -104,7 +118,6 @@ Template.warnerruleofemail.events = {
 		SvseWarnerRuleDao.setWarnerRuleOfEmail(nIndex,section,function(result){
 			if(result.status){
 				$('#emailwarnerdiv').modal('toggle');
-				$("#warnerruleofemailform")[0].reset();
 			}else{
 				SystemLogger(result.msg);
 			}
@@ -173,11 +186,21 @@ Template.warnerruleofemailform.rendered = function(){
 Template.warnerruleofemailform.emaillist = function(){
 	return SvseEmailDao.getEmailList();
 }
-
+//获取报警列表
 Template.warnerrulelist.rulelist = function(){
 	console.log(SvseWarnerRuleDao.getWarnerRuleList());
-	return SvseWarnerRuleDao.getWarnerRuleList();
+	return SvseWarnerRule.find({},page.skip());
 }
+
+//分页的使用
+Template.warnerrulelist.pager = function(){
+	return page.create(SvseWarnerRule.find().count());
+}
+
+//分页的禁用
+// Template.warnerrulelist.destroyed = function(){
+	// page.destroy();
+// }
 
 Template.warnerrulelist.rendered = function(){
 	//初始化checkbox选项
@@ -211,6 +234,9 @@ Template.warnerrulelist.events = {
 			$("#emailwarnerdivedit").find(":text[name='WatchSheet']:first").val(result.WatchSheet);
 			$("#emailwarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.Strategy);
 			$("#emailwarnerdivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
+			if(!result["EmailAdress"]){
+				result["EmailAdress"]="";
+			}
 			var checkedEmailAdress = result["EmailAdress"].split(",");
 			$(".emailmultiselectedit").attr("value","");
 			$(".emailmultiselectedit").multiselect("refresh");
@@ -229,6 +255,12 @@ Template.warnerrulelist.events = {
 					$(this).attr("checked",true);
 				}
 			});
+			var AlertCond = result.AlertCond;
+			$("#warnerruleofemailformsendconditionsedit").find(":radio[name='AlertCond']").each(function(){
+				if($(this).val() === AlertCond){
+					$(this).attr("checked",true);
+				}
+			});
 			$("#emailwarnerdivedit").modal('toggle');
 			
 			var checkednodes = result.AlertTarget.split("\,")
@@ -244,13 +276,14 @@ Template.warnerrulelist.events = {
 		//短信报警SmsAlert
 		if(alertType=="SmsAlert"){
 			console.log("SmsAlert");
-			//console.log(result);
+			console.log(result);
 			//填充表单
 			var html=Meteor.render(function(){
 				return Template.messagewarnerformedit(result);
-			})
+            });
+			
 			$("#messagewarnerdivedit").html(html);
- 			/* $("#messagewarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
+			/* $("#messagewarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
 			$("#messagewarnerdivedit").find(":text[name='OtherNumber']:first").val(result.OtherNumber);
 			$("#messagewarnerdivedit").find(":text[name='Upgrade']:first").val(result.Upgrade);
 			$("#messagewarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.UpgradeTo);
@@ -278,7 +311,7 @@ Template.warnerrulelist.events = {
 				}
 			});
 			$("#messagewarnerdivedit").modal('show');
-			console.log(result.AlertTarget);
+			
 			var checkednodes = result.AlertTarget.split("\,")
 			//左边树的勾选
 			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_editsms");
@@ -289,8 +322,6 @@ Template.warnerrulelist.events = {
 					return  node.id  === checkednodes[index];
 				}, true), true);
 			}
-			
-			
 		}
 		//脚本报警ScriptAlert
 		if(alertType=="ScriptAlert"){
@@ -332,7 +363,7 @@ Template.warnerrulelist.events = {
 			$("#warnerruleofsoundformedit").find(":text[name='AlertName']:first").val(result.AlertName);
 			$("#warnerruleofsoundformedit").find(":text[name='Server']:first").val(result.Server);
 			$("#warnerruleofsoundformedit").find(":text[name='LoginName']:first").val(result.LoginName);
-			$("#warnerruleofsoundformedit").find(":text[name='LoginPwd']:first").val(result.LoginPwd);
+			$("#warnerruleofsoundformedit").find(":password[name='LoginPwd']:first").val(result.LoginPwd);
 			$("#warnerruleofsoundformedit").find(":text[name='Strategy']:first").val(result.Strategy);
 			$("#warnerruleofsoundformedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
 			

@@ -2,6 +2,7 @@
 {{>messagesettingopratebtn}}
 <br/>
 {{> messagesettingList}}
+<hr/>
 {{> sendingmessagemethods}}
 {{> messagebasicsettingofadd}}
 {{> editmessagebasicsetting}}
@@ -36,6 +37,9 @@
 </Template>
 
 <Template name="messagesettingList">
+	<div style="padding-bottom:8px">
+		<span class="label label-info">短信设置详细信息</span>
+	</div>
 	<!--短信列表表格展示-->
 	<table class="table table-striped table-condensed table-hover">
 		<thead>
@@ -63,7 +67,7 @@
 			{{/each}}
 		</tbody>
 	</table>
-
+	{{{pager}}}
 </Template>
 
 <!--发送短信的方式  标签页 -->
@@ -146,11 +150,11 @@
 		<div class="tab-pane" id="home4">
 			<form class="form-horizontal" id="messagesettinginsertmethod">
 				<fieldset>
-					<legend style="font-size:14px">插入方式</legend>
-						<div class="controls">
-							<label class="control-label"><input type="radio"  name="InsertWay" value="nomal" checked>常规插入</label>
-							<label class="control-label"><input type="radio"  name="InsertWay" value="procedure">存储过程插入</label>
-						</div>  
+					<label class="label label-info" align="left">插入方式</label>
+					<div class="controls">
+						<label class="control-label"><input type="radio"  name="InsertWay" value="nomal" checked>常规插入</label>
+						<label class="control-label"><input type="radio"  name="InsertWay" value="procedure">存储过程插入</label>
+					</div>  
 				</fieldset>
 				{{> choosemodelaccordinginsertmethod}}
 				<div class="control-group" style="padding-left:300px">
@@ -167,7 +171,8 @@
 <Template name="choosemodelaccordinginsertmethod">
 	<form class="form-horizontal" onsubmit="return false;">
 		<fieldset>
-			<legend style="font-size:14px">参数</legend>
+			<hr/>
+			<label class="label label-info" align="left">参数</label>
 			<div id="choosenormalinsert" class="control-group">
 				<div class="control-group pull-left">
 					<label class="control-label">数据库类型*：</label>
@@ -209,45 +214,53 @@
 							</thead>
 							<tbody>
 								<tr>
-									<th><input type="checkbox" id="datamessagetableselectall"></th>
-									<th><input type="text" style="width:80px" name="PramName0" value="smsPhones"></th>
-									<th>
+									<td><input type="checkbox" id="datamessagetableselectall"></td>
+									<td><input type="text" style="width:80px" name="PramName0" value="smsPhones"></td>
+									<td>
 										<select name="" style="width:100px">
 											<option value="String">String</option>
 											<option value="Int">Int</option>
 											<option value="DataTime">DataTime</option>
 										</select>
-									</th>
-									<th><input type="text" style="width:80px" name="PramLength0" value="150"></th>
-									<th>
+									</td>
+									<td><input type="text" style="width:80px" name="PramLength0" value="150"></td>
+									<td>
 										<select name="PramDesc0" style="width:100px">
 											<option value="0">手机号码</option>
 											<option value="1">短信内容</option>
 											<option value="2">发送时间</option>
 										</select>
-									</th>
+									</td>
+									<td rowspan="2">
+										<div>
+										<button style="width:80px" class="btn" id="insertparamofmethodbtn">添加</button><br/>
+										<button style="width:80px" class="btn" id="deleteparamofmethodbtn">删除</button>
+										</div>
+									</td>
 								</tr>
 								<tr>
-									<th><input type="checkbox" id="cdatamessagetableselectall"></th>
-									<th><input type="text" style="width:80px" name="PramName1" value="context"></th>
-									<th>
+									<td><input type="checkbox" id="cdatamessagetableselectall"></td>
+									<td><input type="text" style="width:80px" name="PramName1" value="context"></td>
+									<td>
 										<select name="PramType0" style="width:100px">
 											<option value="String">String</option>
 											<option value="Int">Int</option>
 											<option value="DataTime">DataTime</option>
 										</select>
-									</th>
-									<th><input type="text" style="width:80px" name="PramLength1" value="150"></th>
-									<th>
+									</td>
+									<td><input type="text" style="width:80px" name="PramLength1" value="150"></td>
+									<td>
 										<select name="PramType1" style="width:100px">
 											<option value="0">手机号码</option>
 											<option value="1">短信内容</option>
 											<option value="2">发送时间</option>
 										</select>
-									</th>
+									</td>
+									
 								</tr>
 							</tbody>
 						</table>
+						
 					</div>
 				</div>
 			</div>
@@ -293,44 +306,44 @@
 							</thead>
 							<tbody>
 								<tr>
-									<th><input type="checkbox" id="datamessagetableselectall"></th>
-									<th><input type="text" style="width:80px" name="PramName0" value="smsPhones"></th>
-									<th>
+									<td><input type="checkbox" id="datamessagetableselectall"></td>
+									<td><input type="text" style="width:80px" name="PramName0" value="smsPhones"></td>
+									<td>
 										<select name="" style="width:100px">
 											<option value="String">String</option>
 											<option value="Int">Int</option>
 											<option value="DataTime">DataTime</option>
 										</select>
-									</th>
-									<th><input type="text" style="width:80px" name="PramLength0" value="150"></th>
-									<th>
+									</td>
+									<td><input type="text" style="width:80px" name="PramLength0" value="150"></td>
+									<td>
 										<select name="PramDesc0" style="width:100px">
 											<option value="0">手机号码</option>
 											<option value="1">短信内容</option>
 											<option value="2">发送时间</option>
 										</select>
-									</th>
+									</td>
 								</tr>
 								<tr>
-									<th><input type="checkbox" id="cdatamessagetableselectall"></th>
-									<th><input type="text" style="width:80px" name="PramName1" value="context"></th>
-									<th>
+									<td><input type="checkbox" id="cdatamessagetableselectall"></td>
+									<td><input type="text" style="width:80px" name="PramName1" value="context"></td>
+									<td>
 										<select name="PramType0" style="width:100px">
 											<option value="String">String</option>
 											<option value="Int">Int</option>
 											<option value="DataTime">DataTime</option>
 										</select>
-									</th>
-									<th><input type="text" style="width:80px" name="PramLength1" value="150"></th>
-									<th>
+									</td>
+									<td><input type="text" style="width:80px" name="PramLength1" value="150"></td>
+									<td>
 										<select name="PramType1" style="width:100px">
 											<option value="0">手机号码</option>
 											<option value="1">短信内容</option>
 											<option value="2">发送时间</option>
 										</select>
-									</th>
+									</td>
 								</tr>
-							</tboby>
+							</tbody>
 						</table>
 					</div>
 				</div>
