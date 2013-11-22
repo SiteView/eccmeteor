@@ -80,7 +80,7 @@ Template.AddMoniorFormModal.events({
 		RenderTemplate.hideParents(t);
 	},
 	"click i.icon-trash":function(e){
-		var i = $(e.target); //转Jquery对象
+		var i = $(e.currentTarget); //转Jquery对象
 		if(i.parents("table").find("tr").length === 1){
 			console.log("none tr");
 			return;
@@ -126,7 +126,7 @@ Template.AddMoniorFormModal.events({
 		//condition.replace(/\[  \[/g,"\[").replace(/(or|and)$/,"").replace(/^ \[ $/,"无条件限制")
 	},
 	"click button.statusmodaldiv":function(e){
-	//	$(e.target).parent().parent(".row-fluid").siblings(".modal").modal('show');
+	//	$(e.currentTarget).parent().parent(".row-fluid").siblings(".modal").modal('show');
 		//console.log(div);
 	}
 });
@@ -139,9 +139,9 @@ Template.monitorTemplateStatus.events({
 	//添加报警条件
 	"click button":function(e){ 
 		//防止误操作
-		if(e.target.id !== "monitorTemplateStatusAddConditions")
+		if(e.currentTarget.id !== "monitorTemplateStatusAddConditions")
 			return;
-		var btn = $(e.target);
+		var btn = $(e.currentTarget);
 		var form = btn.parent("form");//当前用户输入的表单
 		var div =  form.parent("div");//直接父类
 		var tbody = div.children("table").children("tbody");
