@@ -15,7 +15,7 @@
 		<tbody id="showMonitorList">
 		{{#if Monitors}}
 		{{#each Monitors}}
-			<tr id="{{sv_id}}" data-status="{{status}}">
+			<tr>
 			    <td><input type="checkbox" id="{{sv_id}}"></td>
 				<td>
 					<img src="imag/status/{{status}}.png"
@@ -51,10 +51,10 @@
 				</td>
 				<td>
 					<div class="btn-group">
-						<button id="{{sv_id}}" class="btn btn-small" name="trash">
+						<button class="btn btn-small" name="trash">
 							<i class="icon-trash"></i>删除
 						</button>
-						<button id="{{sv_id}}" class="btn btn-small" name="edit">
+						<button class="btn btn-small" name="edit">
 							<i class="icon-edit"></i>编辑
 						</button>
 					</div>
@@ -165,11 +165,10 @@
 		{{> MonitorList}}
 	</div>
 	{{> svg}}
-	
-	{{!-- ChooseMonitorTemplate --}}
 	<!-- 监视器详细信息-->
 	{{> showMonitorDetailSvg}}
 	<!-- 选择监视器类型弹窗-->
 	<div id="ChooseeMonitorTemplateModal"></div>
 	<div id="AddMoniorFormModal"></div>
+	<div id="EditMoniorFormModal"></div>
 </Template>

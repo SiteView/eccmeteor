@@ -8,13 +8,13 @@ Template.warnerruleofmessage.events={
 		for(param in warnerruleofmessageformsendconditions){
 			warnerruleofmessageform[param] = warnerruleofmessageformsendconditions[param];
 		}
-		warnerruleofmessageform["AlertCond"] = 3;
-		warnerruleofmessageform["SelTime1"] = 2;
-		warnerruleofmessageform["SelTime2"] = 3;
+		//warnerruleofmessageform["AlertCond"] = 3;
+		//warnerruleofmessageform["SelTime1"] = 2;
+		//warnerruleofmessageform["SelTime2"] = 3;
 		warnerruleofmessageform["AlertState"] = "Enable";
 		warnerruleofmessageform["AlertType"] = "SmsAlert";
-		warnerruleofmessageform["AlwaysTimes"] = 1;
-		warnerruleofmessageform["OnlyTimes"] = 1;
+		//warnerruleofmessageform["AlwaysTimes"] = 1;
+		//warnerruleofmessageform["OnlyTimes"] = 1;
 		
 		var alertName=warnerruleofmessageform["AlertName"];
 		if(!alertName){
@@ -61,7 +61,7 @@ Template.warnerruleofmessage.events={
 			
 		});
 	},
-	//待修改
+	//短信模板的改变事件
 	"change #messageSendModelist":function(){
 		var type = $("#messageSendModelist").val()
 		//console.log("type:" + type);
@@ -157,7 +157,6 @@ Template.messagewarnerformedit.rendered=function(){
 	$(function(){
 		//填充报警接收手机号下拉列表
 		var messagelist = SvseMessageDao.getMessageList();
-		//var smsnumberselect = t.find("#warnersmsnumber");
 		for(var l = 0 ; l < messagelist.length ; l++){
 			console.log(messagelist[l]);
 			var name = messagelist[l].Name;
@@ -221,13 +220,13 @@ Template.messagewarnerformedit.smstemplate=function(){
 	SvseMessageDao.getMessageTemplates(function(err,result){
 		var smstemplate=[];
 		for(name in result){
-			console.log(name);
+			//console.log(name);
 			smstemplate.push(name);
 		} 
-		console.log(smstemplate);
+		//console.log(smstemplate);
 		Session.set("smstemplate",smstemplate);
 	});
-	console.log(Session.get("smstemplate"));
+	//console.log(Session.get("smstemplate"));
 	return Session.get("smstemplate");
 }
 

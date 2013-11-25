@@ -1,6 +1,6 @@
 <!--添加设备-->
 <Template name="AddEntity">
-<div id="showAddEntityDiv" class="modal hide fade"
+<div class="modal hide fade"
 	data-backdrop="static" data-keyboard="true" data-show="false" data-modalOverflow="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -14,14 +14,32 @@
 				<div class="control-group">
 					<label class="control-label">{{#unless sv_allownull}}*{{/unless}}{{sv_label}}:</label>
 					<div class="controls">
-						{{createDomeByPropertyHelper this}}
+						{{#if equal sv_type "textbox"}}
+							<input type="text" name="{{sv_name}}" value="{{sv_value}}" {{#if equal sv_isreadonly "true"}}readonly{{/if}}/>
+						{{/if}}
+
+						{{#if equal sv_type "password"}}
+							<input type="password" name="{{sv_name}}" value="{{sv_value}}"  {{#if equal sv_isreadonly "true"}}readonly{{/if}} />
+						{{/if}}
+
+						{{#if equal sv_type "combobox"}}
+							<select name="{{sv_name}}">
+								{{#each selects}}				
+									<option value="{{value}}" {{#if equal sv_value value}}selected='selected' {{/if}}>{{key}}</option>
+								{{/each}}
+							</select>
+						{{/if}}
+
+						{{#if equal sv_type "textarea"}}
+							<textarea name="{{sv_name}}">{{sv_value}}</textarea>
+						{{/if}}
 					</div>
 				</div>
 				{{/each}}
 				<div class="control-group">
 					<label class="control-label">*标题:</label>
 					<div class="controls">
-						<input type="input" name="sv_name" placeholder="请输入标题"/>
+						<input type="text" name="sv_name" placeholder="请输入标题"/>
 					</div>
 				</div>	
 				<div class="control-group">

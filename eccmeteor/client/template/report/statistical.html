@@ -1,363 +1,364 @@
 <Template name="statistical">
-<div class="form-horizontal">
+	<div class="form-horizontal">
         <span class="label label-info">统计报告</span>
-        {{ide "statistical"}}
+			{{ide "statistical"}}
         <div class="btn-toolbar">
-                <div class="btn-group">
-                        <button class="btn" id="statisticalofadd">{{language.addbtn}}</button>
-                        <button class="btn" id="statisticalofdel">{{language.delbtn}}</button>
-                </div>
-                <div class="btn-group">
-                        <button class="btn" id="allowestatistical">{{language.allowbtn}}</button>
-                        <button class="btn" id="forbidstatistical">{{language.forbidbtn}}</button>
-
-                        <button class="btn">更多</button>
-                        <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right">        
-                                <li><a href="#" id="refreshstatistical">{{language.refreshbtn}}</a></li>
-                                <li><a href="#" id="statisticalhelpmessage">{{language.helpmessagebtn}}</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#" id="helpmessage">{{language.helpmessagebtn}}</a></li>
-                        </ul>
-                </div>
+			<div class="btn-group">
+					<button class="btn" id="statisticalofadd">{{language.addbtn}}</button>
+					<button class="btn" id="statisticalofdel">{{language.delbtn}}</button>
+			</div>
+			<div class="btn-group">
+					<button class="btn" id="allowestatistical">{{language.allowbtn}}</button>
+					<button class="btn" id="forbidstatistical">{{language.forbidbtn}}</button>
+					<button class="btn" id="generateReport">生成报告</button>
+					<button class="btn">更多</button>
+					<button class="btn dropdown-toggle" data-toggle="dropdown">
+							<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu pull-right">        
+							<li><a href="#" id="refreshstatistical">{{language.refreshbtn}}</a></li>
+							<li><a href="#" id="statisticalhelpmessage">{{language.helpmessagebtn}}</a></li>
+							<li class="divider"></li>
+							<li><a href="#" id="helpmessage">{{language.helpmessagebtn}}</a></li>
+					</ul>
+			</div>
         </div>
-</div>
-{{> statisticallist}}
-{{> statistical_detail}}
-{{> statisticalofadd}}
-{{> statisticalofedit}}
+	</div>
+	{{> statisticallist}}
+	{{> statistical_detail}}
+	{{> statisticalofadd}}
+	{{> statisticalofedit}}
 </Template>
 
 <template name="statisticallist">
         <!--统计报告列表表格展示-->
-<table class="table table-striped table-condensed table-hover">
-<thead>
-<tr></tr>
-<tr>
-                <th><input type="checkbox" id="statisticallistselectall"/></th>
-                                <th>名称</th>
-                                <th>描述</th>
-                                <th>监测器数</th>
-                                <th>时间段</th>
-                <th>定义时间</th>
-                <th>格式</th>
-                <th>状态</th>
-                                <th></th>
-</tr>
-</thead>
-<tbody id="statisticallist" class="eventList">
-{{#each statisticalresultlist}}
-                        <tr>
-                                <td><input type="checkbox" id="{{nIndex}}"/></td>
-                                <td>{{Title}}</td>
-                                <td>{{Descript}}</td>
-                                <td>{{MonitorNumber}}</td>
-                                <td>{{Period}}</td>
-                                <td>{{creatTime}}</td>
-                                <td>{{fileType}}</td>
-                                <td>{{Deny}}</td>
-                                <td>
-                                        <div class="btn-group">
-                                                <button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-                                        </div>
-                                </td>
-                        </tr>
-                        {{/each}}
+	<table class="table table-striped table-condensed table-hover">
+		<thead>
+			<tr></tr>
+			<tr>
+				<th><input type="checkbox" id="statisticallistselectall"/></th>
+				<th>名称</th>
+				<th>描述</th>
+				<th>监测器数</th>
+				<th>时间段</th>
+				<th>定义时间</th>
+				<th>格式</th>
+				<th>状态</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody id="statisticallist" class="eventList">
+			{{#each statisticalresultlist}}
+				<tr>
+					<td><input type="checkbox" id="{{nIndex}}"/></td>
+					<td>{{Title}}</td>
+					<td>{{Descript}}</td>
+					<td>{{MonitorNumber}}</td>
+					<td>{{Period}}</td>
+					<td>{{creatTime}}</td>
+					<td>{{fileType}}</td>
+					<td>{{Deny}}</td>
+					<td>
+						<div class="btn-group">
+							<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+						</div>
+					</td>
+				</tr>
+			{{/each}}
 
-</tbody>
-</table>
+		</tbody>
+	</table>
+	
 <!--这里是分页显示的部分-->
-<div class="pager">
-</div>
+	{{{pager}}}
 </template>
 
 
 <Template name="statisticalofadd">
-        <div id="statisticalofadddiv" class="modal hide fade" 
-                data-backdrop="true" data-keyboard="true" data-show="false" 
-                data-maxHeight='500' data-width="800" data-height="600" data-modalOverflow="true">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                <div class="modal-header">添加报告{{ide "statistical"}}
-                </div>
-                <div class="modal-body">
-                        <div class="row-fluid">
-                                <div class="span4" style="overflow:auto" id="treeDemo">
-                                        <ul id="svse_tree_check" class="ztree"></ul>        
-                                        
-                                </div>
-                                {{> rMenu}}        
+	<div id="statisticalofadddiv" class="modal hide fade" 
+			data-backdrop="true" data-keyboard="true" data-show="false" 
+			data-maxHeight='500' data-width="800" data-height="600" data-modalOverflow="true">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		<div class="modal-header">添加报告{{ide "statistical"}}
+		</div>
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="span4" style="overflow:auto" id="treeDemo">
+						<ul id="svse_tree_check" class="ztree"></ul>        
+						
+				</div>
+					{{> rMenu}}        
 
 
-                                <div class="span8">
-                                        {{> statisticalofaddform}}
-                                        </div>
-                                
-                        </div>
-                </div>
-                <div class="modal-footer" align="right">
-                        <button class="btn btn-large" id="statisticalofaddcancelbtn">取消</button>
-                        <button class="btn btn-primary btn-large" id="statisticalofaddsavebtn">保存</button>
-                </div>
-                
-        </div>
+				<div class="span8">
+						{{> statisticalofaddform}}
+						</div>
+					
+			</div>
+		</div>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-large" id="statisticalofaddcancelbtn">取消</button>
+			<button class="btn btn-primary btn-large" id="statisticalofaddsavebtn">保存</button>
+		</div>
+			
+	</div>
 </Template>
 <Template name="statisticalofaddform">
-        <form id="basicinfoofstatisticaladd" class="well form-horizontal form-inline">
-                <fieldset>
-                        <div class="control-group">
-                                <label class="control-label">报告标题*:</label>
-                                <div class="controls">
-                                        <input type="text" class="span6" name="Title" title="显示在报告的上方或报告列表中的标题">
-                                 </div>
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">报告描述:</label>
-                                <div class="controls">
-                                        <input type="text" class="span6" name="Descript" title="输入报告备注信息"> 
-                                 </div> 
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">报告类型:</label>
-                                <div class="controls">
-                                        <select id="reporttypePeriodlist" name="Period" title="请指定生成报告的时间周期">
-                                        <option value="Day" checked>日报</option>
-                                    <option value="Week" checked>周报</option>
-                                    <option value="Month" checked>月报</option>
-                                    <option value="Other" checked>其他</option>
-                                        </select>
-                                </div>
-                        </div>
-                        <div class="control-group">
-                                        <label class="control-label">报告选项:</label>
-                                        <div class="controls">
-                                                <input type="checkbox" name="Graphic" title="请指定生成报告要显示的项目"/>生成图形        &nbsp;
-                                                <select id="statisticalofaddtypelist" name="ComboGraphic" class="span4">
-                                                        <option value="线状图" checked>线状图</option>  
-                                                       <option value="柱状图" checked>柱状图</option>
-                                                </select>                        
-                                        </div>
-                                        <div class="controls">
-                                                <input type="checkbox" name="ListError" title="请指定生成报告要显示的项目"/>列出错误</br>
-                                                <input type="checkbox" name="ListDanger" title="请指定生成报告要显示的项目"/>列出危险
-                                        </div>                
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">报告文件格式:</label>
-                                <div class="controls">
-                                        <select id="statisticaloutputtype" name="fileType">  
-                                             <option value="html" checked>html</option>
-                                                    <option value="pdf" checked>pdf</option>
-                                                    <option value="Excel" checked>Excel</option>
-                                        </select>
-                                </div>
-                        </div>
-                        
-                                <div class="control-group">
-                                        <label class="control-label">E-MAIL方式发送:</label>
-                                        <div class="controls">
-                                                <input type="email" name="EmailSend" title="输入接收报告的E-mail地址，可以录入多个地址，多个地址之间请用英文的逗号分隔，当报告产生，所设定的邮箱就会接受到新产生的报告"/>
-                                         </div>
-                        </div>
-                        
-                        <div class="control-group">
-                                <label class="control-label">详细参数:</label>
-                                <div class="controls">
-                                                <input type="checkbox" name="Parameter" title="如果你选择了此项，检测器所有返回值的检测情况都会显示在报告里，否则只列出每个检测器的主要参数指标"/>显示监测的详细信息<br />
-                                                <input type="checkbox" name="Deny" title="勾选此项后，报告将停止自动生成"/>禁止报告
-                                </div>                
-                        </div>
-                        
-                        <div class="control-group">
-                                <label class="control-label">生成时间:</label>
-                                <div class="controls">
-                                         <input type="number" name="Generate" min="01" max="23" title="选择此项后，报告将在指定的时间生成报告"/>时
-                                </div>                
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">截止时间:</label>
-                                <div class="controls">
-                                         <input type="time" name="EndTime" title="设置报告生成截止时间，用户可以根据需要自己定义"/>
-                                </div>                
-                        </div>
-                        
-                        <div class="control-group">
-                                <label class="control-label">周报截止时间:</label>
-                                <div class="controls">
-                                         <select id="reporttypetemplatelist" name="WeekEndTime" disabled="true" title="周报截止时间，用户可以根据需要自己定义">
-                                        <option value="1" checked>星期日</option>
-                                    <option value="2" checked>星期一</option>
-                                    <option value="3" checked>星期二</option>
-                                    <option value="4" checked>星期三</option>
-                                    <option value="5" checked>星期四</option>
-                                    <option value="6" checked>星期五</option>
-                                    <option value="7" checked>星期六</option>
-                                        </select>
-                                </div>                
-                        </div>
-                        <div class="control-group" id="form_datetime" style="display: none;">
-                        <label class="control-label">开始时间:</label>
-                                <div class="input-append date form_datetime">
-                                        <input size="10" type="text" value="" readonly name="OtherBeginTime">
-                                        <span class="add-on"><i class="icon-th"></i></span>
-                                </div>
-                <!--        <input type="text" id="datepicker"/>
-                
-                        <div class="input-append date" id="datetimepicker" data-date="11-04-2013" data-date-format="dd-mm-yyyy">
-                                <input size="10" type="text" value="11-04-2013" readonly>
-                                <span class="add-on"><i class="icon-th"></i></span>
-                        </div>
-                -->
-                        </div>
-                        <div class="control-group" id="form_datetimes" style="display: none;">
-                                <label class="control-label">结束时间:</label>
-                                <div class="input-append date form_datetime">
-                                        <input size="10" type="text" value="" readonly name="OtherEndTime">
-                                        <span class="add-on"><i class="icon-th"></i></span>
-                                </div>
-                        </div>
-                </fieldset>
-        </form>  
+	<form id="basicinfoofstatisticaladd" class="well form-horizontal form-inline">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">报告标题*:</label>
+				<div class="controls">
+					<input type="text" class="span6" name="Title" title="显示在报告的上方或报告列表中的标题">
+				 </div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">报告描述:</label>
+				<div class="controls">
+					<input type="text" class="span6" name="Descript" title="输入报告备注信息"> 
+				 </div> 
+			</div>
+			<div class="control-group">
+				<label class="control-label">报告类型:</label>
+				<div class="controls">
+					<select id="reporttypePeriodlist" name="Period" title="请指定生成报告的时间周期">
+						<option value="Day" checked>日报</option>
+						<option value="Week" checked>周报</option>
+						<option value="Month" checked>月报</option>
+						<option value="Other" checked>其他</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">报告选项:</label>
+				<div class="controls">
+					<input type="checkbox" name="Graphic" title="请指定生成报告要显示的项目"/>生成图形        &nbsp;
+					<select id="statisticalofaddtypelist" name="ComboGraphic" class="span4">
+						<option value="线状图" checked>线状图</option>  
+						<option value="柱状图" checked>柱状图</option>
+					</select>                        
+				</div>
+				<div class="controls">
+					<input type="checkbox" name="ListError" title="请指定生成报告要显示的项目"/>列出错误<br/>
+					<input type="checkbox" name="ListDanger" title="请指定生成报告要显示的项目"/>列出危险
+				</div>                
+			</div>
+			<div class="control-group">
+				<label class="control-label">报告文件格式:</label>
+				<div class="controls">
+					<select id="statisticaloutputtype" name="fileType">  
+						<option value="html" checked>html</option>
+						<option value="pdf" checked>pdf</option>
+						<option value="Excel" checked>Excel</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label">E-MAIL方式发送:</label>
+				<div class="controls">
+					<input type="email" name="EmailSend" title="输入接收报告的E-mail地址，可以录入多个地址，多个地址之间请用英文的逗号分隔，当报告产生，所设定的邮箱就会接受到新产生的报告"/>
+				 </div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label">详细参数:</label>
+				<div class="controls">
+					<input type="checkbox" name="Parameter" title="如果你选择了此项，检测器所有返回值的检测情况都会显示在报告里，否则只列出每个检测器的主要参数指标"/>显示监测的详细信息<br />
+					<input type="checkbox" name="Deny" title="勾选此项后，报告将停止自动生成"/>禁止报告
+				</div>                
+			</div>
+				
+			<div class="control-group">
+				<label class="control-label">生成时间:</label>
+				<div class="controls">
+					<input type="number" name="Generate" min="01" max="23" title="选择此项后，报告将在指定的时间生成报告"/>时
+				</div>                
+			</div>
+			<div class="control-group">
+				<label class="control-label">截止时间:</label>
+				<div class="controls">
+					<input type="time" name="EndTime" title="设置报告生成截止时间，用户可以根据需要自己定义"/>
+				</div>                
+			</div>
+				
+			<div class="control-group">
+				<label class="control-label">周报截止时间:</label>
+				<div class="controls">
+					<select id="reporttypetemplatelist" name="WeekEndTime" disabled="true" title="周报截止时间，用户可以根据需要自己定义">
+						<option value="1" checked>星期日</option>
+						<option value="2" checked>星期一</option>
+						<option value="3" checked>星期二</option>
+						<option value="4" checked>星期三</option>
+						<option value="5" checked>星期四</option>
+						<option value="6" checked>星期五</option>
+						<option value="7" checked>星期六</option>
+					</select>
+				</div>                
+			</div>
+			<div class="control-group" id="form_datetime" style="display: none;">
+				<label class="control-label">开始时间:</label>
+				<div class="input-append date form_datetime">
+					<input size="10" type="text" value="" readonly name="OtherBeginTime">
+					<span class="add-on"><i class="icon-th"></i></span>
+				</div>
+	<!--        <input type="text" id="datepicker"/>
+	
+			<div class="input-append date" id="datetimepicker" data-date="11-04-2013" data-date-format="dd-mm-yyyy">
+					<input size="10" type="text" value="11-04-2013" readonly>
+					<span class="add-on"><i class="icon-th"></i></span>
+			</div>
+	-->
+			</div>
+			<div class="control-group" id="form_datetimes" style="display: none;">
+				<label class="control-label">结束时间:</label>
+				<div class="input-append date form_datetime">
+					<input size="10" type="text" value="" readonly name="OtherEndTime">
+					<span class="add-on"><i class="icon-th"></i></span>
+				</div>
+			</div>
+		</fieldset>
+	</form>  
 </Template>
 
 <Template name="statisticalofedit">
-        <div id="statisticalofadddivedit" class="modal hide fade" 
-                data-backdrop="true" data-keyboard="true" data-show="false" 
-                data-maxHeight='500' data-width="800" data-height="600" data-modalOverflow="true">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-        <div class="modal-header">修改统计报告{{ide "statistical"}}</div>
-                <div class="modal-body">
-                        <div class="row-fluid">
-                                <div class="span4" style="overflow:auto">
-                                        <ul id="svse_tree_check_edit" class="ztree"></ul>
-                                </div>
-        <div class="span8">
-                                
-        <form id="statisticalofaddformedit" class="well form-horizontal form-inline">
-                <input type="hidden" name="nIndex" value="{{nIndex}}">
-                <fieldset>
-                        <div class="control-group">
-                                <label class="control-label">报告标题*:</label>
-                                <div class="controls">
-                                        <input type="text" class="span6" name="Title" readonly="true" title="显示在报告的上方或报告列表中的标题">
-                                 </div>
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">报告描述:</label>
-                                <div class="controls">
-                                        <input type="text" class="span6" name="Descript" title="输入报告备注信息"> 
-                                 </div> 
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">报告类型:</label>
-                                <div class="controls">
-                                        <select id="reporttypePeriodlisted" name="Period" title="请指定生成报告的时间周期">
-                                        <option value="Day" checked>日报</option>
-                                    <option value="Week" checked>周报</option>
-                                    <option value="Month" checked>月报</option>
-                                    <option value="Other" checked>其他</option>
-                                        </select>
-                                </div>
-                        </div>
-                        <div class="control-group">
-                                        <label class="control-label">报告选项:</label>
-                                        <div class="controls">
-                                                <input type="checkbox" name="Graphic" title="请指定生成报告要显示的项目"/>生成图形        &nbsp; 
-                                                <select id="statisticalofaddtypelisted" name="ComboGraphic" width="20" class="span4">
-                                                        <option value="线状图" checked>线状图</option>  
-                                                       <option value="柱状图" checked>柱状图</option>
-                                                </select>                        
-                                        </div>
-                                        <div class="controls">
-                                                <input type="checkbox" name="ListError" title="请指定生成报告要显示的项目"/>列出错误<br />
-                                                <input type="checkbox" name="ListDanger" title="请指定生成报告要显示的项目"/>列出危险
-                                        </div>                
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">报告文件格式:</label>
-                                <div class="controls">
-                                        <select id="statisticaloutputtypeed" name="fileType">  
-                                             <option value="html" checked>html</option>
-                                                    <option value="pdf" checked>pdf</option>
-                                                    <option value="Excel" checked>Excel</option>
-                                        </select>
-                                </div>
-                        </div>
-                        
-                                <div class="control-group">
-                                        <label class="control-label">E-MAIL方式发送:</label>
-                                        <div class="controls">
-                                                <input type="email" name="EmailSend" title="输入接收报告的E-mail地址，可以录入多个地址，多个地址之间请用英文的逗号分隔，当报告产生，所设定的邮箱就会接受到新产生的报告"/> 
-                                         </div>
-                        </div>
-                        
-                        <div class="control-group">
-                                <label class="control-label">详细参数:</label>
-                                <div class="controls">
-                                                <input type="checkbox" name="Parameter" title="如果你选择了此项，检测器所有返回值的检测情况都会显示在报告里，否则只列出每个检测器的主要参数指标"/>显示监测的详细信息<br/>
-                                                <input type="checkbox" name="Deny" title="勾选此项后，报告将停止自动生成"/>禁止报告
-                                </div>                
-                        </div>
-                        
-                        <div class="control-group">
-                                <label class="control-label">生成时间:</label>
-                                <div class="controls">
-                                         <input type="number" name="Generate" min="01" max="23" title="选择此项后，报告将在指定的时间生成报告"/>时
-                                </div>                
-                        </div>
-                        <div class="control-group">
-                                <label class="control-label">截止时间:</label>
-                                <div class="controls">
-                                         <input type="time" name="EndTime" title="设置报告生成截止时间，用户可以根据需要自己定义"/>
-                                </div>                
-                        </div>
-                        
-                        <div class="control-group">
-                                <label class="control-label">周报截止时间:</label>
-                                <div class="controls">
-                                         <select id="reporttypetemplatelisted" name="WeekEndTime" disabled="true" title="周报截止时间，用户可以根据需要自己定义">
-                                        <option value="1" checked>星期日</option>
-                                    <option value="2" checked>星期一</option>
-                                    <option value="3" checked>星期二</option>
-                                    <option value="4" checked>星期三</option>
-                                    <option value="5" checked>星期四</option>
-                                    <option value="6" checked>星期五</option>
-                                    <option value="7" checked>星期六</option>
-                                        </select>
-                                </div>                
-                        </div>
-                        <div class="control-group" id="editform_datetime" style="display: none;">
-                                                <label class="control-label">开始时间:</label>
-                                                        <div class="input-append date form_datetime">
-                                                                <input size="10" type="text" value="" readonly name="OtherBeginTime">
-                                                                <span class="add-on"><i class="icon-th"></i></span>
-                                                        </div>
-                                        <!--        <input type="text" id="datepicker"/>
-                                        
-                                                <div class="input-append date" id="datetimepicker" data-date="11-04-2013" data-date-format="dd-mm-yyyy">
-                                                        <input size="10" type="text" value="11-04-2013" readonly>
-                                                        <span class="add-on"><i class="icon-th"></i></span>
-                                                </div>
-                                        -->
-                        </div>
-                        <div class="control-group" id="editform_datetimes" style="display: none;">
-                                <label class="control-label">结束时间:</label>
-                                <div class="input-append date form_datetime">
-                                        <input size="10" type="text" value="" readonly name="OtherEndTime">
-                                        <span class="add-on"><i class="icon-th"></i></span>
-                                </div>
-                        </div>
-                </fieldset>
-        </form>
-                                        </div>
-                                
-                        </div>
-                </div>
-                <div class="modal-footer" align="right">
-                        <button class="btn btn-large" id="statisticalofeditcancelbtn">取消</button>
-                        <button class="btn btn-primary btn-large" id="statisticalofeditsavebtn">保存</button>
-                </div>
-                
-        </div>
+	<div id="statisticalofadddivedit" class="modal hide fade" 
+			data-backdrop="true" data-keyboard="true" data-show="false" 
+			data-maxHeight='500' data-width="800" data-height="600" data-modalOverflow="true">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		<div class="modal-header">修改统计报告{{ide "statistical"}}
+		</div>
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="span4" style="overflow:auto">
+					<ul id="svse_tree_check_edit" class="ztree"></ul>
+				</div>
+				<div class="span8">
+									
+					<form id="statisticalofaddformedit" class="well form-horizontal form-inline">
+						<input type="hidden" name="nIndex" value="{{nIndex}}">
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">报告标题*:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="Title" readonly="true" title="显示在报告的上方或报告列表中的标题">
+								 </div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">报告描述:</label>
+								<div class="controls">
+									<input type="text" class="span6" name="Descript" title="输入报告备注信息"> 
+								 </div> 
+							</div>
+							<div class="control-group">
+								<label class="control-label">报告类型:</label>
+								<div class="controls">
+									<select id="reporttypePeriodlisted" name="Period" title="请指定生成报告的时间周期">
+										<option value="Day" checked>日报</option>
+										<option value="Week" checked>周报</option>
+										<option value="Month" checked>月报</option>
+										<option value="Other" checked>其他</option>
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">报告选项:</label>
+								<div class="controls">
+									<input type="checkbox" name="Graphic" title="请指定生成报告要显示的项目"/>生成图形        &nbsp; 
+									<select id="statisticalofaddtypelisted" name="ComboGraphic" width="20" class="span4">
+										<option value="线状图" checked>线状图</option>  
+									    <option value="柱状图" checked>柱状图</option>
+									</select>                        
+								</div>
+								<div class="controls">
+									<input type="checkbox" name="ListError" title="请指定生成报告要显示的项目"/>列出错误<br />
+									<input type="checkbox" name="ListDanger" title="请指定生成报告要显示的项目"/>列出危险
+								</div>                
+							</div>
+							<div class="control-group">
+								<label class="control-label">报告文件格式:</label>
+								<div class="controls">
+									<select id="statisticaloutputtypeed" name="fileType">  
+										<option value="html" checked>html</option>
+										<option value="pdf" checked>pdf</option>
+										<option value="Excel" checked>Excel</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label">E-MAIL方式发送:</label>
+								<div class="controls">
+									<input type="email" name="EmailSend" title="输入接收报告的E-mail地址，可以录入多个地址，多个地址之间请用英文的逗号分隔，当报告产生，所设定的邮箱就会接受到新产生的报告"/> 
+								 </div>
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label">详细参数:</label>
+								<div class="controls">
+									<input type="checkbox" name="Parameter" title="如果你选择了此项，检测器所有返回值的检测情况都会显示在报告里，否则只列出每个检测器的主要参数指标"/>显示监测的详细信息<br/>
+									<input type="checkbox" name="Deny" title="勾选此项后，报告将停止自动生成"/>禁止报告
+								</div>                
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label">生成时间:</label>
+								<div class="controls">
+									<input type="number" name="Generate" min="01" max="23" title="选择此项后，报告将在指定的时间生成报告"/>时
+								</div>                
+							</div>
+							<div class="control-group">
+								<label class="control-label">截止时间:</label>
+								<div class="controls">
+									<input type="time" name="EndTime" title="设置报告生成截止时间，用户可以根据需要自己定义"/>
+								</div>                
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label">周报截止时间:</label>
+								<div class="controls">
+									<select id="reporttypetemplatelisted" name="WeekEndTime" disabled="true" title="周报截止时间，用户可以根据需要自己定义">
+										<option value="1" checked>星期日</option>
+										<option value="2" checked>星期一</option>
+										<option value="3" checked>星期二</option>
+										<option value="4" checked>星期三</option>
+										<option value="5" checked>星期四</option>
+										<option value="6" checked>星期五</option>
+										<option value="7" checked>星期六</option>
+									</select>
+								</div>                
+							</div>
+							<div class="control-group" id="editform_datetime" style="display: none;">
+								<label class="control-label">开始时间:</label>
+								<div class="input-append date form_datetime">
+									<input size="10" type="text" value="" readonly name="OtherBeginTime">
+									<span class="add-on"><i class="icon-th"></i></span>
+								</div>
+						<!--        <input type="text" id="datepicker"/>
+						
+								<div class="input-append date" id="datetimepicker" data-date="11-04-2013" data-date-format="dd-mm-yyyy">
+										<input size="10" type="text" value="11-04-2013" readonly>
+										<span class="add-on"><i class="icon-th"></i></span>
+								</div>
+						-->
+							</div>
+							<div class="control-group" id="editform_datetimes" style="display: none;">
+								<label class="control-label">结束时间:</label>
+								<div class="input-append date form_datetime">
+									<input size="10" type="text" value="" readonly name="OtherEndTime">
+									<span class="add-on"><i class="icon-th"></i></span>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+					
+			</div>
+		</div>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-large" id="statisticalofeditcancelbtn">取消</button>
+			<button class="btn btn-primary btn-large" id="statisticalofeditsavebtn">保存</button>
+		</div>
+			
+	</div>
 </Template>

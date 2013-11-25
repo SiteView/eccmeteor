@@ -14,17 +14,17 @@ Template.MonitorList.Monitors = function(){
 
 Template.MonitorList.events={
 	"click tbody tr":function(e){
-		var id  = e.currentTarget.id;
-		if(SessionManage.getCheckedMonitorId() === id)
+		var checkedMonitorId = this.sv_id;
+		if(SessionManage.getCheckedMonitorId() === checkedMonitorId)
 			return;
-	//	var status = $(e.currentTarget).attr("data-status");
-		if(!id || id=="") return;
+	//	var status = this.status;
+		if(!checkedMonitorId || checkedMonitorId=="") return;
 		//存储选中监视器的id
-		SessionManage.setCheckedMonitorId(id);
-		drawImage(id);
+		SessionManage.setCheckedMonitorId(checkedMonitorId);
+		drawImage(checkedMonitorId);
 	},
     "click #showMonitorList button[name='trash']":function(e){
-		var id = e.currentTarget.id;
+		var id = this.sv_id;
 		console.log("删除监视器id:"+id);
 		var parentid  = SessionManage.getCheckedTreeNode("id");
 		SvseMonitorDao.deleteMonitor(id,parentid,function(result){
@@ -32,14 +32,52 @@ Template.MonitorList.events={
 		});
     },
  	"click #showMonitorList button[name='edit']":function(e){
-        var id = e.currentTarget.id;
-        console.log("编辑监视器id:"+id);
-        SessionManage.setCheckedMonitorId(id);
-        var monitorTemplateId = SvseMonitorDao.getMonitorTemplateIdByMonitorId(id);
-        //设置监视器模板id
-    	Session.set("monityTemplateId",monitorTemplateId);
-        Session.set("monitorStatus","编辑");
-        $("#showMonitorInfoDiv").modal('show');
+      //  var id = e.currentTarget.id;
+      	var monitorId = this.sv_id;
+        console.log("编辑监视器id:"+monitorId);
+       // SessionManage.setCheckedMonitorId(id);
+        var monitorTemplateId = SvseMonitorTemplateDao.getMonitorTemplateIdBySvid(monitorId);
+        var monitorTemplateName = SvseMonitorTemplateDao.getMonitorTemplateNameByTemplateId(monitorTemplateId);
+
+      	var context = getMonitorInfoContext(monitorTemplateId,monitorTemplateName);
+      	context["monitorId"] = monitorId;
+      	var entityId = SessionManage.getCheckedTreeNode("id");
+		//处理可能处在的动态监视器属性
+		//判断改监视器是否具有动态属性
+		var monityTemplateParameters= context.MonityTemplateParameters;
+		var mParametersLength = monityTemplateParameters.length;
+		var DynamicParameters = null;
+		for(var pi = 0 ; pi < mParametersLength ; pi++){
+			if(monityTemplateParameters[pi]["sv_dll"]){
+				DynamicParameters = {index:pi,parameter:monityTemplateParameters[pi]};
+				break;
+			}
+		}
+		//监视器不具备动态属性。直接渲染弹窗
+		if(!DynamicParameters){
+			RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
+			return;
+		}
+		//具备动态属性 && 获取动态属性
+		LoadingModal.loading();
+		SvseMonitorTemplateDao.getMonityDynamicPropertyData(entityId,monitorTemplateId,function(status,result){
+			LoadingModal.loaded();
+			if(!status){
+				Log4js.error(result);
+				Message.error("获取监视器动态属性失败！");
+				return;
+			}
+			var optionObj = result["DynamicData"];
+			var DynamicDataList = [];
+			for(name in optionObj){
+				DynamicDataList.push({key:name,value:optionObj[name]});
+			}
+			//给对应的设备赋值
+			context.MonityTemplateParameters[DynamicParameters.index]["selects"] = DynamicDataList;
+			RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
+
+     		getEditMonitorDynamicInfoData(id);
+		});
     },
     "mouseenter #showMonitorList img":function(e){
     	$(e.currentTarget).popover('show');
@@ -62,16 +100,15 @@ Template.MonitorList.rendered = function(){ //默认选中第一个监视进行�
 		ClientUtils.showOperateBtnInTd("showMonitorList");
     });
 	//默认选中第一个监视器，展示数据
-	$(function(){
-		var tr = $("#showMonitorList tr:first").addClass("success");
-		var id = tr.attr("id");
-		if(id && id !=""){
-			SessionManage.setCheckedMonitorId(id);
-			drawImage(id);
-		}else{
-			emptyImage();
-		}
-	});
+	//console.log("默认画图id是："+this.find("td input:checkbox").id);
+	var defaultMonitorId = this.find("td input:checkbox").id ;
+	$(this.find("tbody tr")).addClass("success");
+	if(defaultMonitorId && defaultMonitorId !== ""){
+		drawImage(defaultMonitorId);
+	}else{
+		emptyImage();
+	}
+	
 }
 
 Template.MonitorStatisticalSimpleData.recordsData = function(){
@@ -137,6 +174,7 @@ function drawImage(id,count){
 		drawDie(recordsData,"svg#monitorStatisticalPieSvg");
 	});
 }
+
 function emptyImage(){
 	SessionManage.setMonitorStatisticalDetailTableData(null);
 	SessionManage.setMonitorRuntimeTableData({
@@ -156,4 +194,50 @@ function emptyImage(){
 		.attr("y","50%")
 		.text("暂无数据")
 		.style("text-anchor", "middle");	
+}
+
+var getEditMonitorDynamicInfoData = function(checkedMonitorId){
+	SvseMonitorDao.getMonitor(checkedMonitorId,function(err,result){
+			if(err){
+				Log4js.error(err);
+				Message.error(result);
+				return;
+			}
+			var monitor = result;
+			console.log(monitor);
+			var advance_parameter = monitor["advance_parameter"];
+			var parameter = monitor["parameter"];
+			var error = monitor["error"];
+			var good = monitor["good"];
+			var warning = monitor["warning"];//定义一个checkbox。
+	});
+}
+
+
+var getMonitorInfoContext = function(monitorTemplateId,monityTemplateName){
+	var ActionType = "编辑";//添加或编辑。用于标题栏
+	var devicename = SessionManage.getCheckedTreeNode("name");
+	var monitorType = monityTemplateName;
+	var MonityTemplateParameters = SvseMonitorTemplateDao.getMonityTemplateParametersById(monitorTemplateId);
+	var MonityTemplateAdvanceParameters = SvseMonitorTemplateDao.getMonityTemplateAdvanceParametersById(monitorTemplateId);
+	var MonityTemplateReturnItems = SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(monitorTemplateId);
+	var MonityTemplateStates = SvseMonitorTemplateDao.getMonityTemplateStatesById(monitorTemplateId);
+	var MonityFrequencyLabel = SvseMonitorTemplateDao.getMonityTemplateParameterByName(monitorTemplateId,"_frequency").sv_label;
+	var MonityFrequencyDom =  SvseMonitorTemplateDao.getMonityTemplateFrequencyParameters(monitorTemplateId);
+	var AllTaskNames = SvseTaskDao.getAllTaskNames();
+	return {
+		devicename:devicename,
+		monitorTemplateId:monitorTemplateId,
+		ActionType:ActionType,
+		monitorType:monitorType,
+		MonityTemplateParameters:MonityTemplateParameters,
+		MonityTemplateAdvanceParameters:MonityTemplateAdvanceParameters,
+		MonityTemplateReturnItems:MonityTemplateReturnItems,
+		Error:MonityTemplateStates.Error,
+		Warning:MonityTemplateStates.Warning,
+		Good:MonityTemplateStates.Good,
+		MonityFrequencyLabel:MonityFrequencyLabel,
+		MonityFrequencyDom:MonityFrequencyDom,
+		AllTaskNames:AllTaskNames
+	}
 }

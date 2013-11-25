@@ -8,13 +8,13 @@ Template.warnerruleofscript.events({
 		for(param in warnerruleofscriptformsendconditions){
 			warnerruleofscriptform[param] = warnerruleofscriptformsendconditions[param];
 		}
-		warnerruleofscriptform["AlertCond"] = 3;
-		warnerruleofscriptform["SelTime1"] = 2;
-		warnerruleofscriptform["SelTime2"] = 3;
+		//warnerruleofscriptform["AlertCond"] = 3;
+		//warnerruleofscriptform["SelTime1"] = 2;
+		//warnerruleofscriptform["SelTime2"] = 3;
 		warnerruleofscriptform["AlertState"] = "Enable";
 		warnerruleofscriptform["AlertType"] = "ScriptAlert";
-		warnerruleofscriptform["AlwaysTimes"] = 1;
-		warnerruleofscriptform["OnlyTimes"] = 1;
+		//warnerruleofscriptform["AlwaysTimes"] = 1;
+		//warnerruleofscriptform["OnlyTimes"] = 1;
 		
 		var alertName=warnerruleofscriptform["AlertName"];
 		if(!alertName){

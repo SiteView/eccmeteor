@@ -1,21 +1,21 @@
 <Template name="trend">
 <div class="container-fluid">
 	<div class="row-fluid">
-		<div  class="span3" >
-		<div>
-			<span class="label label-info">趋势报告</span>
-		</div>
-			<div  style="overflow:auto" id="treeDemo">
-				<ul id="svse_tree_check" class="ztree"></ul>	
+		<div id="div1" class="span3" >
+			<div>
+				<span class="label label-info">趋势报告</span>
 			</div>
+			<div  style="overflow:auto" id="treeDemo">
+				<ul id="svse_tree_check" class="ztree"></ul>
+			</div>
+
 		</div>
-		
-		<div class="span9">
-			{{> trend_status}}
-		</div>
+		<div id="div3" class="span9">{{> trend_status}}</div>
+
 	</div>
 </div>
 </Template>	
+
 <Template name="trend_status">
 	<ul id="myTab" class="nav nav-tabs">
 		<li class="active"><a href="#home1" data-toggle="tab">查询</a></li>
@@ -23,14 +23,16 @@
 	</ul>
 	
 	<div id="mytabcontent" class="tab-content">
-	<div class="tab-pane active" id="home1">
+		<div class="tab-pane active" id="home1">
+			<div class="accordion">         
 			
-			<!--
-				<div class="control-group">
-					<div class="form-horizontal">
-						<span class="label label-info">查询条件</span>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" href="#showGroupAndEntityTableGroupListCollapseOne">
+						查询条件
+						</a>
 					</div>
-					<div>
+					<div id="showGroupAndEntityTableGroupListCollapseOne" class="accordion-body collapse in">
 						<div class="well">
 							<ul class="breadcrumb">
 							  <li><a href="###" name='{"hours":-2}'>2小时</a><span class="divider"></span></li>
@@ -46,29 +48,41 @@
 							  <li><a href="###" name='{"months":-6}'>6个月</a></li>
 							  <li><a href="###" name='today'>当天</a></li>
 							</ul>
-							<div>
+							<div class="form-inline" id="form_datetime">
 								<label class="control-label">开始时间:</label>
-								<div class="input-append date form_datetime">
-									<input type="text" value="" readonly>
-									<span class="add-on"><i class="icon-th"></i></span>
+								<div id="datetimepickerStartDate" class="input-append date form_datetime">
+									<input type="text" readOnly="readonly">
+									<span class="add-on">
+										<i class="icon-th"></i>
+									</span>
 								</div>
 							</div>
-							<br>
-							<div class="control-group">
+							
+							<div class="form-inline" id="form_datetimes">
 								<label class="control-label">结束时间:</label>
-								<div class="input-append date form_datetime">
-									<input type="text" value="" readonly>
-									<span class="add-on"><i class="icon-th"></i></span>
+								<div id="datetimepickerEndDate" class="input-append date form_datetime">
+									<input type="text" readOnly="readonly">
+									<span class="add-on">
+										<i class="icon-th"></i>
+									</span>
 								</div>
 							</div>
 							<div>
-							
+								<div class="btn-group">
+									<button class="btn" id="search">查询</button>
+								</div>
+								<div class="btn-group">
+									<button class="btn" id="output">导出报表</button>
+								</div>
+								<div class="btn-group">
+									<button class="btn" id="helpmessage">{{language.helpmessagebtn}}</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			-->
-
+			
+<!--/*
 		<div class="control-group">
 			<label class="label label-info">查询条件</label>
 		</div>
@@ -120,461 +134,476 @@
 				
 			</fieldset>
 		</form>
-		<div>
-			<div class="control-group">
-				<label class="label label-info">运行情况表</label>
-			</div>
-			<table class="table table-striped table-condensed table-hover">
-				<thead>
-					<tr></tr>
-					<tr>
-						
-						<th>名称</th>
-						<th>正常运行时间（%）</th>
-						<th>危险（%）</th>
-						<th>错误</th>
-						<th>最新</th>
-						<th>阀值</th>
-					</tr>
-				</thead>
-				<tbody id="statisticallist" class="eventList">
-					{{#each statisticalresultlist}}
-						<tr>
-							
-							<td>{{Title}}</td>
-							<td>{{Descript}}</td>
-							<td>{{MonitorNumber}}</td>
-							<td>{{Period}}</td>
-							<td>{{creatTime}}</td>
-							<td>{{fileType}}</td>
-							
-							<td>
-								<div class="btn-group">
-									<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-								</div>
-							</td>
-						</tr>
-					{{/each}}
+*/-->
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" href="#showGroupAndEntityTableEntityListCollapseTwo">
+								运行情况表
+						</a>
+					</div>
+					<div id="showGroupAndEntityTableEntityListCollapseTwo" class="accordion-body collapse in">
+						<table class="table table-striped table-condensed table-hover">
+							<thead>
+								<tr></tr>
+								<tr>
+									
+									<th>名称</th>
+									<th>正常运行时间（%）</th>
+									<th>危险（%）</th>
+									<th>错误</th>
+									<th>最新</th>
+									<th>阀值</th>
+								</tr>
+							</thead>
+							<tbody id="statisticallist" class="eventList">
+								{{#each statisticalresultlist}}
+									<tr>
+										
+										<td>{{Title}}</td>
+										<td>{{Descript}}</td>
+										<td>{{MonitorNumber}}</td>
+										<td>{{Period}}</td>
+										<td>{{creatTime}}</td>
+										<td>{{fileType}}</td>
+										
+										<td>
+											<div class="btn-group">
+												<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+											</div>
+										</td>
+									</tr>
+								{{/each}}
 
-				</tbody>
-			</table>
-		</div>
-		<div>
-			<div class="control-group">
-				<label class="label label-info">检测器统计表</label>
-			</div>
-			<table class="table table-striped table-condensed table-hover">
-				<thead>
-					<tr></tr>
-					<tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
 						
-						<th>名称</th>
-						<th>返回值名称</th>
-						<th>最大值</th>
-						<th>最小值</th>
-						<th>平均值</th>
-						<th>最近一次</th>
-						<th>最大值时间</th>
-						
-					</tr>
-				</thead>
-				<tbody id="statisticallist" class="eventList">
-					{{#each statisticalresultlist}}
-						<tr>
-							
-							<td>{{Title}}</td>
-							<td>{{Descript}}</td>
-							<td>{{MonitorNumber}}</td>
-							<td>{{Period}}</td>
-							<td>{{creatTime}}</td>
-							<td>{{fileType}}</td>
-							
-							<td>
-								<div class="btn-group">
-									<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-								</div>
-							</td>
-						</tr>
-					{{/each}}
+						 <a class="accordion-toggle" data-toggle="collapse" href="#showGroupAndEntityTableEntityListCollapseThree">
+						  监测器统计报表
+						</a>
+					</div>
+					<div id="showGroupAndEntityTableEntityListCollapseThree" class="accordion-body collapse in">
+						<table class="table table-striped table-condensed table-hover">
+							<thead>
+								<tr></tr>
+								<tr>
+									
+									<th>名称</th>
+									<th>返回值名称</th>
+									<th>最大值</th>
+									<th>最小值</th>
+									<th>平均值</th>
+									<th>最近一次</th>
+									<th>最大值时间</th>
+									
+								</tr>
+							</thead>
+							<tbody id="statisticallist" class="eventList">
+								{{#each statisticalresultlist}}
+									<tr>
+										
+										<td>{{Title}}</td>
+										<td>{{Descript}}</td>
+										<td>{{MonitorNumber}}</td>
+										<td>{{Period}}</td>
+										<td>{{creatTime}}</td>
+										<td>{{fileType}}</td>
+										
+										<td>
+											<div class="btn-group">
+												<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+											</div>
+										</td>
+									</tr>
+								{{/each}}
 
-				</tbody>
-			</table>
-		</div>
-		<div>
-			<div class="control-group">
-				<label class="label label-info">图表</label>
-			</div>
-	<!--
-			<table class="table table-striped table-condensed table-hover">
-				<thead>
-					<tr></tr>
-					<tr>
-						
-						<th>名称</th>
-						<th>正常运行时间（%）</th>
-						<th>危险（%）</th>
-						<th>错误</th>
-						<th>最新</th>
-						<th>阀值</th>
-					</tr>
-				</thead>
-				<tbody id="statisticallist" class="eventList">
-					{{#each statisticalresultlist}}
-						<tr>
-							
-							<td>{{Title}}</td>
-							<td>{{Descript}}</td>
-							<td>{{MonitorNumber}}</td>
-							<td>{{Period}}</td>
-							<td>{{creatTime}}</td>
-							<td>{{fileType}}</td>
-							
-							<td>
-								<div class="btn-group">
-									<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-								</div>
-							</td>
-						</tr>
-					{{/each}}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+					
+						<a class="accordion-toggle" data-toggle="collapse" href="#showGroupAndEntityTableGroupListCollapseFour">
+						  图表
+						</a>
+					</div>
+					<div id="showGroupAndEntityTableEntityListCollapseTwo" class="accordion-body collapse in">
+					</div>
+			<!--此处显示图表
+					<table class="table table-striped table-condensed table-hover">
+						<thead>
+							<tr></tr>
+							<tr>
+								
+								<th>名称</th>
+								<th>正常运行时间（%）</th>
+								<th>危险（%）</th>
+								<th>错误</th>
+								<th>最新</th>
+								<th>阀值</th>
+							</tr>
+						</thead>
+						<tbody id="statisticallist" class="eventList">
+							{{#each statisticalresultlist}}
+								<tr>
+									
+									<td>{{Title}}</td>
+									<td>{{Descript}}</td>
+									<td>{{MonitorNumber}}</td>
+									<td>{{Period}}</td>
+									<td>{{creatTime}}</td>
+									<td>{{fileType}}</td>
+									
+									<td>
+										<div class="btn-group">
+											<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+										</div>
+									</td>
+								</tr>
+							{{/each}}
 
-				</tbody>
-			</table>
-	-->
+						</tbody>
+					</table>
+			-->
+				</div>
+			</div>
 		</div>
-	</div>
-	<div class="tab-pane" id="home2">
-			222
-		<form class="form-horizontal">
-			<fieldset>
-				<legend style="font-size:14px">数据状态</legend>
-					<div>
-						<label class="label label-primary"><input type="radio"  name="InsertWay" value="nomal" checked>全部</label>
-						<label class="label label-danger"><input type="radio"  name="InsertWay" value="procedure">错误</label>
-						<label class="label label-warning"><input type="radio"  name="InsertWay" value="procedure">危险</label>
-						<label class="label label-success"><input type="radio"  name="InsertWay" value="procedure">正常</label>
-						<button class="btn">生成EXCEL</button>
-					</div>  
-			</fieldset>
-		</form>
-	</div>
+		<div class="tab-pane" id="home2">
+				222
+			<form class="form-horizontal">
+				<fieldset>
+					<legend style="font-size:14px">数据状态</legend>
+						<div>
+							<label class="label label-primary"><input type="radio"  name="InsertWay" value="nomal" checked>全部</label>
+							<label class="label label-danger"><input type="radio"  name="InsertWay" value="procedure">错误</label>
+							<label class="label label-warning"><input type="radio"  name="InsertWay" value="procedure">危险</label>
+							<label class="label label-success"><input type="radio"  name="InsertWay" value="procedure">正常</label>
+							<button class="btn">生成EXCEL</button>
+						</div>  
+				</fieldset>
+			</form>
+		</div>
 	</div>
 </Template>
-
-<Template name="trend_date">
-	<div id="PingData">
-		<table class="table table-striped table-condensed table-hover">
-			<thead>
-				<tr></tr>
-				<tr>
-					
-					<th>时间</th>
-					<th>包成功率(%)</th>
-					<th>数据往返时间(ms)</th>
-					<th>状态值(200表示成功 300表示出错)</th>
-					
-				</tr>
-			</thead>
-			<tbody id="statisticallist" class="eventList">
-				{{#each statisticalresultlist}}
+	<Template name="trend_date">
+		<div id="PingData">
+			<table class="table table-striped table-condensed table-hover">
+				<thead>
+					<tr></tr>
 					<tr>
 						
-						<td>{{Title}}</td>
-						<td>{{Descript}}</td>
-						<td>{{MonitorNumber}}</td>
-						<td>{{Period}}</td>
+						<th>时间</th>
+						<th>包成功率(%)</th>
+						<th>数据往返时间(ms)</th>
+						<th>状态值(200表示成功 300表示出错)</th>
 						
-						
-						<td>
-							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-							</div>
-						</td>
 					</tr>
-				{{/each}}
+				</thead>
+				<tbody id="statisticallist" class="eventList">
+					{{#each statisticalresultlist}}
+						<tr>
+							
+							<td>{{Title}}</td>
+							<td>{{Descript}}</td>
+							<td>{{MonitorNumber}}</td>
+							<td>{{Period}}</td>
+							
+							
+							<td>
+								<div class="btn-group">
+									<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+								</div>
+							</td>
+						</tr>
+					{{/each}}
 
-			</tbody>
-		</table>		
-	</div>
-	<div id="CPUData">
-		<table class="table table-striped table-condensed table-hover">
-			<thead>
-				<tr></tr>
-				<tr>
-					
-					<th>时间</th>
-					<th>CPU综合使用率(%)</th>
-					<th>CPU详细使用率(%)</th>
-					
-					
-				</tr>
-			</thead>
-			<tbody id="statisticallist" class="eventList">
-				{{#each statisticalresultlist}}
+				</tbody>
+			</table>		
+		</div>
+		<div id="CPUData">
+			<table class="table table-striped table-condensed table-hover">
+				<thead>
+					<tr></tr>
 					<tr>
 						
-						<td>{{Title}}</td>
-						<td>{{Descript}}</td>
-						<td>{{MonitorNumber}}</td>
+						<th>时间</th>
+						<th>CPU综合使用率(%)</th>
+						<th>CPU详细使用率(%)</th>
 						
 						
-						
-						<td>
-							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-							</div>
-						</td>
 					</tr>
-				{{/each}}
+				</thead>
+				<tbody id="statisticallist" class="eventList">
+					{{#each statisticalresultlist}}
+						<tr>
+							
+							<td>{{Title}}</td>
+							<td>{{Descript}}</td>
+							<td>{{MonitorNumber}}</td>
+							
+							
+							
+							<td>
+								<div class="btn-group">
+									<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+								</div>
+							</td>
+						</tr>
+					{{/each}}
 
-			</tbody>
-		</table>		
-	</div>
-	<div id="MemoryData">
-		<table class="table table-striped table-condensed table-hover">
-			<thead>
-				<tr></tr>
-				<tr>
-					
-					<th>时间</th>
-					<th>虚拟内存利用率(%)</th>
-					<th>虚拟内存剩余空间(MB)</th>
-					<th>虚拟内存总空间(MB)</th>
-					<th>物理内存利用率(%)</th>
-					<th>物理内存剩余空间(MB)</th>
-					<th>物理内存总空间(MB)</th>
-					<th>错误页处理(页/秒)</th>
-					<
-					
-				</tr>
-			</thead>
-			<tbody id="statisticallist" class="eventList">
-				{{#each statisticalresultlist}}
+				</tbody>
+			</table>		
+		</div>
+		<div id="MemoryData">
+			<table class="table table-striped table-condensed table-hover">
+				<thead>
+					<tr></tr>
 					<tr>
 						
-						<td>{{Title}}</td>
-						<td>{{Descript}}</td>
-						<td>{{MonitorNumber}}</td>
-						<td>{{MonitorNumber}}</td>
-						<td>{{Period}}</td>
-						<td>{{Period}}</td>
-						<td>{{Period}}</td>
-						<td>{{Period}}</td>
+						<th>时间</th>
+						<th>虚拟内存利用率(%)</th>
+						<th>虚拟内存剩余空间(MB)</th>
+						<th>虚拟内存总空间(MB)</th>
+						<th>物理内存利用率(%)</th>
+						<th>物理内存剩余空间(MB)</th>
+						<th>物理内存总空间(MB)</th>
+						<th>错误页处理(页/秒)</th>
+						<
 						
-						
-						<td>
-							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-							</div>
-						</td>
 					</tr>
-				{{/each}}
+				</thead>
+				<tbody id="statisticallist" class="eventList">
+					{{#each statisticalresultlist}}
+						<tr>
+							
+							<td>{{Title}}</td>
+							<td>{{Descript}}</td>
+							<td>{{MonitorNumber}}</td>
+							<td>{{MonitorNumber}}</td>
+							<td>{{Period}}</td>
+							<td>{{Period}}</td>
+							<td>{{Period}}</td>
+							<td>{{Period}}</td>
+							
+							
+							<td>
+								<div class="btn-group">
+									<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+								</div>
+							</td>
+						</tr>
+					{{/each}}
 
-			</tbody>
-		</table>		
-	</div>
-	<div id="FilterEventLogDate">
-		<table class="table table-striped table-condensed table-hover">
-			<thead>
-				<tr></tr>
-				<tr>
-					
-					<th>时间</th>
-					<th>检查的总行数</th>
-					<th>过滤出行数</th>
-					
-					
-				</tr>
-			</thead>
-			<tbody id="statisticallist" class="eventList">
-				{{#each statisticalresultlist}}
+				</tbody>
+			</table>		
+		</div>
+		<div id="FilterEventLogDate">
+			<table class="table table-striped table-condensed table-hover">
+				<thead>
+					<tr></tr>
 					<tr>
 						
-						<td>{{Title}}</td>
-						<td>{{Descript}}</td>
-						<td>{{MonitorNumber}}</td>
-						<td>{{Period}}</td>
+						<th>时间</th>
+						<th>检查的总行数</th>
+						<th>过滤出行数</th>
 						
 						
-						<td>
-							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-							</div>
-						</td>
 					</tr>
-				{{/each}}
+				</thead>
+				<tbody id="statisticallist" class="eventList">
+					{{#each statisticalresultlist}}
+						<tr>
+							
+							<td>{{Title}}</td>
+							<td>{{Descript}}</td>
+							<td>{{MonitorNumber}}</td>
+							<td>{{Period}}</td>
+							
+							
+							<td>
+								<div class="btn-group">
+									<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+								</div>
+							</td>
+						</tr>
+					{{/each}}
 
-			</tbody>
-		</table>		
-	</div>
-///////////////////
-	<div id="FilterEventLogDate">
-		<table class="table table-striped table-condensed table-hover">
-			<thead>
-				<tr></tr>
-				<tr>
-					
-					<th>时间</th>
-					<th>检查的总行数</th>
-					<th>过滤出行数</th>
-					
-					
-				</tr>
-			</thead>
-			<tbody id="statisticallist" class="eventList">
-				{{#each statisticalresultlist}}
+				</tbody>
+			</table>		
+		</div>
+	///////////////////
+		<div id="FilterEventLogDate">
+			<table class="table table-striped table-condensed table-hover">
+				<thead>
+					<tr></tr>
 					<tr>
 						
-						<td>{{Title}}</td>
-						<td>{{Descript}}</td>
-						<td>{{MonitorNumber}}</td>
-						<td>{{Period}}</td>
+						<th>时间</th>
+						<th>检查的总行数</th>
+						<th>过滤出行数</th>
 						
 						
-						<td>
-							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-							</div>
-						</td>
 					</tr>
-				{{/each}}
+				</thead>
+				<tbody id="statisticallist" class="eventList">
+					{{#each statisticalresultlist}}
+						<tr>
+							
+							<td>{{Title}}</td>
+							<td>{{Descript}}</td>
+							<td>{{MonitorNumber}}</td>
+							<td>{{Period}}</td>
+							
+							
+							<td>
+								<div class="btn-group">
+									<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+								</div>
+							</td>
+						</tr>
+					{{/each}}
 
-			</tbody>
-		</table>		
-	</div>
-	<div id="FilterEventLogDate">
-		<table class="table table-striped table-condensed table-hover">
-			<thead>
-				<tr></tr>
-				<tr>
-					
-					<th>时间</th>
-					<th>检查的总行数</th>
-					<th>过滤出行数</th>
-					
-					
-				</tr>
-			</thead>
-			<tbody id="statisticallist" class="eventList">
-				{{#each statisticalresultlist}}
+				</tbody>
+			</table>		
+		</div>
+		<div id="FilterEventLogDate">
+			<table class="table table-striped table-condensed table-hover">
+				<thead>
+					<tr></tr>
 					<tr>
 						
-						<td>{{Title}}</td>
-						<td>{{Descript}}</td>
-						<td>{{MonitorNumber}}</td>
-						<td>{{Period}}</td>
+						<th>时间</th>
+						<th>检查的总行数</th>
+						<th>过滤出行数</th>
 						
 						
-						<td>
-							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-							</div>
-						</td>
 					</tr>
-				{{/each}}
+				</thead>
+				<tbody id="statisticallist" class="eventList">
+					{{#each statisticalresultlist}}
+						<tr>
+							
+							<td>{{Title}}</td>
+							<td>{{Descript}}</td>
+							<td>{{MonitorNumber}}</td>
+							<td>{{Period}}</td>
+							
+							
+							<td>
+								<div class="btn-group">
+									<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+								</div>
+							</td>
+						</tr>
+					{{/each}}
 
-			</tbody>
-		</table>		
-	</div>
-	<div id="FilterEventLogDate">
-		<table class="table table-striped table-condensed table-hover">
-			<thead>
-				<tr></tr>
-				<tr>
-					
-					<th>时间</th>
-					<th>检查的总行数</th>
-					<th>过滤出行数</th>
-					
-					
-				</tr>
-			</thead>
-			<tbody id="statisticallist" class="eventList">
-				{{#each statisticalresultlist}}
+				</tbody>
+			</table>		
+		</div>
+		<div id="FilterEventLogDate">
+			<table class="table table-striped table-condensed table-hover">
+				<thead>
+					<tr></tr>
 					<tr>
 						
-						<td>{{Title}}</td>
-						<td>{{Descript}}</td>
-						<td>{{MonitorNumber}}</td>
-						<td>{{Period}}</td>
+						<th>时间</th>
+						<th>检查的总行数</th>
+						<th>过滤出行数</th>
 						
 						
-						<td>
-							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-							</div>
-						</td>
 					</tr>
-				{{/each}}
+				</thead>
+				<tbody id="statisticallist" class="eventList">
+					{{#each statisticalresultlist}}
+						<tr>
+							
+							<td>{{Title}}</td>
+							<td>{{Descript}}</td>
+							<td>{{MonitorNumber}}</td>
+							<td>{{Period}}</td>
+							
+							
+							<td>
+								<div class="btn-group">
+									<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+								</div>
+							</td>
+						</tr>
+					{{/each}}
 
-			</tbody>
-		</table>		
-	</div>
-	<div id="FilterEventLogDate">
-		<table class="table table-striped table-condensed table-hover">
-			<thead>
-				<tr></tr>
-				<tr>
-					
-					<th>时间</th>
-					<th>检查的总行数</th>
-					<th>过滤出行数</th>
-					
-					
-				</tr>
-			</thead>
-			<tbody id="statisticallist" class="eventList">
-				{{#each statisticalresultlist}}
+				</tbody>
+			</table>		
+		</div>
+		<div id="FilterEventLogDate">
+			<table class="table table-striped table-condensed table-hover">
+				<thead>
+					<tr></tr>
 					<tr>
 						
-						<td>{{Title}}</td>
-						<td>{{Descript}}</td>
-						<td>{{MonitorNumber}}</td>
-						<td>{{Period}}</td>
+						<th>时间</th>
+						<th>检查的总行数</th>
+						<th>过滤出行数</th>
 						
 						
-						<td>
-							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-							</div>
-						</td>
 					</tr>
-				{{/each}}
+				</thead>
+				<tbody id="statisticallist" class="eventList">
+					{{#each statisticalresultlist}}
+						<tr>
+							
+							<td>{{Title}}</td>
+							<td>{{Descript}}</td>
+							<td>{{MonitorNumber}}</td>
+							<td>{{Period}}</td>
+							
+							
+							<td>
+								<div class="btn-group">
+									<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+								</div>
+							</td>
+						</tr>
+					{{/each}}
 
-			</tbody>
-		</table>		
-	</div>
-	<div id="FilterEventLogDate">
-		<table class="table table-striped table-condensed table-hover">
-			<thead>
-				<tr></tr>
-				<tr>
-					
-					<th>时间</th>
-					<th>检查的总行数</th>
-					<th>过滤出行数</th>
-					
-					
-				</tr>
-			</thead>
-			<tbody id="statisticallist" class="eventList">
-				{{#each statisticalresultlist}}
+				</tbody>
+			</table>		
+		</div>
+		<div id="FilterEventLogDate">
+			<table class="table table-striped table-condensed table-hover">
+				<thead>
+					<tr></tr>
 					<tr>
 						
-						<td>{{Title}}</td>
-						<td>{{Descript}}</td>
-						<td>{{MonitorNumber}}</td>
-						<td>{{Period}}</td>
+						<th>时间</th>
+						<th>检查的总行数</th>
+						<th>过滤出行数</th>
 						
 						
-						<td>
-							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-							</div>
-						</td>
 					</tr>
-				{{/each}}
+				</thead>
+				<tbody id="statisticallist" class="eventList">
+					{{#each statisticalresultlist}}
+						<tr>
+							
+							<td>{{Title}}</td>
+							<td>{{Descript}}</td>
+							<td>{{MonitorNumber}}</td>
+							<td>{{Period}}</td>
+							
+							
+							<td>
+								<div class="btn-group">
+									<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+								</div>
+							</td>
+						</tr>
+					{{/each}}
 
-			</tbody>
-		</table>		
-	</div>
-</Template>
+				</tbody>
+			</table>		
+		</div>
+	</Template>

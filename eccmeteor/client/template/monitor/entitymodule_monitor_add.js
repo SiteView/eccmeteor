@@ -3,13 +3,13 @@ Template.AddMoniorFormModal.events({
 		return false;
 	},
 	"click #monityTemplateFormsSavelBtn":function(e,t){
+		var monitorTemplateId = t.find("input:text").value;
 		var monityTemplateParameter = ClientUtils.formArrayToObject($("#monityTemplateParameter").serializeArray());
 	//	var monityTemplateStates = ClientUtils.formArrayToObject($("#monityTemplateStates").serializeArray());
 		var monityTemplateAdvanceParameters = ClientUtils.formArrayToObject($("#monityTemplateAdvanceParameters").serializeArray());
 		var monityCommonParameters = ClientUtils.formArrayToObject($("#monityTemplateCommonParameters").serializeArray());
 		monityCommonParameters["sv_checkerr"] = monityCommonParameters["sv_checkerr"] || "false";
-	//	var checkedMonityTemolateProperty = Session.get("checkedMonityTemolate")["property"];
-		var checkedMonityTemolateProperty = SvseMonitorTemplateDao.getTemplateById(Session.get("monityTemplateId"))["property"];//模板属性
+		var checkedMonityTemolateProperty = SvseMonitorTemplateDao.getTemplateById(monitorTemplateId)["property"];//模板属性
 		var monityParameter = ClientUtils.objectCoalescence(monityTemplateParameter,monityCommonParameters);
 		//拼接基本参数属性
 		if(!monityParameter["sv_errfreqsave"]){
@@ -21,9 +21,9 @@ Template.AddMoniorFormModal.events({
 		}
 		monityParameter["_frequency"] = +monityParameter["_frequency"];
 		monityParameter["_frequency1"] = monityParameter["_frequency"]
-		error =  ClientUtils.statusFormToObj($("#errorsStatusForm").serializeArray());
-		good =  ClientUtils.statusFormToObj($("#goodStatusForm").serializeArray());
-		warning =  ClientUtils.statusFormToObj($("#warningStatusForm").serializeArray());
+		var error =  ClientUtils.statusFormToObj($("#errorsStatusForm").serializeArray());
+		var good =  ClientUtils.statusFormToObj($("#goodStatusForm").serializeArray());
+		var warning =  ClientUtils.statusFormToObj($("#warningStatusForm").serializeArray());
 		var property = {
 			sv_disable : false,
 			sv_endtime : "",
@@ -42,31 +42,28 @@ Template.AddMoniorFormModal.events({
 			property : property
 		};
 		//获取当前编辑状态 是添加还是修改。true为修改状态。在entitymonitoredit.js中初始化
-		var monitorstatus = Session.get("monitorStatus") === "添加";
+	//	var monitorstatus = Session.get("monitorStatus") === "添加";
 		//获取父节点id
 	//	var parentid = Session.get("checkedTreeNode")["id"];
 		var parentid = SessionManage.getCheckedTreeNode("id");
 		SystemLogger("获取到的结果是:");
 		console.log(monitor);
-		LoadingModal.loading();
 		//如果是添加监视器
-		if(monitorstatus){ 
-			SvseMonitorDao.addMonitor(monitor,parentid,function(result){
-				LoadingModal.loaded();
-				if(result && !result.status){
-					Message.error(result.msg);
-				}
-				else{
-				}
-			//	Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
-			//	$("#showMonitorInfoDiv").modal('hide');
-				RenderTemplate.hideParents(t);
-			});
+	//	if(monitorstatus){ 
+		LoadingModal.loading();
+		SvseMonitorDao.addMonitor(monitor,parentid,function(result){
+			LoadingModal.loaded();
+			if(result && !result.status){
+				Message.error(result.msg);
+			}
+			else{
+			}
+			RenderTemplate.hideParents(t);
+		});
 		//如果编辑监视器
-		}else{
-		//	monitor["return"] = {id : Session.get("checkedMonitorId").id,return : true};
+	//	}else{
+	/*	//	monitor["return"] = {id : Session.get("checkedMonitorId").id,return : true};
 			monitor["return"] = {id : SessionManage.setCheckedMonitorId(),return : true};
-		
 			console.log(monitor);
 			SvseMonitorDao.editMonitor(monitor,parentid,function(result){
 				if(!result.status){
@@ -74,18 +71,16 @@ Template.AddMoniorFormModal.events({
 				}else{
 					SystemLogger("刷新监视器完成....");
 				}
-			//	Session.set("viewstatus",MONITORVIEW.MONTIOTR);//设置视图状态
-				//$("#showMonitorInfoDiv").modal('hide');
 				RenderTemplate.hideParents(t);
 			});
-		}
+		}*/
 	},
 	"click #monityTemplateFormsCancelBtn":function(e,t){
 		//$("#showMonitorInfoDiv").modal('hide');
 		RenderTemplate.hideParents(t);
 	},
 	"click i.icon-trash":function(e){
-		var i = $(e.target); //转Jquery对象
+		var i = $(e.currentTarget); //转Jquery对象
 		if(i.parents("table").find("tr").length === 1){
 			console.log("none tr");
 			return;
@@ -131,62 +126,22 @@ Template.AddMoniorFormModal.events({
 		//condition.replace(/\[  \[/g,"\[").replace(/(or|and)$/,"").replace(/^ \[ $/,"无条件限制")
 	},
 	"click button.statusmodaldiv":function(e){
-	//	$(e.target).parent().parent(".row-fluid").siblings(".modal").modal('show');
+	//	$(e.currentTarget).parent().parent(".row-fluid").siblings(".modal").modal('show');
 		//console.log(div);
 	}
 });
-/*
-Template.AddMonitorInfo.rendered = function(){
-	if(!this._rendered) {
-			this._rendered = true;
-	}
-	$(function(){
-		$("thead .span1 :checkbox").each(function(){//全选，全不选
-			$(this).bind("click",function(){
-				var flag = this.checked; 
-				$(this).closest("table").find("tbody :checkbox").each(function(){
-					this.checked = flag//$(this).attr("checked",flag);该写法有bug无法再界面上显示钩
-				});
-			});
-		});
-		//在HelperRegister.js中createDomeByPropertyHelper 创建监视器属性时，可能出现dll(通过Class="dynamicDll")类型动态属性，此时需要重新处理该属性对应的Dom元素
-		if($("select.dynamicDll:first").length){
-			(function(){		
-			//	var panrentid = Session.get("checkedTreeNode")["id"];
-				var entityId = SessionManage.getCheckedTreeNode("id");
-				var monitorstatus = ($("#monitorstatus").val() === "true" || $("#monitorstatus").val() === true) ;
-				if(monitorstatus){ //编辑状态
-				//	var monitorid = Session.get("checkedMonitorId")["id"];
-					var monitorTemplateType = SessionManage.setCheckedMonitorId();
-					var templateMonitoryId = SvseTreeDao.getMonitorTypeById(monitorTemplateType); //获取需编辑监视器的模板id
-				}else{
-					templateMonitoryId = Session.get("monityTemplateId");
-				}			
-				console.log(entityId+" : "+templateMonitoryId);
-				//获取某个监视器的动态属性
-				SvseMonitorTemplateDao.getMonityDynamicPropertyData(entityId,templateMonitoryId,function(status,result){
-					if(!status){
-						SystemLogger(result,-1);
-						return;
-					}
-					var optionObj = result["DynamicData"];
-					for(name in optionObj){
-						var option = $("<option value='"+optionObj[name]+"'>"+name+"</option>");
-						$("select.dynamicDll:first").append(option);
-					}
-				});
-			})();
-		}
-	});
+
+Template.AddMoniorFormModal.rendered = function(){
+	
 }
-*/
+
 Template.monitorTemplateStatus.events({
 	//添加报警条件
 	"click button":function(e){ 
 		//防止误操作
-		if(e.target.id !== "monitorTemplateStatusAddConditions")
+		if(e.currentTarget.id !== "monitorTemplateStatusAddConditions")
 			return;
-		var btn = $(e.target);
+		var btn = $(e.currentTarget);
 		var form = btn.parent("form");//当前用户输入的表单
 		var div =  form.parent("div");//直接父类
 		var tbody = div.children("table").children("tbody");

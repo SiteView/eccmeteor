@@ -1,142 +1,25 @@
 <Template name="rMenu">
+	<div id="rMenu" name="rmenu"  style="position: fixed; visibility: hidden;">
+		<!--
+		<ul>
+			<li id="m_add" onmouseover ="onmouseover();">增加节点</li>
+			<li id="m_del" onclick="removeTreeNode();">删除节点</li>
+			<li id="m_check" onclick="checkTreeNode(true);">Check节点</li>
+			<li id="m_unCheck" onclick="checkTreeNode(false);">unCheck节点</li>
+			<li id="m_reset" onclick="resetTree();">恢复zTree</li>
 
-<div id="rMenu" name="rmenu"  style="position: fixed; visibility: hidden;">
-<!--
-	<ul>
-		<li id="m_add" onmouseover ="onmouseover();">增加节点</li>
-	<!--	<li id="m_del" onclick="removeTreeNode();">删除节点</li>
-		<li id="m_check" onclick="checkTreeNode(true);">Check节点</li>
-		<li id="m_unCheck" onclick="checkTreeNode(false);">unCheck节点</li>
-		<li id="m_reset" onclick="resetTree();">恢复zTree</li>
-
-	</ul>
--->	
-	<ul class ="list-group" id="nav" onMouseOver="document.getElementById('div1').style.display='block'">
-		<li class="list-group-item" id = "m_add" onMouseOver="document.getElementById('layer').style.display='block'">批量选择 ></li>
-	<!--
-		{{#each monitortypelist}}
-			
-			<li>{{sv_name}}</li>        	
-			
-		{{/each}}
+		</ul>
 		-->
-	</ul>
-</div>
-	<div id="div1" style="position: fixed; visibility: hidden;" onMouseOver="document.getElementById('div1').style.display='block'" onMouseOut="document.getElementById('div1').style.display='none'">
-		<ul id="layer"> 
-		<li>我是右边的DIV</li>
+		<ul class ="list-group" id="nav" onMouseOver="document.getElementById('div1').style.display='block'">
+			<li class="list-group-item" id = "m_add" onMouseOver="document.getElementById('layer').style.display='block'">批量选择 ></li>
+			{{#each monitortypelist entityid "submonitor"}}
+			<li>{{sv_name}}</li>
+			{{/each}}
 		</ul>
 	</div>
-<!--
-		<div id="rMenu"  style="position: absolute; visibility: hidden;">
-			<li>
-				<ul id="r_addFolder"><li>增加文件夹</li></ul>
-				<ul id="r_addNode"><li>增加节点</li></ul>
-				<ul id="r_updateNode"><li>修改名称</li></ul>
-				<ul id="r_deleteNode"><li>删除节点</li></ul>
-			</li>
-		</div>
-	<div id="FilterEventLogDate">
-		<table class="table table-striped table-condensed table-hover">
-			<thead>
-				<tr></tr>
-				<tr>
-					
-					<th>时间</th>
-					<th>检查的总行数</th>
-					<th>过滤出行数</th>
-					
-					
-				</tr>
-			</thead>
-			<tbody id="statisticallist" class="eventList">
-				{{#each statisticalresultlist}}
-					<tr>
-						
-						<td>{{Title}}</td>
-						<td>{{Descript}}</td>
-						<td>{{MonitorNumber}}</td>
-						<td>{{Period}}</td>
-						
-						
-						<td>
-							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-							</div>
-						</td>
-					</tr>
-				{{/each}}
-
-			</tbody>
-		</table>		
+	<div id="div1" style="position: fixed; visibility: hidden;" onMouseOver="document.getElementById('div1').style.display='block'" onMouseOut="document.getElementById('div1').style.display='none'">
+		<ul id="layer">
+			<li>我是右边的DIV</li>
+		</ul>
 	</div>
-	<div id="FilterEventLogDate">
-		<table class="table table-striped table-condensed table-hover">
-			<thead>
-				<tr></tr>
-				<tr>
-					
-					<th>时间</th>
-					<th>检查的总行数</th>
-					<th>过滤出行数</th>
-					
-					
-				</tr>
-			</thead>
-			<tbody id="statisticallist" class="eventList">
-				{{#each statisticalresultlist}}
-					<tr>
-						
-						<td>{{Title}}</td>
-						<td>{{Descript}}</td>
-						<td>{{MonitorNumber}}</td>
-						<td>{{Period}}</td>
-						
-						
-						<td>
-							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-							</div>
-						</td>
-					</tr>
-				{{/each}}
-
-			</tbody>
-		</table>		
-	</div>
-	<div id="FilterEventLogDate">
-		<table class="table table-striped table-condensed table-hover">
-			<thead>
-				<tr></tr>
-				<tr>
-					
-					<th>时间</th>
-					<th>检查的总行数</th>
-					<th>过滤出行数</th>
-					
-					
-				</tr>
-			</thead>
-			<tbody id="statisticallist" class="eventList">
-				{{#each statisticalresultlist}}
-					<tr>
-						
-						<td>{{Title}}</td>
-						<td>{{Descript}}</td>
-						<td>{{MonitorNumber}}</td>
-						<td>{{Period}}</td>
-						
-						
-						<td>
-							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-							</div>
-						</td>
-					</tr>
-				{{/each}}
-
-			</tbody>
-		</table>		
-	</div>
--->
 </Template>
