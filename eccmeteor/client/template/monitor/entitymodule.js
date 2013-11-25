@@ -41,6 +41,10 @@ Template.MonitorList.events={
 
       	var context = getMonitorInfoContext(monitorTemplateId,monitorTemplateName);
       	context["monitorId"] = monitorId;
+		console.log(context);
+    //  	getEditMonitorDynamicInfoData(monitorId);
+
+
       	var entityId = SessionManage.getCheckedTreeNode("id");
 		//处理可能处在的动态监视器属性
 		//判断改监视器是否具有动态属性
@@ -53,15 +57,17 @@ Template.MonitorList.events={
 				break;
 			}
 		}
+		/*
 		//监视器不具备动态属性。直接渲染弹窗
 		if(!DynamicParameters){
 			RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
 			return;
-		}
+		}*/
+
 		//具备动态属性 && 获取动态属性
-		LoadingModal.loading();
+	//	LoadingModal.loading();
 		SvseMonitorTemplateDao.getMonityDynamicPropertyData(entityId,monitorTemplateId,function(status,result){
-			LoadingModal.loaded();
+	//		LoadingModal.loaded();
 			if(!status){
 				Log4js.error(result);
 				Message.error("获取监视器动态属性失败！");
@@ -74,9 +80,9 @@ Template.MonitorList.events={
 			}
 			//给对应的设备赋值
 			context.MonityTemplateParameters[DynamicParameters.index]["selects"] = DynamicDataList;
-			RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
-
-     		getEditMonitorDynamicInfoData(id);
+		//	RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
+			console.log(context);
+     		getEditMonitorDynamicInfoData(monitorId);
 		});
     },
     "mouseenter #showMonitorList img":function(e){
@@ -107,8 +113,7 @@ Template.MonitorList.rendered = function(){ //默认选中第一个监视进行�
 		drawImage(defaultMonitorId);
 	}else{
 		emptyImage();
-	}
-	
+	}	
 }
 
 Template.MonitorStatisticalSimpleData.recordsData = function(){
@@ -240,4 +245,62 @@ var getMonitorInfoContext = function(monitorTemplateId,monityTemplateName){
 		MonityFrequencyDom:MonityFrequencyDom,
 		AllTaskNames:AllTaskNames
 	}
+}
+
+/*
+合并模板数据和实际数据
+*/
+var megerTemplateAndFactData = function(MTempalte,MInstance){
+	//合并advanceParameter
+	var advanceMT = MTempalte.MonityTemplateAdvanceParameters;
+	var advanceMI =  MInstance.advance_parameter;
+	for(ap in advanceMI){
+		for(apIndex = 0 ; apIndex < advanceMT.length ; apIndex ++){
+			if(ap == advanceMT[apIndex].sv_name){
+				advanceMT[apIndex].sv_value = advanceMI[ap];
+				break;
+			}
+		}
+	}
+	MTempalte.MonityTemplateAdvanceParameters = advanceMT;
+
+	//合并状态
+	MTempalte.Error = mergeTemplateStatus(MTempalte.Error,MInstance.error);
+	MTempalte.Good = mergeTemplateStatus(MTempalte.Error,MInstance.good);
+	MTempalte.Warning = mergeTemplateStatus(MTempalte.Error,MInstance.warning);
+
+	//基础频率
+	var MonityFrequency = MTempalte.MonityFrequencyDom;
+	MonityFrequency[0]["sv_value"] = MInstance.parameter[MonityFrequency[0]["sv_name"]];
+	MonityFrequency[1]["sv_value"] = MInstance.parameter[MonityFrequency[1]["sv_name"]];
+	MTempalte.MonityFrequencyDom = MonityFrequency;
+
+	//普通属性
+	MTempalte["CommonProperty"] = MInstance.parameter;
+
+	return MTempalte;
+}
+//合并状态
+var mergeTemplateStatus = function(MTStatus,MIStatus){
+	MTStatus.sv_conditioncount = MIStatus.sv_conditioncount;
+	MTStatus.sv_expression = MIStatus.sv_expression;
+	var selects = [];
+	for(property in MIStatus){
+		if(property.indexof("sv_paramname") != -1){
+			var index = property.match(/\d+/g);
+			index = index === null ? "" : index[0];// index == null or index == ["123"];
+			selects.push({
+				"paramenameKey":property,
+				"paramenameValue":MIStatus[property],
+				"operateKey":("sv_operate"+index),
+				"operateValue":MIStatus[("sv_operate"+index)],
+				"sv_paramvalueKey":("sv_paramvalue"+index),
+				"sv_paramvalueValue":MIStatus[("sv_paramvalue"+index)],
+				"sv_relationKey":("sv_relation"+index),
+				"sv_relationVakue":MIStatus[("sv_relation"+index)]
+			})
+		}
+	}
+	MTStatus["selects"] = selects;
+	return MTStatus;
 }
