@@ -105,8 +105,8 @@ Pagination.prototype.create = function(cursorCount){
 // Style 'bootstrap'
 Pagination.prototype._bootstrap = function() {
   var html = "";
-  if(!this._currentCount){ //如果总记录为0
-    return html = "No thing";
+  if(!this._currentCount || this._totalPages === 1){ //如果总记录为0
+    return html = "";
   }
   var data ='data-head="'+this._head+'" onclick="Pagination.goto(this)"';//
   html += '<div class="pagination">' ;
