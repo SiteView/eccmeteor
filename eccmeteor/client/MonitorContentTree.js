@@ -20,6 +20,9 @@ var drawSvseSettingTree = function(){
 			    //引用 navsetting.js中的函数
 				NavigationSettingTree.execute(treeNode.action);
 				SessionManage.clear();//清空一些Session值
+				//点击父节点展开
+				var treeObj = $.fn.zTree.getZTreeObj("setting_tree");
+				treeObj.expandNode(treeNode,!treeNode.open, false, true,true);
 			},
 			/*
 			*节点展开事件
@@ -88,10 +91,13 @@ var drawSvseSimpleTree = function(){
 					SwithcView.view(MONITORVIEW.GROUPANDENTITY); 
 				//	SessionManage.setSvseId(id);
 					SessionManage.clearMonitorRuntimeDate();//清空一些监视数据session
-					return;
+				}else{
+					SwithcView.view(MODULEVIEW.ENTITYMODULE);
 				}
-				SwithcView.view(MODULEVIEW.ENTITYMODULE);
 			//	SessionManage.setEntityId(id);
+				//点击父节点展开
+				var treeObj = $.fn.zTree.getZTreeObj("svse_tree");
+				treeObj.expandNode(treeNode, !treeNode.open, false, true,true);
 			},
 			/*
 			*节点展开事件
