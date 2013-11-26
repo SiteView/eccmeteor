@@ -10,6 +10,10 @@ Template.operateNode.sv_id = function(){
 	return SessionManage.getCheckedTreeNode() ? SessionManage.getCheckedTreeNode("id") :"";
 }
 
+Template.operateNode.PERPAGE = function(){
+	return Session.get("PERPAGE");
+}
+
 Template.operateNode.statisticalData = function(){
 	var data  = {
 		entity:0,
@@ -183,5 +187,8 @@ Template.operateNode.events ={
 			return;
 		}
 		SessionManage.setEntityListFilter(status);
+	},
+	"change select":function(e,t){
+		Session.set("PERPAGE",+e.currentTarget.value);//设置每页的数量 //默认定义在main.js里
 	}
 }

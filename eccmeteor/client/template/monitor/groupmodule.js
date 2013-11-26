@@ -1,5 +1,5 @@
-var PagerGroup = new Pagination("subgrouplist",{currentPage: 1,perPage:5});
-var PagerEntity = new Pagination("subentitylist",{currentPage: 1,perPage:5});
+var PagerGroup = new Pagination("subgrouplist");
+var PagerEntity = new Pagination("subentitylist");
 //子组分页
 Template.showGroupAndEntity.groupPager = function(){
     var id = SessionManage.getCheckedTreeNode("id");
@@ -23,14 +23,16 @@ Template.showGroupAndEntity.subgroup = function(){
     var id = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subgroup");
     var status = SessionManage.getEntityListFilter();
-    return SvseTreeDao.getNodesByIds(childrenIds,status,PagerGroup.skip());
+    var perPage = Session.get("PERPAGE");
+    return SvseTreeDao.getNodesByIds(childrenIds,status,PagerGroup.skip({perPage:perPage}));
 }
 
 Template.showGroupAndEntity.subentity = function(){
     var id = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subentity");
     var status = SessionManage.getEntityListFilter();
-    return SvseTreeDao.getNodesByIds(childrenIds,status,PagerEntity.skip());
+    var perPage = Session.get("PERPAGE");
+    return SvseTreeDao.getNodesByIds(childrenIds,status,PagerEntity.skip({perPage:perPage}));
 }
 
 Template.showGroupAndEntity.events({

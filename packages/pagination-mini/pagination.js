@@ -11,23 +11,24 @@ Pagination = function(identifier,options){
   this._currentPage = 1;//init  
   this._totalPages = 0;//init  
   this._setOptions(options);
-  Session.set(this._head,{
-    limit:this._perPage,
-    skip:(this._currentPage-1)*this._perPage
-  });
   window[this._head+"_pagination"] = this;//save the pager  into window
 }
 
-Pagination.prototype.skip = function() {
+Pagination.prototype.skip = function(options) {
+   this._setOptions(options);
   return Session.get(this._head);
 }
 
 // Getter and setter functions
 Pagination.prototype._setOptions = function(options){
   if (options) {
-    this.currentPage(options.currentPage);
-    this.perPage(options.perPage);
+    this.currentPage(options.currentPage ? options.currentPage : this._currentPage);
+    this.perPage(options.perPage ? options.perPage : this._perPage);
   }
+  Session.set(this._head,{
+    limit:this._perPage,
+    skip:(this._currentPage-1)*this._perPage
+  });
 }
 
 Pagination.prototype.currentPage = function(currentPage) {

@@ -1,4 +1,4 @@
-var PagerMonitor = new Pagination("subentitylist",{currentPage: 1,perPage:5});
+var PagerMonitor = new Pagination("subentitylist");
 
 Template.MonitorList.pagerMonitor = function(){
 	var entityId = SessionManage.getCheckedTreeNode("id");
@@ -9,7 +9,8 @@ Template.MonitorList.pagerMonitor = function(){
 Template.MonitorList.Monitors = function(){
 	var entityId = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
-    return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip());
+    var perPage = Session.get("PERPAGE");
+    return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip({perPage:perPage}));
 }
 
 Template.MonitorList.events={
