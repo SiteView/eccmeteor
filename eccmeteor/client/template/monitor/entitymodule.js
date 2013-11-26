@@ -41,7 +41,7 @@ Template.MonitorList.events={
 
       	var context = getMonitorInfoContext(monitorTemplateId,monitorTemplateName);
       	context["monitorId"] = monitorId;
-		console.log(context);
+	//	console.log(context);
     //  	getEditMonitorDynamicInfoData(monitorId);
 
 
@@ -57,16 +57,17 @@ Template.MonitorList.events={
 				break;
 			}
 		}
-		/*
+		
 		//监视器不具备动态属性。直接渲染弹窗
 		if(!DynamicParameters){
 			RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
 			return;
-		}*/
+		}
 
 		//具备动态属性 && 获取动态属性
 	//	LoadingModal.loading();
 		SvseMonitorTemplateDao.getMonityDynamicPropertyData(entityId,monitorTemplateId,function(status,result){
+
 	//		LoadingModal.loaded();
 			if(!status){
 				Log4js.error(result);
@@ -254,16 +255,17 @@ var megerTemplateAndFactData = function(MTempalte,MInstance){
 	//合并advanceParameter
 	var advanceMT = MTempalte.MonityTemplateAdvanceParameters;
 	var advanceMI =  MInstance.advance_parameter;
-	for(ap in advanceMI){
-		for(apIndex = 0 ; apIndex < advanceMT.length ; apIndex ++){
-			if(ap == advanceMT[apIndex].sv_name){
-				advanceMT[apIndex].sv_value = advanceMI[ap];
-				break;
+	if(advanceMT.length && advanceMI){
+		for(ap in advanceMI){
+			for(apIndex = 0 ; apIndex < advanceMT.length ; apIndex ++){
+				if(ap == advanceMT[apIndex].sv_name){
+					advanceMT[apIndex].sv_value = advanceMI[ap];
+					break;
+				}
 			}
 		}
+		MTempalte.MonityTemplateAdvanceParameters = advanceMT;
 	}
-	MTempalte.MonityTemplateAdvanceParameters = advanceMT;
-
 	//合并状态
 	MTempalte.Error = mergeTemplateStatus(MTempalte.Error,MInstance.error);
 	MTempalte.Good = mergeTemplateStatus(MTempalte.Error,MInstance.good);
@@ -278,6 +280,14 @@ var megerTemplateAndFactData = function(MTempalte,MInstance){
 	//普通属性
 	MTempalte["CommonProperty"] = MInstance.parameter;
 
+	//动态监视器属性
+	var MTDynamicProperty = MTempalte["MonityTemplateParameters"];
+	for(var dl = 0; dl < MTDynamicProperty.length; dl++){
+		if(MTDynamicProperty[dl]["sv_name"]){
+			MTDynamicProperty[dl]["sv_value"] =  MInstance.parameter[MTDynamicProperty[dl]["sv_name"]]
+		}
+	}
+	MTempalte["MonityTemplateParameters"] = MTDynamicProperty;
 	return MTempalte;
 }
 //合并状态
