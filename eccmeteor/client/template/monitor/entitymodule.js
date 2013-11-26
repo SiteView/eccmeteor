@@ -42,10 +42,7 @@ Template.MonitorList.events={
 
       	var context = getMonitorInfoContext(monitorTemplateId,monitorTemplateName);
       	context["monitorId"] = monitorId;
-	//	console.log(context);
-    //  	getEditMonitorDynamicInfoData(monitorId);
-
-
+		console.log(context);
       	var entityId = SessionManage.getCheckedTreeNode("id");
 		//处理可能处在的动态监视器属性
 		//判断改监视器是否具有动态属性
@@ -59,32 +56,43 @@ Template.MonitorList.events={
 			}
 		}
 		
-		//监视器不具备动态属性。直接渲染弹窗
-		if(!DynamicParameters){
-			RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
-			return;
-		}
-
-		//具备动态属性 && 获取动态属性
-	//	LoadingModal.loading();
-		SvseMonitorTemplateDao.getMonityDynamicPropertyData(entityId,monitorTemplateId,function(status,result){
-
-	//		LoadingModal.loaded();
-			if(!status){
-				Log4js.error(result);
-				Message.error("获取监视器动态属性失败！");
+		SvseMonitorDao.getMonitor(checkedMonitorId,function(err,result){
+			if(err){
+				Log4js.error(err);
+				Message.error(result);
 				return;
 			}
-			var optionObj = result["DynamicData"];
-			var DynamicDataList = [];
-			for(name in optionObj){
-				DynamicDataList.push({key:name,value:optionObj[name]});
+			var monitor = result;
+			console.log(monitor);
+			//监视器不具备动态属性。直接渲染弹窗
+			if(!DynamicParameters){
+				context = megerTemplateAndFactData(context,monitor);//合并模板数据和实际数据
+			//	RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
+				console.log("合并后的实例");
+				console.log(context);
+				return;
 			}
-			//给对应的设备赋值
-			context.MonityTemplateParameters[DynamicParameters.index]["selects"] = DynamicDataList;
-		//	RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
-			console.log(context);
-     		getEditMonitorDynamicInfoData(monitorId);
+			//具备动态属性 && 获取动态属性
+			SvseMonitorTemplateDao.getMonityDynamicPropertyData(entityId,monitorTemplateId,function(status,result){
+		//		LoadingModal.loaded();
+				if(!status){
+					Log4js.error(result);
+					Message.error("获取监视器动态属性失败！");
+					return;
+				}
+				var optionObj = result["DynamicData"];
+				var DynamicDataList = [];
+				for(name in optionObj){
+					DynamicDataList.push({key:name,value:optionObj[name]});
+				}
+				//给对应的设备赋值
+				context.MonityTemplateParameters[DynamicParameters.index]["selects"] = DynamicDataList;
+				context = megerTemplateAndFactData(context,monitor);//合并模板数据和实际数据
+				console.log("合并后的实例");
+				console.log(context);
+				//RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
+			});
+
 		});
     },
     "mouseenter #showMonitorList img":function(e){
