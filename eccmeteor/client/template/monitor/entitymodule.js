@@ -108,7 +108,12 @@ Template.MonitorList.rendered = function(){ //默认选中第一个监视进行�
     });
 	//默认选中第一个监视器，展示数据
 	//console.log("默认画图id是："+this.find("td input:checkbox").id);
-	var defaultMonitorId = this.find("td input:checkbox").id ;
+	var defaultMonitor = this.find("td input:checkbox");
+	if(!defaultMonitor){
+		emptyImage();
+		return;
+	}
+	var defaultMonitorId = defaultMonitor.id ;
 	$(this.find("tbody tr")).addClass("success");
 	if(defaultMonitorId && defaultMonitorId !== ""){
 		drawImage(defaultMonitorId);
