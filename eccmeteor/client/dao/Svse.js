@@ -374,7 +374,7 @@ Object.defineProperty(SvseDao,"calculateGroupsAllEntityAndMonitorStatus",{
 		}
 		//计算当前子组
 		var subGroups = group.subgroup;
-		var subGroupsNumber = subGroups.length;
+		var subGroupsNumber = subGroups ? subGroups.length : 0;
 		if(!subGroupsNumber){
 			return data;
 		}

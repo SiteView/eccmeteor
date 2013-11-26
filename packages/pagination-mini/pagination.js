@@ -94,8 +94,8 @@ Pagination.prototype.destroy = function() {
 }
 
 Pagination.prototype.create = function(cursorCount){
+  this._currentPage = 1;
   this.totalPages(cursorCount);
-  
   if(this._checkVars()){
     var html = this._bootstrap();
     return html;

@@ -11,7 +11,7 @@ Template.operateNode.sv_id = function(){
 }
 
 Template.operateNode.PERPAGE = function(){
-	return Session.get("PERPAGE");
+	return +Session.get("PERPAGE");
 }
 
 Template.operateNode.statisticalData = function(){
