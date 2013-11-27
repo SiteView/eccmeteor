@@ -1,6 +1,5 @@
 //树的渲染
 Template.moitorContentTree.rendered = function(){
-	drawSvseSettingTree();
 	Session.set("MoitorContentTreeRendered",true);
 }
 /*
@@ -123,13 +122,7 @@ var drawSvseSimpleTree = function(){
 Deps.autorun(function(c){
 	if(SessionManage.isCollectionCompleted(CONLLECTIONMAP.SVSE)&&Session.get("MoitorContentTreeRendered")){
 		drawSvseSimpleTree();
-		/*
-		try{
-			drawSvseSimpleTree();
-		}catch(error){
-			console.log("I'm autorun drawSvseSimpleTree error!");
-		}
-		*/
+		drawSvseSettingTree();
 	}
 });
 
@@ -137,11 +130,5 @@ Deps.autorun(function(c){
 	var language = Session.get("language");
 	if(language){
 		drawSvseSettingTree();
-		/*
-		try{
-			drawSvseSettingTree();
-		}catch(error){
-			console.log("I'm autorun drawSvseSettingTree error!");
-		}*/
 	}
 })
