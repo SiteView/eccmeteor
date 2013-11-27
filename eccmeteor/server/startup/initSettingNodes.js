@@ -34,6 +34,21 @@ initSettingNodes = function(status){
 			{id:37,pId:3,name:"time",action:"time",type:"report",icon:"imag/setting/time.png"},
 			{id:38,pId:3,name:"monitorInfo",action:"monitorInfo",type:"report",icon:"imag/setting/monitorInfo.png"},
 			{id:39,pId:3,name:"SysLogQuery",action:"SysLogQuery",type:"report",icon:"imag/setting/SysLogQuery.png"},
+/*
+Type：add 
+Author：xuqiang
+Date:2013-11-27 14:40
+Content:对左侧导航树上增加任务计划，SysLog设置，用户操作日志等剩余的节点
+*/ 
+			{id:4,pId:2,name:"Task",action:"task",type:"setting",icon:"imag/setting/task.gif"},
+			{id:41,pId:4,name:"TaskAbsolute",action:"TaskAbsolute",type:"task",icon:"imag/setting/task.gif"},
+			{id:42,pId:4,name:"TaskPeriod",action:"TaskPeriod",type:"task",icon:"imag/setting/task.gif"},
+			{id:43,pId:4,name:"TaskRelative",action:"TaskRelative",type:"task",icon:"imag/setting/task.gif"},
+			{id:25,pId:2,name:"SysLogSet",action:"SysLogSet",type:"setting",icon:"imag/setting/SysLogQuery.png"},
+			{id:26,pId:2,name:"OperateLog",action:"OperateLog",type:"setting",icon:"imag/setting/SysLogQuery.png"},
+			{id:27,pId:2,name:"SystemDiagnosis",action:"SystemDiagnosis",type:"setting",icon:"imag/setting/diagnosis.gif"},
+			{id:28,pId:2,name:"License",action:"License",type:"setting",icon:"imag/setting/license.gif"},
+			{id:29,pId:2,name:"About",action:"About",type:"setting",icon:"imag/setting/about.gif"},
 		];
 	var length = setting.length;
 	for(var index = 0 ; index < length; index++){
