@@ -56,7 +56,10 @@ var NavigationSettingTreeEvents = {
 	*/ 
 	"contrast":function(){
        SwithcView.view(REPORT.CONTRAST);
-    }
+    },
+	"SysLogsetting":function(){
+		SwithcView.view(SETTINGVIEW.SYSLOGSETTING);
+	}
 }
 NavigationSettingTree = {
 	getTreeData:function(){

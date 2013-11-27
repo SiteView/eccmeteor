@@ -129,7 +129,9 @@
 			"operationAndMaintenance":"运维统计报告",
 			"time":"时段对比报告",
 			"monitorInfo":"监测器信息报告",
-			"SysLogQuery":"系统日志查询"
+			"SysLogQuery":"系统日志查询",
+			"SysLogsetting":"SysLog设置",
+			"Taskplan":"任务计划"
 		}
 	}
 }
