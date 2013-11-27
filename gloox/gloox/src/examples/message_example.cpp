@@ -123,6 +123,51 @@ static std::map<std::string, std::string> paserValue(Json::Value &value, std::st
 	return ret;
 }
 
+static std::map<std::string, std::string> paserNdata(Json::Value &fv)
+{
+	std::map<std::string, std::string> ret;
+	if (fv.type() == Json::objectValue)
+	{
+		Json::Value::Members members(fv.getMemberNames());
+		std::sort(members.begin(), members.end());
+		for (Json::Value::Members::iterator it = members.begin(); it != members.end(); ++it)
+		{
+			const std::string &name = *it;
+			if (fv[name].type() == Json::stringValue)
+			{
+				std::string nv = fv[name].asString();
+//						printf("    %s=%s\n", name.c_str(), nv.c_str());
+				ret.insert(std::make_pair(name, nv));
+			}
+		}
+	}
+	return ret;
+}
+
+static ForestMap paserFmap(Json::Value &value)
+{
+	ForestMap fmap;
+	if (value.type() == Json::arrayValue)
+	{
+//		printf("value size:%d\n", value.size());
+		if (value.size() >= 3)
+		{
+			Json::Value &fv = value[2];
+			if (fv.type() == Json::objectValue)
+			{
+				Json::Value::Members members(fv.getMemberNames());
+				std::sort(members.begin(), members.end());
+				for (Json::Value::Members::iterator it = members.begin(); it != members.end(); ++it)
+				{
+					const std::string &name = *it;
+					fmap.insert(std::make_pair(name, paserNdata(fv[name])));
+				}
+			}
+		}
+	}
+	return fmap;
+}
+
 static void makeValue(ForestMap fmap, bool isok, std::string &estr, Json::Value &root)
 {
 
@@ -245,7 +290,7 @@ public:
 	{
 		if (msg.body().empty())
 			return;
-		printf("---handleMessage receive: %s\n", msg.body().c_str());
+		printf("---handleMessage receive: %s\n", UTF8ToGB2312(msg.body()).c_str());
 
 		//printf( "---handleMessage, type: %d, subject: %s, message: %s, thread id: %s\n", msg.subtype(),
 		//	msg.subject().c_str(), msg.body().c_str(), msg.thread().c_str() );
@@ -280,10 +325,6 @@ public:
 				makeValue(fmap, isok, estr, retjv);
 				re += retjv.toStyledString();
 
-//				std::string ret = "GetMonitorTemplet, sv_id= " + GetValue(fmap, "property", "sv_id", isok);
-//				ret += "\nsv_description= " + GetValue(fmap, "property", "sv_description", isok);
-//				ret += "\nsv_dll= " + GetValue(fmap, "property", "sv_dll", isok);
-//				re += ret;
 			}
 			else if (func == "GetForestData")
 			{
@@ -293,18 +334,29 @@ public:
 				bool isok = qt_GetForestData(vmap, ndata, estr);
 
 				int index(0);
-				string oldindex= "";
-				for(ForestVector::iterator fit=vmap.begin(); fit!=vmap.end(); ++fit)
+				string oldindex = "";
+				for (ForestVector::iterator fit = vmap.begin(); fit != vmap.end(); ++fit)
 				{
 					++index;
-					char sindex[32]={0};
-					sprintf(sindex,"m%d",index);
+					char sindex[32] = { 0 };
+					sprintf(sindex, "m%d", index);
 					fmap.insert(std::make_pair(sindex, *fit));
 				}
 
 				Json::Value retjv;
 				makeValue(fmap, isok, estr, retjv);
 				re += retjv.toStyledString();
+			}
+			else if (func == "SubmitUnivData")
+			{
+				ForestMap fmap = paserFmap(jv);
+				std::string estr;
+				bool isok = qt_SubmitUnivData(fmap, ndata, estr);
+
+				Json::Value retjv;
+				makeValue(fmap, isok, estr, retjv);
+				re += retjv.toStyledString();
+
 			}
 //		   Json::Value::Members member = jv.getMemberNames();
 //		   for(Json::Value::Members::iterator iter = member.begin(); iter != member.end(); ++iter)

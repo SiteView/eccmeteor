@@ -84,8 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gloox\src\examples\message_example.cpp" />
-    <ClCompile Include="..\gloox\src\examples\roster_example.cpp" />
-    <ClCompile Include="sv.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
