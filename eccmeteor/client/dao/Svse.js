@@ -348,6 +348,9 @@ Object.defineProperty(SvseDao,"calculateGroupsAllEntityAndMonitorStatus",{
 			entity:0,
 		};
 		var group = Svse.findOne({sv_id:id});//找到当前节点
+		if(!group){
+			return; //避免数据错误
+		}
 		//计算当前节点的设备数
 		var subEntities = group.subentity;
 		var subEntitiesNumber = subEntities ? subEntities.length : 0 ; 

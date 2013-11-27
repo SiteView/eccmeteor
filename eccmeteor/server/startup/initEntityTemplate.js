@@ -1,7 +1,5 @@
 //初始化设备模板信息
 initSvseEntityTempletAtStartUp = function (entityIds){
-	Log4js.info("--------------------------------------------")
-	Log4js.info(entityIds);
 	for(id in entityIds){
 		var temp = SvseMethodsOnServer.GetEntityTemplet(entityIds[id])
 		if(!temp){
@@ -34,7 +32,6 @@ initSvseEntityTempletGroupAtStartUp = function (debug){
 	}
 	
 	var entityGroup = SvseMethodsOnServer.GetAllEntityGroups();//调用server/methods.js中的方法
-	Log4js.info(entityGroup);
 	if(!entityGroup){
 		Log4js.info("设备组为空");
 		return;
