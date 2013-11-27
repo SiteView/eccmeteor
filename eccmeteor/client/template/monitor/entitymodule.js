@@ -117,14 +117,25 @@ Template.MonitorList.rendered = function(){ //默认选中第一个监视进行�
     });
 	//默认选中第一个监视器，展示数据
 	//console.log("默认画图id是："+this.find("td input:checkbox").id);
+	//第一判断当前是否还有监视器
 	var defaultMonitor = this.find("td input:checkbox");
 	if(!defaultMonitor){
 		emptyImage();
 		return;
 	}
-	var defaultMonitorId = defaultMonitor.id ;
-	$(this.find("tbody tr")).addClass("success");
+	//第二 先默认选择第一个监视器的id
+	var defaultMonitorId = defaultMonitor.id;
+	//第三 判断页面刷新前是否已经选中了监视器
+	var parentid  = SessionManage.getCheckedTreeNode("id");
+	var checkedMonitorId = SessionManage.getCheckedMonitorId();
+	if(checkedMonitorId && checkedMonitorId.indexOf(parentid) !== -1){ //当后台数据自动更新时 不切换当前选中监视器
+		//判断已经选中的监视器是否还存在 //避免多客户端对当前监视器进行删除
+		if(this.find("input:checkbox[id='"+checkedMonitorId+"']")){
+			defaultMonitorId = checkedMonitorId;  //存在 的话
+		}
+	}
 	if(defaultMonitorId && defaultMonitorId !== ""){
+		$(this.find("input:checkbox[id='"+defaultMonitorId+"']")).parents("tr").addClass("success");
 		drawImage(defaultMonitorId);
 	}else{
 		emptyImage();
