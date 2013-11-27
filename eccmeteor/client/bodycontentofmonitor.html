@@ -26,8 +26,8 @@
 
 <Template name="SettingLayout">
     <div class="row-fluid">
-	{{#if viewType}}
-		{{renderPage viewType}}
+	{{#if viewTypeForSetting}}
+		{{renderPage viewTypeForSetting}}
 	{{/if}}
 	</div>
 </Template>
@@ -35,8 +35,8 @@
 <Template name="EquipmentsLayout"><!-- 设备或者组或者监视器的视图 -->
     {{> operateNode}}
 	<div class="row-fluid">
-	{{#if viewType}}
-		{{renderPage viewType}}
+	{{#if viewTypeForEquipments}}
+		{{renderPage viewTypeForEquipments}}
 	{{/if}}
 	</div>
 </Template>

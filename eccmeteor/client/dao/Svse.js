@@ -20,8 +20,9 @@ SvseDao = {
 			var obj = nodes[index];
 			var branchNode = {};
 			var treeNode = SvseTree.findOne({sv_id:obj["sv_id"]});
-			if(!treeNode)
+			if(!treeNode){
 				treeNode = {sv_name:"",status:"ok"}
+			}
 			branchNode["id"] = obj["sv_id"];
 			branchNode["pId"] = obj["parentid"];
 			branchNode["type"] = obj["type"];
@@ -349,7 +350,7 @@ Object.defineProperty(SvseDao,"calculateGroupsAllEntityAndMonitorStatus",{
 		};
 		var group = Svse.findOne({sv_id:id});//找到当前节点
 		if(!group){
-			return; //避免数据错误
+			return data; //避免数据错误
 		}
 		//计算当前节点的设备数
 		var subEntities = group.subentity;

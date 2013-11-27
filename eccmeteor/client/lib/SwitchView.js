@@ -34,8 +34,7 @@ MODULEVIEW = {
 //
 LAYOUTVIEW = {
 	SettingLayout:"SettingLayout",//设置布局
-	EquipmentsLayout:"EquipmentsLayout",//带操作按钮的节点布局
-	NOTOPERATION:"notOperationNodeLayout" //无操作按钮的节点布局
+	EquipmentsLayout:"EquipmentsLayout"//带操作按钮的节点布局
 }
 //报表
 /*
@@ -49,16 +48,17 @@ Content:增加trend趋势报告
 	Author：renjie
 	Date:2013-11-14 09:20
 	Content:"状态统计报告"statusStatistical
+
+=======================
+	Type：add
+	Author：renjie
+	Date:2013-11-14 09:20
+	Content:增加contrast对比报告
 */ 
 REPORT ={
 	STATISTICAL:"statistical",
 	TOPN:"topN",//topN报告
 	TREND:"trend", //趋势报告
-	/*Type：add
-	Author：renjie
-	Date:2013-11-14 09:20
-	Content:增加contrast对比报告
-	*/
 	CONTRAST:"contrast",//对比报告
 	STATUSSTATISTICAL:"statusStatistical",//"状态统计报告"
 	MONITORINFO:"monitorInfo"//监测器信息报告, 搜索测试
@@ -66,13 +66,22 @@ REPORT ={
 //视图切换
 SwithcView = {}
 Object.defineProperty(SwithcView,"view",{
-	value:function(viewName){
-		Session.set("ViewType",viewName);
+	value:function(viewName){ 
+		//如果当前布局为设备树
+		if(Session.equals("layout",LAYOUTVIEW.EquipmentsLayout)){
+			Session.set("ViewType",viewName);
+		}else{//为设置树
+			Session.set("ViewTypeForSetting",viewName);
+		}
+		
 	}
 });
 Object.defineProperty(SwithcView,"layout",{
 	value:function(layoutname){
-	    Session.set("layout",layoutname);
+		if(layoutname){
+			Session.set("layout",layoutname);
+		}
+		return Session.get("layout");
 	}
 });
 Object.defineProperty(SwithcView,"render",{
