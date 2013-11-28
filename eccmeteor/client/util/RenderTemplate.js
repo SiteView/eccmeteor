@@ -67,7 +67,7 @@ Object.defineProperty(RenderTemplate,"hideParents",{
 	value:function(t){
 		var modal = $(t.find("div.modal"));
 		modal.on("hidden",function(){
-			modal.parent("div").remove();
+			modal.parent("div").empty();
 		});
 		modal.modal("hide");
 	}

@@ -130,15 +130,11 @@ Template.operateNode.events ={
 			Message.warn("请选择需要禁用监视器",{align:"center",time:1});
 			return;
 		}
-		$("#ForbidEquipmentsDiv").find(":hidden[name=equipmetType]").val("monitors").attr("data-value",monitorIds.join());
-		var startPicker = $("#ForbidEquipmentsStartDate").data('datetimepicker');
-		var endPicker = $("#ForbidEquipmentsEndDate").data('datetimepicker');
-		var endDate = new Date();
-		var startDate = new Date();
-		endDate.setTime(endDate.getTime() + 1000*60*60*2);
-		startPicker.setDate(startDate);
-		endPicker.setDate(endDate);
-		$("#ForbidEquipmentsDiv").modal("show");
+		var context = {
+			equipmetType:"monitors",
+			equipmentIds:monitorIds.join()
+		}
+		RenderTemplate.showParents("#ForbidEquipmentsModal","ForbidEquipments",context);
 		
 	},
 	"click a#allowMonitor":function(){
