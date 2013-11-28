@@ -1,10 +1,8 @@
 initWarnerRuleAtStartUp = function(debug){
 	Log4js.info("初始化报警规则列表开始...");
 	if(debug === -1)return;
-	if(debug === 0){
-		SvseWarnerRule.remove({});
-		Log4js.info("SvseWarnerRule Collection 已清空");
-	}
+	SvseWarnerRule.remove({});
+	Log4js.info("SvseWarnerRule Collection 已清空");
 	var list = SvseMethodsOnServer.svGetWarnerRule();
 	if(!list){
 		Log4js.info("初始化报警规则列表失败",0);

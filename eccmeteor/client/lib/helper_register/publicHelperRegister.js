@@ -75,3 +75,10 @@ Handlebars.registerHelper('arrayLengthHelper',function(array){
 		return 0;
 	return array.length;
 });
+
+/*
+当前系统版本
+*/
+Handlebars.registerHelper('CurrentVersionHelper',function(array){
+	return ClientConfig.Version;
+});

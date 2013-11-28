@@ -24,12 +24,11 @@ initSvseEntityTempletAtStartUp = function (entityIds){
 initSvseEntityTempletGroupAtStartUp = function (debug){
 	Log4js.info("设备模板初始化开始。。。");
 	if(debug === -1)return;
-	if(debug === 0){
-		SvseEntityTempletGroup.remove({});
-		Log4js.warn("SvseEntityTempletGroup 数据清除");
-		SvseEntityTemplet.remove({});
-		Log4js.warn("SvseEntityTemplet 数据已清除");
-	}
+
+	SvseEntityTempletGroup.remove({});
+	Log4js.warn("SvseEntityTempletGroup 数据清除");
+	SvseEntityTemplet.remove({});
+	Log4js.warn("SvseEntityTemplet 数据已清除");
 	
 	var entityGroup = SvseMethodsOnServer.GetAllEntityGroups();//调用server/methods.js中的方法
 	if(!entityGroup){

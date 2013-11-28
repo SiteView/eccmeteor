@@ -14,7 +14,7 @@ Template.showGroupAndEntity.entityPager = function(){
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subentity");
     var status = SessionManage.getEntityListFilter();
     status = status === "bad" ? "error" : status ; //监视器时，为bad，设备或组时为error
-    return PagerGroup.create(SvseTreeDao.getNodeCountsByIds(childrenIds,status));
+    return PagerEntity.create(SvseTreeDao.getNodeCountsByIds(childrenIds,status));
 }
 
 Template.showGroupAndEntity.getEntityTemplateNameByType = function(type){

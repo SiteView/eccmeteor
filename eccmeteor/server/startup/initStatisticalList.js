@@ -1,10 +1,8 @@
 initStatisticalAtStartUp = function(debug){
 	Log4js.info("初始化报警规则列表开始...");
 	if(debug === -1)return;
-	if(debug === 0){
-		SvseStatisticalresultlist.remove({});
-		Log4js.info("SvseStatisticalresultlist Collection 已清空");
-	}
+	SvseStatisticalresultlist.remove({});
+	Log4js.info("SvseStatisticalresultlist Collection 已清空");
 	var list = SvseMethodsOnServer.svGetStatisticalList();
 	if(!list){
 		Log4js.info("初始化统计报告列表失败",0);

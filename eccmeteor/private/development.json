@@ -1,3 +1,4 @@
 {
-	"initDatabase":0
+	"initDatabase":0,
+	"runtimesync":0
 }
