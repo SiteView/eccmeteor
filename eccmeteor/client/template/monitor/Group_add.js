@@ -13,7 +13,7 @@ Template.GroupAdd.events ={
 			RenderTemplate.hideParents(t);
 		});
 	},
-	"click #showGroupAddFormCancelBtn":function(){
+	"click #showGroupAddFormCancelBtn":function(t){
 		RenderTemplate.hideParents(t);
 	}
 }

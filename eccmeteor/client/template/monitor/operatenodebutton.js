@@ -53,7 +53,7 @@ Template.operateNode.events ={
 		});
 
 	},
-	"click a#forbidEquipments":function(){//禁用组和设备
+	"click a#forbidEquipments":function(e,t){//禁用组和设备
 		var groupsIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableGroupList");
 		var entityIds = ClientUtils.tableGetSelectedAll("showGroupAndEntityTableEntityList");
 		var equipmentIds = groupsIds.concat(entityIds);
@@ -61,15 +61,11 @@ Template.operateNode.events ={
 			Message.warn("请选择需要禁用的设备或组",{align:"center",time:1});
 			return;
 		}
-		$("#ForbidEquipmentsDiv").find(":hidden[name=equipmetType]").val("equipments").attr("data-value",equipmentIds.join());
-		var startPicker = $("#ForbidEquipmentsStartDate").data('datetimepicker');
-		var endPicker = $("#ForbidEquipmentsEndDate").data('datetimepicker');
-		var endDate = new Date();
-		var startDate = new Date();
-		endDate.setTime(endDate.getTime() + 1000*60*60*2);
-		startPicker.setDate(startDate);
-		endPicker.setDate(endDate);
-		$("#ForbidEquipmentsDiv").modal("show");
+		var context = {
+			equipmetType:"equipments",
+			equipmentIds:equipmentIds.join()
+		}
+		RenderTemplate.showParents("#ForbidEquipmentsModal","ForbidEquipments",context);
 	},
 	"click .btn#addEntity":function(){
 		//$("#entitiesGroupByTypeDiv").modal('show');

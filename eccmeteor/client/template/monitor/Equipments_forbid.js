@@ -68,7 +68,7 @@ Template.ForbidEquipments.events = {
 			}
 		}
 	},
-	"click #ForbidEquipmentsDivFormCancelBtn":function(){
-		$("#ForbidEquipments").modal("hide");
+	"click #ForbidEquipmentsDivFormCancelBtn":function(e,t){
+		RenderTemplate.hideParents(t);
 	}
 }
