@@ -19,15 +19,17 @@
 				<label class="control-label">报警接收人:</label>
 				<div class="controls">
 					<select class="messagemultiselect" name="AlertReceiver">
-						<option value="">全部</option>
-
+						<option value="0">全部</option>
+						{{#each alertReceivers}}
+							<option value="{{this}}">{{this}}</option>
+						{{/each}}
 					</select>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">报警开始时间:</label>
 				<div class="controls">
-					<div id="AlertdatetimepickerStartDate" class="input-append date">
+					<div id="alertdatetimepickerStartDate" class="input-append date">
 					  <input type="text" name="startTime" class="span12" />
 					  <span class="add-on">
 						<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
@@ -38,7 +40,7 @@
 			<div class="control-group">
 				<label class="control-label">报警结束时间:</label>
 				<div class="controls">
-					<div id="AlertdatetimepickerEndDate" class="input-append date">
+					<div id="alertdatetimepickerEndDate" class="input-append date">
 					  <input type="text" name="endTime" class="span12" />
 					  <span class="add-on">
 						<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>

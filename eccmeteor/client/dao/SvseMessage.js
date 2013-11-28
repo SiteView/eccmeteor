@@ -1,7 +1,14 @@
 SvseMessageDao = {
 	"AGENT":"svseMessageDaoAgent",
-	"sync" : function(){
-		Meteor.call(SvseMessageDao.AGENT,"sync");
+	"sync":function(fn){
+		Meteor.call(SvseMessageDao.AGENT,"sync",function(err,result){
+			if(result && !result.status){
+				fn(result);
+			}
+			else{
+				fn({status:true});
+			}
+		});
 	},
 	//获取短信集合列表
 	"getMessageList": function(){

@@ -911,3 +911,39 @@ svGetScriptFileofScriptAlert=function(){
 	var fmap= robj.fmap(0);
 	return fmap["Scripts"];
 }
+
+/*
+	Type:查询日志
+	Author:zhuqing
+	Data:2013-11-27
+	Content:queryAlertLog
+*/
+//查询报警规则的日志记录
+svGetQueryAlertLog = function(beginDate,endDate,alertQueryCondition){
+	var robj = process.sv_forest({
+		'dowhat':'QueryAlertLog',
+		//alertName:alertQueryCondition.AlertName,
+		//alertReceive:alertQueryCondition.OtherNumber,
+		//alertType:alertQueryCondition.AlertType,
+		//id:"dxSB5vs6G7R2DRu5u",
+		alertIndex:"18626",
+		alertName:"rere",
+		alertReceive:"siyte@cc.com",
+		alertType:"EmailAlert",
+		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
+		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
+	}, 0);
+	if(!robj.isok(0)){
+		Log4js.error(robj.estr(0),-1);
+		return false;
+	}
+	var fmap = robj.fmap(0);
+	console.log(fmap);
+	var alertLogRecords = [];
+	for(r in fmap){
+		alertLogRecords.push(fmap[r]);
+	}
+	
+	console.log(alertLogRecords);
+	return alertLogRecords;
+}

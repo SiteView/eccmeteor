@@ -91,6 +91,7 @@ var getloadTaskName = function(){
 		var tasks = SvseTaskDao.getTaskNameByType(tasktype);
 		console.log(tasks);
 		for(var i=0;i<tasks.length;i++){
+			if(tasks[i] == "") continue;
 			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
 			$("#tasknamelist").append(option);
 		}
@@ -111,6 +112,7 @@ var getTaskName = function(){
 			return;
 		}
 		for(var i=0;i<tasks.length;i++){
+			if(tasks[i] == "") continue;
 			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
 			$("#tasknamelist").append(option);
 		}

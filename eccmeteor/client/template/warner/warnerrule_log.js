@@ -4,25 +4,25 @@ Template.warnerrulelog.rendered = function(){
 		var endDate = new Date();
 		var startDate = new Date();
 		startDate.setTime(startDate.getTime() - 1000*60*60*24);
-		$(template.find("#AlertdatetimepickerStartDate")).datetimepicker({
+		$(template.find("#alertdatetimepickerStartDate")).datetimepicker({
 			format: 'yyyy-MM-dd hh:mm:ss',
 			language: 'zh-CN',
 			maskInput: false
 		});
-		$(template.find("#AlertdatetimepickerEndDate")).datetimepicker({
+		$(template.find("#alertdatetimepickerEndDate")).datetimepicker({
 			format: 'yyyy-MM-dd hh:mm:ss',
 			language: 'zh-CN',
 			endDate : endDate,
 			maskInput: false,
 		});
-		var startPicker = $(template.find("#AlertdatetimepickerStartDate")).data('datetimepicker');
-		var endPicker = $(template.find("#AlertdatetimepickerEndDate")).data('datetimepicker');
+		var startPicker = $(template.find("#alertdatetimepickerStartDate")).data('datetimepicker');
+		var endPicker = $(template.find("#alertdatetimepickerEndDate")).data('datetimepicker');
 		startPicker.setDate(startDate);
 		endPicker.setDate(endDate);
-//		$('#AlertdatetimepickerStartDate').on('changeDate', function(e) {
+//		$('#alertdatetimepickerStartDate').on('changeDate', function(e) {
 //			endPicker.setstartDate(e.date);
 //		});
-//		$('#AlertdatetimepickerEndDate').on('changeDate', function(e) {
+//		$('#alertdatetimepickerEndDate').on('changeDate', function(e) {
 //			startPicker.setEndDate(e.date);
 //		});
 		//接收手机号下拉列表多选框
@@ -47,7 +47,7 @@ Template.warnerrulelog.rendered = function(){
 				}
 			}
 		});
-		alertReceiver();
+		alertloglist();
 	});
 }
 
@@ -63,22 +63,109 @@ Template.warnerrulelog.alertTypes = function(){
 	return alertType;
 }
 
-//获取报警接收人地址
+//获取报警接收人地址的数组
+Template.warnerrulelog.alertReceivers = function(){
+	console.log(alertReceiver());
+	return alertReceiver();
+}
+
+//报警日志的查询事件
+Template.warnerrulelog.events({
+	// "click #selectalertlogbtn":function(){
+	
+	// }
+});
+
+
+//获取报警接收人地址(注意：此处暂时只考虑了值只有一个的情况，如果是多个的话要进一步修改)
 var alertReceiver = function(){
 	var allalerts = SvseWarnerRuleDao.getWarnerRuleList();
 	//console.log(allalerts);
 	var alertReceiver = [];
+	var rec = {};
+	var result = [];
 	for(var i = 0;i < allalerts.length;i++){
 		var recevier = allalerts[i];
-		if(recevier.EmailAdress){
-			console.log(recevier.EmailAdress);		
-		}else if(recevier.SmsNumber){
-			console.log(recevier.SmsNumber);		
+		if(recevier.AlertType == "EmailAlert"){
+			//跟邮件设置相关联的邮件地址
+			if(recevier.EmailAdress){
+				if(recevier.EmailAdress == "" || recevier.EmailAdress=="其他") continue;
+				//console.log(recevier.EmailAdress);
+				email = SvseEmailDao.getEmailByName(recevier.EmailAdress);
+				//console.log(email.MailList);
+				if(!email){
+					console.log("这个邮件地址可能已经不存在了！");
+					continue;
+				}
+				alertReceiver.push(email.MailList);
+			}
+			//其他的邮件地址
+			if(recevier.OtherAdress){
+				alertReceiver.push(recevier.OtherAdress);
+			}
+		}else if(recevier.AlertType == "SmsAlert"){
+			//跟短信设置相关联的短信手机号
+			if(recevier.SmsNumber){
+				if(recevier.SmsNumber == "" || recevier.SmsNumber=="其他") continue;
+				console.log(recevier.SmsNumber);
+				var smsnumber = recevier.SmsNumber.split(",");
+				console.log(smsnumber);
+				// for(var i = 0;i< smsnumber.length;i++){
+					// console.log(smsnumber[i]);
+				// }
+				message = SvseMessageDao.getMessageByName(recevier.SmsNumber);
+				if(!message){
+					console.log("这个短信接收手机号可能已经不存在了！");
+					continue;
+				}
+				console.log(message.Phone);
+				alertReceiver.push(message.Phone);			
+			}
+			//其他的短信手机地址
+			if(recevier.OtherNumber){
+				alertReceiver.push(recevier.OtherNumber);
+			}
 		}else if(recevier.ScriptServer){
-			console.log(recevier.ScriptServer);		
+			//console.log(recevier.ScriptServer);
+			alertReceiver.push(recevier.ScriptServer);			
 		}else if(recevier.Server){
-			console.log(recevier.Server);
+			//console.log(recevier.Server);
+			alertReceiver.push(recevier.Server);
 		}
 		
 	}
+	console.log(alertReceiver);
+	//对数组去除重复项
+	for(var j = 0;j < alertReceiver.length;j++){
+		if(!rec[alertReceiver[j]]){   
+          rec[alertReceiver[j]] = true;   
+          result.push(alertReceiver[j]);   
+      }  
+	}
+	console.log(result);
+	return result;
+}
+
+var alertloglist = function(){
+	var warner = SvseWarnerRuleDao.getAlertByName("rere");
+	console.log(warner);
+	
+	var startPicker = $('#alertdatetimepickerStartDate').data('datetimepicker');
+	var endPicker = $('#alertdatetimepickerEndDate').data('datetimepicker');
+	var beginDate = ClientUtils.dateToObject(startPicker.getDate());
+	var endDate = ClientUtils.dateToObject(endPicker.getDate());
+	console.log("#############################");
+	console.log(beginDate);
+	console.log(beginDate["month"]);
+	console.log(endDate);
+	console.log("#######################");
+	
+	SvseWarnerRuleDao.getQueryAlertLog(beginDate,endDate,warner,function(result){
+		console.log("result");
+		if(!result.status){
+			Log4js.info(result.msg);
+			return;
+		}
+		console.log(result);
+	});
 }

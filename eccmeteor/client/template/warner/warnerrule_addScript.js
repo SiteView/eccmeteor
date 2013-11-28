@@ -147,8 +147,8 @@ Template.editwarnerruleofscript.events({
 		if(result["AlertName"]!=alertName)
 		{
 			if(alertresult){
-			Message.info("报警名称已经存在");
-			return;
+				Message.info("报警名称已经存在");
+				return;
 			}
 		}
 		

@@ -31,6 +31,9 @@ SvseEmailDao = {
 	"getEmailById" : function(id){
 		return SvseEmailList.findOne({nIndex:id});
 	},
+	"getEmailByName": function(name){
+		return SvseEmailList.findOne({Name:name});
+	},
 	"updateEmailAddress":function(addressname,address,fn){
 		Meteor.call(SvseEmailDao.AGENT,'updateEmailAddress',[addressname,address],function(err,result){
 			if(err){
