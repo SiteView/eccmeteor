@@ -27,10 +27,14 @@ SvseEntityTemplateDao = {
 			};
 			//组合下拉列表	
 			var selects = []; 
+			if(temp["selects"]){
+				items.push(temp);//如果selects已经存在 选择的设备 操作系统_unix
+				continue;
+			}
 			for(label in temp){
 				if(label.indexOf("sv_itemlabel") === -1)continue;
 				var select = {};
-				var sub = "sv_itemvalue"+label.substr(-1);
+				var sub = "sv_itemvalue"+label.replace("sv_itemlabel","");
 				select.key = temp[label];
 				select.value = temp[sub];
 				selects.push(select);
@@ -38,8 +42,8 @@ SvseEntityTemplateDao = {
 			temp["selects"] = selects;
 			items.push(temp);
 		}
-		SystemLogger("items is :");
-		SystemLogger(items);
+		Log4js.info("items is :");
+		Log4js.info(items);
 		return items;
 	},
 	addEntity:function(entity,parentid,fn){//根据提交的信息和父节点添加设备
@@ -47,7 +51,7 @@ SvseEntityTemplateDao = {
 
 		Meteor.call(SvseEntityTemplateDao.AGENT,"addEntity",[entity,parentid],function(err,result){
 			if(err){
-				SystemLogger(err);
+				Log4js.error(err);
 				fn({status:false,msg:err})
 			}else{
 				fn(result);
@@ -61,11 +65,11 @@ SvseEntityTemplateDao = {
 	editEntity:function(entity,entityId,fn){
 		Meteor.call(SvseEntityTemplateDao.AGENT,"updateEntity",[entity,entityId],function(err,result){
 			if(err){
-				SystemLogger(err);
+				Log4js.error(err);
 				fn({status:false,msg:err})
 			}else{
 				if(result && !reult[status]){ // 无权限
-					SystemLogger(err);
+					Log4js.error(err);
 					fn(result);
 				}else{
 					fn({status:true})
@@ -77,12 +81,12 @@ SvseEntityTemplateDao = {
 		Log4js.info("SeseEntityTemplate.js getEntityMonitorByDevicetype 打印：");
 		template = SvseEntityTemplet.findOne({"return.id":type});
 		if(!template){
-			SystemLogger("找不到设备"+type);
+			Log4js.info("找不到设备"+type);
 			return [];
 		}
 		var monityIds = !status ? (template["submonitor"] || []):(template["property"]["sv_quickadd"] ? template["property"]["sv_quickadd"].split("\,"):[]);
 		if(monityIds.length === 0){
-			SystemLogger("该设备"+type+"不存在监视器");
+			Log4js.info("该设备"+type+"不存在监视器");
 			return [];
 		}
 		var monities = SvseMonitorTemplate.find({"return.id":{$in:monityIds}}).fetch();
@@ -97,11 +101,11 @@ Object.defineProperty(SvseEntityTemplateDao,"getDynamicEntityItems",{
 		Log4js.info("获取设备的id是: "+id+"  设备的类型是："+type);
 		//获取node数据
 		var node = SvseEntityInfo.findOne({"return.id":id});
-		SystemLogger("获取设备的数据是：");
-		SystemLogger(node);
+		Log4js.info("获取设备的数据是：");
+		Log4js.info(node);
 		var template = SvseEntityTemplet.findOne({"return.id":type});
-		SystemLogger("获取设备的模板是：");
-		SystemLogger(template);
+		Log4js.info("获取设备的模板是：");
+		Log4js.info(template);
 		var property = node["property"];
 		if(!template) return [];
 		var items = [];
@@ -115,11 +119,15 @@ Object.defineProperty(SvseEntityTemplateDao,"getDynamicEntityItems",{
 				continue;
 			}
 		   //组合下拉列表键值对
+		   if(item["selects"]){
+				items.push(item);//如果selects已经存在 选择的设备 操作系统_unix
+				continue;
+			}
 			var selects = []; 
 			for(label in item){
 				if(label.indexOf("sv_itemlabel") === -1)continue;
 				var select = {};
-				var sub = "sv_itemvalue"+label.substr(-1);
+				var sub = "sv_itemvalue"+label.replace("sv_itemlabel","");//这样写有bug
 				select.key = item[label];
 				select.value = item[sub];
 				selects.push(select);

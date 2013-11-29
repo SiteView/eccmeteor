@@ -72,4 +72,5 @@ Meteor.startup(function(){
 	SetSvdbAddr();
 	var status = AssetsUtils.getDevConfig("initDatabase");
 	initAllDateStartUp(status);	
+	TestUnit.test();
 });
