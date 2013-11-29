@@ -19,17 +19,109 @@
 					pIdKey : "pId",
 					rootPId : "0",
 				}
+			},
+			callback:{
+				onClick:function(event, treeId, treeNode){
+					//设置布局
+					SwithcView.layout(LAYOUTVIEW.SettingLayout);
+					var id= treeNode.id;
+					var type = treeNode.type;
+					var checkedTreeNode = {};
+					checkedTreeNode.id = id;
+					checkedTreeNode.type=type;
+					checkedTreeNode.name = treeNode.name;
+					//记录点击的节点。根据该节点获取 编辑增加设备时的基本信息;
+					SessionManage.setCheckedTreeNode(checkedTreeNode);
+					if(type !== "monitor"){
+						Message.warn("请选择监测器！");
+						//设置视图状态
+					//	SwithcView.view(MONITORVIEW.TRENDMONITOR); 
+					//	SessionManage.setSvseId(id);
+					//	SessionManage.clearMonitorRuntimeDate();//清空一些监视数据session
+						return;
+					}
+					// Message.warn("请选择监测器！");
+					SwithcView.view(REPORT.TREND);
+				//	SessionManage.setEntityId(id);
+			},
+			/*
+			*节点展开事件
+			*/
+			onExpand:function(event, treeId, treeNode){
+				TreeNodeRemenber.remenber(treeNode.id); //记住展开节点
+			},
+			/*
+			*节点折叠事件
+			*/
+			onCollapse:function(event, treeId, treeNode){	
+				TreeNodeRemenber.forget(treeNode.id); //删除展开节点
 			}
-		};
-		$.fn.zTree.init($("#svse_tree_check"), setting, data);
+		}
+	};
+	$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
+	/*
 			$(".form_datetime").datetimepicker({
 			format: "yyyy MM dd hh:mm",
 			autoclose: true,
 			todayBtn: true,
 			pickerPosition: "bottom-left"
 		});
+	*/
+	
+		var template = this;
+	$(function() { //初始化日期选择器
+		var endDate = new Date();
+		var startDate = new Date();
+		startDate.setTime(startDate.getTime() - 1000*60*60*24);
+		$(template.find("#datetimepickerStartDate")).datetimepicker({
+			format: 'yyyy-MM-dd hh:mm:ss',
+			language: 'zh-CN',
+			maskInput: false
+		});
+		$(template.find("#datetimepickerEndDate")).datetimepicker({
+			format: 'yyyy-MM-dd hh:mm:ss',
+			language: 'zh-CN',
+			endDate : endDate,
+			maskInput: false,
+		});
+		var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
+		var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
+		startPicker.setDate(startDate);
+		endPicker.setDate(endDate);
+//		$('#datetimepickerStartDate').on('changeDate', function(e) {
+//			endPicker.setstartDate(e.date);
+//		});
+//		$('#datetimepickerEndDate').on('changeDate', function(e) {
+//			startPicker.setEndDate(e.date);
+//		});
+
+	});
+	gettrendListt();
 }
+gettrendListt = function(){
+
+	var zTree =$.fn.zTree.getZTreeObj("svse_tree_check");
+	var checkedTreeNode = zTree.getNodes();
+/*	var id = nodes[0];
+	var type = treeNode.type;
+	//var type = nodes[0].type;
+	var pid = zTree.getSelectedNodes().pId;
+*/
+	SessionManage.getCheckedTreeNode(checkedTreeNode);	
+		var id = checkedTreeNode.id;
+		var type = checkedTreeNode.type;
+	var result = SvseTrendDao.getTrendList(id,type);
+	console.log(result);
+	/*
+	            alert(treeNode.tId + ", " + treeNode.name);//点击直接返回节点对象treeNode
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            //var nodes = zTree.getNodes();
+            var nodes = zTree.getSelectedNodes();
+            alert(nodes[0].name);//返回被选中节点对象
+	*/
+}
+
 Template.trend_status.events = {
 	"click #queryDetailLineData" : function(){
 		drawDetailLineAgain();
