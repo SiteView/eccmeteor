@@ -1,7 +1,7 @@
 #ifndef SVDB_ENTITYPOOLEX_
 #define SVDB_ENTITYPOOLEX_
 
-#include "svdbmain.h"
+#include "SvdbMain.h"
 #include <PoolBase.h>
 #include <SerialBase.h>
 #include <svdbtype.h>
