@@ -1,0 +1,24 @@
+D:\Qt\ECCTest\android\bin\ECCTest-debug-unaligned.apk : \
+D:\Qt\ECCTest\android\bin\ECCTest.ap_ \
+D:\Qt\ECCTest\android\bin\classes.dex \
+D:\Qt\ECCTest\android\libs\--Managed_by_Qt_Creator--QtAndroid-bundled.jar \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\gdbserver \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_accessible_libqtaccessiblequick.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_accessible_libqtaccessiblewidgets.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_imageformats_libqgif.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_imageformats_libqico.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_imageformats_libqjpeg.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_imageformats_libqmng.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_imageformats_libqsvg.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_imageformats_libqtga.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_imageformats_libqtiff.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_imageformats_libqwbmp.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_platforms_android_libqtforandroid.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_platforms_android_libqtforandroidGL.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_platforms_libqminimal.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\lib--Managed_by_Qt_Creator--plugins_platforms_libqoffscreen.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\libECCTest.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\libgnustl_shared.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\libQt5Core.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\libQt5Gui.so \
+D:\Qt\ECCTest\android\libs\armeabi-v7a\libQt5Widgets.so \

@@ -1,0 +1,25 @@
+D:\Qt\ECCTest\android\bin\classes.dex : \
+D:\Qt\ECCTest\android\bin\classes\org\kde\necessitas\ministro\IMinistro$Stub$Proxy.class \
+D:\Qt\ECCTest\android\bin\classes\org\kde\necessitas\ministro\IMinistro$Stub.class \
+D:\Qt\ECCTest\android\bin\classes\org\kde\necessitas\ministro\IMinistro.class \
+D:\Qt\ECCTest\android\bin\classes\org\kde\necessitas\ministro\IMinistroCallback$Stub$Proxy.class \
+D:\Qt\ECCTest\android\bin\classes\org\kde\necessitas\ministro\IMinistroCallback$Stub.class \
+D:\Qt\ECCTest\android\bin\classes\org\kde\necessitas\ministro\IMinistroCallback.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\example\ECCTest\BuildConfig.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\example\ECCTest\R$array.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\example\ECCTest\R$attr.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\example\ECCTest\R$layout.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\example\ECCTest\R$string.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\example\ECCTest\R.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\qt5\android\bindings\QtActivity$1.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\qt5\android\bindings\QtActivity$2.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\qt5\android\bindings\QtActivity$3$1$1.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\qt5\android\bindings\QtActivity$3$1.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\qt5\android\bindings\QtActivity$3.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\qt5\android\bindings\QtActivity$4.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\qt5\android\bindings\QtActivity$5.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\qt5\android\bindings\QtActivity$6.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\qt5\android\bindings\QtActivity.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\qt5\android\bindings\QtApplication$InvokeResult.class \
+D:\Qt\ECCTest\android\bin\classes\org\qtproject\qt5\android\bindings\QtApplication.class \
+D:\Qt\ECCTest\android\bin\dexedLibs\--Managed_by_Qt_Creator--QtAndroid-bundled-87436898e31d39debd9a9e309a3a7f33.jar \
