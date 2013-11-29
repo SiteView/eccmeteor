@@ -1,9 +1,9 @@
 var getTopNListSelectAll = function(){
 	return ClientUtils.tableGetSelectedAll("topNlist");
 }
-var getTopNListSelectAll = function(){
+/*var getTopNListSelectAll = function(){
 	return ClientUtils.tableGetSelectedAll("topN_detail");
-}
+}*/
 Template.topN.events = {
     //点击添加按钮弹出框    
 	"click #topNofadd":function(e){
@@ -70,11 +70,12 @@ Template.topN.events = {
 	},
 	//topN报告生成
 	"click #generatereport" : function(){
-	   LoadingModal.loading();
+	   //LoadingModal.loading();
 		    SvseTopNDao.checkTopNresultlistSelect(getTopNListSelectAll());
-            SvseTopNDao.updateTopNStatus(getTopNListSelectAll()," No",function(result){
+            SvseTopNDao.generatereport(getTopNListSelectAll()," No",function(result){
                 if(result.status){
-                    SystemLogger("改变状态"+result.option.count+"条");
+                   // SystemLogger("生成报告"+result.option.count+"条");
+				   SystemLogger("生成报告"+result+"条");
                         }
                 });
 	},
@@ -98,15 +99,26 @@ Template.topN.events = {
 						});
 	  },
     "click tbody tr td":function(e){
-	   console.log("yes2222222222");
+	    console.log("yes2222222222");
+		/*var onClickShowReport = this.sv_id;
+		onClickShowReport(event);*/
+		var checkTopNTopNByIds = this.ids;
 		
-		var checkTopNresultlistSelect = this.sv_id;
-		if(SessionManage.getCheckTopNresultlistSelect() === checkTopNresultlistSelect)
+		if(SessionManage.getcheckTopNTopNByIds() === checkTopNTopNByIds)
 			return;
-		if(!checkTopNresultlistSelect || checkTopNresultlistSelect=="") return;
+		if(!checkTopNTopNByIds || checkTopNTopNByIds=="") return;
 		//存储选中监视器的id
-		SessionManage.setCheckTopNresultlistSelect(checkTopNresultlistSelect);
-		list(checkTopNresultlistSelect);
+		SessionManage.setcheckTopNTopNByIds(checkTopNTopNByIds);
+		list(checkTopNTopNByIds);
+		/*1111111
+		var checkedMonitorId = this.sv_id;
+		if(SessionManage.getCheckedMonitorId() === checkedMonitorId)
+			return;
+	//	var status = this.status;
+		if(!checkedMonitorId || checkedMonitorId=="") return;
+		//存储选中监视器的id
+		SessionManage.setCheckedMonitorId(checkedMonitorId);
+		drawImage(checkedMonitorId);*/
 		}
 }
 
@@ -276,14 +288,27 @@ Template.topNlist.topNresultlist = function(){
 	return SvseTopNresultlist.find({},page.skip());
 	
 }
-//获取日志的集合
-Template.topN_detail.topNresultlist = function(){
+//获取日志的集合列表
+Template.topN_detail.topN_detaillist = function(){
 	console.log(SvseTopNDao.getTopNresultlist());
 	//return SvseTopNDao.getTopNresultlist();
-	return SvseTopNresultlist.find({},page.skip());
-	
+	//return SvseTopNresultlist.find({},page.skip());
+	return SvseTopNDao.getTopNresultlist();
 }
+Template.warnerrulelog.warnerruleoflist = function(){
+	console.log(SvseWarnerRuleDao.getWarnerRuleList());
+	return SvseWarnerRuleDao.getWarnerRuleList();
+}
+//日志分页列表
+/*var page = new Pagination("topN_detailPagination",{perPage:2});
 
+Template.topN_detail.svseTopNresultlist = function(){
+  return SvseTopNresultlist.find({},page.skip());
+}
+  
+Template.topN_detail.pager = function(){
+  return page.create(SvseTopNresultlist.find().count());
+}*/
 //分页列表
 var page = new Pagination("topNPagination",{perPage:2});
 

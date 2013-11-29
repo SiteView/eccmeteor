@@ -60,6 +60,16 @@ SvseContrastDao = {
 			}
 			fn({status:true,content:result});
 		});
+	},
+	//查询数据库监测记录
+	getQueryRecordsByTime : function(id,startDate,endDate,fn){
+		Meteor.call(SvseMonitorDao.AGENT,"getQueryRecordsByTime",[id,startDate,endDate],function (err,result){
+			if(err){
+				fn({status:false,msg:err})
+				return;
+			}
+			fn({status:true,content:result});
+		});
 	}
 
 

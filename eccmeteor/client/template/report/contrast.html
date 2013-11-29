@@ -20,12 +20,12 @@
 			</div>
 				</div>
 				<div class="span8">
-					 {{> Contrastlist}}
-					 {{> rMenu}}
-					 {{> helpmessage}} 
-					 {{> exportreport}}
-					  {{> ContrastDetailData}}
-					   {{> detailLine}}
+					{{> Contrastlist}}
+					{{> rMenu}}
+					{{> helpmessage}} 
+					{{> exportreport}}
+					{{> ContrastDetailData}}
+					{{> detailLine}}
 					   
 				</div>
 			</div>
@@ -43,14 +43,17 @@
 	<div class="tab-pane active" id="home1"></div>
 	<div class="accordion-group">
 		<a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#contrastListCollapseOne">查询条件</a>
-		<div class="panel-group" id="accordion"></div>
+		<div class="panel-group" id="accordion">
+		</div>
 		<div id="contrastListCollapseOne" class="panel-collapse collapse in">
 			<form class="well form-horizontal form-inline" onsubmit="return false;">
 				<fieldset>
 				<div class="well">
 				<ul class="breadcrumb">
-							  <li><a href="###" name='{"hours":-2}'></a><span class="divider"></span></li>
-							  </ul>
+					<li><a href="###" name='{"hours":-2}'></a>
+					<span class="divider"></span>
+					</li>
+				</ul>
 					<div class="form-inline">
 						<span>{{language.startTime}}:</span>
 						<div id="datetimepickerStartDate" class="input-append date form_datetime">
@@ -106,9 +109,10 @@
 						</tr>
 					</thead>
 					<tbody>
+						
 						{{#each contrastDetailTableData}}
 						<tr>
-							<td>{{nameTh}}</td>
+							<td>{{label}}</td>
 							<td>{{label}}</td>
 							<td>{{max}}</td>
 							<td>{{mean}}</td>
@@ -127,6 +131,7 @@
 	</div>
 </div>
 </Template>
+
 <Template name="detailLine">
 <div style="overflow-y: auto; left: 0px;height: 250px;">
 	<div class="accordion-group">

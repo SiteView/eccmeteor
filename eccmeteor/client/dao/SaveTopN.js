@@ -89,8 +89,8 @@ SvseTopNDao = {
 			}
 		});
 	},
-	"generatereport":function(addressname,address,fn){
-		Meteor.call(SvseTopNDao.AGENT,'generatereport',[addressname,address],function(err,result){
+	"generatereport":function(ids,status,fn){
+		Meteor.call(SvseTopNDao.AGENT,'generatereport',[ids,status],function(err,result){
 			if(err){
 	 			SystemLogger(err);
 	 			fn({status:false,msg:err})

@@ -1,18 +1,31 @@
 var getContrastListSelectAll = function(){
 	return ClientUtils.tableGetSelectedAll("contrastlist");
 }
-Session.setDefault('query', {datetimepickerStartDate:"", datetimepickerEndDate:""});
+
 Template.contrast.events = {
     //查询
 	  "click #search" : function(){
-	   console.log("@@@@");
-	  /* var queryCondition = {
-	   datetimepickerStartDate: $("#datetimepickerStartDate").val(),
-	   datetimepickerEndDate:$("#datetimepickerEndDate").val()
-	   };
-	    Session.set('query',queryCondition);*/
-		drawDetailLineAgain();
-		console.log("!!!!!!!!!!");
+			console.log("@@@@");
+			drawDetailLineAgain();
+			console.log("!!!!!!!!!!");
+		//判断是否选择选择监测器
+		  var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
+		  var targets = [];
+		  var contrastlist = ClientUtils.formArrayToObject($("#contrastlist").serializeArray());
+		  var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
+			for(index in arr){
+			targets.push(arr[index].id);
+			}
+			contrastlist["GroupRight"] = targets.join();
+			
+			$(":checkbox[name='Status']").each(function(){
+			if(!this.checked) contrastlist["Status"]="Yes";
+		});
+        contrastlist["AlertTarget"] = targets.join();
+		if(!contrastlist["AlertTarget"]){
+			Message.info("请选择选择选择监测器！",{align:"center",time:3});
+			return;
+		}
 		
 	},
 		  
@@ -53,7 +66,8 @@ Template.contrast.events = {
 		   //LoadingModal.loading();
 			$('#helpmessagediv').modal('toggle');
 		  }
-		  
+
+
 }
 	/*
 	 查询结果数据列表
@@ -125,7 +139,7 @@ Template.contrast.events = {
 	return branch;		‌
 }*/
 	
-	Template.ContrastDetailData.rendered = function(){
+	Template.MonitorStatisticalDetailData.rendered = function(){
 	
 	}
 	
@@ -236,7 +250,7 @@ Template.contrast.rendered = function(){
 	};
 	
 	 var template = this;
-        $(function() { //初始化日期选择器
+            $(function() { //初始化日期选择器
                 var endDate = new Date();
                 var startDate = new Date();
                 startDate.setTime(startDate.getTime() - 1000*60*60*24);
@@ -263,34 +277,32 @@ Template.contrast.rendered = function(){
 				// });
 });
 
-/*//判断是否选择选择监测器
-      var targets = [];
-	    var contrastlist = ClientUtils.formArrayToObject($("#contrastlist").serializeArray());
-	    var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
-			for(index in arr){
-			targets.push(arr[index].id);
-			}
-			contrastlist["GroupRight"] = targets.join();
-			
-			$(":checkbox[name='Status']").each(function(){
-			if(!this.checked) contrastlist["Status"]="Yes";
-		});
-        contrastlist["AlertTarget"] = targets.join();
-		if(!contrastlist["AlertTarget"]){
-			Message.info("请选择选择选择监测器！",{align:"center",time:3});
-			return;
-		}*/
-
-
 }
 	
 Template.rMenu.monitortypelist = function () {
 	
 }
+var PagerMonitor = new Pagination("subentitylist",{currentPage: 1,perPage:5});
 
-Template.ContrastDetailData.contrastDetailData = function(){
+Template.MonitorList.pagerMonitor = function(){
+	var entityId = SessionManage.getCheckedTreeNode("id");
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
+	return PagerMonitor.create(SvseTreeDao.getNodeCountsByIds(childrenIds));
+}
+
+Template.MonitorList.Monitors = function(){
+	var entityId = SessionManage.getCheckedTreeNode("id");
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
+    return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip());
+}
+
+Template.ContrastDetailData.ContrastDetailData = function(){
 	return SessionManage.getContrastDetailTableData();
 }
+/*Template.MonitorStatisticalDetailData.monitorStatisticalDetailTableData = function(){
+	return SessionManage.getMonitorStatisticalDetailTableData();
+}*/
+
 	
 	//画图前 获取相关数据
 function drawImage(id,count){

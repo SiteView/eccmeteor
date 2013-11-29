@@ -61,7 +61,7 @@ SvseTopNOnServer = {
 			console.log("addressresult is");
 			console.log(addressresult);
 	
-			SvseTopNresultlist.update(s_id,{$set:addressresult},function(err){
+			SvseTopNresultlist.generate(s_id,{$set:addressresult},function(err){
 				if(err){
 					Log4js.error(err);
 			    	throw new Meteor.Error(500,err);
@@ -69,11 +69,11 @@ SvseTopNOnServer = {
 				}
 			})
 	},
-	"generatereport":function(addressname,address){
+	"generatereport":function(ids,status){
 	        
 			Log4js.info("SvseTopNOnServer generatereport");
 			
-			var result = SvseMethodsOnServer.svWriteTopNIniFileSectionString(addressname,address);
+		/*	var result = SvseMethodsOnServer.svWriteTopNIniFileSectionString(addressname,address);
 		   	if(!result){
 				var msg = "SvseTopNDaoOnServer's addTopN  generate " + addressname +"faild";
 				SystemLogger.log(msg,-1);
@@ -95,7 +95,22 @@ SvseTopNOnServer = {
 			    	throw new Meteor.Error(500,err);
 					
 				}
-			})
+			})*/
+			var count = 0;
+		    for(index in ids){
+			var id = ids[index];
+			console.log("CH8888999");
+			var result = SvseMethodsOnServer.svWriteTopNStatusInitFilesection(id,status);
+			if(result){
+				SvseTopNresultlist.update(SvseTopNresultlist.findOne({nIndex:id})._id,{$set:{"Deny":status}});
+				count = count+1;
+			}else{
+				var msg = "SvseTopNDaoOnServer's generatereport "+index+" faild";
+				SystemLogger.log(msg,-1);
+			}
+		}
+		console.log("~~~~~~~~~~~~~~>>>>");
+		return SvseTopNOnServer.getReturn(true,1);
 	},
 	"getMonitorTemplate" : function(){
 		return SvseMethodsOnServer.svGetMonitorTemplate();
