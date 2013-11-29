@@ -922,14 +922,9 @@ svGetScriptFileofScriptAlert=function(){
 svGetQueryAlertLog = function(beginDate,endDate,alertQueryCondition){
 	var robj = process.sv_forest({
 		'dowhat':'QueryAlertLog',
-		//alertName:alertQueryCondition.AlertName,
-		//alertReceive:alertQueryCondition.OtherNumber,
-		//alertType:alertQueryCondition.AlertType,
-		//id:"dxSB5vs6G7R2DRu5u",
-		alertIndex:"18626",
-		alertName:"rere",
-		alertReceive:"siyte@cc.com",
-		alertType:"EmailAlert",
+		alertName:alertQueryCondition.AlertName,
+		alertReceive:alertQueryCondition.AlertReceiver,
+		alertType:alertQueryCondition.AlertType,
 		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
 		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
 	}, 0);
@@ -937,13 +932,12 @@ svGetQueryAlertLog = function(beginDate,endDate,alertQueryCondition){
 		Log4js.error(robj.estr(0),-1);
 		return false;
 	}
+	console.log(alertQueryCondition);
 	var fmap = robj.fmap(0);
-	console.log(fmap);
 	var alertLogRecords = [];
 	for(r in fmap){
 		alertLogRecords.push(fmap[r]);
 	}
 	
-	console.log(alertLogRecords);
 	return alertLogRecords;
 }

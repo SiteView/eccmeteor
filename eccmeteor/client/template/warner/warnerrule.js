@@ -394,6 +394,68 @@ Template.warnerrulelist.events = {
 			}
 		}
 		
+	},
+	
+	//点击表中的行时勾选框并查询报警日志
+	"click tbody tr":function(){
+		var index = this.nIndex;
+		//当点击行选中时，让其他的选中取消
+		var ids = ClientUtils.tableGetSelectedAll("warnerrulelist");
+		console.log(ids);
+		for(var i = 0;i< ids.length;i++){
+			$("#"+ids[i]).prop("checked",false);
+		}
+		
+		var flag = $("#"+index).prop("checked");
+		if(!flag){
+			$("#"+index).prop("checked",true);
+		}
+		
+		var end = new Date();
+		var start = new Date();
+		start.setTime(start.getTime() - 1000*60*60*24);
+		
+		var beginDate = ClientUtils.dateToObject(start);
+		var endDate = ClientUtils.dateToObject(end);
+		console.log("#############################");
+		console.log(beginDate);
+		console.log(beginDate["month"]);
+		console.log(endDate);
+		console.log("#######################");
+		console.log(this);
+		var querylogCondition = {AlertName:this.AlertName,AlertReceiver:"",AlertType:""};
+		console.log(querylogCondition);
+		SvseWarnerRuleDao.getQueryAlertLog(beginDate,endDate,querylogCondition,function(result){
+			console.log("result");
+			if(!result.status){
+				Log4js.info(result.msg);
+				return;
+			}
+			console.log(result);
+			var dataProcess = new DataProcess(result.content);
+			var resultData = dataProcess.getData();
+			if(!resultData){
+				console.log("查出报警日志没有数据");
+				return;
+			}
+			//console.log(resultData.length);
+			console.log(resultData);
+			//绘制表
+			for(var i = 0;i < resultData.length;i++){
+				var data = resultData[i];
+				//判断报警状态的显示
+				if(data["_AlertStatus"] == 0){
+					data["_AlertStatus"] = "Fail";
+				}
+				if(data["_AlertStatus"] == 1){
+					data["_AlertStatus"] = "Success";
+				}
+				var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
+				+"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
+				$("#warnerruleloglist").append(tbody);
+			}
+			
+		});
 	}
 
 }

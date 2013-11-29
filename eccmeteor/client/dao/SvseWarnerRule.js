@@ -107,5 +107,5 @@ SvseWarnerRuleDao = {
 			console.log("log");
 			fn({status:true,content:result});
 		});
-	}
+	},
 }

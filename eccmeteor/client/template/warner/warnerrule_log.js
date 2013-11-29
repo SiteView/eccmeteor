@@ -1,3 +1,17 @@
+// var logPage = new Pagination("alertLogList",{currentPage:1,perPage:6});
+
+// Template.selectwarnerloglist.queryalertlog = function(){
+	// var queryalertlog = Session.get("queryAlertLog");
+	// console.log(queryalertlog);
+	// return queryalertlog(logPage.skip());
+// }
+
+// Template.selectwarnerloglist.logPager = function(){
+	// var queryalertlog = Session.get("queryAlertLog");
+	// var count = queryalertlog.length;
+	// return logPage.create(count);
+// }
+
 Template.warnerrulelog.rendered = function(){
 	var template = this;
 	$(function() { //初始化日期选择器
@@ -47,7 +61,7 @@ Template.warnerrulelog.rendered = function(){
 				}
 			}
 		});
-		alertloglist();
+		
 	});
 }
 
@@ -71,9 +85,52 @@ Template.warnerrulelog.alertReceivers = function(){
 
 //报警日志的查询事件
 Template.warnerrulelog.events({
-	// "click #selectalertlogbtn":function(){
-	
-	// }
+	"click #selectalertlogbtn":function(){
+		var alertlogquerycondition = ClientUtils.formArrayToObject($("#alertlogquerycondition").serializeArray());
+		console.log(alertlogquerycondition);
+		$("#warnerloglist").empty();
+		var startPicker = $('#alertdatetimepickerStartDate').data('datetimepicker');
+		var endPicker = $('#alertdatetimepickerEndDate').data('datetimepicker');
+		var beginDate = ClientUtils.dateToObject(startPicker.getDate());
+		var endDate = ClientUtils.dateToObject(endPicker.getDate());
+		console.log("#############################");
+		console.log(beginDate);
+		console.log(beginDate["month"]);
+		console.log(endDate);
+		console.log("#######################");
+		
+		SvseWarnerRuleDao.getQueryAlertLog(beginDate,endDate,alertlogquerycondition,function(result){
+			console.log("result");
+			if(!result.status){
+				Log4js.info(result.msg);
+				return;
+			}
+			console.log(result);
+			var dataProcess = new DataProcess(result.content);
+			var resultData = dataProcess.getData();
+			if(!resultData){
+				console.log("查出报警日志没有数据");
+				return;
+			}
+			//console.log(resultData.length);
+			console.log(resultData);
+			//绘制表
+			for(var i = 0;i < resultData.length;i++){
+				var data = resultData[i];
+				//判断报警状态的显示
+				if(data["_AlertStatus"] == 0){
+					data["_AlertStatus"] = "Fail";
+				}
+				if(data["_AlertStatus"] == 1){
+					data["_AlertStatus"] = "Success";
+				}
+				var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
+				+"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
+				$("#warnerloglist").append(tbody);
+			}
+			
+		});
+	}
 });
 
 
@@ -146,8 +203,8 @@ var alertReceiver = function(){
 	return result;
 }
 
-var alertloglist = function(){
-	var warner = SvseWarnerRuleDao.getAlertByName("rere");
+/* var alertloglist = function(){
+	var warner = SvseWarnerRuleDao.getAlertByName("er");
 	console.log(warner);
 	
 	var startPicker = $('#alertdatetimepickerStartDate').data('datetimepicker');
@@ -159,7 +216,7 @@ var alertloglist = function(){
 	console.log(beginDate["month"]);
 	console.log(endDate);
 	console.log("#######################");
-	
+	var resultData = null;
 	SvseWarnerRuleDao.getQueryAlertLog(beginDate,endDate,warner,function(result){
 		console.log("result");
 		if(!result.status){
@@ -167,5 +224,11 @@ var alertloglist = function(){
 			return;
 		}
 		console.log(result);
+		var dataProcess = new DataProcess(result.content);
+		resultData = dataProcess.getData();
+		console.log(resultData.length);
+		//Session.set("queryAlertLog",resultData);
+		console.log(resultData);
 	});
-}
+	console.log(resultData);
+} */
