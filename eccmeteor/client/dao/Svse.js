@@ -360,6 +360,9 @@ Object.defineProperty(SvseDao,"calculateGroupsAllEntityAndMonitorStatus",{
 			for(var subEntityIndex  = 0 ; subEntityIndex < subEntitiesNumber ; subEntityIndex++){
 				//统计一个设备的监视器数量
 				var subEntityOne =Svse.findOne({sv_id:subEntities[subEntityIndex]});
+				if(!subEntityOne){
+					continue;
+				}
 				var subMonitors = subEntityOne.submonitor;
 				var subMonitorsNumber = subMonitors ? subMonitors.length : 0;
 				data.monitor  = data.monitor + subMonitorsNumber;
