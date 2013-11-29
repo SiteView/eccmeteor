@@ -38,7 +38,18 @@ var NavigationSettingTreeEvents = {
 	"trend":function(){
 		SwithcView.view(REPORT.TREND)
 	},
-
+/*
+	Type： add 
+	Author：xuqiang
+	Date:2013-11-28 15:00
+	Content:增加任务计划的 绝对时间任务计划
+	*/ 
+	"taskabsolute":function(){
+		SwithcView.view(TASK.TASKABSOLUTE)
+	},
+	"taskperiod":function(){
+		SwithcView.view(TASK.TASKPERIOD)		
+	},
 	/*
 	Type：add
 	Author：renjie

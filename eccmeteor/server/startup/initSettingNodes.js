@@ -41,8 +41,8 @@ Date:2013-11-27 14:40
 Content:对左侧导航树上增加任务计划，SysLog设置，用户操作日志等剩余的节点
 */ 
 			{id:4,pId:2,name:"Task",action:"task",type:"setting",icon:"imag/setting/task.gif"},
-			{id:41,pId:4,name:"TaskAbsolute",action:"TaskAbsolute",type:"task",icon:"imag/setting/task.gif"},
-			{id:42,pId:4,name:"TaskPeriod",action:"TaskPeriod",type:"task",icon:"imag/setting/task.gif"},
+			{id:41,pId:4,name:"TaskAbsolute",action:"taskabsolute",type:"task",icon:"imag/setting/task.gif"},
+			{id:42,pId:4,name:"TaskPeriod",action:"taskperiod",type:"task",icon:"imag/setting/task.gif"},
 			{id:43,pId:4,name:"TaskRelative",action:"TaskRelative",type:"task",icon:"imag/setting/task.gif"},
 			{id:25,pId:2,name:"SysLogSet",action:"SysLogSet",type:"setting",icon:"imag/setting/SysLogQuery.png"},
 			{id:26,pId:2,name:"OperateLog",action:"OperateLog",type:"setting",icon:"imag/setting/SysLogQuery.png"},
