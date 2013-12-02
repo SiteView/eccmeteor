@@ -136,8 +136,20 @@
 			"time":"时段对比报告",
 			"monitorInfo":"监测器信息报告",
 			"SysLogQuery":"系统日志查询",
+<<<<<<< HEAD
 			
 			
+=======
+			"Task":"任务计划",
+			"TaskAbsolute":"绝对时间任务计划",
+			"TaskPeriod":"时间段任务计划",
+			"TaskRelative":"相对时间任务计划",
+			"SysLogSet":"SysLog设置",
+			"OperateLog":"用户操作日志",
+			"SystemDiagnosis":"系统诊断",
+			"License":"软件许可",
+			"About":"产品介绍"
+>>>>>>> meteorite
 		}
 	}
 }

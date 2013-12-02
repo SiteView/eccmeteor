@@ -15,7 +15,6 @@
 			</div>
 		</div>	
 	</div>
-	{{> ForbidEquipments}} <!--禁止组设备和监视器-->
 </Template>
 <!--决定渲染 SettingLayout 或者 EquipmentsLayout-->
 <Template name="ControlViewLayout">
@@ -26,8 +25,8 @@
 
 <Template name="SettingLayout">
     <div class="row-fluid">
-	{{#if viewType}}
-		{{renderPage viewType}}
+	{{#if viewTypeForSetting}}
+		{{renderPage viewTypeForSetting}}
 	{{/if}}
 	</div>
 </Template>
@@ -35,8 +34,9 @@
 <Template name="EquipmentsLayout"><!-- 设备或者组或者监视器的视图 -->
     {{> operateNode}}
 	<div class="row-fluid">
-	{{#if viewType}}
-		{{renderPage viewType}}
+	{{#if viewTypeForEquipments}}
+		{{renderPage viewTypeForEquipments}}
 	{{/if}}
 	</div>
+	<div id="ForbidEquipmentsModal"></div>
 </Template>

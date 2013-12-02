@@ -1,8 +1,3 @@
-/*
-Template.EntitiesGroupByType.entityGroup = function(){
-	return SvseEntityTemplateDao.getEntityGroup();
-}
-*/
 Template.EntitiesGroupByType.getEntityPropertyById = function(id){
 	return SvseEntityTemplateDao.getEntityPropertyById(id);
 }
@@ -20,6 +15,5 @@ Template.EntitiesGroupByType.events({
 })
 
 Template.EntitiesGroupByType.rendered = function(){
-	//ModalDrag.draggable("#entitiesGroupByTypeDiv");
 	ModalDrag.draggable($(this.find(".modal")));
 }

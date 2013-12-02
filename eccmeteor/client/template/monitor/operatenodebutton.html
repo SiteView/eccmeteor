@@ -8,11 +8,11 @@
 			{{#with statisticalData}}
 			<div class="span6 pull-right"  style="text-align:right">
 			 	<ul class="unstyled inline">
-			 		{{#unless isNull entity}}
+			 		{{#if entity}}
 					<li>
 						<img src="imag/status/entity.png"/>设备({{entity}})
 					</li>
-					{{/unless}}
+					{{/if}}
 					<li>
 						<img src="imag/status/monitor.png"/>
 						<a href="#" title="false">监视器({{monitor}})</a>
@@ -23,7 +23,7 @@
 					</li>
 					<li>
 						<img src="imag/status/error.png"/>
-						<a href="#" title="error">错误({{error}})</a>
+						<a href="#" title="bad">错误({{bad}})</a>
 					</li>
 					<li>
 						<img src="imag/status/warning.png"/>
@@ -47,9 +47,9 @@
 				<button class="btn" id="addMonitor"><i class="icon-plus"></i>添加监视器</button>
 				{{/if}}
 			<!--	<button class="btn" id="editMonitor">编辑监视器</button> -->
-				<button class="btn">更多</button>
 				<button class="btn dropdown-toggle" data-toggle="dropdown">
-				<span class="caret"></span>
+					更多
+					<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu pull-right">
 					{{#if isNodeEnabled sv_id "enableMul"}}	
@@ -83,9 +83,9 @@
 				{{#if isNodeEnabled sv_id "addEntity"}}
 				<button class="btn" id="addEntity"><i class="icon-plus"></i>增加设备</button>
 				{{/if}}
-				<button class="btn">更多</button>
 				<button class="btn dropdown-toggle" data-toggle="dropdown">
-				<span class="caret"></span>
+					更多
+					<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu pull-right">
 					{{#if isNodeEnabled sv_id "enableMul"}}
@@ -117,6 +117,19 @@
 				<button class="btn" id="refresh">
 					<i class="icon-refresh"></i>刷新
 				</button>
+			</div>
+			<div class="pull-right">
+				<label class="checkbox">
+			      	每页
+			      	<select class="input-small">
+					  <option value=10  {{#if equal PERPAGE 10}}selected{{/if}}>10</option>
+					  <option value=20  {{#if equal PERPAGE 20}}selected{{/if}}>20</option>
+					  <option value=30  {{#if equal PERPAGE 30}}selected{{/if}}>30</option>
+					  <option value=50  {{#if equal PERPAGE 50}}selected{{/if}}>50</option>
+					  <option value=5   {{#if equal PERPAGE 5}}selected{{/if}}>100</option>
+					</select>
+					条
+			    </label>	
 			</div>
 		</div>
 		{{/if}}

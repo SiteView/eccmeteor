@@ -122,14 +122,14 @@ SvseMonitorTemplateDao ={
 		}
 	},
 	getMonityDynamicPropertyData:function(panrentid,templateMonitoryId,fn){
-		console.log("getMonityDynamicPropertyData templateMonitoryId is:"+templateMonitoryId);
+	//	console.log("getMonityDynamicPropertyData templateMonitoryId is:"+templateMonitoryId);
 		Meteor.call(
 			SvseMonitorTemplateDao.AGENT,
 			"getMonityDynamicPropertyData",
 			[panrentid,templateMonitoryId],
 			function(err,result){
 				if(err){
-					SystemLogger(err);
+					Log4js.error(err);
 					fn(false,err)
 				}else{
 					fn(true,result);

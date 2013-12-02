@@ -4,6 +4,9 @@
 var NodeRemenber = function(key){
 	this.key = key;
 	this.getCookie = function(){
+		if(!jQuery || !jQuery.cookie){
+			return false;
+		}
 		var str =$.cookie(this.key);
 		if(!str || !str.length)
 			return false;

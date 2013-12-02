@@ -8,13 +8,13 @@ Template.ControlViewLayout.viewlayout = function(){
 	return Session.get("layout");
 }
 /*
-	视图类型
+	视图类型  设备
 */
-Template.SettingLayout.viewType = function(){
-	return Session.get("ViewType"); //在SwitchView中进行定义
+Template.SettingLayout.viewTypeForSetting = function(){
+	return Session.get("ViewTypeForSetting"); //在SwitchView中进行定义
 }
 
-Template.EquipmentsLayout.viewType = function(){
+Template.EquipmentsLayout.viewTypeForEquipments = function(){
 	return Session.get("ViewType"); //在  MoitorContentTree -> drawSvseSimpleTree -> callback 中进行定义
 }
 

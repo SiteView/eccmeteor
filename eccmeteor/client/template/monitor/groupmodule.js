@@ -1,10 +1,11 @@
-var PagerGroup = new Pagination("subgrouplist",{currentPage: 1,perPage:5});
-var PagerEntity = new Pagination("subentitylist",{currentPage: 1,perPage:5});
+var PagerGroup = new Pagination("subgrouplist");
+var PagerEntity = new Pagination("subentitylist");
 //子组分页
 Template.showGroupAndEntity.groupPager = function(){
     var id = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subgroup");
     var status = SessionManage.getEntityListFilter();
+    status = status === "bad" ? "error" : status ; //监视器时，为bad，设备或组时为error
     return PagerGroup.create(SvseTreeDao.getNodeCountsByIds(childrenIds,status));
 }
 //设备分页
@@ -12,7 +13,8 @@ Template.showGroupAndEntity.entityPager = function(){
     var id = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subentity");
     var status = SessionManage.getEntityListFilter();
-    return PagerGroup.create(SvseTreeDao.getNodeCountsByIds(childrenIds,status));
+    status = status === "bad" ? "error" : status ; //监视器时，为bad，设备或组时为error
+    return PagerEntity.create(SvseTreeDao.getNodeCountsByIds(childrenIds,status));
 }
 
 Template.showGroupAndEntity.getEntityTemplateNameByType = function(type){
@@ -22,15 +24,19 @@ Template.showGroupAndEntity.getEntityTemplateNameByType = function(type){
 Template.showGroupAndEntity.subgroup = function(){
     var id = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subgroup");
-    var status = SessionManage.getEntityListFilter();
-    return SvseTreeDao.getNodesByIds(childrenIds,status,PagerGroup.skip());
+    var status = SessionManage.getEntityListFilter();  //监视器时，为bad，设备或组时为error
+    status = status === "bad" ? "error" : status ;
+    var perPage = Session.get("PERPAGE");
+    return SvseTreeDao.getNodesByIds(childrenIds,status,PagerGroup.skip({perPage:perPage}));
 }
 
 Template.showGroupAndEntity.subentity = function(){
     var id = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(id,"subentity");
     var status = SessionManage.getEntityListFilter();
-    return SvseTreeDao.getNodesByIds(childrenIds,status,PagerEntity.skip());
+    status = status === "bad" ? "error" : status ;//监视器时，为bad，设备或组时为error
+    var perPage = Session.get("PERPAGE");
+    return SvseTreeDao.getNodesByIds(childrenIds,status,PagerEntity.skip({perPage:perPage}));
 }
 
 Template.showGroupAndEntity.events({

@@ -1,4 +1,4 @@
-var PagerMonitor = new Pagination("subentitylist",{currentPage: 1,perPage:5});
+var PagerMonitor = new Pagination("subentitylist");
 
 Template.MonitorList.pagerMonitor = function(){
 	var entityId = SessionManage.getCheckedTreeNode("id");
@@ -9,7 +9,8 @@ Template.MonitorList.pagerMonitor = function(){
 Template.MonitorList.Monitors = function(){
 	var entityId = SessionManage.getCheckedTreeNode("id");
     var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
-    return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip());
+    var perPage = Session.get("PERPAGE");
+    return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip({perPage:perPage}));
 }
 
 Template.MonitorList.events={
@@ -41,6 +42,7 @@ Template.MonitorList.events={
 
       	var context = getMonitorInfoContext(monitorTemplateId,monitorTemplateName);
       	context["monitorId"] = monitorId;
+		console.log(context);
       	var entityId = SessionManage.getCheckedTreeNode("id");
 		//处理可能处在的动态监视器属性
 		//判断改监视器是否具有动态属性
@@ -53,30 +55,44 @@ Template.MonitorList.events={
 				break;
 			}
 		}
-		//监视器不具备动态属性。直接渲染弹窗
-		if(!DynamicParameters){
-			RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
-			return;
-		}
-		//具备动态属性 && 获取动态属性
-		LoadingModal.loading();
-		SvseMonitorTemplateDao.getMonityDynamicPropertyData(entityId,monitorTemplateId,function(status,result){
-			LoadingModal.loaded();
-			if(!status){
-				Log4js.error(result);
-				Message.error("获取监视器动态属性失败！");
+		
+		SvseMonitorDao.getMonitor(monitorId,function(err,result){
+			if(err){
+				Log4js.error(err);
+				Message.error(result);
 				return;
 			}
-			var optionObj = result["DynamicData"];
-			var DynamicDataList = [];
-			for(name in optionObj){
-				DynamicDataList.push({key:name,value:optionObj[name]});
+			var monitor = result;
+			console.log(monitor);
+			//监视器不具备动态属性。直接渲染弹窗
+			if(!DynamicParameters){
+				context = megerTemplateAndFactData(context,monitor);//合并模板数据和实际数据
+			//	RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
+				console.log("不具备动态属性 合并后的实例");
+				console.log(context);
+				return;
 			}
-			//给对应的设备赋值
-			context.MonityTemplateParameters[DynamicParameters.index]["selects"] = DynamicDataList;
-			RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
+			//具备动态属性 && 获取动态属性
+			SvseMonitorTemplateDao.getMonityDynamicPropertyData(entityId,monitorTemplateId,function(status,result){
+		//		LoadingModal.loaded();
+				if(!status){
+					Log4js.error(result);
+					Message.error("获取监视器动态属性失败！");
+					return;
+				}
+				var optionObj = result["DynamicData"];
+				var DynamicDataList = [];
+				for(name in optionObj){
+					DynamicDataList.push({key:name,value:optionObj[name]});
+				}
+				//给对应的设备赋值
+				context.MonityTemplateParameters[DynamicParameters.index]["selects"] = DynamicDataList;
+				context = megerTemplateAndFactData(context,monitor);//合并模板数据和实际数据
+				console.log("具备动态属性 并后的实例");
+				console.log(context);
+				//RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
+			});
 
-     		getEditMonitorDynamicInfoData(id);
 		});
     },
     "mouseenter #showMonitorList img":function(e){
@@ -101,14 +117,29 @@ Template.MonitorList.rendered = function(){ //默认选中第一个监视进行�
     });
 	//默认选中第一个监视器，展示数据
 	//console.log("默认画图id是："+this.find("td input:checkbox").id);
-	var defaultMonitorId = this.find("td input:checkbox").id ;
-	$(this.find("tbody tr")).addClass("success");
+	//第一判断当前是否还有监视器
+	var defaultMonitor = this.find("td input:checkbox");
+	if(!defaultMonitor){
+		emptyImage();
+		return;
+	}
+	//第二 先默认选择第一个监视器的id
+	var defaultMonitorId = defaultMonitor.id;
+	//第三 判断页面刷新前是否已经选中了监视器
+	var parentid  = SessionManage.getCheckedTreeNode("id");
+	var checkedMonitorId = SessionManage.getCheckedMonitorId();
+	if(checkedMonitorId && checkedMonitorId.indexOf(parentid) !== -1){ //当后台数据自动更新时 不切换当前选中监视器
+		//判断已经选中的监视器是否还存在 //避免多客户端对当前监视器进行删除
+		if(this.find("input:checkbox[id='"+checkedMonitorId+"']")){
+			defaultMonitorId = checkedMonitorId;  //存在 的话
+		}
+	}
 	if(defaultMonitorId && defaultMonitorId !== ""){
+		$(this.find("input:checkbox[id='"+defaultMonitorId+"']")).parents("tr").addClass("success");
 		drawImage(defaultMonitorId);
 	}else{
 		emptyImage();
-	}
-	
+	}	
 }
 
 Template.MonitorStatisticalSimpleData.recordsData = function(){
@@ -240,4 +271,71 @@ var getMonitorInfoContext = function(monitorTemplateId,monityTemplateName){
 		MonityFrequencyDom:MonityFrequencyDom,
 		AllTaskNames:AllTaskNames
 	}
+}
+
+/*
+合并模板数据和实际数据
+*/
+var megerTemplateAndFactData = function(MTempalte,MInstance){
+	//合并advanceParameter
+	var advanceMT = MTempalte.MonityTemplateAdvanceParameters;
+	var advanceMI =  MInstance.advance_parameter;
+	if(advanceMT.length && advanceMI){
+		for(ap in advanceMI){
+			for(apIndex = 0 ; apIndex < advanceMT.length ; apIndex ++){
+				if(ap == advanceMT[apIndex].sv_name){
+					advanceMT[apIndex].sv_value = advanceMI[ap];
+					break;
+				}
+			}
+		}
+		MTempalte.MonityTemplateAdvanceParameters = advanceMT;
+	}
+	//合并状态
+	MTempalte.Error = mergeTemplateStatus(MTempalte.Error,MInstance.error);
+	MTempalte.Good = mergeTemplateStatus(MTempalte.Error,MInstance.good);
+	MTempalte.Warning = mergeTemplateStatus(MTempalte.Error,MInstance.warning);
+
+	//基础频率
+	var MonityFrequency = MTempalte.MonityFrequencyDom;
+	MonityFrequency[0]["sv_value"] = MInstance.parameter[MonityFrequency[0]["sv_name"]];
+	MonityFrequency[1]["sv_value"] = MInstance.parameter[MonityFrequency[1]["sv_name"]];
+	MTempalte.MonityFrequencyDom = MonityFrequency;
+
+	//普通属性
+	MTempalte["CommonProperty"] = MInstance.parameter;
+
+	//动态监视器属性
+	var MTDynamicProperty = MTempalte["MonityTemplateParameters"];
+	for(var dl = 0; dl < MTDynamicProperty.length; dl++){
+		if(MTDynamicProperty[dl]["sv_name"]){
+			MTDynamicProperty[dl]["sv_value"] =  MInstance.parameter[MTDynamicProperty[dl]["sv_name"]]
+		}
+	}
+	MTempalte["MonityTemplateParameters"] = MTDynamicProperty;
+	return MTempalte;
+}
+//合并状态
+var mergeTemplateStatus = function(MTStatus,MIStatus){
+	MTStatus.sv_conditioncount = MIStatus.sv_conditioncount;
+	MTStatus.sv_expression = MIStatus.sv_expression;
+	var selects = [];
+	for(property in MIStatus){
+		if(property.indexOf("sv_paramname") != -1){
+			var index = property.match(/\d+/g);
+			index = index === null ? "" : index[0];// index == null or index == ["123"];
+			selects.push({
+				"paramenameKey":property,
+				"paramenameValue":MIStatus[property],
+				"operateKey":("sv_operate"+index),
+				"operateValue":MIStatus[("sv_operate"+index)],
+				"sv_paramvalueKey":("sv_paramvalue"+index),
+				"sv_paramvalueValue":MIStatus[("sv_paramvalue"+index)],
+				"sv_relationKey":("sv_relation"+index),
+				"sv_relationVakue":MIStatus[("sv_relation"+index)]
+			})
+		}
+	}
+	MTStatus["selects"] = selects;
+	return MTStatus;
 }

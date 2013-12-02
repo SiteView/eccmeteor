@@ -76,6 +76,7 @@ var getLoadTaskName = function(){
 		var tasks = SvseTaskDao.getTaskNameByType(tasktype);
 		console.log(tasks);
 		for(var i=0;i<tasks.length;i++){
+			if(tasks[i] == "") continue;
 			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
 			$("#editmessagePlanlist").append(option);
 		}
@@ -96,6 +97,7 @@ var getEditTaskName = function(){
 			return;
 		}
 		for(var i=0;i<tasks.length;i++){
+			if(tasks[i] == "") continue;
 			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
 			$("#editmessagePlanlist").append(option);
 		}

@@ -1,3 +1,20 @@
+/**
+ Type:add
+ Author:huyinghuan
+ Date: 2013-11-27 10:47
+ Content :添加检查错误的机制 在服务端调用SvAPI时
+*/
+var checkErrorOnServer = function(robj){
+	if(typeof robj === "string"){
+		throw new Error("传入参数错误，请在相关日志中搜索具体信息");
+		return robj;
+	}
+	if(!robj.isok(0) &&robj.estr(0) !== ""){
+		throw new Error("传入参数错误，请在相关日志中搜索具体信息");
+		return robj.estr(0);
+	}
+	return false;
+}
 meteorSvUniv = function(dowhat){
 	var robj = process.sv_univ(dowhat, 0);	
 	if(!robj.isok(0)){
@@ -17,9 +34,10 @@ meteorSvForest = function(dowhat){
 
 svForest = function(dowhat){
     var robj = process.sv_forest(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),0);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
@@ -28,9 +46,10 @@ svForest = function(dowhat){
 svGetAllMonitorTempletInfo = function(){
 	var dowhat ={'dowhat':'GetAllMonitorTempletInfo'};
 	var robj = process.sv_univ(dowhat, 0);	
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
@@ -45,9 +64,10 @@ svGetTreeData = function(parentid){
 		'onlySon':false
 	}
 	var robj = process.sv_forest(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
@@ -67,9 +87,10 @@ svGetTreeDataChildrenNodes = function(id,type){
 		'id' : id
 	};
 	var robj = process.sv_univ(dowhat, 0);	
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
@@ -85,9 +106,10 @@ svGetDefaultTreeData = function(parentid,onlySon){
 		'onlySon'  : onlySon
 	}
 	var robj = process.sv_forest(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	return robj.fmap(0);
 }
@@ -98,9 +120,10 @@ svGetSVSE = function (id){
 		'id':id
 	}
 	var robj = process.sv_univ(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	return robj.fmap(0);
 }
@@ -111,9 +134,10 @@ svGetGroup = function (id){
 		'id':id
 	}
 	var robj = process.sv_univ(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	return robj.fmap(0);
 }
@@ -123,9 +147,10 @@ svGetEntity = function (id){
 		'id':id
 	}
 	var robj = process.sv_univ(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	return robj.fmap(0);
 }
@@ -146,27 +171,34 @@ svGetMonitorRuntimeRecords = function(id,count){
 
 //通过时间段获取记录数据
 svGetMonitorRuntimeRecordsByTime = function(id,beginDate,endDate){
-		var robj = process.sv_forest({
-			'dowhat':'QueryRecordsByTime',
-			id:id, 
-			begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
-			end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
-		}, 0);
-		var fmap = robj.fmap(0);
-		var runtiomeRecords = [];
-		for(r in fmap){
-			runtiomeRecords.push(fmap[r]);
-		}
-		return runtiomeRecords;
+	var robj = process.sv_forest({
+		'dowhat':'QueryRecordsByTime',
+		id:id, 
+		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
+		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
+	}, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		throw new Meteor.Error(500,flag);
+	}
+	var fmap = robj.fmap(0);
+
+	var runtiomeRecords = [];
+	for(r in fmap){
+		runtiomeRecords.push(fmap[r]);
+	}
+	return runtiomeRecords;
 }
 
 //获取监视器模板
 svGetMonitorTemplet = function(id){
 	var dowhat ={'dowhat':'GetMonitorTemplet',id:id};
 	var robj= process.sv_univ(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
@@ -176,10 +208,10 @@ svGetMonitorTemplet = function(id){
 GetAllEntityGroups = function(){
 	var dowhat ={'dowhat':'GetAllEntityGroups'};
 	var robj= process.sv_univ(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error("Errors: svdb's GetAllEntityGroups wrong!")
-		Log4js.error(robj.estr(0),0);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
@@ -188,10 +220,10 @@ GetAllEntityGroups = function(){
 GetEntityTemplet = function(id){
 	var dowhat ={'dowhat':'GetEntityTemplet',id:id};
 	var robj= process.sv_univ(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error("Errors: svdb's GetEntityTemplet wrong!")
-		Log4js.error(robj.estr(0),0);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
@@ -199,24 +231,25 @@ GetEntityTemplet = function(id){
 
 //获取设备详细信息
 svGetEntity =  function(id){
-		var dowhat ={'dowhat':'GetEntity','id':id,'sv_depends':true};
-		var robj= process.sv_univ(dowhat, 0);
-		if(!robj.isok(0)){
-			Log4js.error(robj.estr(0),0);
-			return false;
-		}
-		var fmap = robj.fmap(0);
-		return fmap;
+	var dowhat ={'dowhat':'GetEntity','id':id,'sv_depends':true};
+	var robj= process.sv_univ(dowhat, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
 }
 
 //获取计划任务
 svGetAllTask = function(){
 	var dowhat ={'dowhat':'GetAllTask'};
 	var robj= process.sv_univ(dowhat, 0);
-	//var robj = process.sv_forest(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0));
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
@@ -232,10 +265,10 @@ svRefreshMonitors = function (id,pid,instantReturn){
 	Log4js.error("=============instantReturn is " + instantReturn)
 	var dowhat ={'dowhat':'RefreshMonitors',id:id,parentid:pid,instantReturn:instantReturn};
 	var robj= process.sv_univ(dowhat, 0);
-	//var robj = process.sv_forest(dowhat, 0);
-	if(!robj.isok(0)){
-		console.log("Errors: \n"+robj.estr(0));
-		return;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
@@ -245,6 +278,11 @@ svGetRefreshed = function (queueName,pid){
 	var dowhat ={'dowhat':'GetRefreshed',queueName:queueName,parentid:pid};
 	var robj= process.sv_univ(dowhat, 0);
 	//var robj = process.sv_forest(dowhat, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
 	var fmap = robj.fmap(0);
 	Log4js.info("获取svGetRefreshed");
 	Log4js.info(fmap);
@@ -258,10 +296,10 @@ svGetRefreshed = function (queueName,pid){
 
 svGetEntityDynamicPropertyData = function(entityId,monitorTplId){
 	var robj = process.sv_univ({'dowhat':'GetDynamicData','entityId':entityId,'monitorTplId':monitorTplId}, 0);
-	if(!robj.isok(0)){
-	//	throw new Meteor.Error(500,robj.estr(0));
-		Log4js.error(robj.estr(0));
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap= robj.fmap(0);
 	return fmap;	
@@ -269,12 +307,15 @@ svGetEntityDynamicPropertyData = function(entityId,monitorTplId){
 
 //获取邮件列表
 svGetEmailList = function(){
-		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"emailAdress.ini",
-			"user":"default","sections":"default"}, 0);
-		if(!robj.isok(0)){
-		}
-		var fmap= robj.fmap(0);
-		return fmap;
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"emailAdress.ini",
+		"user":"default","sections":"default"}, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	var fmap= robj.fmap(0);
+	return fmap;
 }
 
 //获取统计报告列表
@@ -285,25 +326,40 @@ Date:2013-10-18 09:40
 Content:增加svGetStatisticalList的操作，获取统计报告列表
 */ 
 svGetStatisticalList = function(){
-		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"reportset.ini",
-			"user":"default","sections":"default"}, 0);
-		if(!robj.isok(0)){
-		}
-		var fmap= robj.fmap(0);
-		return fmap;
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"reportset.ini",
+		"user":"default","sections":"default"}, 0);
+	if(!robj.isok(0)){
+	}
+	var fmap= robj.fmap(0);
+	return fmap;
 }
-
+/*
+Type：   add 
+Author：xuqiang
+Date:2013-11-28 09:40
+Content:增加svGetTrendList的操作，获取趋势报告列表
+*/ 
+svGetTrendList = function(id,type){
+	var dowhat ={'dowhat':'QueryInfo',needkey:id,needtype:type};
+	var robj = process.sv_univ(dowhat,0);	
+	if(!robj.isok(0)){
+		console.log("Errors: \n"+robj.estr(0));
+		return;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+}
 //获取发送邮件的设置
 svGetSendEmailSetting = function(){
-		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",
-			"user":"default","sections":"default"}, 0);
-		if(!robj.isok(0)){
-			return;
-		}
-		var fmap= robj.fmap(0);
-		if(!fmap || !fmap["email_config"]) return ;
-		fmap["email_config"]["password"] = svDecryptOne(fmap["email_config"]["password"]);
-		return fmap["email_config"];
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",
+		"user":"default","sections":"default"}, 0);
+	if(!robj.isok(0)){
+		return;
+	}
+	var fmap= robj.fmap(0);
+	if(!fmap || !fmap["email_config"]) return ;
+	fmap["email_config"]["password"] = svDecryptOne(fmap["email_config"]["password"]);
+	return fmap["email_config"];
 }
 
 
@@ -371,9 +427,10 @@ svEmailTest = function(emailSetting){
 //节点删除
 svDelChildren = function(id){  //删除该节点以及其子节点
 	var robj = process.sv_univ({'dowhat':'DelChildren','parentid':id}, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0));
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	Log4js.error(robj.fmap(0));
 	return true;
@@ -401,9 +458,10 @@ svSubmitGroup = function(group,parentid){
 	}else{
 		var robj= process.sv_submit(group,{'dowhat':'SubmitGroup'},0); //修改
 	}	
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0));//传入给sv的参数不对等低级错误时，直接返回错误字符串
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap= robj.fmap(0);
 	//Log4js.error(fmap);
@@ -417,9 +475,10 @@ svGetNodeByParentidAndSelfId = function(parentid,selfId){
 		'onlySon'  : true
 	}
 	var robj = process.sv_forest(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0));
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	var node = {};
@@ -445,9 +504,10 @@ svForbidNodeTemporary = function(ids,starttime,endtime){
 	Log4js.info("执行临时禁止：");
 	Log4js.info(dowhat);
 	var robj = process.sv_univ(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0));
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap= robj.fmap(0);
 	return fmap;
@@ -466,9 +526,10 @@ svForbidNodeForever = function (ids){
 	Log4js.info("执行禁止：");
 	Log4js.info(dowhat);
 	var robj = process.sv_univ(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0));
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap= robj.fmap(0);
 	return fmap;	
@@ -487,9 +548,10 @@ svAllowNode = function (ids) {
 	Log4js.info("执行启用：");
 	Log4js.info(dowhat);
 	var robj = process.sv_univ(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0));
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap= robj.fmap(0);
 	console.log(fmap);
@@ -500,10 +562,10 @@ svAllowNode = function (ids) {
 //删除监视器
 svDeleteMonitor = function (id){
 	var robj = process.sv_univ({'dowhat':'DelChildren','parentid':id}, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.isok(0));
-		Log4js.error(robj.estr(0));
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap= robj.fmap(0);
 	return fmap; 
@@ -514,9 +576,10 @@ svDeleteMonitor = function (id){
 //emailAdress.ini写入
 svWriteEmailAddressIniFileSectionString = function(addressname,address){
 	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"emailAdress.ini",'user':"default",'section':addressname},0); 
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0));
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	return robj.fmap(0);
 }
@@ -542,9 +605,10 @@ svWriteEmailIniFileSectionString = function(section){
 	section["password"] = svEncryptOne(section["password"]);
 	var ini = {"email_config":section};
 	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"email.ini",'user':"default",'section':"email_config"},0); 
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0));
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	Log4js.error(robj.fmap(0));
 	return robj.fmap(0);
@@ -595,9 +659,10 @@ svWriteStatisticalStatusInitFilesection = function(sectionName,status){
 		"key" : "bCheck",
 		"value" : status
 	},0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0));
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	return robj.fmap(0);
 }
@@ -628,9 +693,10 @@ svSubmitEntity = function(entity,parentid){
 	}else{
 		var robj= process.sv_submit(entity,{'dowhat':'SubmitEntity'},0); //修改
 	}	
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap= robj.fmap(0);
 	return fmap;
@@ -644,9 +710,10 @@ svSubmitMonitor = function(monitor,parentid){
 	}else{
 		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor',del_supplement:false},0); //修改
 	}
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap= robj.fmap(0);
 	return fmap;
@@ -656,10 +723,10 @@ svSubmitMonitor = function(monitor,parentid){
 svGetMonitor = function(id){
 	var dowhat ={'dowhat':'GetMonitor','id':id};
 	var robj= process.sv_univ(dowhat, 0);
-	//var robj = process.sv_forest(dowhat, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
@@ -683,6 +750,11 @@ svDeleteAlertInitFileSection = function(ids){
 		"sections" : ids
 	};
 	var robj = process.sv_univ(dowhat,0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
 	return robj.fmap(0);
 	
 }
@@ -711,9 +783,10 @@ Content:统计报告 topn.ini写入
 svWriteTopNIniFileSectionString = function(addressname,address){
 	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"topnreportset.ini",'user':"default",'section':addressname},0); 
 //	console.log(robj.fmap(0));
-	if(!robj.isok(0)){
-	Log4js.error(robj.estr(0),-1);
-	return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	return robj.fmap(0);
 }
@@ -769,12 +842,15 @@ svWriteMessageIniFileSectionString = function(messagename,message){
 }
 //获取短信列表
 svGetMessageList = function(){
-		var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"smsphoneset.ini",
-			"user":"default","sections":"default"}, 0);
-		if(!robj.isok(0)){
-		}
-		var fmap= robj.fmap(0);
-		return fmap;
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"smsphoneset.ini",
+		"user":"default","sections":"default"}, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	var fmap= robj.fmap(0);
+	return fmap;
 }
 //删除短信Message的section
 svDeleteMessageIniFileSection = function(ids){
@@ -785,6 +861,11 @@ svDeleteMessageIniFileSection = function(ids){
 		"sections" : ids
 	};
 	var robj = process.sv_univ(dowhat,0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
 	return robj.fmap(0);
 }
 //获取发送com短信模板
@@ -792,6 +873,11 @@ svGetMessageTemplates = function(){
 	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"TXTtemplate.ini",
 			"user":"default","sections":"SMS"}, 0);
 	var fmap= robj.fmap(0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
 	return fmap["SMS"];
 }
 
@@ -804,6 +890,11 @@ svGetWebMessageTemplates=function(){
 		'sections':'WebSmsConfige'
 	},0);
 	var fmap = robj.fmap(0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
 	return fmap["WebSmsConfige"];
 }
 
@@ -817,9 +908,10 @@ svWriteMessageStatusInitFilesection = function(sectionName,status){
 		"key" : "Status",
 		"value" : status
 	}, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	return robj.fmap(0);
 }
@@ -836,9 +928,10 @@ svWriteSMSWebConfigIniFileSectionString = function(section){
 	section["Pwd"] = svEncryptOne(section["Pwd"]);
 	var ini = {"SMSWebConfig":section};
 	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"smsconfig.ini",'user':"default",'section':"SMSWebConfig"},0); 
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	Log4js.error(robj.fmap(0));
 	return robj.fmap(0);
@@ -848,9 +941,10 @@ svWriteSMSCommConfigIniFileSectionString = function(section){
 	console.log(section);
 	var ini = {"SMSCommConfig":section};
 	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"smsconfig.ini",'user':"default",'section':"SMSCommConfig"},0); 
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	Log4js.error(robj.fmap(0));
 	return robj.fmap(0);
@@ -910,4 +1004,34 @@ svGetScriptFileofScriptAlert=function(){
 	},0);
 	var fmap= robj.fmap(0);
 	return fmap["Scripts"];
+}
+
+/*
+	Type:查询日志
+	Author:zhuqing
+	Data:2013-11-27
+	Content:queryAlertLog
+*/
+//查询报警规则的日志记录
+svGetQueryAlertLog = function(beginDate,endDate,alertQueryCondition){
+	var robj = process.sv_forest({
+		'dowhat':'QueryAlertLog',
+		alertName:alertQueryCondition.AlertName,
+		alertReceive:alertQueryCondition.AlertReceiver,
+		alertType:alertQueryCondition.AlertType,
+		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
+		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
+	}, 0);
+	if(!robj.isok(0)){
+		Log4js.error(robj.estr(0),-1);
+		return false;
+	}
+	console.log(alertQueryCondition);
+	var fmap = robj.fmap(0);
+	var alertLogRecords = [];
+	for(r in fmap){
+		alertLogRecords.push(fmap[r]);
+	}
+	
+	return alertLogRecords;
 }

@@ -1,6 +1,8 @@
 var getEmailSelectAll = function(){
 	return ClientUtils.tableGetSelectedAll("emailSettingList");
 }
+//定义分页
+var page = new Pagination("emailPage",{currentPage:1,perPage:5});
 
 Template.emailsetting.events  = {
 	"click #addemailsetting" : function(){
@@ -88,6 +90,7 @@ var getlLoadEmailTaskName = function(id1,id2){
 		var tasks = SvseTaskDao.getTaskNameByType(tasktype);
 		console.log(tasks);
 		for(var i=0;i<tasks.length;i++){
+			if(tasks[i] == "") continue;
 			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
 			$("#"+id2).append(option);
 		}
@@ -108,6 +111,7 @@ var getEmailTaskName = function(id1,id2){
 			return;
 		}
 		for(var i=0;i<tasks.length;i++){
+			if(tasks[i] == "") continue;
 			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
 			$("#"+id2).append(option);
 		}
@@ -193,11 +197,20 @@ Template.emailsettingList.events({
 
 
 
-
+//获取email的集合
 Template.emailsettingList.emaillist = function(){
 	console.log(SvseEmailDao.getEmailList());
-	return SvseEmailDao.getEmailList();
+	//return SvseEmailDao.getEmailList();
+	return SvseEmailList.find({},page.skip());
 }
+//分页的使用
+Template.emailsettingList.paper = function(){
+	return page.create(SvseEmailList.find().count());
+}
+
+// Template.emailsettingList.destroyed = function(){
+	// page.destroy();
+// }
 
 Template.emailbasicsettingForm.events({
 	"click #emailbasicsettingapplybtn" : function(){

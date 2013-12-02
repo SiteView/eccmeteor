@@ -1,12 +1,10 @@
-Template.Login.events({
-    "keydown input:password, click .login-btn":function(e){
-      if(e.keyCode !== 0 && e.keyCode !== 13){
-        return;
-      }
-      console.log(e.keyCode);
-      var username = $("#loginForm :input[name='username']").val();
-      var password = $("#loginForm :input[name='password']").val();
-      var errorMsg = $("#loginErrorDiv div:first");
+var sublitLoginform = function(t){
+    //  var username = $("#loginForm :input[name='username']").val();
+    //  var password = $("#loginForm :input[name='password']").val();
+      var username = t.find("input:text[name='username']").value;
+      var password = t.find("input:password[name='password']").value;
+    //  var errorMsg = $("#loginErrorDiv div:first");
+      var errorMsg = $(t.find("div#loginErrorDiv div"));
       if(!password || password.replace(/" "/g,"").length === 0){
           errorMsg.html("*密码不能为空");
           return;
@@ -23,6 +21,17 @@ Template.Login.events({
             Meteor.Router.to("/home");    
         }
       });
+}
+
+Template.Login.events({
+    "keydown input:password":function(e,t){
+      if(e.keyCode !== 0 && e.keyCode !== 13){
+        return;
+      }
+      sublitLoginform(t);
+    },
+    "click #loginFormLoginBtn":function(e,t){
+      sublitLoginform(t);
     }
 });
 var remeberMe = function(username,password){

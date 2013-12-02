@@ -17,3 +17,6 @@ Deps.autorun(function(c){
 		c.stop();
 	}
 });
+//设置每页记录的默认条数
+Session.setDefault("PERPAGE",10);
+Session.setDefault("CURRENTPAGE",1);

@@ -1,10 +1,8 @@
 initTreeDataAtStartup = function(debug){
 	Log4js.info("初始化基本节点信息开始...");
 	if(debug === -1)return;
-	if(debug === 0){
-		SvseTree.remove({});
-		Log4js.info("tree date is clear");
-	}
+	SvseTree.remove({});
+	Log4js.info("tree date is clear");
 	var result = SvseMethodsOnServer.svGetTreeData();
 	if(!result){
 		Log4js.info("initTreeDataAtStartup failed，svGetTreeData exists errors",-1);

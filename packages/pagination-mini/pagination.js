@@ -11,23 +11,24 @@ Pagination = function(identifier,options){
   this._currentPage = 1;//init  
   this._totalPages = 0;//init  
   this._setOptions(options);
-  Session.set(this._head,{
-    limit:this._perPage,
-    skip:(this._currentPage-1)*this._perPage
-  });
   window[this._head+"_pagination"] = this;//save the pager  into window
 }
 
-Pagination.prototype.skip = function() {
+Pagination.prototype.skip = function(options) {
+   this._setOptions(options);
   return Session.get(this._head);
 }
 
 // Getter and setter functions
 Pagination.prototype._setOptions = function(options){
   if (options) {
-    this.currentPage(options.currentPage);
-    this.perPage(options.perPage);
+    this.currentPage(options.currentPage ? options.currentPage : this._currentPage);
+    this.perPage(options.perPage ? options.perPage : this._perPage);
   }
+  Session.set(this._head,{
+    limit:this._perPage,
+    skip:(this._currentPage-1)*this._perPage
+  });
 }
 
 Pagination.prototype.currentPage = function(currentPage) {
@@ -93,8 +94,8 @@ Pagination.prototype.destroy = function() {
 }
 
 Pagination.prototype.create = function(cursorCount){
+  this._currentPage = 1;
   this.totalPages(cursorCount);
-  
   if(this._checkVars()){
     var html = this._bootstrap();
     return html;
@@ -104,8 +105,8 @@ Pagination.prototype.create = function(cursorCount){
 // Style 'bootstrap'
 Pagination.prototype._bootstrap = function() {
   var html = "";
-  if(!this._currentCount){ //如果总记录为0
-    return html = "No thing";
+  if(!this._currentCount || this._totalPages === 1){ //如果总记录为0
+    return html = "";
   }
   var data ='data-head="'+this._head+'" onclick="Pagination.goto(this)"';//
   html += '<div class="pagination">' ;
