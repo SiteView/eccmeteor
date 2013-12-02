@@ -40,20 +40,19 @@ initSettingNodes = function(status){
 			{id:37,pId:3,name:"time",action:"time",type:"report",icon:"imag/setting/time.png"},
 			{id:38,pId:3,name:"monitorInfo",action:"monitorInfo",type:"report",icon:"imag/setting/monitorInfo.png"},
 			{id:39,pId:3,name:"SysLogQuery",action:"SysLogQuery",type:"report",icon:"imag/setting/SysLogQuery.png"},
-<<<<<<< HEAD
+
 			{id:25,pId:2,name:"SysLogsetting",action:"SysLogsetting",type:"setting",icon:"imag/setting/SysLogsetting.png"},
 			/*任杰 add SysLogsetting*/
-=======
+
 			{id:4,pId:2,name:"Task",action:"task",type:"setting",icon:"imag/setting/task.gif"},
 			{id:41,pId:4,name:"TaskAbsolute",action:"taskabsolute",type:"task",icon:"imag/setting/task.gif"},
 			{id:42,pId:4,name:"TaskPeriod",action:"taskperiod",type:"task",icon:"imag/setting/task.gif"},
 			{id:43,pId:4,name:"TaskRelative",action:"TaskRelative",type:"task",icon:"imag/setting/task.gif"},
-			{id:25,pId:2,name:"SysLogsetting",action:"SysLogsetting",type:"setting",icon:"imag/setting/SysLogQuery.png"},
 			{id:26,pId:2,name:"OperateLog",action:"OperateLog",type:"setting",icon:"imag/setting/SysLogQuery.png"},
 			{id:27,pId:2,name:"SystemDiagnosis",action:"SystemDiagnosis",type:"setting",icon:"imag/setting/diagnosis.gif"},
 			{id:28,pId:2,name:"License",action:"License",type:"setting",icon:"imag/setting/license.gif"},
 			{id:29,pId:2,name:"About",action:"About",type:"setting",icon:"imag/setting/about.gif"}
->>>>>>> meteorite
+
 		];
 	var length = setting.length;
 	for(var index = 0 ; index < length; index++){
