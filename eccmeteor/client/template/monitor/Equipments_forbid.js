@@ -27,12 +27,12 @@ Template.ForbidEquipments.rendered = function(){
 	});
 }
 /**处理设备的禁止，启用等回调结果*/
-var dealwithEquipmentsReturnResult = function(result){
+var dealwithEquipmentsReturnResult = function(result,template){
 	LoadingModal.loaded();
 	if(!result.status)
 		Message.error(result.msg);
-	$("#ForbidEquipmentsDiv").modal("hide");
-
+	//$("#ForbidEquipmentsDiv").modal("hide");
+	RenderTemplate.hideParents(template);
 }
 
 Template.ForbidEquipments.events = {
@@ -47,11 +47,11 @@ Template.ForbidEquipments.events = {
 		if(type === "forever"){
 			if(equipmentType === "equipments"){ //（组+设备）
 				SvseDao.forbidEquipments(fid,equipmentIds,function(result){
-					dealwithEquipmentsReturnResult(result);
+					dealwithEquipmentsReturnResult(result,template);
 				});
 			}else if(equipmentType === "monitors"){ // 监视器
 				SvseDao.forbidMonitors(fid,equipmentIds,function(result){
-					dealwithEquipmentsReturnResult(result);
+					dealwithEquipmentsReturnResult(result,template);
 				});
 			}
 		}else{
@@ -59,16 +59,16 @@ Template.ForbidEquipments.events = {
 			var endTime = $(template.find("#ForbidEquipmentsEndDate")).data('datetimepicker').getDate();
 			if(equipmentType === "equipments"){ //（组+设备）
 				SvseDao.forbidEquipmentsTemporary(fid,equipmentIds,startTime.format("yyyy-MM-dd-hh:mm"),endTime.format("yyyy-MM-dd-hh:mm"),function(result){
-					dealwithEquipmentsReturnResult(result);
+					dealwithEquipmentsReturnResult(result,template);
 				})
 			}else if(equipmentType === "monitors"){ // 监视器
 				SvseDao.forbidMonitorsTemporary(fid,equipmentIds,startTime.format("yyyy-MM-dd-hh:mm"),endTime.format("yyyy-MM-dd-hh:mm"),function(result){
-					dealwithEquipmentsReturnResult(result);
+					dealwithEquipmentsReturnResult(result,template);
 				});
 			}
 		}
 	},
-	"click #ForbidEquipmentsDivFormCancelBtn":function(){
-		$("#ForbidEquipments").modal("hide");
+	"click #ForbidEquipmentsDivFormCancelBtn":function(e,t){
+		RenderTemplate.hideParents(t);
 	}
 }

@@ -1,10 +1,11 @@
 initEmailListAtStartUp = function(debug){
 	Log4js.info("初始化邮件列表开始...");
-	if(debug === -1)return;
-	if(debug === 0){
-		SvseEmailList.remove({});
-		Log4js.info("EmailList Collection 已清空");
+	if(debug === -1){
+		return;
 	}
+	SvseEmailList.remove({});
+	Log4js.info("EmailList Collection 已清空");
+
 	var list = SvseMethodsOnServer.svGetEmailList();
 	if(!list){
 		Log4js.error("初始化邮件列表失败",-1);

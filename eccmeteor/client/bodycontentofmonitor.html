@@ -15,7 +15,6 @@
 			</div>
 		</div>	
 	</div>
-	{{> ForbidEquipments}} <!--禁止组设备和监视器-->
 </Template>
 <!--决定渲染 SettingLayout 或者 EquipmentsLayout-->
 <Template name="ControlViewLayout">
@@ -39,4 +38,5 @@
 		{{renderPage viewTypeForEquipments}}
 	{{/if}}
 	</div>
+	<div id="ForbidEquipmentsModal"></div>
 </Template>

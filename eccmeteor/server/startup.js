@@ -42,8 +42,11 @@ function initAllDateStartUp(status){
 	initDateAtStartUp["initSettingNodes"]();
 	initDateAtStartUp["initLanguageAtStartUp"]();
 	Log4js.info("全部数据初始化完毕");
-	var timeloop = new UnrealThread(SyncFunction.syncEquipments,70*1000);
-	timeloop.start();
+	if(AssetsUtils.getDevConfig("runtimesync")){ //不会为0时实时同步
+		Log4js.info("实时同步");
+		var timeloop = new UnrealThread(SyncFunction.syncEquipments,70*1000);
+		timeloop.start();
+	}
 }
 /**
 	Type： Modify
@@ -69,4 +72,5 @@ Meteor.startup(function(){
 	SetSvdbAddr();
 	var status = AssetsUtils.getDevConfig("initDatabase");
 	initAllDateStartUp(status);	
+	TestUnit.test();
 });

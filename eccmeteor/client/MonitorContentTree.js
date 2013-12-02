@@ -19,12 +19,8 @@ var drawSvseSettingTree = function(){
 			    //引用 navsetting.js中的函数
 				NavigationSettingTree.execute(treeNode.action);
 				SessionManage.clear();//清空一些Session值
-				//点击父节点展开 //已经展开则不做什么改变
-				if(treeNode.open){
-					return;
-				}
-				var treeObj = $.fn.zTree.getZTreeObj("setting_tree");
-				treeObj.expandNode(treeNode,true, false, true,true);
+				//点击父节点展开
+				expandTreeNode(treeId,treeNode);
 			},
 			/*
 			*节点展开事件
@@ -60,6 +56,33 @@ var expandSimpleTreeNode = function(zNodes,expandnodeids){
 		}
 	}
 	return zNodes;
+}
+Deps.autorun(function(){
+	var id = Session.get("ClickExpandTreeNodeId")
+	var tree = null
+	if($.fn.zTree && id && (tree = $.fn.zTree.getZTreeObj("svse_tree"))){
+		var node = tree.getNodeByParam("id",id);
+		tree.expandNode(node,true, false, true,true);
+	}
+});
+/**
+展开某个节点
+*/
+expandTreeNode  = function(treeId,treeNode,id){
+	if(treeNode.open){
+		return;
+	}
+	Session.set("ClickExpandTreeNodeId",id);
+	return;
+	//这样写有bug ，导致点击的节点不会展开，而上一次的节点展开，初步判断是函数作用域导致treeNode对象未保存
+	//实际上造成代码在哪不明。暂时使用Deps.autorun完成
+	var tree = $.fn.zTree.getZTreeObj(treeId);
+	console.log(treeNode);
+	if(id){
+		treeNode = tree.getNodeByParam("id",id)
+	}
+	var result = tree.expandNode(treeNode,true, false, true,true);
+	console.log(result);
 }
 /**
 树节点转存在Session中的节点
@@ -103,13 +126,11 @@ var drawSvseSimpleTree = function(defaultSelectNodeId){
 					SwithcView.view(MODULEVIEW.ENTITYMODULE);
 				}
 			//	SessionManage.setEntityId(id);
-				//点击父节点展开 //已经展开则不做
-				if(treeNode.open){
-					return;
-				}
-				var treeObj = $.fn.zTree.getZTreeObj("svse_tree");
-				treeObj.expandNode(treeNode,true, false, true,true);
+				//点击父节点展开
+				expandTreeNode(treeId,treeNode,treeNode.id);
+				
 			},
+			onDblClick:function(event, treeId, treeNode){},
 			/*
 			*节点展开事件
 			*/

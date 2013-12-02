@@ -1,10 +1,8 @@
 initTaskAtStartUp = function(debug){
 	Log4js.info("初始化计划任务开始...");
 	if(debug === -1)return;
-	if(debug === 0){
-		SvseTask.remove({});
-		Log4js.info("Task Collection 已清空");
-	}
+	SvseTask.remove({});
+	Log4js.info("Task Collection 已清空");
 	var tasks = SvseMethodsOnServer.svGetAllTask();
 	if(!tasks){
 		Log4js.info("初始化计划失败",-1);

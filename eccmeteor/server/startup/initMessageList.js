@@ -1,10 +1,8 @@
 initMessageListAtStartUp = function(debug){
 	Log4js.info("初始化短信列表开始...");
 	if(debug === -1)return;
-	if(debug === 0){
-		SvseMessageList.remove({});
-		Log4js.info("MessageList Collection 已清空");
-	}
+	SvseMessageList.remove({});
+	Log4js.info("MessageList Collection 已清空");
 	var list = SvseMethodsOnServer.svGetMessageList();
 	if(!list){
 		Log4js.info("初始化短信列表失败",-1);

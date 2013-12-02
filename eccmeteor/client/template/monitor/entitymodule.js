@@ -56,7 +56,7 @@ Template.MonitorList.events={
 			}
 		}
 		
-		SvseMonitorDao.getMonitor(checkedMonitorId,function(err,result){
+		SvseMonitorDao.getMonitor(monitorId,function(err,result){
 			if(err){
 				Log4js.error(err);
 				Message.error(result);
@@ -68,7 +68,7 @@ Template.MonitorList.events={
 			if(!DynamicParameters){
 				context = megerTemplateAndFactData(context,monitor);//合并模板数据和实际数据
 			//	RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
-				console.log("合并后的实例");
+				console.log("不具备动态属性 合并后的实例");
 				console.log(context);
 				return;
 			}
@@ -88,7 +88,7 @@ Template.MonitorList.events={
 				//给对应的设备赋值
 				context.MonityTemplateParameters[DynamicParameters.index]["selects"] = DynamicDataList;
 				context = megerTemplateAndFactData(context,monitor);//合并模板数据和实际数据
-				console.log("合并后的实例");
+				console.log("具备动态属性 并后的实例");
 				console.log(context);
 				//RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
 			});
@@ -321,7 +321,7 @@ var mergeTemplateStatus = function(MTStatus,MIStatus){
 	MTStatus.sv_expression = MIStatus.sv_expression;
 	var selects = [];
 	for(property in MIStatus){
-		if(property.indexof("sv_paramname") != -1){
+		if(property.indexOf("sv_paramname") != -1){
 			var index = property.match(/\d+/g);
 			index = index === null ? "" : index[0];// index == null or index == ["123"];
 			selects.push({
