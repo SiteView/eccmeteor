@@ -24,6 +24,13 @@ Meteor.methods({
   "svGetSMSWebConfigSetting":svGetSMSWebConfigSetting,
   "svGetSMSComConfigSetting":svGetSMSComConfigSetting,
   "svGetEmailTemplates":svGetEmailTemplates,
+  /*
+	Type： add
+	Author：xuqiang
+	Date:2013-10-28 10:40
+	Content:增加 趋势报告 的agent声明
+*/ 
+  "svGetTrendList":svGetTrendList,
 });//给客户端调用的
  /**
 	Type： add | modify 
@@ -112,6 +119,13 @@ SvseMethodsOnServer = {
 	"svGetStatisticalList": svGetStatisticalList,
 	"svDeleteStatisticalIniFileSection":svDeleteStatisticalIniFileSection,
 	"svWriteStatisticalStatusInitFilesection":svWriteStatisticalStatusInitFilesection,
+/*
+	Type： add
+	Author：xuqiang
+	Date:2013-10-28 10:40
+	Content:增加 趋势报告 的agent声明
+*/ 
+	"svGetTrendList":svGetTrendList,
 }
 
 SvseSyncData = {

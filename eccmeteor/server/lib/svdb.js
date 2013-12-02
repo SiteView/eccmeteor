@@ -333,7 +333,22 @@ svGetStatisticalList = function(){
 	var fmap= robj.fmap(0);
 	return fmap;
 }
-
+/*
+Type：   add 
+Author：xuqiang
+Date:2013-11-28 09:40
+Content:增加svGetTrendList的操作，获取趋势报告列表
+*/ 
+svGetTrendList = function(id,type){
+	var dowhat ={'dowhat':'QueryInfo',needkey:id,needtype:type};
+	var robj = process.sv_univ(dowhat,0);	
+	if(!robj.isok(0)){
+		console.log("Errors: \n"+robj.estr(0));
+		return;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+}
 //获取发送邮件的设置
 svGetSendEmailSetting = function(){
 	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",

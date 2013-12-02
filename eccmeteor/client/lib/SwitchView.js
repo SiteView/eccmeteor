@@ -63,6 +63,17 @@ REPORT ={
 	STATUSSTATISTICAL:"statusStatistical",//"状态统计报告"
 	MONITORINFO:"monitorInfo"//监测器信息报告, 搜索测试
 }
+/*
+Type： add 
+Author：xuqiang
+Date:2013-11-28 14:40
+Content:增加任务计划导航
+*/
+TASK ={ 
+	TASKABSOLUTE:"taskabsolute",//绝对时间任务计划
+	TASKPERIOD:"taskperiod",    //"时间段任务计划",
+	TASKRELATIVE:"taskrelative" //"相对时间任务计划",		
+}
 //视图切换
 SwithcView = {}
 Object.defineProperty(SwithcView,"view",{
