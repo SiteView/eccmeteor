@@ -56,6 +56,11 @@
 			"recoverbtn":"重新获得",
 			"testbtn":"测试"
 		},
+		"syslogsettingmodel":{
+			"applybtn":"应用",
+			"recoverbtn":"重新获得",
+			"dellogbtn":"删除日志"
+		},
 		"warnerrulemodel":{
 			"emailwarner" :"Email报警",
 			"messagewarner" :"短信报警",

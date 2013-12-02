@@ -19,7 +19,13 @@ SETTINGVIEW = {
 	BASICSETTING:"basicsetting",//基本设置
 	EMAILSETTING:"emailsetting", //邮箱设置
 	MESSAGESETTING:"messagesetting",//短信设置
-	USERSETTING:"usersetting" //用户设置
+	USERSETTING:"usersetting", //用户设置
+/*Type：add
+	Author：renjie
+	Date:2013-11-27 09:20
+	Content:增加"SysLog设置"SysLogsetting
+*/ 
+	SYSLOGSETTING:"SysLogsetting" //SysLog设置
 }
 //报警试图
 ALERTVIEW = {

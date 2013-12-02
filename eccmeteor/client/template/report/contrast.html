@@ -1,5 +1,5 @@
 <Template name="contrast">
-	<div id="contrastdiv"
+	<div id="contrast"
 	data-backdrop="true" data-keyboard="true" data-show="false"
 	data-width="800" data-modalOverflow="true">
 		<div class="modal-body">
@@ -19,29 +19,40 @@
 			</div>
 				</div>
 				<div class="span8">
-					 {{> contrastlist}}
-					 {{> rMenu}}
-					 {{> helpmessage}} 
-					 {{> exportreport}}
+					{{> Contrastlist}}
+					{{> rMenu}}
+					{{> helpmessage}} 
+					{{> exportreport}}
+					{{> ContrastDetailData}}
+					{{> detailLine}}
+					   
 				</div>
 			</div>
 		</div>
 	</div>
 </Template>
-<Template name="contrastlist">
+
+<Template name="Contrastlist">
 	<ul id="myTab" class="nav nav-tabs">
 		<li class="active">
-			<a href="#2" data-toggle="tab">查询</a>
+			<a href="#home1" data-toggle="tab">查询</a>
 		</li>
 	</ul>
 	<div id="mytabcontent" class="tab-content"></div>
 	<div class="tab-pane active" id="home1"></div>
 	<div class="accordion-group">
 		<a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#contrastListCollapseOne">查询条件</a>
-		<div class="panel-group" id="accordion"></div>
+		<div class="panel-group" id="accordion">
+		</div>
 		<div id="contrastListCollapseOne" class="panel-collapse collapse in">
-			<form class="well form-horizontal form-inline">
+			<form class="well form-horizontal form-inline" onsubmit="return false;">
 				<fieldset>
+				<div class="well">
+				<ul class="breadcrumb">
+					<li><a href="###" name='{"hours":-2}'></a>
+					<span class="divider"></span>
+					</li>
+				</ul>
 					<div class="form-inline">
 						<span>{{language.startTime}}:</span>
 						<div id="datetimepickerStartDate" class="input-append date form_datetime">
@@ -59,7 +70,7 @@
 						<div></div>
 						<div class="control-group">
 							<label class="control-label"></label>
-							<button class="btn" id="selectbtn">查询</button>
+							<button class="btn" id="search">查询</button>
 							<button id="exportreport" class="btn">
 								<a href="#">{{language.exportreport}}</a>
 							</button>
@@ -68,10 +79,12 @@
 							</button>
 						</div>
 					</div>
+				</div>
 				</fieldset>
 			</form>
 		</div>
 	</div>
+<<<<<<< HEAD
 	<div style="overflow-y: auto; left: 0px;height: 150px;">
 		<div class="accordion-group">
 			<div class="accordion-heading">
@@ -126,10 +139,70 @@
 				<div class="accordion-inner">
 					<img id="z_os_5t3" z.type="zul.widget.Img" style="width:10%;" src="imag/status/ok.png"></div>
 			</div>
+=======
+</Template>
+	
+<Template name="ContrastDetailData">
+<div style="overflow-y: auto; left: 0px;height: 150px;">
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseTwo">运行报表情况表</a>
+		</div>
+		<div id="contrastListCollapseTwo" class="panel-collapse collapse in">
+			<div class="accordion-inner">
+				<table class="table table-striped table-condensed table-hover">
+					<thead>
+						<tr></tr>
+						<tr>
+							<th title="名称">名称</th>
+							<th title="返回值名称">返回值名称</th>
+							<th title="最大值">最大值</th>
+							<th title="平均值">平均值</th>
+							<th title="最小值">最小值</th>
+							<th title="最近一次">最近一次</th>
+							<th title="最近一次时间">最近一次时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+						{{#each contrastDetailTableData}}
+						<tr>
+							<td>{{label}}</td>
+							<td>{{label}}</td>
+							<td>{{max}}</td>
+							<td>{{mean}}</td>
+							<td>{{min}}</td>
+							<td>{{new}}</td>
+							<td>{{newtime}}</td>
+							<td>
+							</td>
+						</tr>
+						{{/each}}
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</Template>
+
+<Template name="detailLine">
+<div style="overflow-y: auto; left: 0px;height: 250px;">
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseThree">图表</a>
+		</div>
+		<div id="contrastListCollapseThree" class="panel-collapse collapse in">
+			<div class="accordion-inner">
+			<svg id="detailLine"></svg>
+				</div>
+>>>>>>> meteorite-nj003
 		</div>
 	</div>
 </Template>
 <Template name="exportreport">
+<<<<<<< HEAD
 	<div id="exportdiv" class="modal hide fade"	>
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		<div class="label label-info">导出报表</div>
@@ -147,6 +220,24 @@
 						&nbsp;&nbsp;
 						<button class="btn btn-large id="exportreportcancelbtn" class="btn">取消</button>
 					</div>
+=======
+<div id="exportdiv" class="modal hide fade">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<div class="label label-info">导出报表</div>
+	<div class="modal-body">
+		<div class="well">
+			<div class="form-inline">
+				<span class="add-on">请选择报告类型：</span>
+				<select id="Typelist" name="sv_type" title="选择要统计的检测器类型">
+					<option value="PDF">PDF</option>
+					<option value="HTML">HTML</option>
+					<option value="Excel">Excel</option>
+				</select>
+				<div class="modal-footer" align="right">
+					<button class="btn btn-primary btn-large id="exportreportsavebtn" class="btn">保存报表</button>
+					&nbsp;&nbsp;
+					<button class="btn btn-large id="exportreportcancelbtn" class="btn">取消</button>
+>>>>>>> meteorite-nj003
 				</div>
 			</div>
 		</div>

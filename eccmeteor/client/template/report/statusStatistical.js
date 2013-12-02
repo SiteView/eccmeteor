@@ -316,7 +316,7 @@ Template.statusStatistical.rendered = function(){
 		var data = SvseDao.getDetailTree();
 		var setting = {
 			check:{
-				enable: true,
+				enable: false,
 				chkStyle: "checkbox",
 				chkboxType: { "Y": "ps", "N": "ps" }
 			},

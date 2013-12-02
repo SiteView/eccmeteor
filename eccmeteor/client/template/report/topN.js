@@ -1,6 +1,9 @@
 var getTopNListSelectAll = function(){
 	return ClientUtils.tableGetSelectedAll("topNlist");
 }
+/*var getTopNListSelectAll = function(){
+	return ClientUtils.tableGetSelectedAll("topN_detail");
+}*/
 Template.topN.events = {
     //点击添加按钮弹出框    
 	"click #topNofadd":function(e){
@@ -67,11 +70,12 @@ Template.topN.events = {
 	},
 	//topN报告生成
 	"click #generatereport" : function(){
-	   LoadingModal.loading();
+	   //LoadingModal.loading();
 		    SvseTopNDao.checkTopNresultlistSelect(getTopNListSelectAll());
-            SvseTopNDao.updateTopNStatus(getTopNListSelectAll()," No",function(result){
+            SvseTopNDao.generatereport(getTopNListSelectAll()," No",function(result){
                 if(result.status){
-                    SystemLogger("改变状态"+result.option.count+"条");
+                   // SystemLogger("生成报告"+result.option.count+"条");
+				   SystemLogger("生成报告"+result+"条");
                         }
                 });
 	},
@@ -83,7 +87,39 @@ Template.topN.events = {
 	"click #topNhelpmessage" : function(){
 	$('#helpmessagediv').modal('toggle');
  
-	}
+	},
+	//点击删除日志
+	"click #deletelog":function(){
+	console.log("删除全部》》");
+	var ids = getTopNListSelectAll();
+            SvseTopNDao.checkTopNresultlistSelect(ids);
+				if(ids.length)
+					SvseTopNDao.generatereport(ids,function(result){
+					SystemLogger(result);
+						});
+	  },
+    "click tbody tr td":function(e){
+	    console.log("yes2222222222");
+		/*var onClickShowReport = this.sv_id;
+		onClickShowReport(event);*/
+		var checkTopNTopNByIds = this.ids;
+		
+		if(SessionManage.getcheckTopNTopNByIds() === checkTopNTopNByIds)
+			return;
+		if(!checkTopNTopNByIds || checkTopNTopNByIds=="") return;
+		//存储选中监视器的id
+		SessionManage.setcheckTopNTopNByIds(checkTopNTopNByIds);
+		list(checkTopNTopNByIds);
+		/*1111111
+		var checkedMonitorId = this.sv_id;
+		if(SessionManage.getCheckedMonitorId() === checkedMonitorId)
+			return;
+	//	var status = this.status;
+		if(!checkedMonitorId || checkedMonitorId=="") return;
+		//存储选中监视器的id
+		SessionManage.setCheckedMonitorId(checkedMonitorId);
+		drawImage(checkedMonitorId);*/
+		}
 }
 
 
@@ -137,7 +173,7 @@ Template.topNofadd.events = {
 	  
                 if(document.getElementById("reporttypePeriodlist").value=="Week"){
 			   
-                     document.getElementById("topNtypetemplatelist").disabled=false;
+                 document.getElementById("topNtypetemplatelist").disabled=false;
            }
 		   else{
 				 document.getElementById("topNtypetemplatelist").disabled=true;
@@ -252,7 +288,27 @@ Template.topNlist.topNresultlist = function(){
 	return SvseTopNresultlist.find({},page.skip());
 	
 }
+//获取日志的集合列表
+Template.topN_detail.topN_detaillist = function(){
+	console.log(SvseTopNDao.getTopNresultlist());
+	//return SvseTopNDao.getTopNresultlist();
+	//return SvseTopNresultlist.find({},page.skip());
+	return SvseTopNDao.getTopNresultlist();
+}
+Template.warnerrulelog.warnerruleoflist = function(){
+	console.log(SvseWarnerRuleDao.getWarnerRuleList());
+	return SvseWarnerRuleDao.getWarnerRuleList();
+}
+//日志分页列表
+/*var page = new Pagination("topN_detailPagination",{perPage:2});
 
+Template.topN_detail.svseTopNresultlist = function(){
+  return SvseTopNresultlist.find({},page.skip());
+}
+  
+Template.topN_detail.pager = function(){
+  return page.create(SvseTopNresultlist.find().count());
+}*/
 //分页列表
 var page = new Pagination("topNPagination",{perPage:2});
 
@@ -264,9 +320,9 @@ Template.topNlist.pager = function(){
   return page.create(SvseTopNresultlist.find().count());
 }
 
-Template.topNlist.destroyed = function(){
+/*Template.topNlist.destroyed = function(){
   page.destroy();
-}
+}*/
 
 Template.topNlist.rendered = function(){
    
@@ -461,14 +517,14 @@ Template.topNofedit.rendered = function(e,t){
 		$.fn.zTree.init($("#svse_tree_check_edit"), setting, data);
 	});
 	//填充检测器列表
-		/*SvseMessageDao.getMessageTemplates(function(err,result){
+	/*	SvseMessageDao.getMessageTemplates(function(err,result){
 			for(name in result){
 				console.log(name);
 				var option = $("<option value="+name+"></option>").html(name)
 				$("#Typelist").append(option);
 			}
 		});*/
-	Meteor.call("svGetEntityDynamicPropertyData",function(err,result){
+	Meteor.call("svGetEmailTemplates",function(err,result){
 		for(name in result){
 			console.log(name);
 			var option = $("<option value="+name+"></option>").html(name)
@@ -523,7 +579,7 @@ Template.topNofadd.rendered = function(){
 			
 			callback:{
 			
-			      Change:function (event, treeId, treeNode) {
+			      onchange:function (event, treeId, treeNode) {
 			  
 			      zTree = $.fn.zTree.getZTreeObj("svse_tree_check");
 			
