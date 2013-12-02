@@ -125,6 +125,7 @@
 			"EmailSetting" : "邮件设置",
 			"MessageSetting" : "短信设置",
 			"UserSetting":"用户设置",
+			"SysLogsetting":"SysLog设置",
 			"Report":"报表",
 			"statistical":"统计报告",
 			"trend":"趋势报告",
@@ -136,7 +137,7 @@
 			"monitorInfo":"监测器信息报告",
 			"SysLogQuery":"系统日志查询",
 			
-			"SysLogsetting":"SysLog设置"
+			
 		}
 	}
 }
