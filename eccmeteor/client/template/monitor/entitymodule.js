@@ -318,7 +318,7 @@ var mergeTemplateStatus = function(MTStatus,MIStatus){
 				"sv_paramvalueKey":("sv_paramvalue"+index),
 				"sv_paramvalueValue":MIStatus[("sv_paramvalue"+index)],
 				"sv_relationKey":("sv_relation"+index),
-				"sv_relationVakue":MIStatus[("sv_relation"+index)]
+				"sv_relationValue":MIStatus[("sv_relation"+index)]
 			})
 		}
 	}
