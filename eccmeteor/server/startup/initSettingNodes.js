@@ -34,8 +34,8 @@ initSettingNodes = function(status){
 			{id:37,pId:3,name:"time",action:"time",type:"report",icon:"imag/setting/time.png"},
 			{id:38,pId:3,name:"monitorInfo",action:"monitorInfo",type:"report",icon:"imag/setting/monitorInfo.png"},
 			{id:39,pId:3,name:"SysLogQuery",action:"SysLogQuery",type:"report",icon:"imag/setting/SysLogQuery.png"},
-			/*任杰 add SysLogsetting*/
 			{id:25,pId:2,name:"SysLogsetting",action:"SysLogsetting",type:"setting",icon:"imag/setting/SysLogsetting.png"},
+			/*任杰 add SysLogsetting*/
 		];
 	var length = setting.length;
 	for(var index = 0 ; index < length; index++){
