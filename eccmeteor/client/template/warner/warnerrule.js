@@ -3,7 +3,7 @@ var getWarnerRuleListSelectAll = function(){
 }
 
 //定义分页
-var page = new Pagination("alertPage",{perPage:5});
+var page = new Pagination("alertPage",{currentPage:1,perPage:5});
 
 Template.warnerrule.events = {
 	"click #emailwarner":function(e){
@@ -81,7 +81,8 @@ Template.warnerruleofemail.events = {
 			return;
 		}
 		var emailAdress=warnerruleofemailform["EmailAdress"];
-		if(!emailAdress){
+		var otherAdress = warnerruleofemailform["OtherAdress"];
+		if(!emailAdress && !otherAdress){
 			Message.info("报警邮件接收地址不能为空");
 			return;
 		}
@@ -234,17 +235,13 @@ Template.warnerrulelist.events = {
 			$("#emailwarnerdivedit").find(":text[name='WatchSheet']:first").val(result.WatchSheet);
 			$("#emailwarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.Strategy);
 			$("#emailwarnerdivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
-			if(!result["EmailAdress"]){
+			if(!result["EmailAdress"] || result["EmailAdress"]=="其他"){
 				result["EmailAdress"]="";
 			}
 			var checkedEmailAdress = result["EmailAdress"].split(",");
 			$(".emailmultiselectedit").attr("value","");
 			$(".emailmultiselectedit").multiselect("refresh");
-			for(var eal = 0 ; eal < checkedEmailAdress.length ; eal ++){
-				try{
-					$(".emailmultiselectedit").multiselect('select',checkedEmailAdress[eal]);
-				}catch(e){}
-			}
+			
 			var checkedEmailTemplate = result["EmailTemplate"].split(",");
 			for(var etl = 0 ; etl < checkedEmailTemplate.length; etl ++){
 				$("#emailtemplatelistedit").find("option[value='"+checkedEmailTemplate[etl]+"']:first").attr("selected","selected").prop("selected",true);
@@ -263,6 +260,22 @@ Template.warnerrulelist.events = {
 			});
 			$("#emailwarnerdivedit").modal('toggle');
 			
+			//当邮件设置中的邮件数据被删除的时候，对邮件报警的邮件地址做些处理
+			for(var eal = 0 ; eal < checkedEmailAdress.length ; eal ++){
+				try{
+					console.log(checkedEmailAdress[eal]);
+					checkemail = SvseEmailDao.getEmailByName(checkedEmailAdress[eal]);
+					if(checkedEmailAdress[eal] !=="" ){
+						if(!checkemail){
+							//console.log(checkemail);
+							Message.info("这个邮件地址可能已经不存在了！请重新选择！");
+							continue;
+						}
+					}
+					
+					$(".emailmultiselectedit").multiselect('select',checkedEmailAdress[eal]);
+				}catch(e){}
+			}
 			var checkednodes = result.AlertTarget.split("\,")
 			//左边树的勾选
 			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_edit");
@@ -381,6 +394,68 @@ Template.warnerrulelist.events = {
 			}
 		}
 		
+	},
+	
+	//点击表中的行时勾选框并查询报警日志
+	"click tbody tr":function(){
+		var index = this.nIndex;
+		//当点击行选中时，让其他的选中取消
+		var ids = ClientUtils.tableGetSelectedAll("warnerrulelist");
+		console.log(ids);
+		for(var i = 0;i< ids.length;i++){
+			$("#"+ids[i]).prop("checked",false);
+		}
+		
+		var flag = $("#"+index).prop("checked");
+		if(!flag){
+			$("#"+index).prop("checked",true);
+		}
+		
+		var end = new Date();
+		var start = new Date();
+		start.setTime(start.getTime() - 1000*60*60*24);
+		
+		var beginDate = ClientUtils.dateToObject(start);
+		var endDate = ClientUtils.dateToObject(end);
+		console.log("#############################");
+		console.log(beginDate);
+		console.log(beginDate["month"]);
+		console.log(endDate);
+		console.log("#######################");
+		console.log(this);
+		var querylogCondition = {AlertName:this.AlertName,AlertReceiver:"",AlertType:""};
+		console.log(querylogCondition);
+		SvseWarnerRuleDao.getQueryAlertLog(beginDate,endDate,querylogCondition,function(result){
+			console.log("result");
+			if(!result.status){
+				Log4js.info(result.msg);
+				return;
+			}
+			console.log(result);
+			var dataProcess = new DataProcess(result.content);
+			var resultData = dataProcess.getData();
+			if(!resultData){
+				console.log("查出报警日志没有数据");
+				return;
+			}
+			//console.log(resultData.length);
+			console.log(resultData);
+			//绘制表
+			for(var i = 0;i < resultData.length;i++){
+				var data = resultData[i];
+				//判断报警状态的显示
+				if(data["_AlertStatus"] == 0){
+					data["_AlertStatus"] = "Fail";
+				}
+				if(data["_AlertStatus"] == 1){
+					data["_AlertStatus"] = "Success";
+				}
+				var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
+				+"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
+				$("#warnerruleloglist").append(tbody);
+			}
+			
+		});
 	}
 
 }
@@ -404,6 +479,7 @@ Template.warnerruleofemailedit.rendered = function(){
 			enableFiltering : true,
 			buttonText : function (options) {
 				if (options.length == 0) {
+					return 'None selected <b class="caret"></b>';
 					return 'None selected <b class="caret"></b>';
 				} else if (options.length > 3) {
 					return options.length + ' selected  <b class="caret"></b>';
@@ -478,13 +554,14 @@ Template.warnerruleofemailedit.events = {
 		if(result["AlertName"]!=alertName)
 		{
 			if(alertresult){
-			Message.info("报警名称已经存在");
-			return;
+				Message.info("报警名称已经存在");
+				return;
 			}
 		}
 		
 		var emailAdress=warnerruleofemailformedit["EmailAdress"];
-		if(!emailAdress){
+		var otherAdress = warnerruleofemailformedit["OtherAdress"];
+		if(!emailAdress && !otherAdress){
 			Message.info("报警邮件接收地址不能为空");
 			return;
 		}

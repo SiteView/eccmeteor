@@ -27,8 +27,9 @@ Template.warnerruleofmessage.events={
 			return;
 		}
 		var smsNumber=warnerruleofmessageform["SmsNumber"];
-		if(!smsNumber){
-			Message.info("报警短信接收手机号不能为空");
+		var otherNumber = warnerruleofmessageform["OtherNumber"];
+		if(!smsNumber && !otherNumber){
+			Message.info("报警短信接收地址不能为空");
 			return;
 		}
 		var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
@@ -156,13 +157,13 @@ Template.messagewarnerformedit.messagelist = function(){
 Template.messagewarnerformedit.rendered=function(){
 	$(function(){
 		//填充报警接收手机号下拉列表
-		var messagelist = SvseMessageDao.getMessageList();
-		for(var l = 0 ; l < messagelist.length ; l++){
-			console.log(messagelist[l]);
-			var name = messagelist[l].Name;
-			var option = $("<option value="+name+"></option>").html(name);
-			$("#warnersmsnumber").append(option);
-		}
+		// var messagelist = SvseMessageDao.getMessageList();
+		// for(var l = 0 ; l < messagelist.length ; l++){
+			// console.log(messagelist[l]);
+			// var name = messagelist[l].Name;
+			// var option = $("<option value="+name+"></option>").html(name);
+			// $("#warnersmsnumber").append(option);
+		// }
 		$('.messagemultiselectedit').multiselect({
 			buttonClass : 'btn',
 			buttonWidth : 'auto',
@@ -265,7 +266,8 @@ Template.editwarnerruleofmessage.events({
 		}
 		
 		var smsNumber=warnerruleofmessageformedit["SmsNumber"];
-		if(!smsNumber){
+		var otherNumber = warnerruleofmessageformedit["OtherNumber"];
+		if(!smsNumber && !otherNumber){
 			Message.info("报警接收手机号不能为空");
 			return;
 		}
