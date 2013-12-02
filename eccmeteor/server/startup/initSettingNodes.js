@@ -44,7 +44,7 @@ initSettingNodes = function(status){
 			{id:41,pId:4,name:"TaskAbsolute",action:"taskabsolute",type:"task",icon:"imag/setting/task.gif"},
 			{id:42,pId:4,name:"TaskPeriod",action:"taskperiod",type:"task",icon:"imag/setting/task.gif"},
 			{id:43,pId:4,name:"TaskRelative",action:"TaskRelative",type:"task",icon:"imag/setting/task.gif"},
-			{id:25,pId:2,name:"SysLogSet",action:"SysLogSet",type:"setting",icon:"imag/setting/SysLogQuery.png"},
+			{id:25,pId:2,name:"SysLogsetting",action:"SysLogsetting",type:"setting",icon:"imag/setting/SysLogQuery.png"},
 			{id:26,pId:2,name:"OperateLog",action:"OperateLog",type:"setting",icon:"imag/setting/SysLogQuery.png"},
 			{id:27,pId:2,name:"SystemDiagnosis",action:"SystemDiagnosis",type:"setting",icon:"imag/setting/diagnosis.gif"},
 			{id:28,pId:2,name:"License",action:"License",type:"setting",icon:"imag/setting/license.gif"},
