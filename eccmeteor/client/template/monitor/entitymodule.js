@@ -55,7 +55,7 @@ Template.MonitorList.events={
 				break;
 			}
 		}
-		
+		LoadingModal.loading();
 		SvseMonitorDao.getMonitor(monitorId,function(err,result){
 			if(err){
 				Log4js.error(err);
@@ -66,15 +66,16 @@ Template.MonitorList.events={
 			console.log(monitor);
 			//监视器不具备动态属性。直接渲染弹窗
 			if(!DynamicParameters){
+				LoadingModal.loaded();
 				context = megerTemplateAndFactData(context,monitor);//合并模板数据和实际数据
-			//	RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
 				console.log("不具备动态属性 合并后的实例");
 				console.log(context);
+				RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
 				return;
 			}
 			//具备动态属性 && 获取动态属性
 			SvseMonitorTemplateDao.getMonityDynamicPropertyData(entityId,monitorTemplateId,function(status,result){
-		//		LoadingModal.loaded();
+				LoadingModal.loaded();
 				if(!status){
 					Log4js.error(result);
 					Message.error("获取监视器动态属性失败！");
@@ -90,7 +91,7 @@ Template.MonitorList.events={
 				context = megerTemplateAndFactData(context,monitor);//合并模板数据和实际数据
 				console.log("具备动态属性 并后的实例");
 				console.log(context);
-				//RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
+				RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
 			});
 
 		});
@@ -227,23 +228,6 @@ function emptyImage(){
 		.style("text-anchor", "middle");	
 }
 
-var getEditMonitorDynamicInfoData = function(checkedMonitorId){
-	SvseMonitorDao.getMonitor(checkedMonitorId,function(err,result){
-			if(err){
-				Log4js.error(err);
-				Message.error(result);
-				return;
-			}
-			var monitor = result;
-			console.log(monitor);
-			var advance_parameter = monitor["advance_parameter"];
-			var parameter = monitor["parameter"];
-			var error = monitor["error"];
-			var good = monitor["good"];
-			var warning = monitor["warning"];//定义一个checkbox。
-	});
-}
-
 
 var getMonitorInfoContext = function(monitorTemplateId,monityTemplateName){
 	var ActionType = "编辑";//添加或编辑。用于标题栏
@@ -255,7 +239,7 @@ var getMonitorInfoContext = function(monitorTemplateId,monityTemplateName){
 	var MonityTemplateStates = SvseMonitorTemplateDao.getMonityTemplateStatesById(monitorTemplateId);
 	var MonityFrequencyLabel = SvseMonitorTemplateDao.getMonityTemplateParameterByName(monitorTemplateId,"_frequency").sv_label;
 	var MonityFrequencyDom =  SvseMonitorTemplateDao.getMonityTemplateFrequencyParameters(monitorTemplateId);
-	var AllTaskNames = SvseTaskDao.getAllTaskNames();
+	//var AllTaskNames = SvseTaskDao.getAllTaskNames();
 	return {
 		devicename:devicename,
 		monitorTemplateId:monitorTemplateId,
@@ -268,8 +252,7 @@ var getMonitorInfoContext = function(monitorTemplateId,monityTemplateName){
 		Warning:MonityTemplateStates.Warning,
 		Good:MonityTemplateStates.Good,
 		MonityFrequencyLabel:MonityFrequencyLabel,
-		MonityFrequencyDom:MonityFrequencyDom,
-		AllTaskNames:AllTaskNames
+		MonityFrequencyDom:MonityFrequencyDom
 	}
 }
 
@@ -302,9 +285,12 @@ var megerTemplateAndFactData = function(MTempalte,MInstance){
 	MonityFrequency[1]["sv_value"] = MInstance.parameter[MonityFrequency[1]["sv_name"]];
 	MTempalte.MonityFrequencyDom = MonityFrequency;
 
-	//普通属性
-	MTempalte["CommonProperty"] = MInstance.parameter;
+	//普通参数
+	MTempalte["CommonParameter"] = MInstance.parameter;
+	//MTempalte["CommonParameter"].AllTaskNames = MTempalte["AllTaskNames"];
 
+	//普通属性
+	MTempalte["CommonProperty"] = MInstance.property;
 	//动态监视器属性
 	var MTDynamicProperty = MTempalte["MonityTemplateParameters"];
 	for(var dl = 0; dl < MTDynamicProperty.length; dl++){
