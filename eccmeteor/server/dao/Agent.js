@@ -39,19 +39,19 @@ Object.defineProperty(Agent,"getPermission",{
 */
 Object.defineProperty(Agent,"_PermissionType",{
 	value:{
-		addGroup : "addGroup",//添加组
-        addEntity : "addEntity",//添加设备
-        delete : "delete",//删除本身
-        edit : "edit",//编辑本身
-        refresh : "refresh",//刷新本身
-	    foribed : "foribed",//”禁用本身”, //新增
-	    enable : "enable",//启用本身。 //新增
-	    deleteMul : "deleteMul", //删除多个下属节点
-	    foribedMul : "foribedMul",//批量禁用下属节点 //新增
-	    enableMul : "enableMul", //批量启用下属节点//新增
-	    addMonitor : "addMonitor", // 添加监视器
-		editMonitor : "editMonitor", //编辑监视器
-		deleteMonitor : "deleteMonitor", //删除监视器
+		"addGroup" : "addGroup",//添加组
+        "addEntity" : "addEntity",//添加设备
+        "delete" : "delete",//删除本身
+        "edit" : "edit",//编辑本身
+        "refresh" : "refresh",//刷新本身
+	    "foribed" : "foribed",//”禁用本身”, //新增
+	    "enable" : "enable",//启用本身。 //新增
+	    "deleteMul" : "deleteMul", //删除多个下属节点
+	    "foribedMul" : "foribedMul",//批量禁用下属节点 //新增
+	    "enableMul" : "enableMul", //批量启用下属节点//新增
+	    "addMonitor" : "addMonitor", // 添加监视器
+		"editMonitor" : "editMonitor", //编辑监视器
+		"deleteMonitor" : "deleteMonitor", //删除监视器
 	}
 });
 
