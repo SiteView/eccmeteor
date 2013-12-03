@@ -5,51 +5,9 @@ Template.AddMoniorFormModal.events({
 	"click #monityTemplateFormsSavelBtn":function(e,t){
 		var monitorTemplateId = t.find("input:text").value;
 		var monityTemplateParameter = ClientUtils.formArrayToObject($("#monityTemplateParameter").serializeArray());
-	//	var monityTemplateStates = ClientUtils.formArrayToObject($("#monityTemplateStates").serializeArray());
-		var monityTemplateAdvanceParameters = ClientUtils.formArrayToObject($("#monityTemplateAdvanceParameters").serializeArray());
-		var monityCommonParameters = ClientUtils.formArrayToObject($("#monityTemplateCommonParameters").serializeArray());
-		monityCommonParameters["sv_checkerr"] = monityCommonParameters["sv_checkerr"] || "false";
-		var checkedMonityTemolateProperty = SvseMonitorTemplateDao.getTemplateById(monitorTemplateId)["property"];//模板属性
-		var monityParameter = ClientUtils.objectCoalescence(monityTemplateParameter,monityCommonParameters);
-		//拼接基本参数属性
-		if(!monityParameter["sv_errfreqsave"]){
-			monityParameter["sv_errfreqsave"] = "";
-			monityParameter["sv_errfreq"] = 0;
-		}
-		if(monityParameter["sv_errfreqsave"] !== ""){
-			monityParameter["sv_errfreq"] = +monityParameter["sv_errfreqsave"];
-		}
-		monityParameter["_frequency"] = +monityParameter["_frequency"];
-		monityParameter["_frequency1"] = monityParameter["_frequency"]
-		var error =  ClientUtils.statusFormToObj($("#errorsStatusForm").serializeArray());
-		var good =  ClientUtils.statusFormToObj($("#goodStatusForm").serializeArray());
-		var warning =  ClientUtils.statusFormToObj($("#warningStatusForm").serializeArray());
-		var property = {
-			sv_disable : false,
-			sv_endtime : "",
-			sv_monitortype : checkedMonityTemolateProperty.sv_id,
-			sv_name : checkedMonityTemolateProperty.sv_name,
-			sv_starttime : "",
-			creat_timeb : new Date().format("yyyy-MM-dd hh:mm:ss")
-		};
-		//组装监视器数据
-		var monitor = {
-			advance_parameter : monityTemplateAdvanceParameters,
-			error : error,
-			warning : warning,
-			good : good,
-			parameter : monityParameter,
-			property : property
-		};
-		//获取当前编辑状态 是添加还是修改。true为修改状态。在entitymonitoredit.js中初始化
-	//	var monitorstatus = Session.get("monitorStatus") === "添加";
-		//获取父节点id
-	//	var parentid = Session.get("checkedTreeNode")["id"];
 		var parentid = SessionManage.getCheckedTreeNode("id");
-		SystemLogger("获取到的结果是:");
+		Log4js.info("获取到的结果是:");
 		console.log(monitor);
-		//如果是添加监视器
-	//	if(monitorstatus){ 
 		LoadingModal.loading();
 		SvseMonitorDao.addMonitor(monitor,parentid,function(result){
 			LoadingModal.loaded();
@@ -60,20 +18,6 @@ Template.AddMoniorFormModal.events({
 			}
 			RenderTemplate.hideParents(t);
 		});
-		//如果编辑监视器
-	//	}else{
-	/*	//	monitor["return"] = {id : Session.get("checkedMonitorId").id,return : true};
-			monitor["return"] = {id : SessionManage.setCheckedMonitorId(),return : true};
-			console.log(monitor);
-			SvseMonitorDao.editMonitor(monitor,parentid,function(result){
-				if(!result.status){
-					SystemLogger(result.msg,-1);
-				}else{
-					SystemLogger("刷新监视器完成....");
-				}
-				RenderTemplate.hideParents(t);
-			});
-		}*/
 	},
 	"click #monityTemplateFormsCancelBtn":function(e,t){
 		//$("#showMonitorInfoDiv").modal('hide');
@@ -126,8 +70,9 @@ Template.AddMoniorFormModal.events({
 		//condition.replace(/\[  \[/g,"\[").replace(/(or|and)$/,"").replace(/^ \[ $/,"无条件限制")
 	},
 	"click button.statusmodaldiv":function(e){
-	//	$(e.currentTarget).parent().parent(".row-fluid").siblings(".modal").modal('show');
-		//console.log(div);
+	},
+	"click .modal-header button.close":function(e,t){
+		RenderTemplate.hideParents(t);
 	}
 });
 
@@ -137,7 +82,8 @@ Template.AddMoniorFormModal.rendered = function(){
 
 Template.monitorTemplateStatus.events({
 	//添加报警条件
-	"click button":function(e){ 
+	"click button":function(e,t){ 
+	//	console.log(t.find("button#monitorTemplateStatusAddConditions").id);
 		//防止误操作
 		if(e.currentTarget.id !== "monitorTemplateStatusAddConditions")
 			return;

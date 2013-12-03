@@ -262,7 +262,7 @@ svRefreshMonitors = function (id,pid,instantReturn){
 	if(!instantReturn){
 		instantReturn = false;	
 	}
-	Log4js.error("=============instantReturn is " + instantReturn)
+	Log4js.info("=============instantReturn is " + instantReturn)
 	var dowhat ={'dowhat':'RefreshMonitors',id:id,parentid:pid,instantReturn:instantReturn};
 	var robj= process.sv_univ(dowhat, 0);
 	var flag = checkErrorOnServer(robj);
@@ -706,7 +706,7 @@ svSubmitEntity = function(entity,parentid){
 //添加编辑监视器
 svSubmitMonitor = function(monitor,parentid){
 	if(parentid){
-		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor','parentid':parentid,autoCreateTable:true,del_supplement:false},0); //添加
+		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor','parentid':parentid,autoCreateTable:true,del_supplement:true},0); //添加
 	}else{
 		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor',del_supplement:false},0); //修改
 	}

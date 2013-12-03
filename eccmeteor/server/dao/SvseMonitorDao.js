@@ -26,15 +26,17 @@ SvseMonitorDaoOnServer = {
 	},
 	getMonitorInfoById:function(id){
 		var r_monitor = SvseMethodsOnServer.svGetMonitor(id);
+		Log4js.info("编辑监视器获取的原始数据:");
+		Log4js.info(r_monitor);
 		if(!r_monitor) 
 			throw new Meteor.Error(500,"SvseMonitorDaoOnServer.getMonitorInfoById get null");
 		return r_monitor;
 	},
-	editMonitor : function(monitor,parentid){
-		var r_monitor =  SvseMethodsOnServer.svSubmitMonitor(monitor);
+	editMonitor : function(parentid,monitor){
+		var r_monitor =  SvseMethodsOnServer.svSubmitMonitor(monitor,parentid);
 		if(!r_monitor)
 			throw new Meteor.Error(500,"SvseMonitorDaoOnServer.editMonitor");
-	//	Log4js.error("添加监视器成功，监视器是：");
+	//	Log4js.info("编辑监视器成功，监视器是：");
 	//	Log4js.info(r_monitor);
 	//	Log4js.info("刷新监视");
 		var selfId = r_monitor["return"]["id"];
