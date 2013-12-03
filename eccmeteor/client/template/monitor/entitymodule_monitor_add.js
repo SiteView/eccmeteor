@@ -3,21 +3,57 @@ Template.AddMoniorFormModal.events({
 		return false;
 	},
 	"click #monityTemplateFormsSavelBtn":function(e,t){
-		var monitorTemplateId = t.find("input:text").value;
-		var monityTemplateParameter = ClientUtils.formArrayToObject($("#monityTemplateParameter").serializeArray());
-		var parentid = SessionManage.getCheckedTreeNode("id");
-		Log4js.info("获取到的结果是:");
-		console.log(monitor);
-		LoadingModal.loading();
-		SvseMonitorDao.addMonitor(monitor,parentid,function(result){
-			LoadingModal.loaded();
-			if(result && !result.status){
-				Message.error(result.msg);
-			}
-			else{
-			}
-			RenderTemplate.hideParents(t);
-		});
+        var monitorTemplateId = t.find("input:text").value;
+        var monityTemplateParameter = ClientUtils.formArrayToObject($("#monityTemplateParameter").serializeArray());
+        var monityTemplateAdvanceParameters = ClientUtils.formArrayToObject($("#monityTemplateAdvanceParameters").serializeArray());
+        var monityCommonParameters = ClientUtils.formArrayToObject($("#monityTemplateCommonParameters").serializeArray());
+        monityCommonParameters["sv_checkerr"] = monityCommonParameters["sv_checkerr"] || "false";
+        var checkedMonityTemolateProperty = SvseMonitorTemplateDao.getTemplateById(monitorTemplateId)["property"];//模板属性
+        var monityParameter = ClientUtils.objectCoalescence(monityTemplateParameter,monityCommonParameters);
+        //拼接基本参数属性
+        if(!monityParameter["sv_errfreqsave"]){
+                monityParameter["sv_errfreqsave"] = "";
+                monityParameter["sv_errfreq"] = 0;
+        }
+        if(monityParameter["sv_errfreqsave"] !== ""){
+                monityParameter["sv_errfreq"] = +monityParameter["sv_errfreqsave"];
+        }
+        monityParameter["_frequency"] = +monityParameter["_frequency"];
+        monityParameter["_frequency1"] = monityParameter["_frequency"]
+        var error =  ClientUtils.statusFormToObj($("#errorsStatusForm").serializeArray());
+        var good =  ClientUtils.statusFormToObj($("#goodStatusForm").serializeArray());
+        var warning =  ClientUtils.statusFormToObj($("#warningStatusForm").serializeArray());
+        var property = {
+                sv_disable : false,
+                sv_endtime : "",
+                sv_monitortype : checkedMonityTemolateProperty.sv_id,
+                sv_name : checkedMonityTemolateProperty.sv_name,
+                sv_starttime : "",
+                creat_timeb : new Date().format("yyyy-MM-dd hh:mm:ss")
+        };
+        //组装监视器数据
+        var monitor = {
+                advance_parameter : monityTemplateAdvanceParameters,
+                error : error,
+                warning : warning,
+                good : good,
+                parameter : monityParameter,
+                property : property
+        };
+        var parentid = SessionManage.getCheckedTreeNode("id");
+        SystemLogger("获取到的结果是:");
+        console.log(monitor);
+
+        LoadingModal.loading();
+        SvseMonitorDao.addMonitor(monitor,parentid,function(result){
+            LoadingModal.loaded();
+            if(result && !result.status){
+                    Message.error(result.msg);
+            }
+            else{
+            }
+            RenderTemplate.hideParents(t);
+        });
 	},
 	"click #monityTemplateFormsCancelBtn":function(e,t){
 		//$("#showMonitorInfoDiv").modal('hide');
