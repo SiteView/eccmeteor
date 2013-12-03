@@ -1,4 +1,4 @@
-Agent = {};
+Agent = function(){};
 
 Object.defineProperty(Agent,"getReturn",{
 	value:function(status,msg){

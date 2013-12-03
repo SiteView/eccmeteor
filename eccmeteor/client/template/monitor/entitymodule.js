@@ -276,8 +276,8 @@ var megerTemplateAndFactData = function(MTempalte,MInstance){
 	}
 	//合并状态
 	MTempalte.Error = mergeTemplateStatus(MTempalte.Error,MInstance.error);
-	MTempalte.Good = mergeTemplateStatus(MTempalte.Error,MInstance.good);
-	MTempalte.Warning = mergeTemplateStatus(MTempalte.Error,MInstance.warning);
+	MTempalte.Good = mergeTemplateStatus(MTempalte.Good,MInstance.good);
+	MTempalte.Warning = mergeTemplateStatus(MTempalte.Warning,MInstance.warning);
 
 	//基础频率
 	var MonityFrequency = MTempalte.MonityFrequencyDom;
@@ -308,9 +308,10 @@ var mergeTemplateStatus = function(MTStatus,MIStatus){
 	var selects = [];
 	for(property in MIStatus){
 		if(property.indexOf("sv_paramname") != -1){
-			var index = property.match(/\d+/g);
-			index = index === null ? "" : index[0];// index == null or index == ["123"];
+			var index = property.replace("sv_paramname","");
+			var rid = +index;
 			selects.push({
+				"sid":index,
 				"paramenameKey":property,
 				"paramenameValue":MIStatus[property],
 				"operateKey":("sv_operate"+index),
@@ -318,7 +319,7 @@ var mergeTemplateStatus = function(MTStatus,MIStatus){
 				"sv_paramvalueKey":("sv_paramvalue"+index),
 				"sv_paramvalueValue":MIStatus[("sv_paramvalue"+index)],
 				"sv_relationKey":("sv_relation"+index),
-				"sv_relationValue":MIStatus[("sv_relation"+index)]
+				"sv_relationValue":MIStatus[("sv_relation"+(rid-1))] ? MIStatus[("sv_relation"+(rid-1))] :""
 			})
 		}
 	}
