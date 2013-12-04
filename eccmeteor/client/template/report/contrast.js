@@ -1,8 +1,42 @@
 var getContrastListSelectAll = function(){
 	return ClientUtils.tableGetSelectedAll("contrastlist");
 }
+var PagerMonitor = new Pagination("subentitylist");
+
+Template.contrast.pagerMonitor = function(){
+	var entityId = SessionManage.getCheckedTreeNode("id");
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
+	return PagerMonitor.create(SvseTreeDao.getNodeCountsByIds(childrenIds));
+}
+Template.contrast.Monitors = function(){
+	var entityId = SessionManage.getCheckedTreeNode("id");
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
+    var perPage = Session.get("PERPAGE");
+    return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip({perPage:perPage}));
+}
+//获取报警规则列表
+Template.warnerrulelog.warnerruleoflist = function(){
+	console.log(SvseWarnerRuleDao.getWarnerRuleList());
+	return SvseWarnerRuleDao.getWarnerRuleList();
+}
+
+//获取报警规则的类型
+Template.warnerrulelog.alertTypes = function(){
+	var alertType = ["EmailAlert","SmsAlert","ScriptAlert","SoundAlert"];
+	return alertType;
+}
 
 Template.contrast.events = {
+       "click tbody tr":function(e){
+		var checkedMonitorId = this.sv_id;
+		if(SessionManage.getCheckedMonitorId() === checkedMonitorId)
+			return;
+	//	var status = this.status;
+		if(!checkedMonitorId || checkedMonitorId=="") return;
+		//存储选中监视器的id
+		SessionManage.setCheckedMonitorId(checkedMonitorId);
+		drawImage(checkedMonitorId);
+	},
     //查询
 	  "click #search" : function(){
 			console.log("@@@@");
@@ -11,6 +45,8 @@ Template.contrast.events = {
 		//判断是否选择选择监测器
 		  var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
 		  var targets = [];
+		  var startDate;
+		  var endDate;
 		  var contrastlist = ClientUtils.formArrayToObject($("#contrastlist").serializeArray());
 		  var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
 			for(index in arr){
@@ -21,11 +57,36 @@ Template.contrast.events = {
 			$(":checkbox[name='Status']").each(function(){
 			if(!this.checked) contrastlist["Status"]="Yes";
 		});
+		//是否选择选择监测器
         contrastlist["AlertTarget"] = targets.join();
 		if(!contrastlist["AlertTarget"]){
-			Message.info("请选择选择选择监测器！",{align:"center",time:3});
+			Message.info("请选择选择监测器！",{align:"center",time:3});
 			return;
 		}
+		/*SvseWarnerRuleDao.getQueryAlertLog(startDate,endDate,contrastlist,function(result){
+			console.log("result");
+			if(!result.status){
+				console.log(result);
+				return;
+			}
+			
+			console.log(result);
+		var dataProcess = new DataProcess(result.content);
+			var resultData = dataProcess.getData();
+		for(var i = 0;i < resultData.length;i++){
+				var data = resultData[i];
+				//判断报警状态的显示
+				if(data["_AlertStatus"] == 0){
+					data["_AlertStatus"] = "Fail";
+				}
+				if(data["_AlertStatus"] == 1){
+					data["_AlertStatus"] = "Success";
+				}
+				var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
+				+"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
+				$("#warnerloglist").append(tbody);
+			}
+			});*/
 		
 	},
 		  
@@ -166,7 +227,25 @@ Template.contrast.rendered = function(){
 						showRMenu("node", event.clientX, event.clientY);
 					}
 				},
-				onClick : function(){
+				
+				onClick:function(event, treeId, treeNode){
+					var id= treeNode.id;
+					var type = treeNode.type;
+					var checkedTreeNode = {};
+					checkedTreeNode.id = id;
+					checkedTreeNode.type=type;
+					checkedTreeNode.name = treeNode.name;
+					//记录点击的节点。根据该节点获取 编辑增加设备时的基本信息;
+					SessionManage.setCheckedTreeNode(checkedTreeNode);
+					if(type !== "monitor"){
+						Message.info("请选择监测器！");
+					
+					
+						return;
+					}
+
+					SwithcView.view(REPORT.TREND);
+				
 				console.log("45");
 				}  
 			},
@@ -296,7 +375,7 @@ Template.MonitorList.Monitors = function(){
     return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip());
 }
 
-Template.ContrastDetailData.ContrastDetailData = function(){
+Template.ContrastDetailData.ContrastDetailTableData = function(){
 	return SessionManage.getContrastDetailTableData();
 }
 /*Template.MonitorStatisticalDetailData.monitorStatisticalDetailTableData = function(){
@@ -305,7 +384,7 @@ Template.ContrastDetailData.ContrastDetailData = function(){
 
 	
 	//画图前 获取相关数据
-function drawImage(id,count){
+/*function drawImage(id,count){
 	if(!count) 
 		var count =200;
 	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
@@ -350,8 +429,8 @@ function drawImage(id,count){
 		pie.draw();*/
 	
 		
-	});
-}
+	/*});
+}*/
 
 var drawDetailLine =  function(startDate,endDate){
 	var id = SessionManage.getCheckedMonitorId();
@@ -398,3 +477,70 @@ Deps.autorun(function(){
 		return;
 	drawDetailLineAgain();
 });
+
+/*
+合并模板数据和实际数据
+*/
+var megerTemplateAndFactData = function(MTempalte,MInstance){
+	//合并advanceParameter
+	var advanceMT = MTempalte.MonityTemplateAdvanceParameters;
+	var advanceMI =  MInstance.advance_parameter;
+	if(advanceMT.length && advanceMI){
+		for(ap in advanceMI){
+			for(apIndex = 0 ; apIndex < advanceMT.length ; apIndex ++){
+				if(ap == advanceMT[apIndex].sv_name){
+					advanceMT[apIndex].sv_value = advanceMI[ap];
+					break;
+				}
+			}
+		}
+		MTempalte.MonityTemplateAdvanceParameters = advanceMT;
+	}
+	//合并状态
+	MTempalte.Error = mergeTemplateStatus(MTempalte.Error,MInstance.error);
+	MTempalte.Good = mergeTemplateStatus(MTempalte.Error,MInstance.good);
+	MTempalte.Warning = mergeTemplateStatus(MTempalte.Error,MInstance.warning);
+
+	//基础频率
+	var MonityFrequency = MTempalte.MonityFrequencyDom;
+	MonityFrequency[0]["sv_value"] = MInstance.parameter[MonityFrequency[0]["sv_name"]];
+	MonityFrequency[1]["sv_value"] = MInstance.parameter[MonityFrequency[1]["sv_name"]];
+	MTempalte.MonityFrequencyDom = MonityFrequency;
+
+	//普通属性
+	MTempalte["CommonProperty"] = MInstance.parameter;
+
+	//动态监视器属性
+	var MTDynamicProperty = MTempalte["MonityTemplateParameters"];
+	for(var dl = 0; dl < MTDynamicProperty.length; dl++){
+		if(MTDynamicProperty[dl]["sv_name"]){
+			MTDynamicProperty[dl]["sv_value"] =  MInstance.parameter[MTDynamicProperty[dl]["sv_name"]]
+		}
+	}
+	MTempalte["MonityTemplateParameters"] = MTDynamicProperty;
+	return MTempalte;
+}
+//合并状态
+var mergeTemplateStatus = function(MTStatus,MIStatus){
+	MTStatus.sv_conditioncount = MIStatus.sv_conditioncount;
+	MTStatus.sv_expression = MIStatus.sv_expression;
+	var selects = [];
+	for(property in MIStatus){
+		if(property.indexOf("sv_paramname") != -1){
+			var index = property.match(/\d+/g);
+			index = index === null ? "" : index[0];// index == null or index == ["123"];
+			selects.push({
+				"paramenameKey":property,
+				"paramenameValue":MIStatus[property],
+				"operateKey":("sv_operate"+index),
+				"operateValue":MIStatus[("sv_operate"+index)],
+				"sv_paramvalueKey":("sv_paramvalue"+index),
+				"sv_paramvalueValue":MIStatus[("sv_paramvalue"+index)],
+				"sv_relationKey":("sv_relation"+index),
+				"sv_relationVakue":MIStatus[("sv_relation"+index)]
+			})
+		}
+	}
+	MTStatus["selects"] = selects;
+	return MTStatus;
+}

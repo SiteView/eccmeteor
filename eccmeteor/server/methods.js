@@ -31,6 +31,16 @@ Meteor.methods({
 	Content:增加 趋势报告 的agent声明
 */ 
   "svGetTrendList":svGetTrendList,
+  /*
+	Type： add
+	Author：renjie
+	Date:2013-12-2 13:40
+	Content:增加 syslog 的agent声明
+*/
+"svseSysLogDaoAgent":SvseSysLogDaoAgent.agent,	
+"svGetSysLogConfigSetting":svGetSysLogConfigSetting,
+"svGetSysLogQueryContEntityConfigSetting":svGetSysLogQueryContEntityConfigSetting,
+"svGetSysLogQueryContRankConfigSetting":svGetSysLogQueryContRankConfigSetting,
 });//给客户端调用的
  /**
 	Type： add | modify 
@@ -127,6 +137,15 @@ SvseMethodsOnServer = {
 	Content:增加 趋势报告 的agent声明
 */ 
 	"svGetTrendList":svGetTrendList,
+	/*
+	Type： add
+	Author：renjie
+	Date:2013-12-2 14:40
+	Content:增加 syslog 
+*/
+    "svWriteDelContConfigIniFileSectionString":svWriteDelContConfigIniFileSectionString,
+	"svWriteQueryContEntityConfigIniFileSectionString":svWriteQueryContEntityConfigIniFileSectionString,
+	"svWriteQueryContRankConfigIniFileSectionString":svWriteQueryContRankConfigIniFileSectionString,
 }
 
 SvseSyncData = {

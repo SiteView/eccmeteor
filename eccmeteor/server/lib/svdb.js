@@ -1035,3 +1035,106 @@ svGetQueryAlertLog = function(beginDate,endDate,alertQueryCondition){
 	
 	return alertLogRecords;
 }
+/*
+	Type:系统日志
+	Author:renjie
+	Data:2013-12-02
+	Content:SysLog
+*/
+//syslog.ini(section:DelCond)写入
+svWriteDelContConfigIniFileSectionString = function(section){
+	console.log(section);
+	var ini = {"DelCond":section};
+	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"syslog.ini",'user':"default",'section':"DelCond"},0); 
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	Log4js.info(robj.fmap(0));
+	return robj.fmap(0);
+}
+//获取设置
+svGetSysLogConfigSetting = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"syslog.ini",
+		"user":"default","section":"DelCond"}, 0);
+	if(!robj.isok(0)){
+		return;
+	}
+	var fmap= robj.fmap(0);
+	if(!fmap || !fmap["DelCond"]) return ;
+	return fmap["DelCond"];
+}
+
+svWriteQueryContEntityConfigIniFileSectionString = function(section){
+	console.log(section);
+	section["Facility"]= svEncryptOne(section["Facility"]);
+	section["Severities"] = svEncryptOne(section["Severities"]);
+	var ini = {"QueryCond":section};
+	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"syslog.ini",'user':"default",'section':"QueryCond"},0); 
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	Log4js.info(robj.fmap(0));
+	return robj.fmap(0);
+}
+//获取Entity参数设置
+svGetSysLogQueryContEntityConfigSetting = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"syslog.ini",
+		"user":"default","section":"QueryCond"}, 0);
+	if(!robj.isok(0)){
+		return;
+	}
+	var fmap= robj.fmap(0);
+	if(!fmap || !fmap["QueryCond"]) return ;
+	fmap["QueryCond"]["Facility"]["Severities"] = svDecryptOne(fmap["QueryCond"]["Facility"]["Severities"]);
+	return fmap["QueryCond"];
+}
+
+svWriteQueryContRankConfigIniFileSectionString = function(section){
+	console.log(section);
+	section["Facility"]= svEncryptOne(section["Facility"]);
+	section["Severities"] = svEncryptOne(section["Severities"]);
+	var ini = {"QueryCond":section};
+	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"syslog.ini",'user':"default",'section':"QueryCond"},0); 
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	Log4js.info(robj.fmap(0));
+	return robj.fmap(0);
+}
+//获取Rank参数设置
+svGetSysLogQueryContRankConfigSetting = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"syslog.ini",
+		"user":"default","section":"QueryCond"}, 0);
+	if(!robj.isok(0)){
+		return;
+	}
+	var fmap= robj.fmap(0);
+	if(!fmap || !fmap["QueryCond"]) return ;
+	fmap["QueryCond"]["Facility"]["Severities"] = svDecryptOne(fmap["QueryCond"]["Facility"]["Severities"]);
+	return fmap["QueryCond"];
+}
+//删除某个表中的指定时间以前的记录
+svDeleteSysLogSetting = function (id){
+	var robj = process.sv_univ(
+	{'dowhat':'DeleteRecords',
+	 'id':'id',
+	 'month':'XXX',
+	 'day':'XXX',  
+	 'hour':'XXX',  
+	 'minute':'XXX',  
+	 'second':'XXX',
+	 }, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	var fmap= robj.fmap(0);
+	return fmap; 
+}
