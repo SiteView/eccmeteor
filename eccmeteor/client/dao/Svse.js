@@ -70,9 +70,6 @@ SvseDao = {
 		return branch;
 		
 	},	
-	
-
-	
 	removeNodesById:function(id,fn){  //根据ID删除节点 返回删除的节点数
 		//同时删除SvseTree和Svse中的数据而且删除其子节点。
 		Meteor.call(SvseDao.AGENT,'removeNodesById',[id,true],function(err,result){
@@ -89,31 +86,10 @@ SvseDao = {
 			}
 			
 		});
-	},/*
-	removeNodesByIds:function(ids,panrenid,fn){
-		Meteor.call(SvseDao.AGENT, "removeNodesByIds", [ids,panrenid], function(err, result) {
-			if (err) {
-				console.log(err);
-				fn({
-					status: false,
-					msg: err
-				});
-			} else {
-				if (result && !reult[status]) { // 无权限
-					console.log(result.msg);
-					fn(result);
-				} else {
-					fn({
-						status: true
-					});
-				}
-			}
-
-		});
-	},*/
+	},
 	addGroup:function(group,parentid,fn){
 		fn = Utils.checkReCallFunction(fn);
-		Meteor.call(SvseDao.AGENT,'addGroup',[group,parentid],function(err,result){
+		Meteor.call(SvseDao.AGENT,'addGroup',[parentid,group],function(err,result){
 			if(err){
 				console.log(err);
 				fn({status:false,msg:err})
@@ -129,7 +105,7 @@ SvseDao = {
 	},
 	
 	editGroup:function(group,selfId,fn){
-		Meteor.call(SvseDao.AGENT,"editGroup",[group,selfId],function(err,result){
+		Meteor.call(SvseDao.AGENT,"editGroup",[selfId,group],function(err,result){
 			if(err){
 				console.log(err);
 				fn({status:false,msg:err})

@@ -8,7 +8,7 @@ SvseEntityTemplateDao= {
 	"sync":function(){
 	//	SyncFunction.SyncEmailList();
 	},
-	"addEntity":function(entity,parentid){
+	"addEntity":function(parentid,entity){
 		var result = SvseMethodsOnServer.svSubmitEntity(entity,parentid);
 		if(!result){
 			var msg = "SvseEntityTemplateDao's addEntity  faild";
@@ -61,7 +61,7 @@ SvseEntityTemplateDao= {
 		});
 		return  SvseEntityTemplateDao.getReturn(true,null,{id:selfId})
 	},
-	"updateEntity":function(entity,selfId){
+	"updateEntity":function(selfId,entity){
 		var result = SvseMethodsOnServer.svSubmitEntity(entity,false);
 		if(!result){
 			var msg = "SvseEntityTemplateDao's addEntity  faild";

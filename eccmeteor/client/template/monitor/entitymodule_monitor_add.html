@@ -6,7 +6,7 @@
 		data-maxHeight='600' data-width="800" data-height="600" data-modalOverflow="true"
 	>
 	<div class="modal-header">			
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<button type="button" class="close">×</button>
 		<label class="label label-info">
 			设备 {{devicename}} {{ActionType}} {{monitorType}} 监视器
 		</label>
@@ -253,8 +253,9 @@
 					</td>
 					<td>
 						<select name="sv_plan">
+							<option value="" {{#if equal sv_plan "" }}selected{{/if}}></option>
 							{{#each AllTaskNames}}
-								<option value="{{this}}">{{this}}</option>
+								<option value="{{sv_name}}">{{sv_name}}</option>
 							{{/each}}
 						</select>
 					</td>
