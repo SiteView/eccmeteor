@@ -25,19 +25,15 @@ function drawImag(monitorId){
 	var dataProcess = new MonitorDataProcess(records,foreigkeys["monitorForeignKeys"]);
 	var resultData = dataProcess.getData();
 
-	var	 htmlStub = '<html><head></head><body><div id="dataviz-container"></div></body></html>';
+	//var	 htmlStub = '<html><head></head><body><div id="dataviz-container"></div></body></html>';
+	var htmlStub = HtmlTemplate.render("TestReport.html");
 	var document = Jsdom.jsdom(htmlStub,null,{
 		features : {
 			FetchExternalResources : ['css'],
 		 	QuerySelector : true
 		}
 	});
-	var mainCss = fs.readFileSync("/home/ec/line.css");
-    var head = document.getElementsByTagName('head')[0];
-    style = document.createElement("style");
-    style.type = 'text/css';
-    style.innerHTML = mainCss;
-    head.appendChild(style);
+    Css.addStyle("line.css",document);//添加css文件
 	var window = document.parentWindow;
 
 	return DrawTrendReport.drawLine(resultData,foreigkeys,window);
