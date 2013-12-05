@@ -1026,7 +1026,6 @@ svGetQueryAlertLog = function(beginDate,endDate,alertQueryCondition){
 		Log4js.error(robj.estr(0),-1);
 		return false;
 	}
-	console.log(alertQueryCondition);
 	var fmap = robj.fmap(0);
 	var alertLogRecords = [];
 	for(r in fmap){

@@ -24,6 +24,7 @@ Meteor.methods({
   "svGetSMSWebConfigSetting":svGetSMSWebConfigSetting,
   "svGetSMSComConfigSetting":svGetSMSComConfigSetting,
   "svGetEmailTemplates":svGetEmailTemplates,
+  "svseAlertLogDaoAgent":SvseAlertLogDaoAgent.agent,
   /*
 	Type： add
 	Author：xuqiang

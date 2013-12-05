@@ -73,9 +73,10 @@ Template.warnerrulelog.warnerruleoflist = function(){
 
 //获取报警规则的类型
 Template.warnerrulelog.alertTypes = function(){
-	var alertType = ["EmailAlert","SmsAlert","ScriptAlert","SoundAlert"];
-	return alertType;
+	console.log(SvseAlertLogDao.defineAlertTypeData());
+	return SvseAlertLogDao.defineAlertTypeData();
 }
+
 
 //获取报警接收人地址的数组
 Template.warnerrulelog.alertReceivers = function(){
@@ -99,7 +100,7 @@ Template.warnerrulelog.events({
 		console.log(endDate);
 		console.log("#######################");
 		
-		SvseWarnerRuleDao.getQueryAlertLog(beginDate,endDate,alertlogquerycondition,function(result){
+		SvseAlertLogDao.getQueryAlertLog(beginDate,endDate,alertlogquerycondition,function(result){
 			console.log("result");
 			if(!result.status){
 				Log4js.info(result.msg);
@@ -114,6 +115,7 @@ Template.warnerrulelog.events({
 			}
 			//console.log(resultData.length);
 			console.log(resultData);
+			var types = SvseAlertLogDao.defineAlertTypeData();
 			//绘制表
 			for(var i = 0;i < resultData.length;i++){
 				var data = resultData[i];
@@ -123,6 +125,11 @@ Template.warnerrulelog.events({
 				}
 				if(data["_AlertStatus"] == 1){
 					data["_AlertStatus"] = "Success";
+				}
+				for(var j = 0; j < types.length;j++){
+					if(data["_AlertType"] == types[j]["id"]){
+						data["_AlertType"] = types[j]["type"];
+					}
 				}
 				var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
 				+"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
@@ -183,7 +190,9 @@ var alertReceiver = function(){
 				alertReceiver.push(recevier.OtherNumber);
 			}
 		}else if(recevier.ScriptServer){
-			//console.log(recevier.ScriptServer);
+			if(recevier.ScriptServer == "192.168.1.127(Windows)(_win)"){
+				recevier.ScriptServer = "192.168.1.127";
+			}
 			alertReceiver.push(recevier.ScriptServer);			
 		}else if(recevier.Server){
 			//console.log(recevier.Server);

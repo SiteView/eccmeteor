@@ -21,6 +21,16 @@ Template.editmessagebasicsetting.rendered = function(){
 				editmessagebasicsettingofbasciinfo["Status"]="Yes";
 			}
 			
+			
+			//验证手机号格式
+			var phone = editmessagebasicsettingofbasciinfo["Phone"];
+			if(!phone){
+				Message.info("手机号码不能为空");
+				return;
+			}
+			var flag = SvseMessageDao.checkPhoneNumberFormat(phone);
+			if(!flag) return;
+			
 			var message = {};
 			message[nIndex] = editmessagebasicsettingofbasciinfo;
 			//console.log(message);

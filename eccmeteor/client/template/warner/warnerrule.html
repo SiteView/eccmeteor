@@ -8,7 +8,7 @@
 {{> warnerruleofemail}}
 {{> warnerruleofemailedit}}
 {{> warnerruleofmessage}}
-{{> editwarnerruleofmessage}}
+{{> messagewarnerformedit}}
 {{> warnerruleofscript}}
 {{> editwarnerruleofscript}}
 {{> warnerruleofsound}}
@@ -56,6 +56,7 @@
 	<div style="padding-bottom:8px">
 		<span class="label label-info">报警规则列表</span>
 	</div>
+	<div>
 	<table class="table table-striped table-condensed table-hover">
 		<thead>
 			<tr></tr>
@@ -78,7 +79,7 @@
 				<td>{{AlertState}}</td>
 				<td>
 					<div class="btn-group">
-						<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+						<button id="{{nIndex}}" class="btn" name="edit"><i class="icon-edit"></i>编辑</button>
 					</div>
 				</td>
 			</tr>
@@ -86,6 +87,8 @@
 		</tbody>
 	</table>
 	{{{pager}}}
+	</div>
+	<!-- <div id="EditWarnerruleModal"></div> -->
 </Template>
 
 <Template name="warnerruleofemail">

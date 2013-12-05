@@ -97,15 +97,4 @@ SvseWarnerRuleDao = {
 			return;
 		}
 	},
-	"getQueryAlertLog":function(beginDate,endDate,alertQueryCondition,fn){
-		Meteor.call(SvseWarnerRuleDao.AGENT,"getQueryAlertLog",[beginDate,endDate,alertQueryCondition],function (err,result){
-			console.log("logg");
-			if(err){
-				fn({status:false,msg:err})
-				return;
-			}
-			console.log("log");
-			fn({status:true,content:result});
-		});
-	},
 }

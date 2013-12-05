@@ -1,17 +1,24 @@
 SvseAlertLogDao = {
-	"AGENT":"SvseAlertLogDaoAgent",
+	"AGENT":"svseAlertLogDaoAgent",
 	
 	//获取查询报警日志的数据记录
 	"getQueryAlertLog":function(beginDate,endDate,alertQueryCondition,fn){
 		Meteor.call(SvseAlertLogDao.AGENT,"getQueryAlertLog",[beginDate,endDate,alertQueryCondition],function (err,result){
-			console.log("logg");
 			if(err){
 				fn({status:false,msg:err})
 				return;
 			}
-			console.log("log");
 			fn({status:true,content:result});
 		});
+	},
+	//定义报警类型的数组
+	"defineAlertTypeData":function(){
+		var alertType = [
+			{id:1,type:"EmailAlert"},
+			{id:2,type:"SmsAlert"},
+			{id:3,type:"ScriptAlert"},
+			{id:4,type:"SoundAlert"}
+			];
+		return alertType;
 	}
-
 }
