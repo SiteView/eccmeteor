@@ -3,6 +3,7 @@ Meteor.Router.add({
     '/index':'Login',
     '/login':'Login',
     '/home': 'body',
+    '/testReport': "testReport",
     '*':"NoFound"
 });
 
