@@ -1,14 +1,14 @@
-node-xmpp安装
-====================
+# node-xmpp安装
+=========================================
 Ubuntu
 ## 安装依赖
-```
+```shell
 sudo apt-get install libexpat1 libexpat1-dev libicu-dev
 ```
 
 ## 步骤
 
-```
+```shell
 cd workspace  #进入到自己的工作目录
 mkdir  xmpp    #创建工程文件夹
 cd  xmpp  #进入工程文件夹
@@ -27,8 +27,7 @@ testSimple.js
 ## 运行
 
 在xmpp目录下：
-```
-
+```shell
 ./node testSimple.js
 
 ```
@@ -40,15 +39,15 @@ svapi.ini配置svdb的服务器。 默认是长沙的192.168.9.242
 
 ## 测试
 
-#### 添加好友
+### 添加好友
 
 请在xmpp客户端添加Configure.js中配置的账户信息为好友。(必须是xmpp.siteview.com的账户才能添加，若需要改变接受好友请求规则请在Configure.js改变相关好友正则表达式)
 
 默认配置的账户是 lihui@xmpp.siteview.com
 
-#### 发送测试消息
+### 发送测试消息
 添加好友后 可以通过  分别  发送以下三条信息进行测试：
-```
+```js
 //测试消息  消息以空行隔开了。直接复制一行信息发送即可。
 /*
 
@@ -75,6 +74,6 @@ svapi.ini配置svdb的服务器。 默认是长沙的192.168.9.242
 */
 ```
 
-#### 接收消息
+### 接收消息
 
 接收到的消息是json格式的字符串。请根据具体返回结果进行解析json
