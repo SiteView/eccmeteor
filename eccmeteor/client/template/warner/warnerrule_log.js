@@ -177,7 +177,9 @@ var alertReceiver = function(){
 				}
 				//console.log(address);
 				var addressStr = SvseWarnerRuleDao.getValueOfMultipleSelect(address);
-				alertReceiver.push(addressStr);
+				if(addressStr != ""){
+					alertReceiver.push(addressStr);
+				}
 			}
 			//其他的邮件地址
 			// if(recevier.OtherAdress){
@@ -199,11 +201,16 @@ var alertReceiver = function(){
 						console.log("这个短信接收手机号可能已经不存在了！");
 						continue;
 					}
+					console.log("------");
+					console.log(mulmessage.Phone);
 					numbers.push(mulmessage.Phone);
 				}
 				//console.log(numbers);
 				var numberStr = SvseWarnerRuleDao.getValueOfMultipleSelect(numbers);
-				alertReceiver.push(numberStr);			
+				if(numberStr != ""){
+					alertReceiver.push(numberStr);
+				}
+				
 			}
 			//其他的短信手机地址
 			// if(recevier.OtherNumber){
@@ -226,7 +233,7 @@ var alertReceiver = function(){
 		if(!rec[alertReceiver[j]]){   
           rec[alertReceiver[j]] = true;   
           result.push(alertReceiver[j]);   
-      }  
+		}  
 	}
 	//console.log(result);
 	console.log(result.sort());//进行排序

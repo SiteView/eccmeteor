@@ -11,16 +11,19 @@ Template.messagesetting.events={
 		console.log("弹出");
 	},
 	//删除短信
-	"click #delmessagesetting" : function(){
+	/* "click #delmessagesetting" : function(){
+		
 		var ids = getMessageSelectAll();
 		SvseMessageDao.checkMessageSelect(ids);
 		if(ids.length)
-			//$("#confirmTipModalDiv").modal("show");
-			
-			SvseMessageDao.deleteMessageByIds(ids,function(result){
-				SystemLogger(result);
+			$("#delmessagesetting").confirm({
+				'message':"确定删除操作？"
 			});
-	},
+			
+			// SvseMessageDao.deleteMessageByIds(ids,function(result){
+				// SystemLogger(result);
+			// });
+	}, */
 	//改变状态-允许
 	"click #allowmessagesetting" : function(){  //启用邮件地址
 		var ids = getMessageSelectAll();
@@ -58,6 +61,25 @@ Template.messagesetting.events={
 	"click #messagehelpmessage" : function(){
  
 	}
+}
+
+Template.messagesetting.rendered = function(){
+	$(function(){
+		$("#delmessagesetting").confirm({
+			'message':"确定删除操作？",
+			'action':function(){
+				var ids = getMessageSelectAll();
+				SvseMessageDao.checkMessageSelect(ids);
+				if(ids.length){
+					SvseMessageDao.deleteMessageByIds(ids,function(result){
+						SystemLogger(result);
+					});
+					//console.log("确定");
+				}
+				$("#delmessagesetting").confirm("hide");
+			}
+		});
+	});
 }
 
 Template.messagesettingList.rendered = function(){
