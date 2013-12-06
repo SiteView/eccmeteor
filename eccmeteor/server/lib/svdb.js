@@ -1053,3 +1053,147 @@ svGetQueryAlertLog = function(beginDate,endDate,alertQueryCondition){
 	
 	return alertLogRecords;
 }
+
+//syslog.ini(section:DelCond)写入
+/*
+	Type:系统日志设置
+	Author:renjie
+	Data:2013-12-02
+	Content:SysLogsetting
+*/
+//syslog.ini(section:DelCond)写入
+svWriteDelContConfigIniFileSectionString = function(section){
+	console.log(section);
+	var ini = {"DelCond":section};
+	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"syslog.ini",'user':"default",'section':"DelCond"},0); 
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	Log4js.info(robj.fmap(0));
+	return robj.fmap(0);
+}
+//获取设置
+svGetSysLogDelCondConfigSetting = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"syslog.ini",
+		"user":"default","section":"DelCond"}, 0);
+	if(!robj.isok(0)){
+		return;
+	}
+	var fmap= robj.fmap(0);
+	if(!fmap || !fmap["DelCond"]) return ;
+	return fmap["DelCond"];
+}
+//获取设置--------
+// svGetSysLogQueryContConfigSetting = function(){
+	// var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"syslog.ini",
+		// "user":"default","section":"QueryCont"}, 0);
+	// if(!robj.isok(0)){
+		// return;
+	// }
+	// var fmap= robj.fmap(0);
+	// if(!fmap || !fmap["QueryCont"]) return ;
+	// return fmap["QueryCont"];
+// }
+// svWriteQueryContConfigIniFileSectionString = function(section){
+	// console.log(section);
+	// var ini = {"QueryCond":section};
+	// var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"syslog.ini",'user':"default",'section':"QueryCond"},0); 
+	// var flag = checkErrorOnServer(robj);
+	// if(typeof flag === "string"){
+		// Log4js.error(flag);
+		// return null;
+	// }
+	// Log4js.info(robj.fmap(0));
+	// return robj.fmap(0);
+// }
+
+svWriteQueryContEntityConfigIniFileSectionString = function(section){
+	console.log(section);
+	//section["Facility"]= svEncryptOne(section["Facility"]);
+	//section["Severities"] = svEncryptOne(section["Severities"]);
+	var ini = {"QueryCond":section};
+	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"syslog.ini",'user':"default",'section':"QueryCond"},0); 
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	Log4js.info(robj.fmap(0));
+	return robj.fmap(0);
+}
+//获取Entity参数设置
+svGetSysLogQueryContEntityConfigSetting = function(){
+	var robj = process.sv_univ({
+		'dowhat':'GetSvIniFileBySections',
+		"filename":"syslog.ini",
+		"user":"default",
+		"section":"QueryCond"
+		//"key" : "Facility",
+		//"value" : status
+		}, 0);
+	if(!robj.isok(0)){
+		return;
+	}
+	var fmap= robj.fmap(0);
+	if(!fmap || !fmap["QueryCond"]) return ;
+	//fmap["QueryCond"]["Facility"] = svDecryptOne(fmap["QueryCond"]["Facility"]);
+	//fmap["QueryCond"]["Facility"]["Severities"] = svDecryptOne(fmap["QueryCond"]["Facility"]["Severities"]);
+	return fmap["QueryCond"];
+}
+
+svWriteQueryContRankConfigIniFileSectionString = function(section){
+	console.log(section);
+	//section["Facility"]= svEncryptOne(section["Facility"]);
+	//section["Severities"] = svEncryptOne(section["Severities"]);
+	var ini = {"QueryCond":section};
+	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"syslog.ini",'user':"default",'section':"QueryCond"},0); 
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	Log4js.info(robj.fmap(0));
+	return robj.fmap(0);
+}
+//获取Rank参数设置
+svGetSysLogQueryContRankConfigSetting = function(){
+	var robj = process.sv_univ({
+		'dowhat':'GetSvIniFileBySections',
+		"filename":"syslog.ini",
+		"user":"default",
+		"section":"QueryCond"
+		//"key" : "Severities",
+		//"value" : status
+		}, 0);
+	if(!robj.isok(0)){
+		return;
+	}
+	var fmap= robj.fmap(0);
+	if(!fmap || !fmap["QueryCond"]["Severities"]) return ;
+	//fmap["QueryCond"]["Facility"] = svDecryptOne(fmap["QueryCond"]["Facility"]);
+	//fmap["QueryCond"]["Severities"] = svDecryptOne(fmap["QueryCond"]["Severities"]);
+	//fmap["QueryCond"]["Facility"]["Severities"] = svDecryptOne(fmap["QueryCond"]["Facility"]["Severities"]);
+	return fmap["QueryCond"]["Severities"];
+}
+//删除某个表中的指定时间以前的记录
+svDeleteSysLogInitFilesection = function (id){
+	var robj = process.sv_univ(
+	{'dowhat':'DeleteRecords',
+		 id:id,
+		 year:Date["year"],
+		 month:Date["month"],
+		 day:Date["Day"], 
+		 hour:Date["Hour"],  
+		 minute:Date["Minute"],  
+		 second:Date["Second"],
+	 }, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	var fmap= robj.fmap(0);
+	return fmap; 
+}
