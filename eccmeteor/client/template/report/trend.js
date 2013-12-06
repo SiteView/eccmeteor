@@ -97,9 +97,9 @@
 //		});
 
 	});
-	gettrendListt();
+	gettrendList();
 }
-gettrendListt = function(){
+gettrendList = function(){
 
 	var zTree =$.fn.zTree.getZTreeObj("svse_tree_check");
 	var checkedTreeNode = zTree.getNodes();
@@ -121,10 +121,59 @@ gettrendListt = function(){
             alert(nodes[0].name);//返回被选中节点对象
 	*/
 }
-
-Template.trend_status.events = {
-	"click #queryDetailLineData" : function(){
-		drawDetailLineAgain();
+Template.trend_status.events({
+	"click #search" : function(){
+		//drawDetailLineAgain();
+			//var id="1.22.5.2";
+			var id="1.26.19.1";
+			var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+			var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+			var beginDate = ClientUtils.dateToObject(startPicker.getDate());
+			var endDate = ClientUtils.dateToObject(endPicker.getDate());
+			console.log("#############################");
+			console.log(beginDate);
+			console.log(beginDate["month"]);
+			console.log(endDate);
+			console.log("#######################");
+			SvseMonitorDao.getMonitorRuntimeRecordsByTime(id,beginDate,endDate,function(result){
+				if(!result.status){
+					SystemLogger(result.msg);
+					return;
+				}
+				var dataProcess = new DataProcess(result.content);
+				var resultData = dataProcess.getData();
+				console.log("tt");
+				console.log(resultData);
+				
+			})		
+	}
+});
+/*
+Template.trend.events = {
+	"click #search" : function(){
+		//drawDetailLineAgain();
+			//var id="1.22.5.2";
+			var id="1.26.19.1";
+			var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+			var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+			var beginDate = ClientUtils.dateToObject(startPicker.getDate());
+			var endDate = ClientUtils.dateToObject(endPicker.getDate());
+			console.log("#############################");
+			console.log(beginDate);
+			console.log(beginDate["month"]);
+			console.log(endDate);
+			console.log("#######################");
+			SvseMonitorDao.getMonitorRuntimeRecordsByTime(id,beginDate,endDate,function(result){
+				if(!result.status){
+					SystemLogger(result.msg);
+					return;
+				}
+				var dataProcess = new DataProcess(result.content);
+				var resultData = dataProcess.getData();
+				console.log("tt");
+				console.log(resultData);
+				
+			})		
 	},
 	"click ul li a":function(e){
 		var str = e.target.name;
@@ -149,6 +198,7 @@ Template.trend_status.events = {
 		drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endPicker.getDate()));
 	}
 }
+*/
 /*
 Template.trend_status.rendered = function(){
 	var template = this;
