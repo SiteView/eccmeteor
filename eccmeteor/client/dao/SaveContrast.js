@@ -7,7 +7,7 @@ SvseContrastDao = {
        return;
      }
     },
-	getMonitorForeignKeys: function(tree_id){
+	/*getMonitorForeignKeys: function(tree_id){
 		var monitor = SvseTree.findOne({sv_id:tree_id});//找到该监视器所依赖的监视器模板
 		if(!monitor) return; //如果该监视器不存在，不划线
 		var monitorTypeId = monitor.sv_monitortype+""; //获取监视器模板ID
@@ -32,6 +32,10 @@ SvseContrastDao = {
 		}
 		// 如果没有找到画图主键，或者不能画图 ，返回。
 		return monitorForeignKeys.length ? {monitorForeignKeys:monitorForeignKeys,monitorPrimary:monitorPrimary,monitorDescript:monitorDescript}: undefined ;
+	},*/
+	getSvseEntityDevicetypeBySvseTreeId:function(id){//根据设备在SvseTree的id获取该设备的类型
+		var node = SvseTree.findOne({sv_id:id});
+		return node ? node.sv_devicetype : "";
 	},
 	// 根据监视器id 获取该监视器相应的模板id
 	getMonitorTemplateIdByMonitorId : function(id){
@@ -53,8 +57,8 @@ SvseContrastDao = {
 		});
 	},
 	// 根据时间段获取实时数据
-	getMonitorRuntimeRecordsByTime : function(id,startDate,endDate,fn){
-		Meteor.call(SvseMonitorDao.AGENT,"getMonitorRuntimeRecordsByTime",[id,startDate,endDate],function (err,result){
+	getMonitorRuntimeRecordsByTime : function(id,beginDate,endDate,fn){
+		Meteor.call(SvseMonitorDao.AGENT,"getMonitorRuntimeRecordsByTime",[id,beginDate,endDate],function (err,result){
 			if(err){
 				fn({status:false,msg:err})
 				return;
@@ -63,14 +67,29 @@ SvseContrastDao = {
 		});
 	},
 	// 查询数据库监测记录
-	"getQueryRecordsByTime" : function(id,startDate,endDate,fn){
-		Meteor.call(SvseMonitorDao.AGENT,"getQueryRecordsByTime",[id,startDate,endDate],function (err,result){
+	getQueryRecordsByTime : function(id,beginDate,endDate,fn){
+		Meteor.call(SvseMonitorDao.AGENT,"getQueryRecordsByTime",[id,beginDate,endDate],function (err,result){
 			if(err){
 				fn({status:false,msg:err})
 				return;
 			}
 			fn({status:true,content:result});
 		});
+	},
+	getMonityDynamicPropertyDataArray:function(entityId,templateMonitoryTemlpateIds,fn){
+		Meteor.call(
+			SvseMonitorTemplateDao.AGENT,
+			"getMonityDynamicPropertyDataArray",
+			[entityId,templateMonitoryTemlpateIds],
+			function(err,result){
+				if(err){
+					SystemLogger(err);
+					fn(false,err);
+				}else{
+					fn(true,result);
+				}
+			}
+		)
 	}
 
 

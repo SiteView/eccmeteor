@@ -107,17 +107,17 @@
 							<th title="最近一次时间">最近一次时间</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="TableData">
 						
 						{{#each contrastDetailTableData}}
 						<tr>
-							<td>{{label}}</td>
+							<td>{{name}}</td>
+							<td>{{returnName}}</td>
 							<td>{{max}}</td>
-							<td>{{mean}}</td>
-							<td>{{new}}</td>
+							<td>{{average}}</td>
 							<td>{{min}}</td>
-							<td>{{new}}</td>
-							<td>{{newtime}}</td>
+							<td>{{lastest}}</td>
+							<td>{{lasttime}}</td>
 							<td>
 							</td>
 						</tr>
@@ -129,9 +129,9 @@
 		</div>
 	</div>
 </div>
-{{#if Monitors}}
+<!--{{#if Monitors}}
 		{{{pagerMonitor}}}
-	{{/if}}
+	{{/if}}-->
 </Template>
 <!--<Template name="ContrastDetailData">
 	<table class="table table-striped table-bordered table-condensed">

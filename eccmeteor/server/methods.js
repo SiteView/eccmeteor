@@ -37,10 +37,11 @@ Meteor.methods({
 	Date:2013-12-2 13:40
 	Content:增加 syslog 的agent声明
 */
-"svseSysLogDaoAgent":SvseSysLogDaoAgent.agent,	
-"svGetSysLogConfigSetting":svGetSysLogConfigSetting,
-"svGetSysLogQueryContEntityConfigSetting":svGetSysLogQueryContEntityConfigSetting,
-"svGetSysLogQueryContRankConfigSetting":svGetSysLogQueryContRankConfigSetting,
+	"svseSysLogDaoAgent":SvseSysLogDaoAgent.agent,	
+	"svGetSysLogDelCondConfigSetting":svGetSysLogDelCondConfigSetting,
+	"svGetSysLogQueryContEntityConfigSetting":svGetSysLogQueryContEntityConfigSetting,
+	"svGetSysLogQueryContRankConfigSetting":svGetSysLogQueryContRankConfigSetting,
+	//"svGetSysLogQueryContConfigSetting":svGetSysLogQueryContConfigSetting,
 });//给客户端调用的
  /**
 	Type： add | modify 
@@ -146,6 +147,8 @@ SvseMethodsOnServer = {
     "svWriteDelContConfigIniFileSectionString":svWriteDelContConfigIniFileSectionString,
 	"svWriteQueryContEntityConfigIniFileSectionString":svWriteQueryContEntityConfigIniFileSectionString,
 	"svWriteQueryContRankConfigIniFileSectionString":svWriteQueryContRankConfigIniFileSectionString,
+	//"svWriteQueryContConfigIniFileSectionString":svWriteQueryContConfigIniFileSectionString,
+	"svDeleteSysLogInitFilesection":svDeleteSysLogInitFilesection,
 }
 
 SvseSyncData = {

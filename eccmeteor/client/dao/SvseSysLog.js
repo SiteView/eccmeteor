@@ -33,4 +33,15 @@ SvseSysLogDao = {
 			 });
 
      },
+	 // "setQueryCondConfig":function(fn){
+			 // Meteor.call(SvseSysLogDao.AGENT,"setQueryCondConfig",function(err,result){
+				 // if(err){
+					// Log4js.error(err);
+					 // fn({status:false,msg:err})
+				// }else{
+					 // fn(result);
+				 // }
+			 // });
+
+     // }
 }
