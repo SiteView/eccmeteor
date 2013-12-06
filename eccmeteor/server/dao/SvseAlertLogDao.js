@@ -12,8 +12,8 @@ SvseAlertLogDaoOnServer = {
 			console.log("error");
 			throw new Meteor.Error(500,"SvseAlertLogDaoOnServer.getQueryAlertLog failed");
 		}
-		console.log("resultde");
-		console.log(result);
+		//console.log("resultde");
+		//console.log(result);
 		return result;
 	},
 }

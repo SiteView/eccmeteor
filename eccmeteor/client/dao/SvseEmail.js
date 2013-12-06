@@ -83,5 +83,13 @@ SvseEmailDao = {
 			Message.info("请选择你要操作的对象！");
 			return;
 		}
-	}
+	},
+	//验证邮件地址的格式是否正确
+	checkEmailFormat:function(email){
+		if (!email.match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)) { 
+			Message.info("邮件地址格式不正确"); 
+			return false; 
+		}
+		return true;
+	},
 }

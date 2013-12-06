@@ -20,23 +20,33 @@ Template.messagebasicsettingofadd.rendered = function(){
 		$(":checkbox[name='Status']").each(function(){
 			if(!this.checked) messagebasicsettingofbasciinfo["Status"]="Yes";
 		});
-		var name=messagebasicsettingofbasciinfo["Name"];
+		var name = messagebasicsettingofbasciinfo["Name"];
 		if(!name){
 			Message.info("请填写名称");
 			return;
 		}
-		var result=SvseMessageDao.getMessageByName(name);
+		var result = SvseMessageDao.getMessageByName(name);
 		if(result){
 			Message.info("此信息名已经存在！");
 			return;
 		}
+		//验证手机号格式
+		var phone = messagebasicsettingofbasciinfo["Phone"];
+		if(!phone){
+			Message.info("手机号码不能为空");
+			return;
+		}
+		var phone = messagebasicsettingofbasciinfo["Phone"];
+		var flag = SvseMessageDao.checkPhoneNumberFormat(phone);
+		if(!flag) return;
+		
 		var message = {};
 		message[nIndex] = messagebasicsettingofbasciinfo;
 		SvseMessageDao.addMessage(nIndex,message,function(result){
 			if(result.status){
 				$('#addmessagesettingdiv').modal('hide');
 			}else{
-				SystemLogger(result.msg);
+				Log4js.info(result.msg);
 			}
 			
 		});

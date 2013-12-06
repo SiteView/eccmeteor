@@ -11,16 +11,19 @@ Template.messagesetting.events={
 		console.log("弹出");
 	},
 	//删除短信
-	"click #delmessagesetting" : function(){
+	/* "click #delmessagesetting" : function(){
+		
 		var ids = getMessageSelectAll();
 		SvseMessageDao.checkMessageSelect(ids);
 		if(ids.length)
-			//$("#confirmTipModalDiv").modal("show");
-			
-			SvseMessageDao.deleteMessageByIds(ids,function(result){
-				SystemLogger(result);
+			$("#delmessagesetting").confirm({
+				'message':"确定删除操作？"
 			});
-	},
+			
+			// SvseMessageDao.deleteMessageByIds(ids,function(result){
+				// SystemLogger(result);
+			// });
+	}, */
 	//改变状态-允许
 	"click #allowmessagesetting" : function(){  //启用邮件地址
 		var ids = getMessageSelectAll();
@@ -60,7 +63,26 @@ Template.messagesetting.events={
 	}
 }
 
-Template.messagesettingList.rendered=function(){
+Template.messagesetting.rendered = function(){
+	$(function(){
+		$("#delmessagesetting").confirm({
+			'message':"确定删除操作？",
+			'action':function(){
+				var ids = getMessageSelectAll();
+				SvseMessageDao.checkMessageSelect(ids);
+				if(ids.length){
+					SvseMessageDao.deleteMessageByIds(ids,function(result){
+						SystemLogger(result);
+					});
+					//console.log("确定");
+				}
+				$("#delmessagesetting").confirm("hide");
+			}
+		});
+	});
+}
+
+Template.messagesettingList.rendered = function(){
 	$(function(){
 		//隐藏所有操作按钮
 		ClientUtils.hideOperateBtnInTd("messageSettingList");
@@ -133,20 +155,20 @@ Template.messagesettingList.events({
 Template.sendingmessagemethods.events({
 	//以web方式发送短信
 	"click #webmessagesettingapplybtn":function(){
-		var username=$("#methodsendforweb").find(":text[name=User]").val();
+		var username=$("#methodsendforweb").find(":text[name='User']").val();
 		if(!username){
 			Message.info("用户名不能为空");
 			return;
 		}
-		var pwd=$("#methodsendforweb").find(":password[name=Pwd]").val();
+		var pwd=$("#methodsendforweb").find(":password[name='Pwd']").val();
 		if(!pwd){
 			Message.info("密码不能为空");
 			return;
 		}
-		var weblength=$("#methodsendforweb :text[name=Length]").val();
+		var weblength=$("#methodsendforweb :text[name='Length']").val();
 		if(weblength == 0 || weblength > 70){
 			 Message.warn("请输入长度大于0并且小于等于70的信息！"); 
-			 $("#methodsendforweb :text[name=Length]").val(0);
+			 $("#methodsendforweb :text[name='Length']").val(0);
 			 return;
 		}
 		var methodsendforweb = ClientUtils.formArrayToObject($("#methodsendforweb").serializeArray());
@@ -160,17 +182,17 @@ Template.sendingmessagemethods.events({
 		Meteor.call("svGetSMSWebConfigSetting",function(err,smsweb){
 			console.log(smsweb);
 			if(!smsweb) return;
-			$("#methodsendforweb :text[name=User]").val(smsweb["User"]);
-			$("#methodsendforweb :password[name=Pwd]").val(smsweb["Pwd"]);
-			$("#methodsendforweb :text[name=Length]").val(smsweb["Length"]);
+			$("#methodsendforweb :text[name='User']").val(smsweb["User"]);
+			$("#methodsendforweb :password[name='Pwd']").val(smsweb["Pwd"]);
+			$("#methodsendforweb :text[name='Length']").val(smsweb["Length"]);
 		});
 	},
 	//以com方式发送短信
 	"click #commessagesettingapplybtn":function(){
-		var comlength=$("#methodsendforcom :text[name=length]").val();
+		var comlength=$("#methodsendforcom :text[name='length']").val();
 		if(comlength == 0 || comlength > 70){
 			Message.warn("请输入长度大于0并且小于等于70的信息！"); 
-			$("#methodsendforcom :text[name=length]").val(0);
+			$("#methodsendforcom :text[name='length']").val(0);
 			return;
 		}
 		var methodsendforcom = ClientUtils.formArrayToObject($("#methodsendforcom").serializeArray());
@@ -185,7 +207,7 @@ Template.sendingmessagemethods.events({
 			console.log(smscom);
 			if(!smscom) return;
 			$("#comselectport").find("option[value='"+smscom["Port"]+"']:first").attr("selected","selected").prop("selected",true);
-			$("#methodsendforcom :text[name=length]").val(smscom["length"]);
+			$("#methodsendforcom :text[name='length']").val(smscom["length"]);
 		});
 	}
 });
@@ -194,15 +216,15 @@ Template.sendingmessagemethods.rendered=function(){
 	Meteor.call("svGetSMSWebConfigSetting",function(err,smsweb){
 		console.log(smsweb);
 		if(!smsweb) return;
-		$("#methodsendforweb :text[name=User]").val(smsweb["User"]);
-		$("#methodsendforweb :password[name=Pwd]").val(smsweb["Pwd"]);
-		$("#methodsendforweb :text[name=Length]").val(smsweb["Length"]);
+		$("#methodsendforweb :text[name='User']").val(smsweb["User"]);
+		$("#methodsendforweb :password[name='Pwd']").val(smsweb["Pwd"]);
+		$("#methodsendforweb :text[name='Length']").val(smsweb["Length"]);
 	});
 	Meteor.call("svGetSMSComConfigSetting",function(err,smscom){
 		console.log(smscom);
 		if(!smscom) return;
 		$("#comselectport").find("option[value='"+smscom["Port"]+"']:first").attr("selected","selected").prop("selected",true);
-		$("#methodsendforcom :text[name=length]").val(smscom["length"]);
+		$("#methodsendforcom :text[name='length']").val(smscom["length"]);
 	});
 	/*
 	Meteor.call("svGetSmsDllName",function(err,dllname){

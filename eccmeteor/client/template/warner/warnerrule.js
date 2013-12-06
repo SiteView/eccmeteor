@@ -62,6 +62,12 @@ Template.warnerruleofemail.events = {
 		for(param in warnerruleofemailformsendconditions){
 			warnerruleofemailform[param] = warnerruleofemailformsendconditions[param];
 		}
+		
+		var selectEmailAdress = $(".emailmultiselect").val()
+		console.log(selectEmailAdress);
+		var selectEmailAdressStr = SvseWarnerRuleDao.getValueOfMultipleSelect(selectEmailAdress);
+		warnerruleofemailform["EmailAdress"] = selectEmailAdressStr;
+		
 		//warnerruleofemailform["AlertCond"] = 3;
 		//warnerruleofemailform["SelTime1"] = 2;
 		//warnerruleofemailform["SelTime2"] = 3;
@@ -86,6 +92,12 @@ Template.warnerruleofemail.events = {
 			Message.info("报警邮件接收地址不能为空");
 			return;
 		}
+		//当其他邮件地址存在的时候，检查邮件地址的格式是否正确
+		if(otherAdress){
+			var flag = SvseEmailDao.checkEmailFormat(otherAdress);
+			if(!flag) return;
+		}
+		
 		//判断停止次数不能小于升级次数，且不能为空
 		var stop = warnerruleofemailform["Stop"];
 		var upgrade = warnerruleofemailform["Upgrade"];
@@ -218,8 +230,9 @@ Template.warnerrulelist.rendered = function(){
 
 }
 Template.warnerrulelist.events = {
-	"click td .btn":function(e){
+	"click #warnerrulelist button[name='edit']":function(e){
 		console.log(e.currentTarget.id);
+		var id = e.currentTarget.id;
 		var result = SvseWarnerRuleDao.getWarnerRule(e.currentTarget.id);
 		var alertType=result["AlertType"];
 		console.log("alerttype:"+alertType);
@@ -291,24 +304,32 @@ Template.warnerrulelist.events = {
 			console.log("SmsAlert");
 			console.log(result);
 			//填充表单
-			var html=Meteor.render(function(){
-				return Template.messagewarnerformedit(result);
-            });
+			// var messagelist = SvseMessageDao.getMessageList();
+			// console.log(messagelist);
+			// var context = {SmsAlert:result};
+			// console.log(context);
+			// RenderTemplate.showParents("#EditWarnerruleModal","messagewarnerformedit",context);
 			
-			$("#messagewarnerdivedit").html(html);
-			/* $("#messagewarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
+			$("#messagewarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
 			$("#messagewarnerdivedit").find(":text[name='OtherNumber']:first").val(result.OtherNumber);
 			$("#messagewarnerdivedit").find(":text[name='Upgrade']:first").val(result.Upgrade);
 			$("#messagewarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.UpgradeTo);
 			$("#messagewarnerdivedit").find(":text[name='Stop']:first").val(result.Stop);
 			$("#messagewarnerdivedit").find(":text[name='WatchSheet']:first").val(result.WatchSheet);
 			$("#messagewarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.Strategy);
-			$("#messagewarnerdivedit").find(":hidden[name='nIndex']:first").val(result.nIndex); */
+			$("#messagewarnerdivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
+			if(!result["SmsNumber"]){
+				result["SmsNumber"] = "";
+			}
+			if(!result["SmsSendMode"]){
+				result["SmsSendMode"] = "";
+			}
 			var checkedSmsNumber = result["SmsNumber"].split(",");
 			$(".messagemultiselectedit").attr("value","");
 			$(".messagemultiselectedit").multiselect("refresh");
 			for(var eal = 0 ; eal < checkedSmsNumber.length ; eal ++){
 				try{
+					console.log(checkedSmsNumber[eal]);
 					$(".messagemultiselectedit").multiselect('select',checkedSmsNumber[eal]);
 				}catch(e){}
 			}
@@ -316,6 +337,11 @@ Template.warnerrulelist.events = {
 			//console.log(checkedSmsTemplate);
 			for(var etl = 0 ; etl < checkedSmsTemplate.length; etl ++){
 				$("#messagetemplatelistedit").find("option[value='"+checkedSmsTemplate[etl]+"']:first").attr("selected","selected").prop("selected",true);
+			}
+			var checkedSmsSendMode = result["SmsSendMode"].split(",");
+			//console.log(checkedSmsSendMode);
+			for(var etl = 0 ; etl < checkedSmsSendMode.length; etl ++){
+				$("#messageSendModelistedit").find("option[value='"+checkedSmsSendMode[etl]+"']:first").attr("selected","selected").prop("selected",true);
 			}
 			var AlertCategory = result.AlertCategory;
 			$("#warnerruleofmessageformsendconditionsedit").find(":radio[name='AlertCategory']").each(function(){
@@ -423,9 +449,10 @@ Template.warnerrulelist.events = {
 		console.log(endDate);
 		console.log("#######################");
 		console.log(this);
+		$("#warnerruleloglist").empty();
 		var querylogCondition = {AlertName:this.AlertName,AlertReceiver:"",AlertType:""};
 		console.log(querylogCondition);
-		SvseWarnerRuleDao.getQueryAlertLog(beginDate,endDate,querylogCondition,function(result){
+		SvseAlertLogDao.getQueryAlertLog(beginDate,endDate,querylogCondition,function(result){
 			console.log("result");
 			if(!result.status){
 				Log4js.info(result.msg);
@@ -440,6 +467,7 @@ Template.warnerrulelist.events = {
 			}
 			//console.log(resultData.length);
 			console.log(resultData);
+			var types = SvseAlertLogDao.defineAlertTypeData();
 			//绘制表
 			for(var i = 0;i < resultData.length;i++){
 				var data = resultData[i];
@@ -449,6 +477,11 @@ Template.warnerrulelist.events = {
 				}
 				if(data["_AlertStatus"] == 1){
 					data["_AlertStatus"] = "Success";
+				}
+				for(var j = 0; j < types.length;j++){
+					if(data["_AlertType"] == types[j]["id"]){
+						data["_AlertType"] = types[j]["type"];
+					}
 				}
 				var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
 				+"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
@@ -536,13 +569,19 @@ Template.warnerruleofemailedit.events = {
 		for(param in warnerruleofemailformsendconditionsedit){
 			warnerruleofemailformedit[param] = warnerruleofemailformsendconditionsedit[param];
 		}
-		warnerruleofemailformedit["AlertCond"] = 3;
-		warnerruleofemailformedit["SelTime1"] = 2;
-		warnerruleofemailformedit["SelTime2"] = 3;
+		
+		var selectEmailAdress = $(".emailmultiselectedit").val()
+		console.log(selectEmailAdress);
+		var selectEmailAdressStr = SvseWarnerRuleDao.getValueOfMultipleSelect(selectEmailAdress);
+		warnerruleofemailformedit["EmailAdress"] = selectEmailAdressStr;
+		
+		//warnerruleofemailformedit["AlertCond"] = 3;
+		//warnerruleofemailformedit["SelTime1"] = 2;
+		//warnerruleofemailformedit["SelTime2"] = 3;
 		warnerruleofemailformedit["AlertState"] = "Enable";
 		warnerruleofemailformedit["AlertType"] = "EmailAlert";
-		warnerruleofemailformedit["AlwaysTimes"] = 1;
-		warnerruleofemailformedit["OnlyTimes"] = 1;
+		//warnerruleofemailformedit["AlwaysTimes"] = 1;
+		//warnerruleofemailformedit["OnlyTimes"] = 1;
 		
 		var alertName=warnerruleofemailformedit["AlertName"];
 		if(!alertName){
@@ -564,6 +603,11 @@ Template.warnerruleofemailedit.events = {
 		if(!emailAdress && !otherAdress){
 			Message.info("报警邮件接收地址不能为空");
 			return;
+		}
+		//当其他邮件地址存在的时候，检查邮件地址的格式是否正确
+		if(otherAdress){
+			var flag = SvseEmailDao.checkEmailFormat(otherAdress);
+			if(!flag) return;
 		}
 		
 		var targets = [];
