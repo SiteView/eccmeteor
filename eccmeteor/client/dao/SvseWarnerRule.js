@@ -97,4 +97,20 @@ SvseWarnerRuleDao = {
 			return;
 		}
 	},
+	//将数组转换成字符串(用于得到报警邮件或手机号的多选值)
+	"getValueOfMultipleSelect":function(number){
+		var numberStr = "";
+		if(number){
+			for(var i = 0;i< number.length;i++){
+				//console.log(number[i]);
+				if(number[i] == number[number.length-1]){
+					numberStr += number[i];
+				}else{
+					numberStr += number[i] + ",";
+				}
+			}
+			//console.log(numberStr);
+		}
+		return numberStr;
+	}
 }

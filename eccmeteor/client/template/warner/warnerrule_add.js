@@ -8,6 +8,12 @@ Template.warnerruleofmessage.events={
 		for(param in warnerruleofmessageformsendconditions){
 			warnerruleofmessageform[param] = warnerruleofmessageformsendconditions[param];
 		}
+		
+		var selectSmsNumber = $(".messagemultiselect").val()
+		console.log(selectSmsNumber);
+		var selectSmsNumberStr = SvseWarnerRuleDao.getValueOfMultipleSelect(selectSmsNumber);
+		warnerruleofmessageform["SmsNumber"] = selectSmsNumberStr;
+		
 		//warnerruleofmessageform["AlertCond"] = 3;
 		//warnerruleofmessageform["SelTime1"] = 2;
 		//warnerruleofmessageform["SelTime2"] = 3;
@@ -16,7 +22,7 @@ Template.warnerruleofmessage.events={
 		//warnerruleofmessageform["AlwaysTimes"] = 1;
 		//warnerruleofmessageform["OnlyTimes"] = 1;
 		
-		var alertName=warnerruleofmessageform["AlertName"];
+		var alertName = warnerruleofmessageform["AlertName"];
 		if(!alertName){
 			Message.info("请填写名称");
 			return;
@@ -26,7 +32,7 @@ Template.warnerruleofmessage.events={
 			Message.info("报警名称已经存在");
 			return;
 		}
-		var smsNumber=warnerruleofmessageform["SmsNumber"];
+		var smsNumber = warnerruleofmessageform["SmsNumber"];
 		var otherNumber = warnerruleofmessageform["OtherNumber"];
 		if(!smsNumber && !otherNumber){
 			Message.info("报警短信接收地址不能为空");
@@ -42,10 +48,10 @@ Template.warnerruleofmessage.events={
 		
 		var targets = [];
 		var arr = $.fn.zTree.getZTreeObj("svse_tree_check_add").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
-		console.log(arr);
+		//console.log(arr);
 		for(index in arr){
-			console.log("index:"+arr[index].id);
-			console.log("name:"+arr[index].name);
+			//console.log("index:"+arr[index].id);
+			//console.log("name:"+arr[index].name);
 			targets.push(arr[index].id);
 		}
 		warnerruleofmessageform["AlertTarget"] = targets.join();
@@ -248,6 +254,12 @@ Template.messagewarnerformedit.events({
 		for(param in warnerruleofmessageformsendconditionsedit){
 			warnerruleofmessageformedit[param] = warnerruleofmessageformsendconditionsedit[param];
 		}
+		
+		var selectSmsNumber = $(".messagemultiselectedit").val()
+		console.log(selectSmsNumber);
+		var selectSmsNumberStr = SvseWarnerRuleDao.getValueOfMultipleSelect(selectSmsNumber);
+		warnerruleofmessageformedit["SmsNumber"] = selectSmsNumberStr;
+		
 		//warnerruleofmessageformedit["AlertCond"] = 3;
 		//warnerruleofmessageformedit["SelTime1"] = 2;
 		//warnerruleofmessageformedit["SelTime2"] = 3;

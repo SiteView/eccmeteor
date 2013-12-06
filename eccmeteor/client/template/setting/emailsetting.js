@@ -54,6 +54,10 @@ Template.emailsetting.rendered = function(){
 		$("#emailbasicsetting :text[name=user]").val(setting["user"]);
 		$("#emailbasicsetting :password[name=password]").val(setting["password"]);
 	});
+	
+}
+
+Template.emailsettingList.rendered = function(){
 	$(function(){
 		//隐藏所有操作按钮
 		ClientUtils.hideOperateBtnInTd("emailSettingList");

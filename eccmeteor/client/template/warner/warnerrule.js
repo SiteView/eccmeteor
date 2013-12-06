@@ -62,6 +62,12 @@ Template.warnerruleofemail.events = {
 		for(param in warnerruleofemailformsendconditions){
 			warnerruleofemailform[param] = warnerruleofemailformsendconditions[param];
 		}
+		
+		var selectEmailAdress = $(".emailmultiselect").val()
+		console.log(selectEmailAdress);
+		var selectEmailAdressStr = SvseWarnerRuleDao.getValueOfMultipleSelect(selectEmailAdress);
+		warnerruleofemailform["EmailAdress"] = selectEmailAdressStr;
+		
 		//warnerruleofemailform["AlertCond"] = 3;
 		//warnerruleofemailform["SelTime1"] = 2;
 		//warnerruleofemailform["SelTime2"] = 3;
@@ -87,9 +93,10 @@ Template.warnerruleofemail.events = {
 			return;
 		}
 		//当其他邮件地址存在的时候，检查邮件地址的格式是否正确
-		var flag = SvseEmailDao.checkEmailFormat(otherAdress);
-		if(!flag) return;
-		
+		if(otherAdress){
+			var flag = SvseEmailDao.checkEmailFormat(otherAdress);
+			if(!flag) return;
+		}
 		
 		//判断停止次数不能小于升级次数，且不能为空
 		var stop = warnerruleofemailform["Stop"];
@@ -562,13 +569,19 @@ Template.warnerruleofemailedit.events = {
 		for(param in warnerruleofemailformsendconditionsedit){
 			warnerruleofemailformedit[param] = warnerruleofemailformsendconditionsedit[param];
 		}
-		warnerruleofemailformedit["AlertCond"] = 3;
-		warnerruleofemailformedit["SelTime1"] = 2;
-		warnerruleofemailformedit["SelTime2"] = 3;
+		
+		var selectEmailAdress = $(".emailmultiselectedit").val()
+		console.log(selectEmailAdress);
+		var selectEmailAdressStr = SvseWarnerRuleDao.getValueOfMultipleSelect(selectEmailAdress);
+		warnerruleofemailformedit["EmailAdress"] = selectEmailAdressStr;
+		
+		//warnerruleofemailformedit["AlertCond"] = 3;
+		//warnerruleofemailformedit["SelTime1"] = 2;
+		//warnerruleofemailformedit["SelTime2"] = 3;
 		warnerruleofemailformedit["AlertState"] = "Enable";
 		warnerruleofemailformedit["AlertType"] = "EmailAlert";
-		warnerruleofemailformedit["AlwaysTimes"] = 1;
-		warnerruleofemailformedit["OnlyTimes"] = 1;
+		//warnerruleofemailformedit["AlwaysTimes"] = 1;
+		//warnerruleofemailformedit["OnlyTimes"] = 1;
 		
 		var alertName=warnerruleofemailformedit["AlertName"];
 		if(!alertName){
