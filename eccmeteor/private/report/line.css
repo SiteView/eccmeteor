@@ -14,3 +14,9 @@
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+
+.trendLine {
+  fill: none;
+  stroke: red;
+  stroke-width: 2px;
+}

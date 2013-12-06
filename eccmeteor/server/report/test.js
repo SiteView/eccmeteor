@@ -110,7 +110,7 @@ Object.defineProperty(DrawTrendReport,"drawLine",{
 		svg.append('g')
 			.attr("clip-path", "url(#lineArea)")
 			.selectAll("line.horizontalGrid")
-			.data(yScale.ticks(yAxisTicks/2)).enter()
+			.data(yScale.ticks(yAxisTicks)).enter()
     		.append("line")
         	.attr({
 	            "class":"horizontalGrid",
@@ -124,6 +124,8 @@ Object.defineProperty(DrawTrendReport,"drawLine",{
 	            "opcity":0.7,
 	            "stroke-width" : "1px"
        		});
+        
+        ExponentialRegression.exp(data,primary);
         //曲线计算
 		var line = d3.svg.line()
 			.x(function (d) {
@@ -133,12 +135,28 @@ Object.defineProperty(DrawTrendReport,"drawLine",{
 				return yScale(d[primary]);
 			});
 
+		//趋势线
+		var trendLine = d3.svg.line()
+			.x(function (d) {
+				return xScale(d.creat_time);
+			})
+			.y(function (d) {
+				return yScale(d["_exp_trend"]);
+			});
+		//正常曲线
 		svg.append('g')
 			.attr("clip-path", "url(#lineArea)")
 			.append("path")
 			.datum(data)
 			.attr("class", "line")
 			.attr("d", line);
+		//趋势曲线
+		svg.append('g')
+			.attr("clip-path", "url(#lineArea)")
+			.append("path")
+			.datum(data)
+			.attr("class", "trendLine")
+			.attr("d", trendLine);
 
 		var xAxis = d3.svg.axis()
 			.scale(xScale)
@@ -173,5 +191,67 @@ Object.defineProperty(DrawTrendReport,"drawLine",{
 			.text(label);
 
 		return window.document.innerHTML;
+	}
+})
+ExponentialRegression = function(){};
+//求平方
+Object.defineProperty(ExponentialRegression,"square",{
+	value:function(x){
+		return Math.pow(x,2)
+	}
+})
+//求和
+Object.defineProperty(ExponentialRegression,"arraySum",{
+	value:function(arr,primary){
+		var parse = this.parse(primary);
+		var total = 0;
+		arr.forEach(function(d){
+			total = total + parse(d);
+		});
+		return total;
+	}
+})
+
+//解析
+Object.defineProperty(ExponentialRegression,"parse",{
+	value:function(primary){
+		if(primary){
+   			return function(d){return d[primary]}
+   		}
+   		return function(d){return d}
+	}
+})
+
+//重组数组
+Object.defineProperty(ExponentialRegression,"exp",{
+	value:function(Y,primary){
+		var _self  = this;
+   		var parse = _self.parse(primary);
+		var n = Y.length;
+		var X = d3.range(1,n+1);
+		var sum_x = d3.sum(X)
+		var sum_y = d3.sum(Y,function(d){
+			return parse(d);
+		});
+		var y_mean = sum_y / n;
+		var log_y = Y.map(function(d){return Math.log(parse(d))});
+		var x_squared = X.map(function(d){return _self.square(parse(d))});
+		var sum_x_squared = d3.sum(x_squared);
+		var sum_log_y = d3.sum(log_y);
+		var x_log_y = X.map(function(d,i){return parse(d)*log_y[i]});
+		var sum_x_log_y = d3.sum(x_log_y);
+
+		a = (sum_log_y*sum_x_squared - sum_x*sum_x_log_y) /
+		  (n * sum_x_squared - _self.square(sum_x));
+
+		b = (n * sum_x_log_y - sum_x*sum_log_y) /
+		  (n * sum_x_squared - _self.square(sum_x));
+
+		var y_fit = [];
+		X.forEach(function(x,i){
+			//y_fit.push(Math.exp(a)*Math.exp(b*x));
+			Y[i]["_exp_trend"] = Math.exp(a)*Math.exp(b*x);
+		});
+		//return y_fit;
 	}
 })
