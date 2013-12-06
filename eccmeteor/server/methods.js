@@ -127,6 +127,13 @@ SvseMethodsOnServer = {
 	Content:增加 趋势报告 的agent声明
 */ 
 	"svGetTrendList":svGetTrendList,
+/*
+	Type： add
+	Author：xuqiang
+	Date:2013-12-05 15:40
+	Content:任务计划接口调用的声明
+*/	
+	"svWriteTaskIniFileSectionString":svWriteTaskIniFileSectionString,
 }
 
 SvseSyncData = {
