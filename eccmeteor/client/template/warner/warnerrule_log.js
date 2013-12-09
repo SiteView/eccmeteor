@@ -1,16 +1,16 @@
-// var logPage = new Pagination("alertLogList",{currentPage:1,perPage:6});
+/* var logPage = new Pagination("alertLogList",{currentPage:1,perPage:6});
 
-// Template.selectwarnerloglist.queryalertlog = function(){
-	// var queryalertlog = Session.get("queryAlertLog");
-	// console.log(queryalertlog);
-	// return queryalertlog(logPage.skip());
-// }
+Template.selectwarnerloglist.queryalertlog = function(){
+	var queryalertlog = Session.get("queryAlertLog");
+	console.log(queryalertlog);
+	return queryalertlog(logPage.skip());
+}
 
-// Template.selectwarnerloglist.logPager = function(){
-	// var queryalertlog = Session.get("queryAlertLog");
-	// var count = queryalertlog.length;
-	// return logPage.create(count);
-// }
+Template.selectwarnerloglist.logPager = function(){
+	var queryalertlog = Session.get("queryAlertLog");
+	var count = queryalertlog.length;
+	return logPage.create(count);
+} */
 
 Template.warnerrulelog.rendered = function(){
 	var template = this;
@@ -67,19 +67,21 @@ Template.warnerrulelog.rendered = function(){
 
 //获取报警规则列表
 Template.warnerrulelog.warnerruleoflist = function(){
-	console.log(SvseWarnerRuleDao.getWarnerRuleList());
+	var rulelist = SvseWarnerRuleDao.getWarnerRuleList();
+	console.log(rulelist);
 	return SvseWarnerRuleDao.getWarnerRuleList();
 }
 
 //获取报警规则的类型
 Template.warnerrulelog.alertTypes = function(){
-	var alertType = ["EmailAlert","SmsAlert","ScriptAlert","SoundAlert"];
-	return alertType;
+	console.log(SvseAlertLogDao.defineAlertTypeData());
+	return SvseAlertLogDao.defineAlertTypeData();
 }
+
 
 //获取报警接收人地址的数组
 Template.warnerrulelog.alertReceivers = function(){
-	console.log(alertReceiver());
+	//console.log(alertReceiver());
 	return alertReceiver();
 }
 
@@ -91,15 +93,22 @@ Template.warnerrulelog.events({
 		$("#warnerloglist").empty();
 		var startPicker = $('#alertdatetimepickerStartDate').data('datetimepicker');
 		var endPicker = $('#alertdatetimepickerEndDate').data('datetimepicker');
+		var startTime = startPicker.getDate();
+		var endTime = endPicker.getDate();
+		if(startTime != "" && endTime !=""){
+			if(startTime > endTime){
+				Message.info("报警开始时间晚于报警结束时间！");
+				return;
+			}
+		}
 		var beginDate = ClientUtils.dateToObject(startPicker.getDate());
 		var endDate = ClientUtils.dateToObject(endPicker.getDate());
 		console.log("#############################");
 		console.log(beginDate);
-		console.log(beginDate["month"]);
 		console.log(endDate);
 		console.log("#######################");
 		
-		SvseWarnerRuleDao.getQueryAlertLog(beginDate,endDate,alertlogquerycondition,function(result){
+		SvseAlertLogDao.getQueryAlertLog(beginDate,endDate,alertlogquerycondition,function(result){
 			console.log("result");
 			if(!result.status){
 				Log4js.info(result.msg);
@@ -114,6 +123,7 @@ Template.warnerrulelog.events({
 			}
 			//console.log(resultData.length);
 			console.log(resultData);
+			var types = SvseAlertLogDao.defineAlertTypeData();
 			//绘制表
 			for(var i = 0;i < resultData.length;i++){
 				var data = resultData[i];
@@ -123,6 +133,11 @@ Template.warnerrulelog.events({
 				}
 				if(data["_AlertStatus"] == 1){
 					data["_AlertStatus"] = "Success";
+				}
+				for(var j = 0; j < types.length;j++){
+					if(data["_AlertType"] == types[j]["id"]){
+						data["_AlertType"] = types[j]["type"];
+					}
 				}
 				var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
 				+"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
@@ -134,7 +149,7 @@ Template.warnerrulelog.events({
 });
 
 
-//获取报警接收人地址(注意：此处暂时只考虑了值只有一个的情况，如果是多个的话要进一步修改)
+//获取报警接收人地址(注意：此处暂时只考虑了值只有一个的情况，如果是多个的话要进一步修改--多个值的情况已经修改完成)
 var alertReceiver = function(){
 	var allalerts = SvseWarnerRuleDao.getWarnerRuleList();
 	//console.log(allalerts);
@@ -148,42 +163,63 @@ var alertReceiver = function(){
 			if(recevier.EmailAdress){
 				if(recevier.EmailAdress == "" || recevier.EmailAdress=="其他") continue;
 				//console.log(recevier.EmailAdress);
-				email = SvseEmailDao.getEmailByName(recevier.EmailAdress);
-				//console.log(email.MailList);
-				if(!email){
-					console.log("这个邮件地址可能已经不存在了！");
-					continue;
+				var emailAdress = recevier.EmailAdress.split(",");
+				//console.log("-------------------");
+				var address = [];
+				for(var k = 0;k < emailAdress.length;k++){
+					//console.log(emailAdress[k]);
+					var mulemail = SvseEmailDao.getEmailByName(emailAdress[k]);
+					if(!mulemail){
+						console.log("这个邮件地址可能已经不存在了！");
+						continue;
+					}
+					address.push(mulemail.MailList);
 				}
-				alertReceiver.push(email.MailList);
+				//console.log(address);
+				var addressStr = SvseWarnerRuleDao.getValueOfMultipleSelect(address);
+				if(addressStr != ""){
+					alertReceiver.push(addressStr);
+				}
 			}
 			//其他的邮件地址
-			if(recevier.OtherAdress){
-				alertReceiver.push(recevier.OtherAdress);
-			}
+			// if(recevier.OtherAdress){
+				// alertReceiver.push(recevier.OtherAdress);
+			// }
 		}else if(recevier.AlertType == "SmsAlert"){
 			//跟短信设置相关联的短信手机号
 			if(recevier.SmsNumber){
 				if(recevier.SmsNumber == "" || recevier.SmsNumber=="其他") continue;
-				console.log(recevier.SmsNumber);
+				//console.log(recevier.SmsNumber);
 				var smsnumber = recevier.SmsNumber.split(",");
-				console.log(smsnumber);
-				// for(var i = 0;i< smsnumber.length;i++){
-					// console.log(smsnumber[i]);
-				// }
-				message = SvseMessageDao.getMessageByName(recevier.SmsNumber);
-				if(!message){
-					console.log("这个短信接收手机号可能已经不存在了！");
-					continue;
+				//console.log(smsnumber);
+				//console.log("-------------------");
+				var numbers = [];
+				for(var j = 0;j < smsnumber.length;j++){
+					//console.log(smsnumber[j]);
+					var mulmessage = SvseMessageDao.getMessageByName(smsnumber[j]);
+					if(!mulmessage){
+						console.log("这个短信接收手机号可能已经不存在了！");
+						continue;
+					}
+					console.log("------");
+					console.log(mulmessage.Phone);
+					numbers.push(mulmessage.Phone);
 				}
-				console.log(message.Phone);
-				alertReceiver.push(message.Phone);			
+				//console.log(numbers);
+				var numberStr = SvseWarnerRuleDao.getValueOfMultipleSelect(numbers);
+				if(numberStr != ""){
+					alertReceiver.push(numberStr);
+				}
+				
 			}
 			//其他的短信手机地址
-			if(recevier.OtherNumber){
-				alertReceiver.push(recevier.OtherNumber);
-			}
+			// if(recevier.OtherNumber){
+				// alertReceiver.push(recevier.OtherNumber);
+			// }
 		}else if(recevier.ScriptServer){
-			//console.log(recevier.ScriptServer);
+			if(recevier.ScriptServer == "192.168.1.127(Windows)(_win)"){
+				recevier.ScriptServer = "192.168.1.127";
+			}
 			alertReceiver.push(recevier.ScriptServer);			
 		}else if(recevier.Server){
 			//console.log(recevier.Server);
@@ -197,38 +233,9 @@ var alertReceiver = function(){
 		if(!rec[alertReceiver[j]]){   
           rec[alertReceiver[j]] = true;   
           result.push(alertReceiver[j]);   
-      }  
+		}  
 	}
-	console.log(result);
-	return result;
+	//console.log(result);
+	console.log(result.sort());//进行排序
+	return result.sort();
 }
-
-/* var alertloglist = function(){
-	var warner = SvseWarnerRuleDao.getAlertByName("er");
-	console.log(warner);
-	
-	var startPicker = $('#alertdatetimepickerStartDate').data('datetimepicker');
-	var endPicker = $('#alertdatetimepickerEndDate').data('datetimepicker');
-	var beginDate = ClientUtils.dateToObject(startPicker.getDate());
-	var endDate = ClientUtils.dateToObject(endPicker.getDate());
-	console.log("#############################");
-	console.log(beginDate);
-	console.log(beginDate["month"]);
-	console.log(endDate);
-	console.log("#######################");
-	var resultData = null;
-	SvseWarnerRuleDao.getQueryAlertLog(beginDate,endDate,warner,function(result){
-		console.log("result");
-		if(!result.status){
-			Log4js.info(result.msg);
-			return;
-		}
-		console.log(result);
-		var dataProcess = new DataProcess(result.content);
-		resultData = dataProcess.getData();
-		console.log(resultData.length);
-		//Session.set("queryAlertLog",resultData);
-		console.log(resultData);
-	});
-	console.log(resultData);
-} */

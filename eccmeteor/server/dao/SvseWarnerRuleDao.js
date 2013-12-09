@@ -66,14 +66,4 @@ SvseWarnerRuleDao = {
 	"getScriptFiles":function(){
 		return SvseMethodsOnServer.svGetScriptFileofScriptAlert();
 	},
-	"getQueryAlertLog" : function(beginDate,endDate,alertQueryCondition){
-		var result = SvseMethodsOnServer.svGetQueryAlertLog(beginDate,endDate,alertQueryCondition);
-		if(!result){
-			console.log("error");
-			throw new Meteor.Error(500,"SvseAlertLogDaoOnServer.getQueryAlertLog failed");
-		}
-		console.log("resultde");
-		//console.log(result);
-		return result;
-	},
 }

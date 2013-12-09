@@ -32,11 +32,11 @@ SvseMonitorDao = {
 		Utils.checkReCallFunction(fn);
 		Meteor.call(SvseMonitorDao.AGENT,'editMonitor',[parentid,monitor],function(err,result){
 			if(err){
-				SystemLogger(err);
+				Log4js.error(err);
 				fn({status:false,msg:err})
 			}else{
 				if(result && !reult[status]){ // 无权限
-					SystemLogger(err);
+					Log4js.error(err);
 					fn(result);
 				}else{
 					fn({status:true})
@@ -49,11 +49,11 @@ SvseMonitorDao = {
 		//for(index in monitors){
 		Meteor.call(SvseMonitorDao.AGENT,"addMultiMonitor",[parentid,monitors],function(err,result){
 			if(err){
-			SystemLogger(err);
+			Log4js.error(err);
 			fn({status:false,msg:err})
 			}else{
 				if(result && !reult[status]){ // 无权限
-					SystemLogger(err);
+					Log4js.error(err);
 					fn(result);
 				}else{
 					fn({status:true})

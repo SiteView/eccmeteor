@@ -3,10 +3,10 @@ SvseEntityTemplateDaoAgent = {
 		var flag = false;
 		switch(fn){
 			case "addEntity": 
-				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">add");
+				flag = Agent.getEquipmentsOpratePermission(args[0],Agent._PermissionType.addEntity);
 				break;
 			case "updateEntity":
-				flag = Agent.getPermission("nodeOpratePermission>"+args[1].replace(/\./g,"-")+">edit");
+				flag =  Agent.getEquipmentsOpratePermission(args[0],Agent._PermissionType.edit);
 			default : flag = true;
 		}
 		if(!SvseEntityTemplateDao[fn]){

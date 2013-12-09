@@ -24,6 +24,7 @@ Meteor.methods({
   "svGetSMSWebConfigSetting":svGetSMSWebConfigSetting,
   "svGetSMSComConfigSetting":svGetSMSComConfigSetting,
   "svGetEmailTemplates":svGetEmailTemplates,
+  "svseAlertLogDaoAgent":SvseAlertLogDaoAgent.agent,
   /*
 	Type： add
 	Author：xuqiang
@@ -76,6 +77,24 @@ Meteor.methods({
 	Author:zhuqing
 	Date:2013-11-12
 	Content:在客户端和服务端添加一些定义的方法
+*/
+/*
+	Type： add
+	Author：xuqiang
+	Date:2013-10-28 10:40
+	Content:增加 趋势报告 的agent声明
+*/ 
+/*
+	Type： add
+	Author：xuqiang
+	Date:2013-12-05 15:40
+	Content:任务计划接口调用的声明
+*/	
+/*
+	Type： add
+	Author：renjie
+	Date:2013-12-2 14:40
+	Content:增加 syslog 
 */
 //给服务端调用的。//调用 /lib/svdb.js中定义的方法
 SvseMethodsOnServer = {
@@ -131,19 +150,8 @@ SvseMethodsOnServer = {
 	"svGetStatisticalList": svGetStatisticalList,
 	"svDeleteStatisticalIniFileSection":svDeleteStatisticalIniFileSection,
 	"svWriteStatisticalStatusInitFilesection":svWriteStatisticalStatusInitFilesection,
-/*
-	Type： add
-	Author：xuqiang
-	Date:2013-10-28 10:40
-	Content:增加 趋势报告 的agent声明
-*/ 
 	"svGetTrendList":svGetTrendList,
-	/*
-	Type： add
-	Author：renjie
-	Date:2013-12-2 14:40
-	Content:增加 syslog 
-*/
+	"svWriteTaskIniFileSectionString":svWriteTaskIniFileSectionString,
     "svWriteDelContConfigIniFileSectionString":svWriteDelContConfigIniFileSectionString,
 	"svWriteQueryContEntityConfigIniFileSectionString":svWriteQueryContEntityConfigIniFileSectionString,
 	"svWriteQueryContRankConfigIniFileSectionString":svWriteQueryContRankConfigIniFileSectionString,

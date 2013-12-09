@@ -262,7 +262,7 @@ svRefreshMonitors = function (id,pid,instantReturn){
 	if(!instantReturn){
 		instantReturn = false;	
 	}
-	Log4js.error("=============instantReturn is " + instantReturn)
+	Log4js.info("=============instantReturn is " + instantReturn)
 	var dowhat ={'dowhat':'RefreshMonitors',id:id,parentid:pid,instantReturn:instantReturn};
 	var robj= process.sv_univ(dowhat, 0);
 	var flag = checkErrorOnServer(robj);
@@ -348,6 +348,24 @@ svGetTrendList = function(id,type){
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
+}
+/*
+Type: add
+Author:xuqiang
+Date:2013.12.15 14:40
+Content:增加对任务计划的操作，添加一条记录到任务计划中
+*/
+//添加计划任务
+svWriteTaskIniFileSectionString = function(addressname,address){
+	//var dowhat = {'dowhat':'CreateTask'};
+	var robj = process.sv_submit({'dowhat':'CreateTask','id':addressname},0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+			Log4js.error(flag);
+			return null;
+		}
+		var fmap = robj.fmap(0);
+		return fmap;	
 }
 //获取发送邮件的设置
 svGetSendEmailSetting = function(){
@@ -706,7 +724,7 @@ svSubmitEntity = function(entity,parentid){
 //添加编辑监视器
 svSubmitMonitor = function(monitor,parentid){
 	if(parentid){
-		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor','parentid':parentid,autoCreateTable:true,del_supplement:false},0); //添加
+		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor','parentid':parentid,autoCreateTable:true,del_supplement:true},0); //添加
 	}else{
 		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor',del_supplement:false},0); //修改
 	}
@@ -926,7 +944,7 @@ svWriteMessageStatusInitFilesection = function(sectionName,status){
 svWriteSMSWebConfigIniFileSectionString = function(section){
 	console.log(section);
 	section["Pwd"] = svEncryptOne(section["Pwd"]);
-	var ini = {"SMSWebConfig":section};
+	var ini = {"SMSWebConfig":section}; 
 	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"smsconfig.ini",'user':"default",'section':"SMSWebConfig"},0); 
 	var flag = checkErrorOnServer(robj);
 	if(typeof flag === "string"){
@@ -1026,7 +1044,6 @@ svGetQueryAlertLog = function(beginDate,endDate,alertQueryCondition){
 		Log4js.error(robj.estr(0),-1);
 		return false;
 	}
-	console.log(alertQueryCondition);
 	var fmap = robj.fmap(0);
 	var alertLogRecords = [];
 	for(r in fmap){

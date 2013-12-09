@@ -54,6 +54,10 @@ Template.emailsetting.rendered = function(){
 		$("#emailbasicsetting :text[name=user]").val(setting["user"]);
 		$("#emailbasicsetting :password[name=password]").val(setting["password"]);
 	});
+	
+}
+
+Template.emailsettingList.rendered = function(){
 	$(function(){
 		//隐藏所有操作按钮
 		ClientUtils.hideOperateBtnInTd("emailSettingList");
@@ -127,10 +131,28 @@ Template.emailbasicsettingofaddress.events = {
 		var nIndex = Utils.getUUID();
 		emailbasicsettingofaddressbasciinfo["nIndex"] = nIndex
 	//	console.log(emailbasicsettingofaddressbasciinfo);
+		var name = emailbasicsettingofaddressbasciinfo["Name"];
+		if(!name){
+			Message.info("请填写名称");
+			return;
+		}
+		var result = SvseEmailDao.getEmailByName(name);
+		if(result){
+			Message.info("此名称已存在");
+			return;
+		}
+		var mail = emailbasicsettingofaddressbasciinfo["MailList"];
+		if(!mail){
+			Message.info("请填写Email地址");
+			return;
+		}
+		var flag = SvseEmailDao.checkEmailFormat(mail);
+		if(!flag) return;
+		
 		var address = {};
 		address[nIndex] = emailbasicsettingofaddressbasciinfo;
 		SvseEmailDao.addEmailAddress(nIndex,address,function(result){
-			SystemLogger(result);
+			Log4js.info(result);
 			$('#emailaddresssettingdiv').modal('toggle');
 		});
 	},
@@ -151,6 +173,30 @@ Template.emailbasicsettingofaddressedit.events = {
 	"click #emailbasicsettingofaddresssavebtnedit":function(){
 		var emailbasicsettingofaddressbasciinfoedit = ClientUtils.formArrayToObject($("#emailbasicsettingofaddressbasciinfoedit").serializeArray());
 		var nIndex = emailbasicsettingofaddressbasciinfoedit["nIndex"];
+		var name = emailbasicsettingofaddressbasciinfoedit["Name"];
+		if(!name){
+			Message.info("请填写名称");
+			return;
+		}
+		//检查重名
+		var result = SvseEmailDao.getEmailById(nIndex);
+		var emailresult = SvseEmailDao.getEmailByName(name);
+		if(result["Name"] != name){
+			if(emailresult){
+				Message.info("此名称已存在");
+				return;
+			}
+		}
+		
+		var mail = emailbasicsettingofaddressbasciinfoedit["MailList"];
+		if(!mail){
+			Message.info("请填写Email地址");
+			return;
+		}
+		//验证邮件地址
+		var flag = SvseEmailDao.checkEmailFormat(mail);
+		if(!flag) return;
+		
 		var address = {};
 		address[nIndex] = emailbasicsettingofaddressbasciinfoedit;
 	//	console.log(address);

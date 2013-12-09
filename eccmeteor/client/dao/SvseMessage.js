@@ -109,5 +109,13 @@ SvseMessageDao = {
 			Message.info("请选择你要操作的对象！");
 			return;
 		}
-	}
+	},
+	//验证手机号码的格式
+	checkPhoneNumberFormat:function(phoneNumber){
+		if (!phoneNumber.match(/^(((13[0-9]{1})|159|153)+\d{8})$/)) { 
+			Message.info("手机号码格式不正确！"); 
+			return false; 
+		}
+		return true;
+	},
 }

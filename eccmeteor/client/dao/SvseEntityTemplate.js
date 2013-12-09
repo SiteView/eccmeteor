@@ -49,7 +49,7 @@ SvseEntityTemplateDao = {
 	addEntity:function(entity,parentid,fn){//根据提交的信息和父节点添加设备
 		fn = Utils.checkReCallFunction(fn);
 
-		Meteor.call(SvseEntityTemplateDao.AGENT,"addEntity",[entity,parentid],function(err,result){
+		Meteor.call(SvseEntityTemplateDao.AGENT,"addEntity",[parentid,entity],function(err,result){
 			if(err){
 				Log4js.error(err);
 				fn({status:false,msg:err})
@@ -63,7 +63,7 @@ SvseEntityTemplateDao = {
 		return node ? node.sv_devicetype : "";
 	},
 	editEntity:function(entity,entityId,fn){
-		Meteor.call(SvseEntityTemplateDao.AGENT,"updateEntity",[entity,entityId],function(err,result){
+		Meteor.call(SvseEntityTemplateDao.AGENT,"updateEntity",[entityId,entity],function(err,result){
 			if(err){
 				Log4js.error(err);
 				fn({status:false,msg:err})

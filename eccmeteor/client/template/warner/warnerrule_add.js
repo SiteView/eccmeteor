@@ -8,6 +8,12 @@ Template.warnerruleofmessage.events={
 		for(param in warnerruleofmessageformsendconditions){
 			warnerruleofmessageform[param] = warnerruleofmessageformsendconditions[param];
 		}
+		
+		var selectSmsNumber = $(".messagemultiselect").val()
+		console.log(selectSmsNumber);
+		var selectSmsNumberStr = SvseWarnerRuleDao.getValueOfMultipleSelect(selectSmsNumber);
+		warnerruleofmessageform["SmsNumber"] = selectSmsNumberStr;
+		
 		//warnerruleofmessageform["AlertCond"] = 3;
 		//warnerruleofmessageform["SelTime1"] = 2;
 		//warnerruleofmessageform["SelTime2"] = 3;
@@ -16,7 +22,7 @@ Template.warnerruleofmessage.events={
 		//warnerruleofmessageform["AlwaysTimes"] = 1;
 		//warnerruleofmessageform["OnlyTimes"] = 1;
 		
-		var alertName=warnerruleofmessageform["AlertName"];
+		var alertName = warnerruleofmessageform["AlertName"];
 		if(!alertName){
 			Message.info("请填写名称");
 			return;
@@ -26,20 +32,26 @@ Template.warnerruleofmessage.events={
 			Message.info("报警名称已经存在");
 			return;
 		}
-		var smsNumber=warnerruleofmessageform["SmsNumber"];
+		var smsNumber = warnerruleofmessageform["SmsNumber"];
 		var otherNumber = warnerruleofmessageform["OtherNumber"];
 		if(!smsNumber && !otherNumber){
 			Message.info("报警短信接收地址不能为空");
 			return;
 		}
+		//当手机号存在时验证手机号码的格式是否正确
+		if(otherNumber){
+			var flag = SvseMessageDao.checkPhoneNumberFormat(otherNumber);
+			if(!flag) return;
+		}
+		
 		var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
 		
 		var targets = [];
 		var arr = $.fn.zTree.getZTreeObj("svse_tree_check_add").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
-		console.log(arr);
+		//console.log(arr);
 		for(index in arr){
-			console.log("index:"+arr[index].id);
-			console.log("name:"+arr[index].name);
+			//console.log("index:"+arr[index].id);
+			//console.log("name:"+arr[index].name);
 			targets.push(arr[index].id);
 		}
 		warnerruleofmessageform["AlertTarget"] = targets.join();
@@ -157,13 +169,13 @@ Template.messagewarnerformedit.messagelist = function(){
 Template.messagewarnerformedit.rendered=function(){
 	$(function(){
 		//填充报警接收手机号下拉列表
-		// var messagelist = SvseMessageDao.getMessageList();
-		// for(var l = 0 ; l < messagelist.length ; l++){
-			// console.log(messagelist[l]);
-			// var name = messagelist[l].Name;
-			// var option = $("<option value="+name+"></option>").html(name);
-			// $("#warnersmsnumber").append(option);
-		// }
+		var messagelist = SvseMessageDao.getMessageList();
+		for(var l = 0 ; l < messagelist.length ; l++){
+			console.log(messagelist[l]);
+			var name = messagelist[l].Name;
+			var option = $("<option value="+name+"></option>").html(name);
+			$("#warnersmsnumber").append(option);
+		}
 		$('.messagemultiselectedit').multiselect({
 			buttonClass : 'btn',
 			buttonWidth : 'auto',
@@ -180,7 +192,6 @@ Template.messagewarnerformedit.rendered=function(){
 					options.each(function () {
 						selected += $(this).text() + ', ';
 					});
-					console.log("load...");
 					return selected.substr(0, selected.length - 2) + ' <b class="caret"></b>';
 				}
 			}
@@ -208,16 +219,16 @@ Template.messagewarnerformedit.rendered=function(){
 		$.fn.zTree.init($("#svse_tree_check_editsms"), setting, data);
 	});
 	
-	/*  //填充短信模板列表
+	//填充短信模板列表
 	SvseMessageDao.getMessageTemplates(function(err,result){
 		for(name in result){
 			//console.log(name);
 			var option = $("<option value="+name+"></option>").html(name)
 			$("#messagetemplatelistedit").append(option);
 		}
-	}); */
+	});
 }
-Template.messagewarnerformedit.smstemplate=function(){
+/* Template.messagewarnerformedit.smstemplate=function(){
 	SvseMessageDao.getMessageTemplates(function(err,result){
 		var smstemplate=[];
 		for(name in result){
@@ -229,10 +240,10 @@ Template.messagewarnerformedit.smstemplate=function(){
 	});
 	//console.log(Session.get("smstemplate"));
 	return Session.get("smstemplate");
-}
+} */
 
 //编辑时的事件
-Template.editwarnerruleofmessage.events({
+Template.messagewarnerformedit.events({
 	"click #editwarnerruleofmessagecancelbtn":function(){
 		$("#messagewarnerdivedit").modal("hide");
 	},
@@ -243,34 +254,47 @@ Template.editwarnerruleofmessage.events({
 		for(param in warnerruleofmessageformsendconditionsedit){
 			warnerruleofmessageformedit[param] = warnerruleofmessageformsendconditionsedit[param];
 		}
-		warnerruleofmessageformedit["AlertCond"] = 3;
-		warnerruleofmessageformedit["SelTime1"] = 2;
-		warnerruleofmessageformedit["SelTime2"] = 3;
+		
+		var selectSmsNumber = $(".messagemultiselectedit").val()
+		console.log(selectSmsNumber);
+		var selectSmsNumberStr = SvseWarnerRuleDao.getValueOfMultipleSelect(selectSmsNumber);
+		warnerruleofmessageformedit["SmsNumber"] = selectSmsNumberStr;
+		
+		//warnerruleofmessageformedit["AlertCond"] = 3;
+		//warnerruleofmessageformedit["SelTime1"] = 2;
+		//warnerruleofmessageformedit["SelTime2"] = 3;
 		warnerruleofmessageformedit["AlertState"] = "Enable";
 		warnerruleofmessageformedit["AlertType"] = "SmsAlert";
-		warnerruleofmessageformedit["AlwaysTimes"] = 1;
-		warnerruleofmessageformedit["OnlyTimes"] = 1;
-		var alertName=warnerruleofmessageformedit["AlertName"];
+		//warnerruleofmessageformedit["AlwaysTimes"] = 1;
+		//warnerruleofmessageformedit["OnlyTimes"] = 1;
+		var alertName = warnerruleofmessageformedit["AlertName"];
 		if(!alertName){
 			Message.info("请填写名称");
 			return;
 		}
-		var result=SvseWarnerRuleDao.getWarnerRule(warnerruleofmessageformedit["nIndex"]);
-		var alertresult=SvseWarnerRuleDao.getAlertByName(alertName);
-		if(result["AlertName"]!=alertName)
+		var result = SvseWarnerRuleDao.getWarnerRule(warnerruleofmessageformedit["nIndex"]);
+		var alertresult = SvseWarnerRuleDao.getAlertByName(alertName);
+		if(result["AlertName"] != alertName)
 		{
 			if(alertresult){
-			Message.info("报警名称已经存在");
-			return;
+				Message.info("报警名称已经存在");
+				return;
 			}
 		}
 		
-		var smsNumber=warnerruleofmessageformedit["SmsNumber"];
+		var smsNumber = warnerruleofmessageformedit["SmsNumber"];
 		var otherNumber = warnerruleofmessageformedit["OtherNumber"];
 		if(!smsNumber && !otherNumber){
 			Message.info("报警接收手机号不能为空");
 			return;
 		}
+		//当手机号存在时验证手机号码的格式是否正确
+		if(otherNumber){
+			var flag = SvseMessageDao.checkPhoneNumberFormat(otherNumber);
+			if(!flag) return;
+		}
+		
+		
 		var targets = [];
 		var arr = $.fn.zTree.getZTreeObj("svse_tree_check_editsms").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
 		for(index in arr){
@@ -288,5 +312,30 @@ Template.editwarnerruleofmessage.events({
 		SvseWarnerRuleDao.updateWarnerRule(warnerruleofmessageformedit["nIndex"],section,function(result){
 			$('#messagewarnerdivedit').modal('hide');
 		});
+	},
+	
+	//短信模板的改变事件
+	"change #messageSendModelistedit":function(){
+		var type = $("#messageSendModelistedit").val()
+		//console.log("type:" + type);
+		if(type == "Web"){
+			$("#messagetemplatelistedit").empty();//清空select的option
+			SvseMessageDao.getWebMessageTemplates(function(err,result){
+				for(name in result){
+					//console.log(name);
+					var option=$("<option value"+name+"></option>").html(name)
+					$("#messagetemplatelistedit").append(option);
+				}
+			});
+		}else{
+			$("#messagetemplatelistedit").empty();//清空select的option
+			SvseMessageDao.getMessageTemplates(function(err,result){
+				for(name in result){
+					//console.log(name);
+					var option = $("<option value="+name+"></option>").html(name)
+					$("#messagetemplatelistedit").append(option);
+				}
+			});
+		}
 	},
 });
