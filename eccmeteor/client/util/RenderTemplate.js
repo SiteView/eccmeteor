@@ -66,9 +66,12 @@ Object.defineProperty(RenderTemplate,"showParents",{
 Object.defineProperty(RenderTemplate,"hideParents",{
 	value:function(t){
 		var modal = $(t.find("div.modal"));
-		modal.on("hidden",function(){
-			modal.parent("div").empty();
-		});
 		modal.modal("hide");
+		var remove = function(){
+			modal.remove()
+		}
+		modal.on("hidden",function(){
+			Meteor.setTimeout(remove,1000);
+		});
 	}
 });

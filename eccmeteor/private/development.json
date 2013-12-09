@@ -1,4 +1,4 @@
 {
-	"initDatabase":0,
+	"initDatabase":-1,
 	"runtimesync":1
 }

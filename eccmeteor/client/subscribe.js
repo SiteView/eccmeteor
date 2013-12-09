@@ -39,3 +39,10 @@ Meteor.subscribe("svse_settingnodes");
    Content: 增加设置语言集合集合
 */
 Meteor.subscribe("svse_language");
+/*
+Type： add 
+Author：xuqiang
+Date:2013-12-5 
+Content:增加任务计划订阅数据
+*/ 
+Meteor.subscribe("svse_task");

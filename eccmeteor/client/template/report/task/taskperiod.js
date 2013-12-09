@@ -1,4 +1,29 @@
-﻿Template.taskperiod.events = {
+﻿Template.taskperiodlist.taskperiodresultlist = function () {
+	//console.log(SvseTaskDao.gettaskabsoluteresultlist());
+	 return SvseTask.find({Type:'2'},page.skip());
+	//return SvseStatisticalDao.getStatisticalresultlist();
+}
+//分页
+var page = new Pagination("statisticalPagination");
+Template.taskperiodlist.pager = function(){  //Note : pager was  surrounded by three '{}'. example {{{pager}}} 
+  return page.create(SvseTask.find().count());
+}
+Template.taskperiodlist.destroyed = function(){
+  page.destroy();
+}
+Template.taskperiodlist.rendered = function () {
+	$(function () {
+		//隐藏所有操作按钮
+		ClientUtils.hideOperateBtnInTd("taskperiodlist");
+		//初始化 checkbox事件
+		ClientUtils.tableSelectAll("taskperiodlistselectall");
+		//初始化tr点击变色效果
+		ClientUtils.trOfTableClickedChangeColor("taskperiodlist");
+		//tr 鼠标悬停显示操作按钮效果
+		ClientUtils.showOperateBtnInTd("taskperiodlist");
+	});
+}
+Template.taskperiod.events = {
 	"click #taskperiodofadd" : function(e){
 	$('#taskperiodadddiv').modal('toggle');
 	}

@@ -1,16 +1,16 @@
 SvseSysLogDaoAgent = {
 	"agent" : function(fn , args){
-		/*var flag = false;
-		switch(fn){
+		var flag = false;
+		/* switch(fn){
 			case "addMessage": 
 				flag = Agent.getPermission("settingOperatePermission>messagesetting>add");
 				break;
-			/*
+			
 			case "setMessageBasicSetting": 
 				flag = Agent.getPermission("settingOperatePermission>messagesetting>add");
 				break;
-			*/
-			/*case "updateMessage":
+			
+			case "updateMessage":
 				flag = Agent.getPermission("settingOperatePermission>messagesetting>update");
 				break;
 			case "deleteMessageByIds":
@@ -19,13 +19,13 @@ SvseSysLogDaoAgent = {
 			case "updateMessageStatus":
 				flag = Agent.getPermission("settingOperatePermission>messagesetting>update");
 				break;
-			/*
+			
 			case "sync": 
 				flag = Agent.getPermission("settingOperatePermission>messagesetting>sync");
 				break;
-			*/	
-			/*default : flag = true;
-		}*/
+			default : flag = true;
+		} */
+		flag = true;
 		if(!SvseSysLogDaoOnServer[fn]){
 			Agent.error("SvseSysLogDaoOnServer",fn);
 			return Agent.getReturn();
