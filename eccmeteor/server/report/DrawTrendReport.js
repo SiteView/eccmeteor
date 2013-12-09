@@ -19,8 +19,8 @@ Object.defineProperty(DrawTrendReport,"getPrimaryKey",{
 
 //获取相关数据
 Object.defineProperty(DrawTrendReport,"getMonitorRecords",{
-	value:function(monitorId,count){
-		return SvseMonitorDaoOnServer.getMonitorRuntimeRecords(monitorId,count);
+	value:function(monitorId,startTime,endTime){
+		return SvseMonitorDaoOnServer.getMonitorRuntimeRecordsByTime(monitorId,startTime,endTime);
 	}
 })
 
@@ -165,15 +165,16 @@ Object.defineProperty(DrawTrendReport,"drawLine",{
 
 //根据查询条件返回结果
 Object.defineProperty(DrawTrendReport,"export",{
-	value:function(monitorId){
+	value:function(monitorId,startTime,endTime){
 		var foreigkeys = this.getPrimaryKey(monitorId);
 		if(!foreigkeys){
 			Log4j.warn("监视器"+id+"不能获取画图数据");
 			return;
 		}
-		var records = this.getMonitorRecords(monitorId,200);
+		var records = this.getMonitorRecords(monitorId,startTime,endTime);
 		var dataProcess = new MonitorDataProcess(records,foreigkeys["monitorForeignKeys"]);
 		var resultData = dataProcess.getData();
+		var 
 		var htmlStub = HtmlTemplate.render(this._option.htmlTemplate);
 		var document = Jsdom.jsdom(htmlStub,null,{
 			features : {

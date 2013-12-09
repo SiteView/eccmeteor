@@ -3,7 +3,10 @@
 */
 TestUnit = function(){};
 Object.defineProperty(TestUnit,"test",{
-	value:function(){
+	value:function(status){
+		if(status === 1){
+			return true;
+		}
 		//拿到需要测试的配置文件信息
 		var testObjects = AssetsUtils.getTestObjects();
 		var length = testObjects.length;
