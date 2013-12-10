@@ -1,6 +1,6 @@
 /*
 	报表导出接口
-	localhost:3000/report?mid=1.26.27.3&st=20131207102000&et=20131208102000
+	localhost:3000/TrendReport?mid=1.26.27.3&st=20131201102000&et=20131208102000
 */
 //时间转换 20131020122500  {year:2013,month:10,day:20,hour:12,minute:25,second:00}
 var coverTime = function(timestr){
@@ -21,11 +21,6 @@ Meteor.Router.add( '/TrendReport', 'GET', function () {
 	var et = this.request.query.et;
 	var stime =  coverTime(st);
 	var etime =  coverTime(et);
-	console.log(stime);
-	console.log(etime);
-
-	DrawTrendReport.export(mid,stime,etime)
-	return;
   	return [200,
     	{
        		'Content-type': 'text/html',

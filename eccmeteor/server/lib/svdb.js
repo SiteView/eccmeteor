@@ -195,7 +195,7 @@ svGetMonitorRuntimeRecordsByTime = function(id,beginDate,endDate){
  Date: 2013-12-10 11:53
  Content :获取报表数据
 */
-svGetReportData = function(){
+svGetReportData = function(monitorId,beginDate,endDate){
 	/*
 	{
 		id:id,//id 可以是逗号分隔的多个id
@@ -208,8 +208,9 @@ svGetReportData = function(){
 		end_year= XXX,end_month= XXX,end_day= XXX,end_hour= XXX,end_minute= XXX, end_second= XXX,
 	}
 	mid=1.26.27.3&st=20131207102000&et=20131208102000
-	*/
-	var beginDate = {
+	
+	monitorId = "1.26.27.3";
+	beginDate = {
 		year:"2013",
 		month:"12",
 		day:"01",
@@ -217,30 +218,30 @@ svGetReportData = function(){
 		minute:"20",
 		second:"00"
 	}
-	var endDate = {
+	endDate = {
 		year:"2013",
 		month:"12",
 		day:"08",
 		hour:"10",
 		minute:"20",
 		second:"00"
-	}
+	}*/
 	var robj = process.sv_univ({
 		'dowhat':'QueryReportData',
-		id:"1.174.10.1",
+		id:monitorId,
+	//	dstrNeed:true,
 		dstrStatusNoNeed:null,
 	//	return_value_filter:"sv_primary,sv_drawimage",
 		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
 		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
 	}, 0);
-	if(typeof robj === "string"){
-		console.log(robj);
-	}
-	if(!robj.isok(0) &&robj.estr(0) !== ""){
-		console.log(robj.estr(0));
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
-	Log4js.info(fmap);
+	return fmap;
 }
 
 
