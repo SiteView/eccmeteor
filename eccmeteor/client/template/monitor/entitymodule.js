@@ -207,6 +207,14 @@ function drawImage(id,count){
 	});
 }
 
+//画图前 获取相关数据
+function drawNewImage(id,count){
+	if(!count){
+		var count =200;
+	}
+}
+
+
 function emptyImage(){
 	SessionManage.setMonitorStatisticalDetailTableData(null);
 	SessionManage.setMonitorRuntimeTableData({

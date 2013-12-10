@@ -52,6 +52,7 @@ Object.defineProperty(DrawTrendReport,"drawLine",{
 
 		var svg = d3.select(el)
 					.append("div")
+					.style({'margin-top': '20px'})
 					.append('svg:svg')
 					.attr('width', width)
 					.attr('height', height)
