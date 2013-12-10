@@ -23,6 +23,9 @@ Meteor.Router.add( '/TrendReport', 'GET', function () {
 	var etime =  coverTime(et);
 	console.log(stime);
 	console.log(etime);
+
+	DrawTrendReport.export(mid,stime,etime)
+	return;
   	return [200,
     	{
        		'Content-type': 'text/html',

@@ -163,19 +163,59 @@ Object.defineProperty(DrawTrendReport,"drawLine",{
 	}
 });
 
+//拼接时间
+Object.defineProperty(DrawTrendReport,"buildTime",{
+	value:function(obj){
+		return obj.year + "-" + obj.month + "-" +  obj.day+ " " +obj.hour + ":" +obj.minute+":"+obj.second;
+	}
+})
+/*
+	获取模板渲染的对象
+*/
+Object.defineProperty(DrawTrendReport,"getTemplateRenderInfo",{
+	value:function(monitorId,keys,st,et){
+		var entityId = monitorId.substr(0,monitorId.lastIndexOf("\."));
+		var entity  = SvseTree.findOne({sv_id:entityId});
+		var monitor = SvseTree.findOne({sv_id:monitorId});
+		var info = {};
+		
+		info.startTime = this.buildTime(st);
+		info.endTime =  this.buildTime(et);
+		
+		if(!entity || !monitor){
+			return {};
+		}
+
+		info.entityName = entity.sv_name;
+		info.monitorName = monitor.sv_name;
+		console.log(EJSON.stringify(keys));
+		info.max = keys[0].max;
+		info.min = keys[0].min;
+		info.mean = keys[0].mean;
+		info.last = "Test";
+		info.maxTime = "Test";
+		info.returnName = "Test";
+		return info;
+	}
+});
+
 //根据查询条件返回结果
 Object.defineProperty(DrawTrendReport,"export",{
 	value:function(monitorId,startTime,endTime){
 		var foreigkeys = this.getPrimaryKey(monitorId);
+		console.log(foreigkeys);
 		if(!foreigkeys){
 			Log4j.warn("监视器"+id+"不能获取画图数据");
 			return;
 		}
 		var records = this.getMonitorRecords(monitorId,startTime,endTime);
+	//	Log4js.info(records);
+		return;
 		var dataProcess = new MonitorDataProcess(records,foreigkeys["monitorForeignKeys"]);
 		var resultData = dataProcess.getData();
-		var 
-		var htmlStub = HtmlTemplate.render(this._option.htmlTemplate);
+		//var keysData = dataProcess.getKeysData();
+		//var renderObj = this.getTemplateRenderInfo(monitorId,keysData,startTime,endTime);
+		var htmlStub = HtmlTemplate.render(this._option.htmlTemplate,{render:{}});
 		var document = Jsdom.jsdom(htmlStub,null,{
 			features : {
 				FetchExternalResources : ['css'],

@@ -3,8 +3,8 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-		<h2 align="center"><%= entityName%>:<%= monitorName%>的趋势报告</h2>
-		<h3 align="center"><%= startTime%> ~ <%= endTime%></h3>
+		<h2 align="center"><%= render.entityName%>:<%= render.monitorName%>的趋势报告</h2>
+		<h3 align="center"><%= render.startTime%> ~ <%= render.endTime%></h3>
 		<lable>监测数据统计表格</lable>
 		<table>
 			<tr>
@@ -17,13 +17,13 @@
 				<th>最大值时间</th>
 			</tr>
 			<tr>
-				<td><%= entityName%></td>
-				<td><%= returnName%></td>
-				<td><%= max%></td>
-				<td><%= min%></td>
-				<td><%= mean%></td>
-				<td><%= last%></td>
-				<td><%= maxTime%></td>
+				<td><%= render.entityName%></td>
+				<td><%= render.returnName%></td>
+				<td><%= render.max%></td>
+				<td><%= render.min%></td>
+				<td><%= render.mean%></td>
+				<td><%= render.last%></td>
+				<td><%= render.maxTime%></td>
 			</tr>
 		</table>
 		<div id="dataviz-container"></div>

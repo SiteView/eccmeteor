@@ -86,8 +86,8 @@ MonitorDataProcess.prototype.setDataKey = function(data,keys){
 }
 
 MonitorDataProcess.prototype.setRecordsDate = function(){
-	this.records.starttime = this.data[this.data.length-1]["creat_time"].format("yyyy-MM-dd hh:mm:ss");
-	this.records.endtime = this.data[0]["creat_time"].format("yyyy-MM-dd hh:mm:ss");
+	this.records.endtime = this.data[this.data.length-1]["creat_time"].format("yyyy-MM-dd hh:mm:ss");
+	this.records.starttime= this.data[0]["creat_time"].format("yyyy-MM-dd hh:mm:ss");
 }
 
 MonitorDataProcess.prototype.do = function(){
@@ -102,4 +102,11 @@ MonitorDataProcess.prototype.getData = function(){
 //返回统计数据
 MonitorDataProcess.prototype.getRecordsDate =  function(){
 	return this.records;
+}
+//返回最大值最小值
+MonitorDataProcess.prototype.getKeysData =  function(){
+	return this.keys;
+}
+//返回
+MonitorDataProcess.prototype.getRenderData =  function(){
 }

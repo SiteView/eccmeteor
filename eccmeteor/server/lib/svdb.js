@@ -183,13 +183,66 @@ svGetMonitorRuntimeRecordsByTime = function(id,beginDate,endDate){
 		throw new Meteor.Error(500,flag);
 	}
 	var fmap = robj.fmap(0);
-
 	var runtiomeRecords = [];
 	for(r in fmap){
 		runtiomeRecords.push(fmap[r]);
 	}
 	return runtiomeRecords;
 }
+/**
+ Type:add
+ Author:huyinghuan
+ Date: 2013-12-10 11:53
+ Content :获取报表数据
+*/
+svGetReportData = function(){
+	/*
+	{
+		id:id,//id 可以是逗号分隔的多个id
+		compress:compress,//默认压缩数据（即若不填则为true ；另：<400个数据不压缩，>=400压缩到200；不压缩数据的个数极限为50000)
+		dstrNeed:dstrNeed, //true/false 默认不给dstr（即若不填则为 false)
+		byCount:byCount,//(如果有值则按个数查询，而不是按时间)
+		dstrStatusNoNeed:null, //null,ok,warning,error,disable,bad (不需要的dstr状态，如dstrStatusNoNeed=ok 则ok的dstr不传，其他的都传回) 
+		return_value_filter:"return_value_filter", //= XXX,XXX 返回值过滤，如该值为 sv_primary,sv_drawimage ，则只回传 sv_primary=1 且 sv_drawimage=1 的返回值
+		begin_year:XXX,begin_month:XXX, begin_day= XXX,begin_hour= XXX,begin_second= XXX, 
+		end_year= XXX,end_month= XXX,end_day= XXX,end_hour= XXX,end_minute= XXX, end_second= XXX,
+	}
+	mid=1.26.27.3&st=20131207102000&et=20131208102000
+	*/
+	var beginDate = {
+		year:"2013",
+		month:"12",
+		day:"01",
+		hour:"10",
+		minute:"20",
+		second:"00"
+	}
+	var endDate = {
+		year:"2013",
+		month:"12",
+		day:"08",
+		hour:"10",
+		minute:"20",
+		second:"00"
+	}
+	var robj = process.sv_univ({
+		'dowhat':'QueryReportData',
+		id:"1.174.10.1",
+		dstrStatusNoNeed:null,
+	//	return_value_filter:"sv_primary,sv_drawimage",
+		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
+		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
+	}, 0);
+	if(typeof robj === "string"){
+		console.log(robj);
+	}
+	if(!robj.isok(0) &&robj.estr(0) !== ""){
+		console.log(robj.estr(0));
+	}
+	var fmap = robj.fmap(0);
+	Log4js.info(fmap);
+}
+
 
 //获取监视器模板
 svGetMonitorTemplet = function(id){
