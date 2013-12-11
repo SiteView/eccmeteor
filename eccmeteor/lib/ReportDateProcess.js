@@ -5,7 +5,7 @@
 ReportDataProcess = function(data){
 	this.tableData = [];
 	this.imageData = [];
-	this.baseData = {};
+	this.baseData = [];
 	this.analysis(data);
 }
 //拆分数据
@@ -16,7 +16,7 @@ ReportDataProcess.prototype.analysis = function(data){
 			this.dealWithTableData(data[returnvalue]);//处理表格数据
 			this.dealWithImageData(data[returnvalue]);//处理画图数据
 		}else if(returnvalue.indexOf("return") === -1){
-			this.dealWithBaseData(data[returnvalue]) //处理基础数据
+			this.dealWithBaseData(returnvalue,data[returnvalue]) //处理基础数据
 		}
 	}
 }
@@ -85,8 +85,8 @@ ReportDataProcess.prototype.dealWithImageData =  function(item){
 
 
 //处理报表的状态统计
-ReportDataProcess.prototype.dealWithBaseData =  function(item){
-	this.baseData = item;
+ReportDataProcess.prototype.dealWithBaseData =  function(name,item){
+	this.baseData.push({name:name,item:item});
 }
 
 ReportDataProcess.prototype.getImageData =  function(){
@@ -97,5 +97,16 @@ ReportDataProcess.prototype.getTableData =  function(){
 	return this.tableData;
 }
 ReportDataProcess.prototype.getBaseData =  function(){
-	return this.baseData;
+	if(this.baseData.length === 1){
+		return this.baseData[0]["item"]
+	}
+	var newData = {};
+	var title = "";
+	for(i in this.baseData){
+		var one = this.baseData[i];
+		newData[one.name] = one.item;
+		title = title + one.item.MonitorName.split("\:")[1] + ","
+	}
+	newData.title = title.replace(/\,$/,"");
+	return newData;
 }

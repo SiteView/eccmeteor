@@ -13,9 +13,8 @@ var coverTime = function(timestr){
 		second:(timestr.substr(12,2) === "" ? "00" : timestr.substr(12,2))
 	}
 }
-//趋势报告
+//趋势报告 localhost:3000/TrendReport?mid=1.26.27.3&st=20131201102000&et=20131208102000
 Meteor.Router.add( '/TrendReport', 'GET', function () {
-	Log4js.info(this.request.query);
 	var mid = this.request.query.mid;
 	var st = this.request.query.st;
 	var et = this.request.query.et;
@@ -27,3 +26,19 @@ Meteor.Router.add( '/TrendReport', 'GET', function () {
        		'Content-Disposition': "attachment; filename=trend_report.html"
     	},new Buffer(DrawTrendReport.export(mid,stime,etime))];
 } );
+
+//对比报告 localhost:3000/ContrastReport?mid=1.174.10.1,1.168.2&st=20131201102000&et=20131208102000
+Meteor.Router.add("/ContrastReport",'GET',function(){
+	var mid = this.request.query.mid;
+	var st = this.request.query.st;
+	var et = this.request.query.et;
+	var stime =  coverTime(st);
+	var etime =  coverTime(et);
+	DrawContrastReport.export(mid,stime,etime);
+	return;
+  	return [200,
+    	{
+       		'Content-type': 'text/html',
+       		'Content-Disposition': "attachment; filename=trend_report.html"
+    	},new Buffer(DrawContrastReport.export(mid,stime,etime))];
+})
