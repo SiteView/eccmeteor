@@ -7,7 +7,7 @@ DrawTrendReport = function(){}
 Object.defineProperty(DrawTrendReport,"_option",{
 	value:{
 		htmlTemplate:"TrendReport.html",
-		CssTemplate:"TrendReport.css"
+		CssTemplate:["TrendReport.css","table.css"]
 	}
 })
 
@@ -52,7 +52,7 @@ Object.defineProperty(DrawTrendReport,"drawLine",{
 
 		var svg = d3.select(el)
 					.append("div")
-					.style({'margin-top': '20px'})
+					.attr("class", "moresvg")
 					.append('svg:svg')
 					.attr('width', width)
 					.attr('height', height)

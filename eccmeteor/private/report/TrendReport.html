@@ -3,31 +3,37 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-		<h2 align="center"><%= baseDate.MonitorName %>的趋势报告</h2>
-		<h3 align="center"><%= startTime%> ~ <%= endTime%></h3>
-		<lable>监测数据统计表格</lable>
-		<table>
-			<tr>
-				<th>名称</th>
-				<th>返回值名称</th>
-				<th>最大值</th>
-				<th>最小值</th>
-				<th>平均值</th>
-				<th>最近一次</th>
-				<th>最大值时间</th>
-			</tr>
-			<%for(var i = 0 ; i < tableData.length ; i++){%>
-				<tr>
-					<td><%= tableData[i].MonitorName%></td>
-					<td><%= tableData[i].ReturnName%></td>
-					<td><%= tableData[i].max%></td>
-					<td><%= tableData[i].min%></td>
-					<td><%= tableData[i].average%></td>
-					<td><%= tableData[i].latest%></td>
-					<td><%= tableData[i].when_max%></td>
-				</tr>
-				<%}%>
-		</table>
-		<div id="dataviz-container"></div>
+		<div id="content">
+			<h3 align="center"><%= baseDate.MonitorName %>的趋势报告</h3>
+			<h4 align="center"><%= startTime%> ~ <%= endTime%></h4>
+			<lable>监测数据统计表格</lable>
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>名称</th>
+						<th>返回值名称</th>
+						<th>最大值</th>
+						<th>最小值</th>
+						<th>平均值</th>
+						<th>最近一次</th>
+						<th>最大值时间</th>
+					</tr>
+				</thead>
+				<tbody>
+				<%for(var i = 0 ; i < tableData.length ; i++){%>
+					<tr>
+						<td><%= tableData[i].MonitorName%></td>
+						<td><%= tableData[i].ReturnName%></td>
+						<td><%= tableData[i].max%></td>
+						<td><%= tableData[i].min%></td>
+						<td><%= tableData[i].average%></td>
+						<td><%= tableData[i].latest%></td>
+						<td><%= tableData[i].when_max%></td>
+					</tr>
+					<%}%>
+				</tbody>
+			</table>
+			<div id="dataviz-container"></div>
+		</div>
 	</body>
 </html>

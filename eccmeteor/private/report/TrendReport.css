@@ -20,3 +20,30 @@
   stroke: red;
   stroke-width: 2px;
 }
+#content{
+  width:1000px;
+   margin:0 auto;
+}
+
+label {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 20px;
+  display: block;
+  margin-bottom: 5px;
+  display: inline-block;
+  padding: 2px 4px;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  vertical-align: baseline;
+  background-color: #999999;
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+}
+
+.moresvg{
+  margin: 20px;
+}
