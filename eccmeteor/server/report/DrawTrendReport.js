@@ -8,8 +8,17 @@ Object.defineProperty(DrawTrendReport,"_option",{
 	value:{
 		htmlTemplate:"TrendReport.html",
 		CssTemplate:["TrendReport.css","table.css"]
+	},
+	writable:true
+})
+
+Object.defineProperty(DrawContrastReport,"setOption",{
+	value:function(template,css){
+		this._option.htmlTemplate = template;
+		this._option.css = css;
 	}
 })
+
 
 Object.defineProperty(DrawTrendReport,"getPrimaryKey",{
 	value:function(monitorId){
@@ -42,7 +51,7 @@ Object.defineProperty(DrawTrendReport,"drawEmptyLine",{
 		var isXAxisAction = dateformate.length > 5 ? true : false;//x轴是否需要做变动？
 		var xAxisRotate =   isXAxisAction ? -25 : 0; //x轴 坐标标签旋转角度
 		var xAxisAnchor = "middle";//x轴 坐标标签对齐方式
-
+		margin.top = this.isXAxisAction ? 70 : 40;
 		var el = window.document.querySelector('#dataviz-container');
 
 		var svg = d3.select(el)

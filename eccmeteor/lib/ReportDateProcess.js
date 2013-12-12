@@ -98,7 +98,6 @@ ReportDataProcess.prototype.getTableData =  function(){
 }
 ReportDataProcess.prototype.getBaseData =  function(){
 	if(this.baseData.length === 1){
-		console.log(this.baseData[0])
 		return this.baseData[0]["item"]
 	}
 	var newData = {};

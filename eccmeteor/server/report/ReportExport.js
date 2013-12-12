@@ -34,11 +34,9 @@ Meteor.Router.add("/ContrastReport",'GET',function(){
 	var et = this.request.query.et;
 	var stime =  coverTime(st);
 	var etime =  coverTime(et);
-	DrawContrastReport.export(mid,stime,etime);
-	return;
   	return [200,
     	{
        		'Content-type': 'text/html',
-       		'Content-Disposition': "attachment; filename=trend_report.html"
+       		'Content-Disposition': "attachment; filename=contrast_report.html"
     	},new Buffer(DrawContrastReport.export(mid,stime,etime))];
 })
