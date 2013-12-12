@@ -12,17 +12,17 @@
 .line {
   fill: none;
   stroke: steelblue;
-  stroke-width: 1.5px;
+  stroke-width: 2px;
 }
 
 .trendLine {
   fill: none;
-  stroke: red;
-  stroke-width: 2px;
+  stroke: green;
+  stroke-width: 1.5px;
 }
 #content{
   width:1000px;
-   margin:0 auto;
+  margin:0 auto;
 }
 
 label {
