@@ -242,8 +242,26 @@ svGetReportData = function(monitorId,beginDate,endDate){
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
-}
+};
 
+//状态统计的数据 （之获取主键和可画图的数据）
+svGetReportDataByFilter = function(monitorId,beginDate,endDate,filter){
+	var robj = process.sv_univ({
+		'dowhat':'QueryReportData',
+		id:monitorId,
+		dstrStatusNoNeed:null,
+		return_value_filter:filter,
+		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
+		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
+	}, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+};
 
 //获取监视器模板
 svGetMonitorTemplet = function(id){

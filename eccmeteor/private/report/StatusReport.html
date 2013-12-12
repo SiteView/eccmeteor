@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<div id="content">
+			<h3 align="center"><%= baseDate.MonitorName %>的状态统计报告</h3>
+			<h4 align="center"><%= startTime%> ~ <%= endTime%></h4>
+			<label>统计状态</label>
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>正常</th> 
+						<th>危险</th>
+						<th>错误</th>
+						<th>禁止</th>
+						<th>停止</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><%= baseDate.okPercent%></td>
+						<td><%= baseDate.warnPercent%></td>
+						<td><%= baseDate.errorPercent%></td>
+						<td><%= baseDate.min%></td>
+						<td><%= baseDate.average%></td>
+					</tr>
+				</tbody>
+			</table>
+			<label>状态统计图</label>
+			<div id="dataviz-container"></div>
+		</div>
+	</body>
+</html>

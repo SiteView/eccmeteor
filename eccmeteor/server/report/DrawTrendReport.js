@@ -287,7 +287,7 @@ Object.defineProperty(DrawTrendReport,"buildTime",{
 Object.defineProperty(DrawTrendReport,"export",{
 	value:function(monitorId,startTime,endTime){
 		var records = this.getMonitorRecords(monitorId,startTime,endTime);//获取监视器原始数据
-		
+	//	Log4js.info(records);
 		var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
 		
 		var tableData = dataProcess.getTableData();

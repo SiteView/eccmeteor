@@ -114,3 +114,9 @@ Object.defineProperty(SvseMonitorDaoOnServer,"getMonitorReportData",{
 	}
 })
 
+/*获取过滤后的监视器的报告数据*/
+Object.defineProperty(SvseMonitorDaoOnServer,"getMonitorReportDataByfilter",{
+	value:function(monitorId,beginDate,endDate,filter){
+		return SvseMethodsOnServer.svGetReportDataByFilter(monitorId,beginDate,endDate,filter);
+	}
+})
