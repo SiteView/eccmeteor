@@ -9,7 +9,7 @@ Meteor.methods({
   "meteorSvForest":meteorSvForest,
   "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
   "svGetSendEmailSetting":svGetSendEmailSetting,
-  "svEmailTest":svEmailTest,
+  //"svEmailTest":svEmailTest,
   "syncTreeData":SyncFunction.sync, //同步数据
   "userDaoAgent":UserDaoAgent.agent,
   "svseDaoAgent":SvseDaoAgent.agent,
@@ -25,6 +25,7 @@ Meteor.methods({
   "svGetSMSComConfigSetting":svGetSMSComConfigSetting,
   "svGetEmailTemplates":svGetEmailTemplates,
   "svseAlertLogDaoAgent":SvseAlertLogDaoAgent.agent,
+  //"svGetSmsDllName":svGetSmsDllName,
   /*
 	Type： add
 	Author：xuqiang
@@ -157,6 +158,7 @@ SvseMethodsOnServer = {
 	"svWriteQueryContRankConfigIniFileSectionString":svWriteQueryContRankConfigIniFileSectionString,
 	//"svWriteQueryContConfigIniFileSectionString":svWriteQueryContConfigIniFileSectionString,
 	"svDeleteSysLogInitFilesection":svDeleteSysLogInitFilesection,
+	"svEmailTest":svEmailTest,
 }
 
 SvseSyncData = {

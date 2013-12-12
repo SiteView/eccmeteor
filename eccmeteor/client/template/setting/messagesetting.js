@@ -21,7 +21,7 @@ Template.messagesetting.events={
 			});
 			
 			// SvseMessageDao.deleteMessageByIds(ids,function(result){
-				// SystemLogger(result);
+				// Log4js.info(result);
 			// });
 	}, */
 	//改变状态-允许
@@ -30,7 +30,7 @@ Template.messagesetting.events={
 		SvseMessageDao.checkMessageSelect(ids);
 		if(ids.length)
 			SvseMessageDao.updateMessageStatus(ids,"Yes",function(result){
-				SystemLogger(result);
+				Log4js.info(result);
 			});
 	},
 	//改变状态-禁止
@@ -39,7 +39,7 @@ Template.messagesetting.events={
 		SvseMessageDao.checkMessageSelect(ids);
 		if(ids.length)
 			SvseMessageDao.updateMessageStatus(ids,"No",function(result){
-				SystemLogger(result);
+				Log4js.info(result);
 			});
 	},
 	//刷新
@@ -48,7 +48,7 @@ Template.messagesetting.events={
 			if(result.status){
 				console.log("刷新完成");
 			}else{
-				SystemLogger(result);
+				Log4js.info(result);
 			}
 			
 		});
@@ -65,6 +65,7 @@ Template.messagesetting.events={
 
 Template.messagesetting.rendered = function(){
 	$(function(){
+		//在点击删除操作时弹出提示框实现进一步提示
 		$("#delmessagesetting").confirm({
 			'message':"确定删除操作？",
 			'action':function(){
@@ -72,13 +73,14 @@ Template.messagesetting.rendered = function(){
 				SvseMessageDao.checkMessageSelect(ids);
 				if(ids.length){
 					SvseMessageDao.deleteMessageByIds(ids,function(result){
-						SystemLogger(result);
+						Log4js.info(result);
 					});
 					//console.log("确定");
 				}
 				$("#delmessagesetting").confirm("hide");
 			}
 		});
+
 	});
 }
 
@@ -100,7 +102,7 @@ Template.messagesettingList.rendered = function(){
 
 //获取messagelist的集合
 Template.messagesettingList.messagelist = function(){
-	console.log(SvseMessageDao.getMessageList());
+	//console.log(SvseMessageDao.getMessageList());
 	//return SvseMessageDao.getMessageList();
 	return SvseMessageList.find({},page.skip());
 }
@@ -128,10 +130,10 @@ Template.messagesettingList.events({
 			$("#messagebasicsettingofmessagetemplatelistedit").find("option[value='"+checkedTemplate[etl]+"']:first").attr("selected","selected").prop("selected",true);
 		}
 		var status = result["Status"];
-		console.log(status);
-		console.log("val:"+$(":checkbox[name='Status']").val());
+		//console.log(status);
+		//console.log("val:"+$(":checkbox[name='Status']").val());
 		$(":checkbox[name='Status']").attr("checked",false);
-		console.log("true:"+($(":checkbox[name='Status']").val()===status));
+		//console.log("true:"+($(":checkbox[name='Status']").val()===status));
 		if($(":checkbox[name='Status']").val() === status){
 			$(":checkbox[name='Status']").attr("checked",true);
 		}
@@ -172,7 +174,7 @@ Template.sendingmessagemethods.events({
 			 return;
 		}
 		var methodsendforweb = ClientUtils.formArrayToObject($("#methodsendforweb").serializeArray());
-		console.log(methodsendforweb);
+		//console.log(methodsendforweb);
 		SvseMessageDao.setMessageWebConfig(methodsendforweb,function(result){
 			console.log(result);
 			console.log("成功！");
@@ -180,7 +182,7 @@ Template.sendingmessagemethods.events({
 	},
 	"click #webmessagesettingrecoverbtn":function(){
 		Meteor.call("svGetSMSWebConfigSetting",function(err,smsweb){
-			console.log(smsweb);
+			//console.log(smsweb);
 			if(!smsweb) return;
 			$("#methodsendforweb :text[name='User']").val(smsweb["User"]);
 			$("#methodsendforweb :password[name='Pwd']").val(smsweb["Pwd"]);
@@ -196,15 +198,15 @@ Template.sendingmessagemethods.events({
 			return;
 		}
 		var methodsendforcom = ClientUtils.formArrayToObject($("#methodsendforcom").serializeArray());
-		console.log(methodsendforcom);
+		//console.log(methodsendforcom);
 		SvseMessageDao.setMessageCommConfig(methodsendforcom,function(result){
-			console.log(result);
+			//console.log(result);
 			console.log("成功！");
 		});
 	},
 	"click #commessagesettingrecoverbtn":function(){
 		Meteor.call("svGetSMSComConfigSetting",function(err,smscom){
-			console.log(smscom);
+			//console.log(smscom);
 			if(!smscom) return;
 			$("#comselectport").find("option[value='"+smscom["Port"]+"']:first").attr("selected","selected").prop("selected",true);
 			$("#methodsendforcom :text[name='length']").val(smscom["length"]);
@@ -212,24 +214,30 @@ Template.sendingmessagemethods.events({
 	}
 });
 
-Template.sendingmessagemethods.rendered=function(){
+Template.sendingmessagemethods.rendered = function(){
 	Meteor.call("svGetSMSWebConfigSetting",function(err,smsweb){
-		console.log(smsweb);
+		//console.log(smsweb);
 		if(!smsweb) return;
 		$("#methodsendforweb :text[name='User']").val(smsweb["User"]);
 		$("#methodsendforweb :password[name='Pwd']").val(smsweb["Pwd"]);
 		$("#methodsendforweb :text[name='Length']").val(smsweb["Length"]);
 	});
 	Meteor.call("svGetSMSComConfigSetting",function(err,smscom){
-		console.log(smscom);
+		//console.log(smscom);
 		if(!smscom) return;
 		$("#comselectport").find("option[value='"+smscom["Port"]+"']:first").attr("selected","selected").prop("selected",true);
 		$("#methodsendforcom :text[name='length']").val(smscom["length"]);
 	});
-	/*
-	Meteor.call("svGetSmsDllName",function(err,dllname){
-		console.log("svGetSmsDllName");
-		console.log(dllname);
-	});
-	*/
+	
+	//获取定制开发的发送短信的 dll名
+	// Meteor.call("svGetSmsDllName",function(err,result){
+		// console.log("svGetSmsDllName");
+		// if(err){
+			// console.log("err");
+			// return;
+		// }
+		// console.log(result);
+	// });
+	
+	
 }

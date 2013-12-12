@@ -81,5 +81,15 @@ SvseEmailDaoOnServer = {
 	},
 	"getEmailTemplates" : function(){
 		return SvseMethodsOnServer.svGetEmailTemplates();
+	},
+	//邮件测试
+	"emailTest":function(emailSetting){
+		var result = SvseMethodsOnServer.svEmailTest(emailSetting);
+		if(!result){
+			var msg = "SvseEmailDaoOnServer's EmailTest faild";
+			Log4js.error(msg);
+			throw new Meteor.Error(500,msg);
+		}
+		return SvseEmailDaoOnServer.getReturn(true);
 	}
 }

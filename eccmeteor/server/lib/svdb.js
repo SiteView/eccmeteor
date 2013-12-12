@@ -437,7 +437,24 @@ svGetTopNList = function(){
 //邮件测试
 svEmailTest = function(emailSetting){
 	emailSetting["dowhat"]="EmailTest";
-	 process.sv_univ(emailSetting,0);
+	// var robj = process.sv_univ({
+		// "dowhat":"EmailTest",
+		// "mailServer":emailSetting.mailServer,
+		// "mailFrom":emailSetting.mailFrom,
+		// "mailTo":emailSetting.mailTo,
+		// "user":emailSetting.user,
+		// "password":emailSetting.password,
+		// "subject":emailSetting.subject,
+		// "content":emailSetting.content
+	// },0);
+	var robj = process.sv_univ(emailSetting,0);
+	if(!robj.isok(0)){
+		//console.log(robj.estr(0));
+		Log4js.error(robj.estr(0),-1);
+		return false;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
 }
 
 /* ==========================Svse 使用部分 ============================ */
@@ -990,21 +1007,21 @@ svGetSMSComConfigSetting = function(){
 	if(!fmap || !fmap["SMSCommConfig"]) return ;
 	return fmap["SMSCommConfig"];
 }
-/*
-//获取短信设置的发送短信方式中的调用动态库的动态库名称(有问题-待修改)
-svGetSmsDllName=function(){
-	var dowhat={'dowhat':'GetSmsDllName'};
-	var robj=process.sv_univ(dowhat,0);
+
+ //获取短信设置的发送短信方式中的调用动态库的动态库名称(有问题-待修改)
+/* svGetSmsDllName = function(){
+	var dowhat = {'dowhat':'GetSmsDllName'};
+	var robj = process.sv_univ(dowhat,0);
 	Log4js.info("11");
 	if(!robj.isok(0)){
 		Log4js.error(robj.estr(0),-1);
 		return false;
 	}
 	Log4js.info("22");
-	var fmap=robj.fmap(0);
+	var fmap = robj.fmap(0);
 	return fmap;
-}
-*/
+} */
+
 /*
 ========================================
 	Type:对报警规则的操作
