@@ -18,10 +18,10 @@ Template.warnerrule.events = {
 	"click #soundwarner":function(){
 		$("#soundwarnerdiv").modal("show");
 	},
-	"click #delwarnerrule" : function(){
-		SvseWarnerRuleDao.checkWarnerSelect(getWarnerRuleListSelectAll());
-		SvseWarnerRuleDao.deleteWarnerRules(getWarnerRuleListSelectAll());
-	},
+	// "click #delwarnerrule" : function(){
+		// SvseWarnerRuleDao.checkWarnerSelect(getWarnerRuleListSelectAll());
+		// SvseWarnerRuleDao.deleteWarnerRules(getWarnerRuleListSelectAll());
+	// },
 	"click #allowewarnerrule":function(){
 		SvseWarnerRuleDao.updateWarnerRulesStatus(getWarnerRuleListSelectAll(),"Enable",function(result){
 			if(result.status){
@@ -50,6 +50,26 @@ Template.warnerrule.events = {
 		console.log("warnerrulehelpmessage");
 	},
 
+}
+
+Template.warnerrule.rendered = function(){
+	$(function(){
+		//在点击删除操作时弹出提示框实现进一步提示
+		$("#delwarnerrule").confirm({
+			'message':"确定删除操作？",
+			'action':function(){
+				var ids = getWarnerRuleListSelectAll();
+				SvseWarnerRuleDao.checkWarnerSelect(ids);
+				if(ids.length){
+					SvseWarnerRuleDao.deleteWarnerRules(ids,function(result){
+						Log4js.info(result);
+					});
+					//console.log("确定");
+				}
+				$("#delwarnerrule").confirm("hide");
+			}
+		});
+	});
 }
 
 Template.warnerruleofemail.events = {

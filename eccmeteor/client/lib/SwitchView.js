@@ -67,7 +67,8 @@ REPORT ={
 	TREND:"trend", //趋势报告
 	CONTRAST:"contrast",//对比报告
 	STATUSSTATISTICAL:"statusStatistical",//"状态统计报告"
-	MONITORINFO:"monitorInfo"//监测器信息报告, 搜索测试
+	MONITORINFO:"monitorInfo",//监测器信息报告, 搜索测试
+	SYSLOGQUERY:"sysLogQuery"
 }
 /*
 Type： add 

@@ -118,4 +118,15 @@ SvseMessageDao = {
 		}
 		return true;
 	},
+	
+	/* "getSmsDllName":function(){
+		Meteor.call(SvseMessageDao.AGENT,"getSmsDllName",function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn(result);
+			}
+		});
+	} */
 }
