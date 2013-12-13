@@ -53,15 +53,11 @@ SvseTopNOnServer = {
 	            return;
 	        }
 			var s_id = SvseTopNresultlist.findOne({nIndex:addressname})._id;
-           /* Log4js.info("s_id is" + s_id);
-			Log4js.info("addressresult is");
-			Log4js.info(addressresult);*/
-			
 			console.log("s_id is" + s_id);
 			console.log("addressresult is");
 			console.log(addressresult);
 	
-			SvseTopNresultlist.generate(s_id,{$set:addressresult},function(err){
+			SvseTopNresultlist.update(s_id,{$set:addressresult},function(err){
 				if(err){
 					Log4js.error(err);
 			    	throw new Meteor.Error(500,err);
@@ -69,7 +65,7 @@ SvseTopNOnServer = {
 				}
 			})
 	},
-	"generatereport":function(ids,status){
+	/*"generatereport":function(ids,status){
 	        
 			Log4js.info("SvseTopNOnServer generatereport");
 			
@@ -96,7 +92,7 @@ SvseTopNOnServer = {
 					
 				}
 			})*/
-			var count = 0;
+			/*var count = 0;
 		    for(index in ids){
 			var id = ids[index];
 			console.log("CH8888999");
@@ -111,7 +107,7 @@ SvseTopNOnServer = {
 		}
 		console.log("~~~~~~~~~~~~~~>>>>");
 		return SvseTopNOnServer.getReturn(true,1);
-	},
+	},*/
 	"getMonitorTemplate" : function(){
 		return SvseMethodsOnServer.svGetMonitorTemplate();
 		console.log("MMMM");

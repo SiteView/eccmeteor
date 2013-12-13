@@ -21,9 +21,9 @@ SvseTopNDaoAgent = {
 				flag = Agent.getPermission("settingOperatePermission>topN>update");
 				break;
 			
-			case "generatereport": 
+			/*case "generatereport": 
 				flag = Agent.getPermission("settingOperatePermission>topN>generate");
-				break;
+				break;*/
 				
 			default : flag = true;
 		}

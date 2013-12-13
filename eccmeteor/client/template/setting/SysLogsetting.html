@@ -3,6 +3,7 @@
 	<span class="label label-info">SysLog设置</span>
     </div>
 	{{> SysLogsetting_status}}
+	{{> sysloghelpmessage}} 
 </Template>
 		
 <Template name="SysLogsetting_status">
@@ -20,133 +21,133 @@
 			
 				  <tr>
 						<td>
-							<input id="0" type="checkbox" name="checkbox" />
+							<input id="0" type="checkbox" name="Facility"/>
 									 Kernel
 						</td>
 							<td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;</td>
 						<td>
-							<input id="1" type="checkbox" />
+							<input id="1" type="checkbox" name="Facility"/>
 									 User
 						</td>
 				  </tr>
 				  <tr>
 						<td>
-							<input id="2" type="checkbox"  />
+							<input id="2" type="checkbox" name="Facility" />
 									 Mail
 						</td>
 							<td></td>
 						<td>
-							<input id="3" type="checkbox"  checked="checked"/>
+							<input id="3" type="checkbox" name="Facility"/>
 									 Daemon
 						</td>
 				  </tr>
 				  <tr>
 						<td>
-							<input id="4" type="checkbox"  checked="checked"/>
+							<input id="4" type="checkbox" name="Facility"/>
 									 Auth
 						</td>
 							<td></td>
 						<td>
-							<input id="5" type="checkbox"  checked="checked"/>
+							<input id="5" type="checkbox" name="Facility"/>
 									 Syslog
 						</td>
 				  </tr>
 				  <tr>
 						<td>
-							<input id="6" type="checkbox"  checked="checked"/>
+							<input id="6" type="checkbox" name="Facility"/>
 									 Lpr
 						</td>
 							<td></td>
 						<td>
-							<input id="7" type="checkbox"  checked="checked"/>
+							<input id="7" type="checkbox" name="Facility"/>
 									 News
 						</td>
 				  </tr>
 				  <tr>
 						<td>
-							<input id="8" type="checkbox"  checked="checked"/>
+							<input id="8" type="checkbox" name="Facility"/>
 									 UUCP
 						</td>
 							<td></td>
 						<td>
-							<input id="9" type="checkbox"  checked="checked"/>
+							<input id="9" type="checkbox" name="Facility"/>
 									 Cron
 						</td>
 				  </tr>
 				  <tr>
 						<td>
-							<input id="10" type="checkbox"  checked="checked"/>
+							<input id="10" type="checkbox" name="Facility"/>
 									 Security
 						</td>
 							<td></td>
 						<td>
-							<input id="11" type="checkbox"  checked="checked"/>
+							<input id="11" type="checkbox" name="Facility"/>
 									 FTP Daemon
 						</td>
 				  </tr>
 				  <tr>
 						<td>
-							<input id="12" type="checkbox"  checked="checked"/>
+							<input id="12" type="checkbox" name="Facility"/>
 									 NIP
 						</td>
 							<td></td>
 						<td>
-							<input id="13" type="checkbox"  checked="checked"/>
+							<input id="13" type="checkbox" name="Facility"/>
 									 Log audit
 						</td>
 				  </tr>
 				  <tr>
 						<td>
-							<input id="14" type="checkbox"  checked="checked"/>
+							<input id="14" type="checkbox" name="Facility"/>
 									 Log alert
 						</td>
 							<td></td>
 						<td>
-							<input id="15" type="checkbox"  checked="checked"/>
+							<input id="15" type="checkbox" name="Facility"/>
 									 Clock Daemon
 						</td>
 				  </tr>
 				  <tr>
 						<td>
-							<input id="16" type="checkbox"  checked="checked"/>
+							<input id="16" type="checkbox" name="Facility"/>
 									 local0
 						</td>
 							<td></td>
 						<td>
-							<input id="17" type="checkbox"  checked="checked"/>
+							<input id="17" type="checkbox" name="Facility"/>
 									 local1
 						</td>
 				  </tr>
 				  <tr>
 						<td>
-							<input id="18" type="checkbox"  checked="checked"/>
+							<input id="18" type="checkbox" name="Facility"/>
 									 local2
 						</td>
 							<td></td>
 						<td>
-							<input id="19" type="checkbox"  checked="checked"/>
+							<input id="19" type="checkbox" name="Facility"/>
 									 local3
 						</td>
 				  </tr>
 				  <tr>
 						<td>
-							<input id="20" type="checkbox"  checked="checked"/>
+							<input id="20" type="checkbox" name="Facility"/>
 									 local4
 						</td>
 							<td></td>
 						<td>
-							<input id="21" type="checkbox"  checked="checked"/>
+							<input id="21" type="checkbox" name="Facility"/>
 									 local5
 						</td>
 				  </tr>
 				  <tr>
 						<td>
-							<input id="22" type="checkbox"  checked="checked"/>
+							<input id="22" type="checkbox" name="Facility"/>
 									 local6
 						</td>
 							<td></td>
 						<td>
-							<input id="23" type="checkbox"  checked="checked"/>
+							<input id="23" type="checkbox" name="Facility"/>
 									 local7
 						</td>
 				  </tr>
@@ -161,51 +162,51 @@
 		</div>
 				
 		<div class="tab-pane" id="home2">
-			<form id="RankSet" onsubmit="return false;">
+			<form id="RankSet" name="frm" onsubmit="return false;">
 				<table class="table table-condensed" width="200" border="0">
 				<thead>
 					
 					  <tr>
 							<td>
-								<input id="0" type="checkbox" name="Severities" checked="checked"/>
+								<input id="cb2_0" type="checkbox" name="0" value="0"/>
 										 Emergency
 							</td>
 								<td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;</td>
 							<td>
-								<input id="1" type="checkbox" checked="checked"/>
+								<input id="cb2_1" type="checkbox" name="1" value="1"/>
 										Alert
 							</td>
 					  </tr>
 					  <tr>
 							<td>
-								<input id="2" type="checkbox" checked="checked"/>
+								<input id="cb2_2" type="checkbox" name="2" value="2"/>
 										 Critical
 							</td>
 								<td></td>
 							<td>
-								<input id="3" type="checkbox" checked="checked"/>
+								<input id="cb2_3" type="checkbox" name="3" value="3"/>
 										 Error
 							</td>
 					  </tr>
 					  <tr>
 							<td>
-								<input id="4" type="checkbox" checked="checked">
+								<input id="cb2_4" type="checkbox" name="4" value="4">
 										 Warning
 							</td>
 								<td></td>
 							<td>
-								<input id="5" type="checkbox" checked="checked"/>
+								<input id="cb2_5" type="checkbox" name="5" value="5"/>
 										 Notice
 							</td>
 					  </tr>
 					  <tr>
 							<td>
-								<input id="6" type="checkbox" checked="checked"/>
+								<input id="cb2_6" type="checkbox" name="6" value="6"/>
 										 Informational
 							</td>
 								<td></td>
 							<td>
-								<input id="7" type="checkbox" checked="checked"/>
+								<input id="cb2_7" type="checkbox" name="7" value="7"/>
 										 Debug
 							</td>
 					  </tr>
@@ -225,12 +226,11 @@
 				<div class="controls">
 					<div class="form-inline" id="form_datetime">
 								<label class="control-label">删除此时间以前的记录:&nbsp&nbsp</label>
-								<div id="date" class="input-append date form_datetime">
+								<div id="delDatebox" class="input-append date form_datetime">
 									<input type="text" style="width:170px"/>
 									<span class="add-on">
 										<i class="icon-th"></i>
 									</span>
-									<!--  <input type="time" name="time" min="01" max="23" style="width:80px"/>-->
 								</div>
 								<button class="btn" id="dellogbtn">{{language.syslogsettingmodel.dellogbtn}}</button>
 				    </div>
@@ -247,4 +247,17 @@
 			</div>
 		</div>
 	</div>
-</Template>	
+</Template>
+<!-- helpmessage(帮助信息)demo --> 
+<Template name="sysloghelpmessage">
+	<div id="helpmessagediv" class="modal hide fade" >
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		<label class="label label-info" >帮助信息demo:</label>
+		<div>
+			<marquee width=400 behavior=alternate direction=left align=middle>
+				<a href="http://www.siteview.com/" target="_blank"> <strong>ECCMeteor!</strong>
+				</a>
+			</marquee>
+		</div>
+	</div>
+</Template> 	

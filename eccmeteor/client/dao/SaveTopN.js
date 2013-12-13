@@ -60,20 +60,20 @@ SvseTopNDao = {
 		return SvseTree.findOne({sv_id:id}).sv_monitortype;
 	},*/
 	"updateTopN":function(addressname,address,fn){
-		Meteor.call(SvseTopNDao.AGENT,'updateTopN',[addressname,address],function(err,result){
-			if(err){
-	 			SystemLogger(err);
-	 			fn({status:false,msg:err})
-	 		}else{
-	 			if(result && !result[status]){
-	 				SystemLogger(err);
-	 				fn(result);
-	 			}else{
-	 				fn({status:true})
-				}
-			}
-		});
-	},
+                Meteor.call(SvseTopNDao.AGENT,'updateTopN',[addressname,address],function(err,result){
+                        if(err){
+                                 SystemLogger(err);
+                                 fn({status:false,msg:err})
+                         }else{
+                                 if(result && !result[status]){
+                                         SystemLogger(err);
+                                         fn(result);
+                                 }else{
+                                         fn({status:true})
+                                }
+                        }
+                });
+        },
 	//批量更新topN报告状态
 	"updateTopNStatus": function(ids,status,fn){
 		SystemLogger(typeof fn);
@@ -89,7 +89,7 @@ SvseTopNDao = {
 			}
 		});
 	},
-	"generatereport":function(ids,status,fn){
+/*	"generatereport":function(ids,status,fn){
 		Meteor.call(SvseTopNDao.AGENT,'generatereport',[ids,status],function(err,result){
 			if(err){
 	 			SystemLogger(err);
@@ -103,7 +103,7 @@ SvseTopNDao = {
 				}
 			}
 		});
-	},
+	},*/
 	//检查操作时是否勾选对象
    "checkTopNresultlistSelect":function(getTopNresultlistSelectAll){
      if(getTopNresultlistSelectAll == ""){

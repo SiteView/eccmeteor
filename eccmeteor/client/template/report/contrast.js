@@ -19,85 +19,50 @@ Template.contrast.Monitors = function(){
 	console.log(SvseWarnerRuleDao.getWarnerRuleList());
 	return SvseWarnerRuleDao.getWarnerRuleList();
 }
-
-//获取报警规则的类型
-Template.warnerrulelog.alertTypes = function(){
-	var alertType = ["EmailAlert","SmsAlert","ScriptAlert","SoundAlert"];
-	return alertType;
-}*/
+*/
 
 Template.contrast.events = {
-       "click tbody tr":function(e){
-		var checkedMonitorId = this.sv_id;
+    //查询
+	  "click #search" : function(){	     
+			drawDetailLineAgain();
+			console.log("画图成功！");
+			console.log("!!!!!!!!!!");
+		    var targets = [];
+		    var startDate;
+		    var endDate;
+		    var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
+		    var contrastlist = ClientUtils.formArrayToObject($("#contrastlist").serializeArray());
+		    var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
+			for(index in arr){
+				targets.push(arr[index].id);
+			}
+			console.log(targets);
+			contrastlist["GroupRight"] = targets.join();
+			
+			$(":checkbox[name='Status']").each(function(){
+				if(!this.checked) contrastlist["Status"]="Yes";
+			});
+		
+		//是否选择选择监测器
+				contrastlist["AlertTarget"] = targets.join();
+				if(!contrastlist["AlertTarget"]){
+					Message.info("请选择选择监测器！",{align:"center",time:3});
+			
+				return;
+		}
+		/*var checkedMonitorId = targets;
 		if(SessionManage.getCheckedMonitorId() === checkedMonitorId)
 			return;
 	//	var status = this.status;
 		if(!checkedMonitorId || checkedMonitorId=="") return;
 		//存储选中监视器的id
 		SessionManage.setCheckedMonitorId(checkedMonitorId);
-		drawImage(checkedMonitorId);
-	},
-    //查询
-	  "click #search" : function(){
-			console.log("@@@@");
-			drawDetailLineAgain();
-			console.log("!!!!!!!!!!");
-			//showMonitorList();
-		//判断是否选择选择监测器
-		 // $("#TableData").empty();
-		 //var id = SessionManage.getCheckedMonitorId();
-		  var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
-		  var targets = [];
-		  var startDate;
-		  var endDate;
-		  var contrastlist = ClientUtils.formArrayToObject($("#contrastlist").serializeArray());
-		  var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
-			for(index in arr){
-			targets.push(arr[index].id);
-			}
-			contrastlist["GroupRight"] = targets.join();
+		drawImage(checkedMonitorId);*/
+			//var id="1.25.1.2";
+			//var ="1.25.1.2";
+			var id = targets;
+			console.log("获取监测器id:"+targets);
 			
-			$(":checkbox[name='Status']").each(function(){
-			if(!this.checked) contrastlist["Status"]="Yes";
-			
-			
-		});
-		
-		//是否选择选择监测器
-        contrastlist["AlertTarget"] = targets.join();
-		if(!contrastlist["AlertTarget"]){
-			Message.info("请选择选择监测器！",{align:"center",time:3});
-			
-			return;
-		}
-		/*SvseWarnerRuleDao.getQueryAlertLog(startDate,endDate,contrastlist,function(result){
-			console.log("result");
-			if(!result.status){
-				AlertTarget
-				return;
-			}
-			
-			console.log(result);
-		var dataProcess = new DataProcess(result.content);
-			var resultData = dataProcess.getData();
-		for(var i = 0;i < resultData.length;i++){
-				var data = resultData[i];
-				//判断报警状态的显示
-				if(data["_AlertStatus"] == 0){
-					data["_AlertStatus"] = "Fail";
-				}
-				if(data["_AlertStatus"] == 1){
-					data["_AlertStatus"] = "Success";
-				}
-				var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
-				+"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
-				$("#warnerloglist").append(tbody);
-			}
-			});*/
-			//var id="1.24.2.1";
-			var id="1.24.2.1";
-			//var id = SessionManage.getCheckedMonitorId();
-			var count=6;
 			var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
 			var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
 			var beginDate = ClientUtils.dateToObject(startPicker.getDate());
@@ -107,9 +72,11 @@ Template.contrast.events = {
 			console.log(beginDate["month"]);
 			console.log(endDate);
 			console.log("#######################");
-			//SvseMonitorDao.getMonitorRuntimeRecordsByTime(id,beginDate,endDate,function(result){
-			SvseMonitorDao.getMonitorRuntimeRecords(id,count,function(result){
-			//SvseMonitorDao.getQueryRecordsByTime(id,beginDate,endDate,function(result){
+			
+			for(var i = 0;i < targets.length;i++){
+			console.log(targets[i]);
+			SvseMonitorDao.getMonitorRuntimeRecordsByTime(targets[i],beginDate,endDate,function(result){
+			//SvseMonitorDao.getMonitorRuntimeRecords(id,count,function(result){
 				if(!result.status){
 					SystemLogger(result.msg);
 					return;
@@ -118,10 +85,18 @@ Template.contrast.events = {
 				var resultData = dataProcess.getData();
 				console.log("tt");
 				console.log(resultData);
-				
+				drawDetailLine(ClientUtils.dateToObject(startPicker.getDate()),ClientUtils.dateToObject(endPicker.getDate()));
+			//绘制表
+			for(var i = 0;i < resultData.length;i++){
+				var data = resultData[i];
+				var tbody = "<tr><td>"+data["sv_ame"]+"</td><td>"+data["label"]+"</td><td>"+data["max"]+"</td>"
+				+"<td>"+data["roundTripTime"]+"</td><td>"+data["packetsGoodPercent"]+"</td><td>"+data["status"]+"</td><td>"+data["dstr"]+"</td></tr>";
+				$("#contrastDetailTableData").append(tbody);
+			}
 			});
-		
-	},
+			}
+
+		},
 	//导出报告
 	   "click #exportreport":function(e){
 	    /* SvseContrastDao.checkContrastresultlistSelect(getContrastListSelectAll());
@@ -232,7 +207,17 @@ Template.contrast.rendered = function(){
 						zTree.selectNode(treeNode);
 						showRMenu("node", event.clientX, event.clientY);
 					}
+					
 				},
+				// onClick:function zTreeOnClick(event, treeId, treeNode){
+
+					   // alert(treeNode.tId + ", " + treeNode.name+", "+treeId);
+
+					   // var ids=[];
+
+					   // ids=getChildren(ids,treeNode);
+					// }
+
 				
 				onClick:function(event, treeId, treeNode){
 					var id= treeNode.id;
@@ -241,7 +226,7 @@ Template.contrast.rendered = function(){
 					checkedTreeNode.id = id;
 					checkedTreeNode.type=type;
 					checkedTreeNode.name = treeNode.name;
-					//记录点击的节点。根据该节点获取 编辑增加设备时的基本信息;
+					// 记录点击的节点。根据该节点获取 ;
 					SessionManage.setCheckedTreeNode(checkedTreeNode);
 					if(type !== "monitor"){
 						Message.info("请选择监测器！");
@@ -337,8 +322,8 @@ Template.contrast.rendered = function(){
 	 var template = this;
             $(function() { //初始化日期选择器
                 var endDate = new Date();
-                var startDate = new Date();
-                startDate.setTime(startDate.getTime() - 1000*60*60*24);
+                var beginDate = new Date();
+                beginDate.setTime(beginDate.getTime() - 1000*60*60*24);
                 $(template.find("#datetimepickerStartDate")).datetimepicker({
                         format: 'yyyy-MM-dd hh:mm:ss',
                         language: 'zh-CN',
@@ -352,7 +337,7 @@ Template.contrast.rendered = function(){
                 });
                 var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
                 var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
-                startPicker.setDate(startDate);
+                startPicker.setDate(beginDate);
                 endPicker.setDate(endDate);
 				// $('#AlertdatetimepickerStartDate').on('changeDate', function(e) {
 				//  endPicker.setstartDate(e.date);
@@ -360,7 +345,9 @@ Template.contrast.rendered = function(){
 				// $('#AlertdatetimepickerEndDate').on('changeDate', function(e) {
 				// startPicker.setEndDate(e.date);
 				// });
+				drawDetailLine(ClientUtils.dateToObject(beginDate),ClientUtils.dateToObject(endDate));
 });
+
 				/*var defaultMonitor = this.find("td input:checkbox");
 					if(!defaultMonitor){
 						emptyImage();
@@ -404,11 +391,11 @@ Template.contrast.rendered = function(){
 	// return PagerMonitor.create(SvseTreeDao.getNodeCountsByIds(childrenIds));
 // }
 
-// Template.MonitorList.Monitors = function(){
-	// var entityId = SessionManage.getCheckedTreeNode("id");
-    // var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
-    // return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip());
-// }
+Template.MonitorList.Monitors = function(){
+	var entityId = SessionManage.getCheckedTreeNode("id");
+    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
+    return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip());
+}
 
  Template.ContrastDetailData.ContrastDetailTableData = function(){
 	return SessionManage.getContrastDetailTableData();
@@ -420,7 +407,7 @@ Template.contrast.rendered = function(){
 
 	
 	//画图前 获取相关数据
-function drawImage(id,count){
+/*function drawImage(id,count){
 	if(!count) 
 		var count =200;
 	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
@@ -465,11 +452,12 @@ function drawImage(id,count){
 		pie.draw();*/
 	
 		
-	});
-}
-
+	/*});
+}*/
 var drawDetailLine =  function(beginDate,endDate){
 	var id = SessionManage.getCheckedMonitorId();
+	console.log(id);
+	//var id = [];
 	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
 	if(!foreigkeys){
 		SystemLogger("监视器"+id+"不能获取画图数据");
@@ -498,7 +486,6 @@ var drawDetailLine =  function(beginDate,endDate){
 		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图
 	})
 }
-
 var drawDetailLineAgain = function(){
 	if($('#datetimepickerStartDate').length === 0) //判断是否具有时间选择器
 		return;

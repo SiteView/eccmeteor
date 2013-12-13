@@ -1061,10 +1061,16 @@ svGetQueryAlertLog = function(beginDate,endDate,alertQueryCondition){
 	Content:SysLogsetting
 */
 //syslog.ini(section:DelCond)写入
+//对一下字段的修改（renjie://2013/12/09）
 svWriteDelContConfigIniFileSectionString = function(section){
 	console.log(section);
 	var ini = {"DelCond":section};
-	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"syslog.ini",'user':"default",'section':"DelCond"},0); 
+	var robj= process.sv_submit(ini,{
+	'dowhat':'WriteIniFileSection',
+	'filename':"syslog.ini",
+	'user':"default",
+	'section':"DelCond"
+	},0); 
 	var flag = checkErrorOnServer(robj);
 	if(typeof flag === "string"){
 		Log4js.error(flag);
@@ -1075,8 +1081,12 @@ svWriteDelContConfigIniFileSectionString = function(section){
 }
 //获取设置
 svGetSysLogDelCondConfigSetting = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"syslog.ini",
-		"user":"default","section":"DelCond"}, 0);
+	var robj = process.sv_univ({
+	'dowhat':'GetSvIniFileBySections',
+	"filename":"syslog.ini",
+	"user":"default",
+	"section":"DelCond"
+	}, 0);
 	if(!robj.isok(0)){
 		return;
 	}
@@ -1112,8 +1122,16 @@ svWriteQueryContEntityConfigIniFileSectionString = function(section){
 	console.log(section);
 	//section["Facility"]= svEncryptOne(section["Facility"]);
 	//section["Severities"] = svEncryptOne(section["Severities"]);
-	var ini = {"QueryCond":section};
-	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"syslog.ini",'user':"default",'section':"QueryCond"},0); 
+	//var ini = {"QueryCond":section};
+	var robj= process.sv_univ({
+	'dowhat':'WriteIniFileString',
+	'filename':"syslog.ini",
+	'user':"default",
+	'section':"QueryCond",
+	"key" : "Facility",
+	"value" : section
+	
+	},0); 
 	var flag = checkErrorOnServer(robj);
 	if(typeof flag === "string"){
 		Log4js.error(flag);
@@ -1122,6 +1140,22 @@ svWriteQueryContEntityConfigIniFileSectionString = function(section){
 	Log4js.info(robj.fmap(0));
 	return robj.fmap(0);
 }
+/*svWriteQueryContEntityConfigIniFileSectionString = function(section){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "syslog.ini",
+		'user' : "default",
+		'section' : "QueryCond",
+		"key" : "Facility",
+		"value" : status
+	},0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	return robj.fmap(0);
+}*/
 //获取Entity参数设置
 svGetSysLogQueryContEntityConfigSetting = function(){
 	var robj = process.sv_univ({
@@ -1129,25 +1163,26 @@ svGetSysLogQueryContEntityConfigSetting = function(){
 		"filename":"syslog.ini",
 		"user":"default",
 		"section":"QueryCond"
-		//"key" : "Facility",
-		//"value" : status
 		}, 0);
 	if(!robj.isok(0)){
 		return;
 	}
 	var fmap= robj.fmap(0);
 	if(!fmap || !fmap["QueryCond"]) return ;
-	//fmap["QueryCond"]["Facility"] = svDecryptOne(fmap["QueryCond"]["Facility"]);
-	//fmap["QueryCond"]["Facility"]["Severities"] = svDecryptOne(fmap["QueryCond"]["Facility"]["Severities"]);
 	return fmap["QueryCond"];
 }
 
 svWriteQueryContRankConfigIniFileSectionString = function(section){
 	console.log(section);
-	//section["Facility"]= svEncryptOne(section["Facility"]);
-	//section["Severities"] = svEncryptOne(section["Severities"]);
-	var ini = {"QueryCond":section};
-	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"syslog.ini",'user':"default",'section':"QueryCond"},0); 
+	var robj= process.sv_univ({
+	'dowhat':'WriteIniFileString',
+	'filename':"syslog.ini",
+	'user':"default",
+	'section':"QueryCond",
+	"key" : "Severities",
+	"value" : section
+	
+	},0); 
 	var flag = checkErrorOnServer(robj);
 	if(typeof flag === "string"){
 		Log4js.error(flag);
@@ -1163,24 +1198,19 @@ svGetSysLogQueryContRankConfigSetting = function(){
 		"filename":"syslog.ini",
 		"user":"default",
 		"section":"QueryCond"
-		//"key" : "Severities",
-		//"value" : status
 		}, 0);
 	if(!robj.isok(0)){
 		return;
 	}
 	var fmap= robj.fmap(0);
-	if(!fmap || !fmap["QueryCond"]["Severities"]) return ;
-	//fmap["QueryCond"]["Facility"] = svDecryptOne(fmap["QueryCond"]["Facility"]);
-	//fmap["QueryCond"]["Severities"] = svDecryptOne(fmap["QueryCond"]["Severities"]);
-	//fmap["QueryCond"]["Facility"]["Severities"] = svDecryptOne(fmap["QueryCond"]["Facility"]["Severities"]);
-	return fmap["QueryCond"]["Severities"];
+	if(!fmap || !fmap["QueryCond"]) return ;
+	return fmap["QueryCond"];
 }
 //删除某个表中的指定时间以前的记录
 svDeleteSysLogInitFilesection = function (id){
-	var robj = process.sv_univ(
-	{'dowhat':'DeleteRecords',
-		 id:id,
+	var robj = process.sv_univ({
+	    'dowhat':'DeleteRecords',
+		 'id':'syslog',
 		 year:Date["year"],
 		 month:Date["month"],
 		 day:Date["Day"], 

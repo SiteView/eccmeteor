@@ -116,7 +116,8 @@
 			"operationAndMaintenance":"Operation Maintenance",
 			"time":"Time Report",
 			"monitorInfo":"Monitor Infomation",
-			"SysLogQuery":"System Log"
+			"SysLogQuery":"System Log",
+			"SysLogsetting":"SysLog Setting"
 		}
 	}
 }
