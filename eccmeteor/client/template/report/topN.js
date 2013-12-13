@@ -69,7 +69,7 @@ Template.topN.events = {
                 });
 	},
 	//topN报告生成
-	"click #generatereport" : function(){
+	/*"click #generatereport" : function(){
 	   //LoadingModal.loading();
 		    SvseTopNDao.checkTopNresultlistSelect(getTopNListSelectAll());
             SvseTopNDao.generatereport(getTopNListSelectAll()," No",function(result){
@@ -78,7 +78,7 @@ Template.topN.events = {
 				   SystemLogger("生成报告"+result+"条");
                         }
                 });
-	},
+	},*/
 	//topN报告同步
 	"click #topNrefresh" : function(){
 		SvseTopNDao.sync();
@@ -98,11 +98,11 @@ Template.topN.events = {
 					SystemLogger(result);
 						});
 	  },
-    "click tbody tr td":function(e){
+   /* "click tbody tr td":function(e){
 	    console.log("yes2222222222");
 		/*var onClickShowReport = this.sv_id;
 		onClickShowReport(event);*/
-		var checkTopNTopNByIds = this.ids;
+		/*var checkTopNTopNByIds = this.ids;
 		
 		if(SessionManage.getcheckTopNTopNByIds() === checkTopNTopNByIds)
 			return;
@@ -119,7 +119,7 @@ Template.topN.events = {
 		//存储选中监视器的id
 		SessionManage.setCheckedMonitorId(checkedMonitorId);
 		drawImage(checkedMonitorId);*/
-		}
+		// }
 }
 
 

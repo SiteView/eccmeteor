@@ -9,11 +9,23 @@ SvseContrastDaoOnServer = {
 		return SvseMethodsOnServer.svGetMonitorRuntimeRecords(monitorid,count);
 	},
 	//根据时间段获取实时数据
-	getMonitorRuntimeRecordsByTime : function(monitorid,startDate,endDate){
-		return SvseMethodsOnServer.svGetMonitorRuntimeRecordsByTime(monitorid,startDate,endDate);
+	getMonitorRuntimeRecordsByTime : function(monitorid,beginDate,endDate){
+		return SvseMethodsOnServer.svGetMonitorRuntimeRecordsByTime(monitorid,beginDate,endDate);
 	},
-	getQueryRecordsByTime : function(monitorid,count){
-		return SvseMethodsOnServer.svGetMonitorRuntimeRecords(monitorid,count);
-	},
+	// getQueryRecordsByTime : function(monitorid,count){
+		// return SvseMethodsOnServer.svGetMonitorRuntimeRecords(monitorid,count);
+	// },
+	"getContrastDetailData":function(id,type){
+		//Log4js.info("SvseTrendOnServer getContrastDetailData ok!");
+		var result = SvseMethodsOnServer.svGetTrendList(id,type);
+			console.log(result);		
+		if(!result){
+		var msg = "SvseMethodsOnServer'getContrastDetailData error !"
+			SystemLogger.log(msg,-1);	
+				throw new Meteor.Error(500,msg);
+		}
+			console.log(result);		
+		//return SvseMethodsOnServer.svGetTrendList(); 
+	}
 
 }
