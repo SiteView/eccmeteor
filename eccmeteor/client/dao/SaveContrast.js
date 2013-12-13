@@ -7,6 +7,8 @@ SvseContrastDao = {
        return;
      }
     },
+	
+	//画图
 	getMonitorForeignKeys: function(tree_id){
 		var monitor = SvseTree.findOne({sv_id:tree_id});//找到该监视器所依赖的监视器模板
 		if(!monitor) return; //如果该监视器不存在，不划线
@@ -69,6 +71,8 @@ SvseContrastDao = {
 			fn({status:true,content:result});
 		});
 	},
+	
+	
 	// 查询数据库监测记录
 	// getQueryRecordsByTime : function(id,beginDate,endDate,fn){
 		// Meteor.call(SvseMonitorDao.AGENT,"getQueryRecordsByTime",[id,beginDate,endDate],function (err,result){
@@ -112,6 +116,8 @@ SvseContrastDao = {
 
 
 }
+
+
 // 编辑监视器时根据 监视器的id获取该监视器的模板类型
 /**
 	svid：监视器的id

@@ -128,62 +128,62 @@ Template.contrast.events = {
 	}‌*/
 	
 
-/*var getEntityTree = function()‌
-{ ‌
+// var getEntityTree = function()‌
+// { ‌
 	//查询条件	‌
-	var basequeryobj = {};‌
-	basequeryobj["sv_id"] = new RegExp(Session.get('query').sv_id);‌
-	‌
-	var nodes = Svse.find(basequeryobj).fetch();‌
-	‌	‌
-	var branch = [];‌
-	for(index in nodes)‌
-	{‌
-		var obj = nodes[index];‌
-		var otherqueryobj = {};‌
+	// var basequeryobj = {};‌
+	// basequeryobj["sv_id"] = new RegExp(Session.get('query').sv_id);‌
+	// ‌
+	// var nodes = Svse.find(basequeryobj).fetch();‌
+	// ‌	‌
+	// var branch = [];‌
+	// for(index in nodes)‌
+	// {‌
+		// var obj = nodes[index];‌
+		// var otherqueryobj = {};‌
 		//otherqueryobj[Session.get('query').QueryObj] = new RegExp(Session.get('query').QueryValue);	‌
-		otherqueryobj["sv_id"]=obj["sv_id"];‌
+		// otherqueryobj["sv_id"]=obj["sv_id"];‌
 		//if(SvseTree.findOne(otherqueryobj).length == 0)‌
-		   //continue;
-	var branchNode = {};‌
-		branchNode["id"] = obj["sv_id"];‌
-		branchNode["pId"] = obj["parentid"];‌
-		branchNode["type"] = obj["type"];‌
-		branchNode["name"] = SvseTree.findOne(otherqueryobj)["sv_name"];			‌
+		 //  continue;
+	// var branchNode = {};‌
+		// branchNode["id"] = obj["sv_id"];‌
+		// branchNode["pId"] = obj["parentid"];‌
+		// branchNode["type"] = obj["type"];‌
+		// branchNode["name"] = SvseTree.findOne(otherqueryobj)["sv_name"];			‌
 		//branchNode["isParent"] = true;‌
-		branchNode["status"] = SvseTree.findOne(otherqueryobj)["status"];‌
-		if(branchNode["pId"] === "0") branchNode["open"] = true;‌
-		branchNode["open"] = true;‌
-		if(obj["type"] === "entity" && obj["submonitor"] && obj["submonitor"].length)‌
-		{				‌
-			var submonitor = obj["submonitor"];		‌
-			var submonitors = [];‌
-			for(subindex in submonitor)‌
-			{‌
-				otherqueryobj = {};‌
+		// branchNode["status"] = SvseTree.findOne(otherqueryobj)["status"];‌
+		// if(branchNode["pId"] === "0") branchNode["open"] = true;‌
+		// branchNode["open"] = true;‌
+		// if(obj["type"] === "entity" && obj["submonitor"] && obj["submonitor"].length)‌
+		// {				‌
+			// var submonitor = obj["submonitor"];		‌
+			// var submonitors = [];‌
+			// for(subindex in submonitor)‌
+			// {‌
+				// otherqueryobj = {};‌
 				//otherqueryobj[Session.get('query').QueryObj] = new RegExp(Session.get('query').QueryValue);	‌
-				otherqueryobj["sv_id"]=submonitor[subindex];	‌
-				‌
+				// otherqueryobj["sv_id"]=submonitor[subindex];	‌
+				// ‌
 				//if(SvseTree.findOne(otherqueryobj).length == 0)‌
-				  // continue;‌
-				‌
-				var subobj = {};‌
-				subobj["id"] = submonitor[subindex];‌
+				 // continue;‌
+				// ‌
+				// var subobj = {};‌
+				// subobj["id"] = submonitor[subindex];‌
 				//subobj["pId"] = obj["sv_id"];‌
-				subobj["type"] = SvseTree.findOne(otherqueryobj)["sv_monitortype"];‌
-				subobj["name"] = SvseTree.findOne(otherqueryobj)["sv_name"];‌
+				// subobj["type"] = SvseTree.findOne(otherqueryobj)["sv_monitortype"];‌
+				// subobj["name"] = SvseTree.findOne(otherqueryobj)["sv_name"];‌
 				//subobj["dstr"] = SvseTree.findOne(therqueryobj)["dstr"];‌
-				subobj["status"] = SvseTree.findOne(otherqueryobj)["status"];‌
-				subobj["status_disable"] = SvseTree.findOne({sv_id:submonitor[subindex]})["status_disable"];‌
-				submonitors.push(subobj);‌
-			}‌
-			branchNode["submonitor"] = submonitors;‌
-		}‌
-		branchNode["icon"] = "imag/status/"+branchNode["type"]+(branchNode["status"]?branchNode["status"]:"")+".png";‌
-		branch.push(branchNode);‌
-	}‌
-	return branch;		‌
-}*/
+				// subobj["status"] = SvseTree.findOne(otherqueryobj)["status"];‌
+				// subobj["status_disable"] = SvseTree.findOne({sv_id:submonitor[subindex]})["status_disable"];‌
+				// submonitors.push(subobj);‌
+			// }‌
+			// branchNode["submonitor"] = submonitors;‌
+		// }‌
+		// branchNode["icon"] = "imag/status/"+branchNode["type"]+(branchNode["status"]?branchNode["status"]:"")+".png";‌
+		// branch.push(branchNode);‌
+	// }‌
+	// return branch;		‌
+// }
 	
 Template.contrast.rendered = function(){
 //监视器选择树
@@ -348,28 +348,29 @@ Template.contrast.rendered = function(){
 				drawDetailLine(ClientUtils.dateToObject(beginDate),ClientUtils.dateToObject(endDate));
 });
 
-				/*var defaultMonitor = this.find("td input:checkbox");
-					if(!defaultMonitor){
-						emptyImage();
-						return;
-					}
-					//第二 先默认选择第一个监视器的id
-					var defaultMonitorId = defaultMonitor.id;
-					//第三 判断页面刷新前是否已经选中了监视器
-					var parentid  = SessionManage.getCheckedTreeNode("id");
-					var checkedMonitorId = SessionManage.getCheckedMonitorId();
-					if(checkedMonitorId && checkedMonitorId.indexOf(parentid) !== -1){ //当后台数据自动更新时 不切换当前选中监视器
-						//判断已经选中的监视器是否还存在 //避免多客户端对当前监视器进行删除
-						if(this.find("input:checkbox[id='"+checkedMonitorId+"']")){
-							defaultMonitorId = checkedMonitorId;  //存在 的话
-						}
-					}
-					if(defaultMonitorId && defaultMonitorId !== ""){
-						$(this.find("input:checkbox[id='"+defaultMonitorId+"']")).parents("tr").addClass("success");
-						drawImage(defaultMonitorId);
-					}else{
-						emptyImage();
-					}*/
+	
+	/*var defaultMonitor = this.find("td input:checkbox");
+		if(!defaultMonitor){
+			emptyImage();
+			return;
+		}
+		//第二 先默认选择第一个监视器的id
+		var defaultMonitorId = defaultMonitor.id;
+		//第三 判断页面刷新前是否已经选中了监视器
+		var parentid  = SessionManage.getCheckedTreeNode("id");
+		var checkedMonitorId = SessionManage.getCheckedMonitorId();
+		if(checkedMonitorId && checkedMonitorId.indexOf(parentid) !== -1){ //当后台数据自动更新时 不切换当前选中监视器
+			//判断已经选中的监视器是否还存在 //避免多客户端对当前监视器进行删除
+			if(this.find("input:checkbox[id='"+checkedMonitorId+"']")){
+				defaultMonitorId = checkedMonitorId;  //存在 的话
+			}
+		}
+		if(defaultMonitorId && defaultMonitorId !== ""){
+			$(this.find("input:checkbox[id='"+defaultMonitorId+"']")).parents("tr").addClass("success");
+			drawImage(defaultMonitorId);
+		}else{
+			emptyImage();
+		}*/
 					$(function(){
         //隐藏所有操作按钮
 		ClientUtils.hideOperateBtnInTd("showMonitorList");
@@ -383,13 +384,13 @@ Template.contrast.rendered = function(){
 
 }
 
-// var PagerMonitor = new Pagination("subentitylist",{currentPage: 1,perPage:5});
+		// var PagerMonitor = new Pagination("subentitylist",{currentPage: 1,perPage:5});
 
-// Template.MonitorList.pagerMonitor = function(){
-	// var entityId = SessionManage.getCheckedTreeNode("id");
-    // var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
-	// return PagerMonitor.create(SvseTreeDao.getNodeCountsByIds(childrenIds));
-// }
+		// Template.MonitorList.pagerMonitor = function(){
+			// var entityId = SessionManage.getCheckedTreeNode("id");
+			// var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
+			// return PagerMonitor.create(SvseTreeDao.getNodeCountsByIds(childrenIds));
+		// }
 
 Template.MonitorList.Monitors = function(){
 	var entityId = SessionManage.getCheckedTreeNode("id");
@@ -405,8 +406,53 @@ Template.MonitorList.Monitors = function(){
 	return SessionManage.getMonitorStatisticalDetailTableData();
 }*/
 
-	
-	//画图前 获取相关数据
+var drawDetailLine =  function(beginDate,endDate){
+	var id = SessionManage.getCheckedMonitorId();
+	console.log(id);
+	//var id = [];
+	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
+	if(!foreigkeys){
+		SystemLogger("监视器"+id+"不能获取画图数据");
+		return;
+	}
+	var selector = "svg#detailLine";
+	if($(selector).length == 0)
+		return;
+	var dateDifference = ClientUtils.getDateDifferenceHour(ClientUtils.objectToDate(beginDate),ClientUtils.objectToDate(endDate))
+	var dateformate = dateDifference > 48 ? "%m-%d %H:%M" : "%H:%M";
+	SvseMonitorDao.getMonitorRuntimeRecordsByTime(id,beginDate,endDate,function(result){
+		if(!result.status){
+			SystemLogger(result.msg);
+			return;
+		}
+		var dataProcess = new DataProcess(result.content,foreigkeys["monitorForeignKeys"]);
+		var resultData = dataProcess.getData();
+		var line = new DrawLine(
+							resultData,
+							{
+								'key':foreigkeys["monitorPrimary"],
+								'label':foreigkeys["monitorDescript"],
+								'dateformate':dateformate
+							},
+							selector);
+		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图
+	})
+}
+var drawDetailLineAgain = function(){
+	if($('#datetimepickerStartDate').length === 0) //判断是否具有时间选择器
+		return;
+	var beginDate   =  $('#datetimepickerStartDate').data('datetimepicker').getDate();
+	var enddate   =  $('#datetimepickerEndDate').data('datetimepicker').getDate();
+	drawDetailLine(ClientUtils.dateToObject(beginDate),ClientUtils.dateToObject(enddate));
+}
+//公布一个对象给其他Template调用该Template中的方法 或者检查活性数据源？  重新绘制详细曲线图哪个更合理？
+Deps.autorun(function(){
+	var id = SessionManage.getCheckedMonitorId();
+	if(!id)
+		return;
+	drawDetailLineAgain();
+});
+//画图前 获取相关数据
 /*function drawImage(id,count){
 	if(!count) 
 		var count =200;
@@ -454,57 +500,10 @@ Template.MonitorList.Monitors = function(){
 		
 	/*});
 }*/
-var drawDetailLine =  function(beginDate,endDate){
-	var id = SessionManage.getCheckedMonitorId();
-	console.log(id);
-	//var id = [];
-	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
-	if(!foreigkeys){
-		SystemLogger("监视器"+id+"不能获取画图数据");
-		return;
-	}
-	var selector = "svg#detailLine";
-	if($(selector).length == 0)
-		return;
-	var dateDifference = ClientUtils.getDateDifferenceHour(ClientUtils.objectToDate(beginDate),ClientUtils.objectToDate(endDate))
-	var dateformate = dateDifference > 48 ? "%m-%d %H:%M" : "%H:%M";
-	SvseMonitorDao.getMonitorRuntimeRecordsByTime(id,beginDate,endDate,function(result){
-		if(!result.status){
-			SystemLogger(result.msg);
-			return;
-		}
-		var dataProcess = new DataProcess(result.content,foreigkeys["monitorForeignKeys"]);
-		var resultData = dataProcess.getData();
-		var line = new DrawLine(
-							resultData,
-							{
-								'key':foreigkeys["monitorPrimary"],
-								'label':foreigkeys["monitorDescript"],
-								'dateformate':dateformate
-							},
-							selector);
-		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图
-	})
-}
-var drawDetailLineAgain = function(){
-	if($('#datetimepickerStartDate').length === 0) //判断是否具有时间选择器
-		return;
-	var beginDate   =  $('#datetimepickerStartDate').data('datetimepicker').getDate();
-	var enddate   =  $('#datetimepickerEndDate').data('datetimepicker').getDate();
-	drawDetailLine(ClientUtils.dateToObject(beginDate),ClientUtils.dateToObject(enddate));
-}
-//公布一个对象给其他Template调用该Template中的方法 或者检查活性数据源？  重新绘制详细曲线图哪个更合理？
-Deps.autorun(function(){
-	var id = SessionManage.getCheckedMonitorId();
-	if(!id)
-		return;
-	drawDetailLineAgain();
-});
-
 /*
 合并模板数据和实际数据
 */
-var megerTemplateAndFactData = function(MTempalte,MInstance){
+/*var megerTemplateAndFactData = function(MTempalte,MInstance){
 	//合并advanceParameter
 	var advanceMT = MTempalte.MonityTemplateAdvanceParameters;
 	var advanceMI =  MInstance.advance_parameter;
@@ -566,4 +565,4 @@ var mergeTemplateStatus = function(MTStatus,MIStatus){
 	}
 	MTStatus["selects"] = selects;
 	return MTStatus;
-}
+}*/

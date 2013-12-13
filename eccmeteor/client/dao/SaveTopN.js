@@ -152,6 +152,9 @@ SvseTopNDao = {
 		}
 		return parameters;
 	},
+	
+	
+	
 	/*getTypeById:function(id){
 		return SvseTopN.findOne({"return.id" : id}).property.sv_label;
 	},
@@ -182,6 +185,8 @@ SvseTopNDao = {
 		}
 		return parameters;
 	},*/
+	
+	
 	/*getMonityTemplateParametersById:function(id){
 		var parameters = SvseTopNDao.getMonityTemplateParameters(id);
 		var newparameters = [];
@@ -193,6 +198,8 @@ SvseTopNDao = {
 		}
 		return newparameters;
 		},
+		
+		
 	getMonityDynamicPropertyDataArray:function(entityId,templateMonitoryTemlpateIds,fn){
 		Meteor.call(
 			SvseMonitorTemplateDao.AGENT,
@@ -208,6 +215,7 @@ SvseTopNDao = {
 			}
 		)
 	},
+	
 	getMonityTemplateStatesById : function(id){//根据id获取监视器模板参数
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});
 		var states = [];
@@ -216,10 +224,12 @@ SvseTopNDao = {
 		states.push(template["good"]);
 		return states;
 	},
+	
 	getMonityTemplateStatesByIdAndStatus : function (id,status){
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});
 		return template[status]||{};
 	},
+	
 	getMonityTemplateAdvanceParametersById : function(id){//根据id获取监视器模板参数
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});
 		var advanceParameters = [];
@@ -246,6 +256,8 @@ SvseTopNDao = {
 		}
 		return advanceParameters;
 	},
+	
+	
 	getMonityTemplateReturnItemsById:function(id){//根据id获取返回参数
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});
 		var returnItems = [];
@@ -256,6 +268,8 @@ SvseTopNDao = {
 		//SystemLogger(returnItems);
 		return returnItems;
 	},
+	
+	
 	getMonityTemplateReturnItemLabelByIdAndName:function(id,name){
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});
 		for(item in template){
@@ -264,6 +278,8 @@ SvseTopNDao = {
 				return template[item]["sv_label"];
 		}
 	},
+	
+	
 	getMonityDynamicPropertyData:function(panrentid,templateMonitoryId,fn){
 		console.log("getMonityDynamicPropertyData templateMonitoryId is:"+templateMonitoryId);
 		Meteor.call(
