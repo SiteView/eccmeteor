@@ -57,22 +57,29 @@ function initAllDateStartUp(status){
 /**读取INI配置文件*/
 var SetSvdbAddr = function(){
     var dir = EccSystem.getRootPath("svapi.ini");
-	process.sv_univ({'dowhat':'SetSvdbAddrByFile','filename': dir,}, 2); 
-	var robj= process.sv_univ({'dowhat':'GetSvdbAddr' }, 2); 
+	process.sv_univ({'dowhat':'SetSvdbAddrByFile','filename': dir}, 2); 
+	var robj = process.sv_univ({'dowhat':'GetSvdbAddr' }, 2); 
 	var addr = 'Invalid addr';
-	if( robj.isok!=undefined )
-	{
+	if( robj.isok!=undefined ){
 		addr= robj.fmap(0)['return']['return'];
 	}
 	console.log( ' ----  SetSvdbAddr.js to: ' + addr + '  by file: ' + dir + ' ---- ');
-}
+};
 
 Meteor.startup(function(){
 	process.sv_init();
 	SetSvdbAddr();
+<<<<<<< HEAD
 	TestUnit.test();
 	//return;
 	var status = AssetsUtils.getDevConfig("initDatabase");
 	initAllDateStartUp(status);	
 	
+=======
+	if(!TestUnit.test(1)){
+		return;
+	}
+	var status = AssetsUtils.getDevConfig("initDatabase");
+	initAllDateStartUp(status);	
+>>>>>>> meteorite-hu
 });

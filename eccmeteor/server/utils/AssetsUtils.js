@@ -44,3 +44,13 @@ Object.defineProperty(AssetsUtils,"getTestObjects",{
 		return EJSON.parse(Assets.getText(dir));
 	}
 });
+
+/*
+	获取报表的HTML模板
+*/
+Object.defineProperty(AssetsUtils,"getReportTemplate",{
+	value:function(filename){
+		var dir = path.join('report',filename);
+		return Assets.getText(dir);
+	}
+});

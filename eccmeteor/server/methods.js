@@ -120,6 +120,8 @@ Meteor.methods({
 
 //给服务端调用的。//调用 /lib/svdb.js中定义的方法
 SvseMethodsOnServer = {
+	"svGetReportDataByFilter":svGetReportDataByFilter,
+	"svGetReportData":svGetReportData,
 	"GetAllEntityGroups":GetAllEntityGroups,
 	"GetEntityTemplet":GetEntityTemplet,
 	"svGetEntity":svGetEntity,
