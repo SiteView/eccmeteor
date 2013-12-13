@@ -25,8 +25,8 @@ Template.sysLogQuery.rendered = function(){
 //		$('#syslogdatetimepickerEndDate').on('changeDate', function(e) {
 //			startPicker.setEndDate(e.date);
 //		});
-		//接收手机号下拉列表多选框
-		$('.messagemultiselect').multiselect({
+		
+		$('.sysmultiselect').multiselect({
 			buttonClass : 'btn',
 			buttonWidth : "auto",
 			buttonContainer : '<div class="btn-group" />',

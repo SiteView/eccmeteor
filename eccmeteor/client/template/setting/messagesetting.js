@@ -241,3 +241,44 @@ Template.sendingmessagemethods.rendered = function(){
 	
 	
 }
+
+var getMessageNameOfAlertUsing = function(ids){
+	//得到所有短信报警正在使用中的短信名称
+	var getAlertByType = SvseWarnerRuleDao.getAlertByAlertType("SmsAlert");
+	console.log(getAlertByType);
+	var emailaddress = [];
+	var rec = {};
+	var names = [];
+	for(var index in getAlertByType){
+		//console.log(getAlertByType[index]["EmailAdress"]);
+		var address = getAlertByType[index]["EmailAdress"];
+		if(!address) continue;
+		var res = address.split(",");
+		for(var i = 0;i < res.length;i++){
+			emailaddress.push(res[i]);
+		}
+	}
+	//console.log(emailaddress);
+	for(var j = 0;j < emailaddress.length;j++){
+		if(!rec[emailaddress[j]]){   
+          rec[emailaddress[j]] = true;   
+          names.push(emailaddress[j]);   
+		}  
+	}
+	var nameStr = [];
+	//var useids = [];
+	for(var i = 0;i < names.length;i++){
+		for(var k = 0;k < ids.length;k++){
+			var email = SvseEmailDao.getEmailById(ids[k]);
+			if(email["Name"] == names[i]){
+				//useids.push(ids[k]);
+				ids.splice(k,1);
+				nameStr.push(email["Name"]);
+				Message.info(nameStr.join() +"正在报警规则中使用，不能删除，请重选");
+			}
+		}
+	}
+	//console.log(ids);
+	return ids;
+	
+}
