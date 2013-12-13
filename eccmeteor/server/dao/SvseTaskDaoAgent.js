@@ -1,7 +1,7 @@
 ﻿SvseTaskDaoAgent = {
 	"agent" : function(fn , args){
 		var flag = false;
-		switch(fn){
+		/* switch(fn){
 			case "addtaskabsolute":
 				flag = Agent.getPermission("settingOperatePermission>task>add");
 				break;
@@ -21,11 +21,12 @@
 				flag = Agent.getPermission("settingOperatePermission>warnerrule>add");
 				break;
 			default : flag = true;
-		}
-		if(!SvseTaskDao[fn]){
-			Agent.error("SvseTaskDao",fn);
+		} */
+		flag = true;
+		if(!SvseTaskDaoOnServer[fn]){
+			Agent.error("SvseTaskDaoOnServer",fn);
 			return Agent.getReturn();
 		}
-		return flag ? SvseTaskDao[fn].apply(undefined,args) : Agent.getReturn();
+		return flag ? SvseTaskDaoOnServer[fn].apply(undefined,args) : Agent.getReturn();
 	}
 }

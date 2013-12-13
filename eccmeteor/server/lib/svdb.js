@@ -349,24 +349,45 @@ svGetTrendList = function(id,type){
 	var fmap = robj.fmap(0);
 	return fmap;
 }
-/*
-Type: add
-Author:xuqiang
-Date:2013.12.15 14:40
-Content:增加对任务计划的操作，添加一条记录到任务计划中
-*/
+	/*
+	Type: add
+	Author:xuqiang
+	Date:2013.12.15 14:40
+	Content:增加对任务计划的操作，添加一条记录到任务计划中
+	*/
 //添加计划任务
-svWriteTaskIniFileSectionString = function(addressname,address){
-	//var dowhat = {'dowhat':'CreateTask'};
-	var robj = process.sv_submit({'dowhat':'CreateTask','id':addressname},0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-			Log4js.error(flag);
-			return null;
+svWriteTaskIniFileSectionString = function(address){
+	console.log(address["sv_name"]);
+	var robj= process.sv_univ({'dowhat':'CreateTask','id':address["sv_name"]},0); //增加
+		if(!robj.isok(0)){
+			console.log(robj.estr(0));
 		}
 		var fmap = robj.fmap(0);
-		return fmap;	
+		//console.log(fmap);
+		var newObj = {
+			return :{id:address["sv_name"],return:true},
+			property :address
+		}
+	var robj2= process.sv_submit(newObj,{'dowhat':'SubmitTask','del_supplement':true},0); //修改	
+	console.log("gooddd");
+	if(!robj2.isok(0)){
+		console.log(robj2.estr(0));
+	}
+	console.log("good");
+	var fmap2 = robj2.fmap(0);
+	console.log(fmap2);
+	return fmap2;
 }
+
+//删除一条任务计划
+svDeleteTaskIniFileSection = function(ids){
+
+	var robj =process.sv_univ(
+	{'dowhat':'DeleteTask',id:ids},0);
+	var fmap = robj.fmap(0);
+	return fmap;
+}
+
 //获取发送邮件的设置
 svGetSendEmailSetting = function(){
 	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",
