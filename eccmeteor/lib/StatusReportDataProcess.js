@@ -205,11 +205,16 @@ StatusReportDataProcess.prototype.dealWithImageData =  function(item){
 		percent.badPercent = status.bad / total * 100;
 	}
 	
-
 	this.imageData = {
 		statusList:statusList,
 		chart:chart,
-		pie:[status.ok,status.warning,status.error, status.disable,status.bad],
+		pie:[
+			{status:"ok",count:status.ok},
+			{status:"warn",count:status.warning},
+			{status:"error",count:status.error},
+			{status:"disable",count:status.disable},
+			{status:"bad",count:status.bad},
+		],
 		percent:percent
 	}
 

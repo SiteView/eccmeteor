@@ -51,11 +51,45 @@ Object.defineProperty(DrawStatusReport,"export",{
 		});
 	    Css.addStyle(this._option.CssTemplate,document);//添加css文件
 		var window = document.parentWindow;
-		var testData =[1,1,1,2,2,3,3,1,1,1,1,4,4,4,4,5,1,1,1,1,1,1,1,1,1,5,5,5,5,1,1,1,1,1,1,1,1,1,5]
-		this.drawStatusBarChart(testData,window);
+	//	var testData =[1,1,1,2,2,3,3,1,1,1,1,4,4,4,4,5,1,1,1,1,1,1,1,1,1,5,5,5,5,1,1,1,1,1,1,1,1,1,5]
+		this.drawStatusBarChart(imageData.chart,window);
+	//	this.drawStatusBarChart(testData,window);
+		/*
+		var testPieData = [
+			{status:"ok",count:50},
+			{status:"warn",count:50},
+			{status:"error",count:50},
+			{status:"disable",count:50},
+			{status:"bad",count:50},
+		]
+		*/
+		this.drawStatusPie(imageData.pie,window);
+	//	this.drawStatusPie(testPieData,window);
 		return window.document.innerHTML;
 	}
 });
+Object.defineProperty(DrawStatusReport,"chooseColor",{
+	value:function(d){
+		if(typeof d === "string"){
+			switch(d){
+				case "ok" : return "green"; // ok
+				case "disable" : return "gray"; //disable
+				case "warn" : return "yellow";//warn
+				case "error" : return "red"; //error;
+				case "bad" : return  "black";//bad
+	   		}
+		}
+		if(typeof d === "number"){
+			switch(d){
+				case 1 : return "green"; // ok
+				case 2 : return "gray"; //disable
+				case 3 : return "yellow";//warn
+				case 4 : return "red"; //error;
+				case 5 : return  "black";//bad
+	   		}
+   		}
+	}
+})
 
 Object.defineProperty(DrawStatusReport,"drawStatusBarChart",{
 	value:function(data,window){
@@ -73,16 +107,7 @@ Object.defineProperty(DrawStatusReport,"drawStatusBarChart",{
 		var x = function(i){
 			return i*averge;
 		}
-   		var color = function(d){
-   			switch(d){
-   				case 1 : return "green"; // ok
-   				case 2 : return "gray"; //disable
-   				case 3 : return "yellow";//warn
-   				case 4 : return "red"; //error;
-   				case 5 : return  "black";//bad
-   			}
-   		}
-
+   		var color = this.chooseColor ;
    		chart.selectAll("rect").data(data)
    			.enter().append("rect")
    			.style({
@@ -95,5 +120,41 @@ Object.defineProperty(DrawStatusReport,"drawStatusBarChart",{
  			.attr("y",0)//svg的坐标以左上角为原点，
  			.attr("width",averge) //获取散列值每段的长度 为矩形的宽  
  			.attr("height",height); // 通过函数1  function(d){return  (420/42)*d}  得到矩形的高  	
+	}
+})
+
+Object.defineProperty(DrawStatusReport,"drawStatusPie",{
+	value:function(data,window){
+		var el = window.document.querySelector('#statistical');
+		var w = 450;
+		var h = 450;
+		var svg = d3.select(el)
+					.append('svg:svg')
+					.attr('width', w)
+					.attr('height', h)
+					.append("g")
+					.attr("class","pie");
+
+		var color = this.chooseColor ;
+		var pie = d3.layout.pie();
+		pie.value(function(d){return d.count});
+		var outerRadius = w / 2;
+		var innerRadius = 0;
+		var arc = d3.svg.arc()
+					.innerRadius(innerRadius)
+					.outerRadius(outerRadius);
+
+		var arcs = svg.selectAll("g.arc")
+				.data(pie(data));
+
+		arcs.enter()
+			.append("g")
+				.attr("class", "arc")
+				.attr("transform", "translate(" + outerRadius + ", " + outerRadius + ")")
+			.append("path")
+				.attr("fill", function(d) {
+					return color(d.data.status);
+				})
+			.attr("d", arc)
 	}
 })
