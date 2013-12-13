@@ -70,6 +70,11 @@ var NavigationSettingTreeEvents = {
     },
 	"SysLogsetting":function(){
 		SwithcView.view(SETTINGVIEW.SYSLOGSETTING);
+	},
+	
+	//zhuqing add SysLogQuery
+	"SysLogQuery":function(){
+		SwithcView.view(REPORT.SYSLOGQUERY);
 	}
 }
 NavigationSettingTree = {

@@ -65,21 +65,61 @@ Template.emailsetting.rendered = function(){
 				SvseEmailDao.checkEmailSelect(ids);
 				if(ids.length){
 					//在删除之前要先判断报警规则中有没有正在使用的邮件，如果有，则不能删除
-					// SvseEmailDao.deleteEmailAddressByIds(ids,function(result){
-						// console.log(result);
-					// });
+					ids = getEmailNameOfAlertUsing(ids);
+					console.log(ids);
+					if(ids == "") return;
+					SvseEmailDao.deleteEmailAddressByIds(ids,function(result){
+						console.log(result);
+					});
 					//console.log("确定");
 				}
 				$("#delemailsetting").confirm("hide");
 			}
 		});
+		
+		
 	});
 }
 
-var checkBeforeDelete = function(ids){
-	for(var i = 0;i < ids.length;i++){
-		var email = SvseEmailDao.getEmailById(ids[i]);
+var getEmailNameOfAlertUsing = function(ids){
+	//得到所有邮件报警正在使用中的邮件接收地址名称
+	var getAlertByType = SvseWarnerRuleDao.getAlertByAlertType("EmailAlert");
+	console.log(getAlertByType);
+	var emailaddress = [];
+	var rec = {};
+	var names = [];
+	for(var index in getAlertByType){
+		//console.log(getAlertByType[index]["EmailAdress"]);
+		var address = getAlertByType[index]["EmailAdress"];
+		if(!address) continue;
+		var res = address.split(",");
+		for(var i = 0;i < res.length;i++){
+			emailaddress.push(res[i]);
+		}
 	}
+	//console.log(emailaddress);
+	for(var j = 0;j < emailaddress.length;j++){
+		if(!rec[emailaddress[j]]){   
+          rec[emailaddress[j]] = true;   
+          names.push(emailaddress[j]);   
+		}  
+	}
+	var nameStr = [];
+	//var useids = [];
+	for(var i = 0;i < names.length;i++){
+		for(var k = 0;k < ids.length;k++){
+			var email = SvseEmailDao.getEmailById(ids[k]);
+			if(email["Name"] == names[i]){
+				//useids.push(ids[k]);
+				ids.splice(k,1);
+				nameStr.push(email["Name"]);
+				Message.info(nameStr.join() +"正在报警规则中使用，不能删除，请重选");
+			}
+		}
+	}
+	//console.log(ids);
+	return ids;
+	
 }
 
 Template.emailsettingList.rendered = function(){
@@ -297,18 +337,6 @@ Template.emailbasicsettingForm.events({
 		$("#emailtestform")[0].reset();//重置表单
 		MessageTip.close("a1");
 		$("#emailTestDiv").modal("show");
-		// var emailSetting = {
-			// mailServer: "smtp.qq.com",
-			// mailFrom: "1960670772@qq.com",
-			// user: "1960670772@qq.com",
-			// password: "0723qing",
-			// subject: "smtp.qq.com",
-			// mailTo:"1960670772@qq.com",
-			// content:"hello qing"
-		// };
-		// SvseEmailDao.emailTest(emailSetting,function(result){
-			// console.log(result.status);
-		// });
 		
 	},
 });
