@@ -78,7 +78,13 @@ dowhat= DeleteQueue,		queuename= XXX;
 dowhat= ClearQueueMessage,	queuename= XXX;
 
 dowhat= GetTask ,		id= XXX	;
-dowhat= CreateTask ,		id= XXX	; //在服务器端创建一个新 task
+
+
+dowhat= CreateTask ,		id= XXX	; //在服务器端创建一个新 task  
+//创建任务后，然后在利用 SubmitTask 接口来上传具体信息
+
+
+
 dowhat= GetAllTaskName ;
 dowhat= DeleteTask ,	id= XXX	;
 dowhat= GetAllTask 	;
