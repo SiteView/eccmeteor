@@ -250,6 +250,7 @@ svGetReportDataByFilter = function(monitorId,beginDate,endDate,filter){
 		'dowhat':'QueryReportData',
 		id:monitorId,
 		dstrStatusNoNeed:null,
+		dstrNeed:true,
 		return_value_filter:filter,
 		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
 		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]

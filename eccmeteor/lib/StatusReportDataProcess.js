@@ -1,8 +1,7 @@
 //饼状图的数据处理
-StatusStatusReportDataProcess = function(data){
-	this.tableData = [];
-	this.imageData = [];
-	this.baseData = [];
+StatusReportDataProcess = function(data){
+	this.imageData = {};
+	this.baseData = {};
 	this.analysis(data);
 };
 
@@ -10,97 +9,221 @@ StatusStatusReportDataProcess = function(data){
 StatusReportDataProcess.prototype.analysis = function(data){
 	for(returnvalue in data){
 		//包含了画图等数据
-		if(returnvalue.indexOf("Return_") !== -1){
-			this.dealWithTableData(data[returnvalue]);//处理表格数据
+		if(returnvalue.indexOf("dstr") !== -1){
 			this.dealWithImageData(data[returnvalue]);//处理画图数据
 		}else if(returnvalue.indexOf("return") === -1){
-			this.dealWithBaseData(returnvalue,data[returnvalue]) //处理基础数据
+			this.dealWithBaseData(data[returnvalue]) //处理基础数据
 		}
 	}
 }
-
-//处理报表的表格数据
-StatusReportDataProcess.prototype.dealWithTableData =  function(item){
-	this.tableData.push({
-		MonitorName:item.MonitorName,
-		ReturnName:item.ReturnName,
-		max:item.max,
-		min:item.min,
-		average:item.average,
-		latest:item.latest,
-		when_max:item.when_max
-	});
+//计算时间差值
+StatusReportDataProcess.prototype.differenceTime = function(startTime,endTime){
+    //2013-12-02 09:13:05
+	var st = Date.str2Date(startTime,"yyyy-MM-dd hh:mm:ss");
+	var et = Date.str2Date(endTime,"yyyy-MM-dd hh:mm:ss");
+    var difference = et.getTime() - st.getTime();
+    var days=Math.floor(difference/(24*3600*1000));
+	//计算出小时数
+	var leave1 = difference%(24*3600*1000);    //计算天数后剩余的毫秒数
+	var hours=Math.floor(leave1/(3600*1000));
+	//计算相差分钟数
+	var leave2=leave1%(3600*1000);        //计算小时数后剩余的毫秒数
+	var minutes=Math.floor(leave2/(60*1000));
+	//计算相差秒数
+	var leave3=leave2%(60*1000);      //计算分钟数后剩余的毫秒数
+	var seconds=Math.round(leave3/1000);
+	var str = "";
+	str = str + (days === 0 ? "" : (days+"天 "));
+	str = str + (hours === 0 ? "" : (hours+"小时 "));
+	str = str + (minutes === 0 ? "" : (minutes+"分钟 "));
+	str = str + (minutes === 0 ? "" : (minutes+"秒 "));
+	return str ;
 }
-
-//处理报表的状态统计
-StatusReportDataProcess.prototype.dealWithStatusData =  function(status,item){
-	var name = item.replace("\(status\)","");
-	if(typeof status[name] === "undefined"){
-		status[name] = 0
-	}
-	status[name] = status[name] + 1; 
-}
-
+ 
 //处理报表的表格数据
 StatusReportDataProcess.prototype.dealWithImageData =  function(item){
-	var detail = item.detail;
-	var records = detail.replace(/\,$/,"").split("\,");//分割字符串
-	var newRecords = [];
-	var length = records.length;
-    
-    //状态统计
-    var status = {};
-
-	for(var i = 0 ; i < length ; i++){
-		//2013-12-08 08:26:54=200
-		if(records[i]===""){
+	var dstr = item;
+	//饼状图
+	var status = {
+		"ok":0,
+		"disable":0,
+		"warning":0,
+		"error":0,
+		"bad":0
+	}
+	var total = 0;
+	var chart = [];//状态分布图
+	var statusList = [];//状态列表
+	var flag = null;
+	var startTime = null;
+	var endTime = null;
+	var count = 0;
+	for(time in dstr){
+		if(time === "MonitorName"){
 			continue;
 		}
-		record = records[i].split("\=");
-		if(record[1].indexOf("status") !== -1){
-			this.dealWithStatusData(status,record[1]);//处理当前的状态
-			continue;
+		total++;
+		endTime = time ;//every time maybe is end time;
+		if(dstr[time].indexOf("ok") !== -1){
+			status.ok++;
+			chart.push(1);
+			if(flag == null){ //init
+				flag = "ok";
+				startTime = time;
+				count = 1;
+			}else if("ok" === flag){ //is continuous 
+				count ++;
+			}else{   //is not  continuous
+				statusList.push({  //save the before one of status
+					startTime : startTime,
+					endTime : time,
+					count : count,
+					flag : flag,
+					difference:this.differenceTime(startTime,time)
+				});
+				//init
+				startTime = time ;
+				count = 1;
+				flag = "ok";
+			}
+
+		}else if(dstr[time].indexOf("disable")!== -1){
+			chart.push(2)
+			status.disable++;
+			if(flag == null){ //init
+				flag = "disable";
+				startTime = time;
+				count = 1;
+			}else if("disable" === flag){ //is continuous 
+				count ++;
+			}else{   //is not  continuous
+				statusList.push({  //save the before one of status
+					startTime : startTime,
+					endTime : time,
+					count : count,
+					flag : flag,
+					difference:this.differenceTime(startTime,time)
+				});
+				//init
+				startTime = time ;
+				count = 1;
+				flag = "disable";
+			}
+
+		}else if(dstr[time].indexOf("warning") !== -1){
+			chart.push(3);
+			status.warning++;
+			if(flag == null){ //init
+				flag = "warning";
+				startTime = time;
+				count = 1;
+			}else if("warning" === flag){ //is continuous 
+				count ++;
+			}else{   //is not  continuous
+				statusList.push({  //save the before one of status
+					startTime : startTime,
+					endTime : time,
+					count : count,
+					flag : flag,
+					difference:this.differenceTime(startTime,time)
+				});
+				//init
+				startTime = time ;
+				count = 1;
+				flag = "warning";
+			}
+
+		}else if(dstr[time].indexOf("error") !== -1){
+			status.error++;
+			chart.push(4);
+			if(flag == null){ //init
+				flag = "error";
+				startTime = time;
+				count = 1;
+			}else if("error" === flag){ //is continuous 
+				count ++;
+			}else{   //is not  continuous
+				statusList.push({  //save the before one of status
+					startTime : startTime,
+					endTime : time,
+					count : count,
+					flag : flag,
+					difference:this.differenceTime(startTime,time)
+				});
+				//init
+				startTime = time ;
+				count = 1;
+				flag = "error";
+			}
+
+		}else { //bad
+			status.bad++;
+			chart.push(5);
+			if(flag == null){ //init
+				flag = "bad";
+				startTime = time;
+				count = 1;
+			}else if("bad" === flag){ //is continuous 
+				count ++;
+			}else{   //is not  continuous
+				statusList.push({  //save the before one of status
+					startTime : startTime,
+					endTime : time,
+					count : count,
+					flag : flag,
+					difference:this.differenceTime(startTime,time)
+				});
+				//init
+				startTime = time ;
+				count = 1;
+				flag = "bad";
+			}
+
 		}
 	}
-	this.imageData.push({
-		data:newRecords,
-		max:item.max,
-		min:item.min,
-		average:item.average,
-		lable:item.ReturnName,
-		tatalCount:length,
-		normalCount:newRecords.length,
-		status:status,
-		drawimage:item.sv_drawimage,
-		drawtable:item.sv_drawtable,
-		primary:item.sv_primary
-	})
+	//save the lastest status
+	statusList.push({ 
+					startTime : startTime,
+					endTime : endTime,
+					count : count,
+					flag : flag,
+					difference:this.differenceTime(startTime,endTime)
+				});
+	//状态百分比
+	var percent = {
+		okPercent:0,
+		warnPercent:0,
+		errorPercent:0,
+		disbalePercent:0,
+		badPercent:0
+	}
+	if(total !== 0 ){
+		percent.errorPercent = status.error / total * 100;
+		percent.disbalePercent = status.disable / total * 100;
+		percent.okPercent = status.ok / total * 100;
+		percent.warnPercent = status.warning / total * 100;
+		percent.badPercent = status.bad / total * 100;
+	}
+	
+
+	this.imageData = {
+		statusList:statusList,
+		chart:chart,
+		pie:[status.ok,status.warning,status.error, status.disable,status.bad],
+		percent:percent
+	}
+
 }
 
 
 //处理报表的状态统计
-StatusReportDataProcess.prototype.dealWithBaseData =  function(name,item){
-	this.baseData.push({name:name,item:item});
+StatusReportDataProcess.prototype.dealWithBaseData =  function(item){
+	this.baseData = item;
 }
 
 StatusReportDataProcess.prototype.getImageData =  function(){
 	return this.imageData;
 }
-
-StatusReportDataProcess.prototype.getTableData =  function(){
-	return this.tableData;
-}
 StatusReportDataProcess.prototype.getBaseData =  function(){
-	if(this.baseData.length === 1){
-		return this.baseData[0]["item"]
-	}
-	var newData = {};
-	var title = "";
-	for(i in this.baseData){
-		var one = this.baseData[i];
-		newData[one.name] = one.item;
-		title = title + one.item.MonitorName.split("\:")[1] + ","
-	}
-	newData.title = title.replace(/\,$/,"");
-	return newData;
+	return this.baseData;
 }
