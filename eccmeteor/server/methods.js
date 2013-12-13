@@ -25,6 +25,15 @@ Meteor.methods({
   "svGetSMSComConfigSetting":svGetSMSComConfigSetting,
   "svGetEmailTemplates":svGetEmailTemplates,
   "svseAlertLogDaoAgent":SvseAlertLogDaoAgent.agent,
+/*
+	Type： add
+	Author：xuqiang
+	Date:2013-12-12 10:40
+	Content:增加  task 声明
+*/  
+  "SvseTaskDaoAgent":SvseTaskDaoAgent.agent,
+  "svWriteTaskIniFileSectionString":svWriteTaskIniFileSectionString,
+  "svDeleteSysLogInitFilesection":svDeleteSysLogInitFilesection,
   /*
 	Type： add
 	Author：xuqiang
@@ -157,6 +166,14 @@ SvseMethodsOnServer = {
 	"svWriteQueryContRankConfigIniFileSectionString":svWriteQueryContRankConfigIniFileSectionString,
 	//"svWriteQueryContConfigIniFileSectionString":svWriteQueryContConfigIniFileSectionString,
 	"svDeleteSysLogInitFilesection":svDeleteSysLogInitFilesection,
+/*
+	Type： add
+	Author：xuqiang
+	Date:2013-12-12 15:40
+	Content:任务计划接口调用的声明
+*/
+	"svDeleteTaskIniFileSection":svDeleteTaskIniFileSection,
+	
 }
 
 SvseSyncData = {

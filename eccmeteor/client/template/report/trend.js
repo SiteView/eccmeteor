@@ -125,7 +125,7 @@ Template.trend_status.events({
 	"click #search" : function(){
 		//drawDetailLineAgain();
 			//var id="1.22.5.2";
-			var id="1.26.19.1";
+			var id="1.31.1";
 			var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
 			var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
 			var beginDate = ClientUtils.dateToObject(startPicker.getDate());
