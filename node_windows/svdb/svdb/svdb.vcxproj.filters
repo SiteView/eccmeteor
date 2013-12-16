@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="svdb.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="backupconfig.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="backuprecord.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="backuprecordDamon.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Edge.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityEx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityGroup.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityGroupPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityPoolEx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityRelation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityTemplet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityTempletPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Group.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Monitor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MonitorPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MonitorTemplet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MonitorTempletPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MySocket.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MyTCPSocket.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MyTCPStream.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="NnmSaveThread.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Option.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Page.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PagePool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PoolBase.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Port.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Queue.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="QueueRecord.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RecordSet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RecordType.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcePool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Section.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialBase.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="serverbase.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Services.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SException.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketWatchThread.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stlini.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StringMap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="svdbtype.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SVSE.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SVSEPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Table.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadContrl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadEx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TopologyChart.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TopologyChartPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualGroup.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualGroupPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WatchThread.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkThread.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SvdbMain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="somefunc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Des.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="action.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="backupconfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="backuprecord.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="backuprecordDamon.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Edge.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityEx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityGroup.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityGroupPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityPoolEx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityRelation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityTemplet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityTempletPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Group.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GroupPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mapwithsort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Monitor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MonitorPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MonitorTemplet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MonitorTempletPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MySocket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MyTCPSocket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MyTCPStream.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="NnmSaveThread.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Option.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Page.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PagePool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PoolBase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Port.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryProtocol.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryProtocolold.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueRecord.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="readDeviceInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RecordSet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RecordType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcePool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Section.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialBase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="serverbase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Services.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SException.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketWatchThread.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stlini.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StringMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SVDBError.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SvdbMain.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="svdbtype.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SVSE.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SVSEPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Table.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadContrl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadEx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TopologyChart.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TopologyChartPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualGroup.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualGroupPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="WatchThread.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkThread.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="somefunc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Des.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="action.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
