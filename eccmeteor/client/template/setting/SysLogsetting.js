@@ -1,82 +1,109 @@
+var getSysLogsetting_statusSelectAll = function(){
+	return ClientUtils.tableGetSelectedAll("SysLogsetting_status");
+}
+
 Template.SysLogsetting.events={
         //设备参数设置应用
-		"click #SysLogsettingEntityapplybtn":function(){
+		"click #SysLogsettingEntityapplybtn":function(e){
 				//var EntitySet = ClientUtils.formArrayToObject($("#EntitySet").serializeArray());
+				// $.fn.serializeObject = function() {  
+                // if ( !this.length ) { 
+				// return false;
+				//  }  
+				//var ids = ClientUtils.tableGetSelectedAll($("EntitySet").serialize());
 				var ids = ClientUtils.tableGetSelectedAll("EntitySet");
-				var str = "";
-				for(var i = 0;i < ids.length;i++){
-					str += ids[i]+",";
-				}
+				var str = ids.join();
 				console.log(str);
-				var entity ={Facility:str};
-				
+				var entity =str;		
 				//console.log(EntitySet);
 				SvseSysLogDao.setQueryCondEntityConfig(entity,function(result){
 					console.log(result);
 					console.log("成功A！");
-				});
-			},
+				 });
+				 
+				},
+
 		//设备参数设置重新获取
 		"click #SysLogsettingEntityrecoverbtn":function(){
-
-			/*$(function operateAll(checked){ 
-			checked != checked || false;
-			var objects = document.getElementsByTagName("input")
-			for(var i=0;i<objects.length;i++){
-				if(objects[i].type=='checkbox'){
-				  if(checked==true)
-					objects[i].checked=""	
-					else
-					objects[i].checked="checked"
-				}
-			}
-			})*/ 
+				 
+		
+				
 				Meteor.call("svGetSysLogQueryContEntityConfigSetting",function(err,Entity){
 				console.log("成功-------！");
-					console.log(Entity);
-					if(!Entity) return;
-					$("#EntitySet :text[checkbox=checkbox]").val(Entity["checkbox"]);
+					console.log(Entity["Facility"]);
+					$(function operateAll(checked){ 
+                        checked = checked || true;
+                        var objects = document.getElementsByTagName("input")
+                        for(var i=0;i<objects.length;i++){
+                                if(objects[i].type=='checkbox'){
+                                  if(checked==false)
+                                        objects[i].checked=""        
+                                        else
+                                        objects[i].checked="checked"
+                                }
+                        }
+                        }); 
+				var result = Entity["Facility"].split(",");
+				console.log(result);
+				for(var i = 0;i < result.length;i++){
+					$("#"+result[i]).attr("checked",true);
 					
+				}
 				});
 				console.log("成功B！");
 				},
 		//级别参数设置应用
 		"click #SysLogsettingRankapplybtn":function(){
-				var ids = ClientUtils.tableGetSelectedAll("RankSet");
-				var str1 = "";
-				
-				for(var j = 0;j < ids.length;j++){
-					str1 += ids[j]+",";
+		       //var Rank=$("#RankSet").find(":checkbox[name='Severities']").val();
+				//var ids = ClientUtils.tableGetSelectedAll("RankSet");
+				var Rank = ClientUtils.formArrayToObject($("#RankSet").serializeArray());
+				console.log(Rank);
+				var ras =[];
+				for(var r in Rank){
+					console.log(Rank[r]);
+					ras.push(Rank[r]);
 				}
-				console.log(str1);
+				console.log(ras.join());
 				
-				var rank ={Severities:str1};
-				SvseSysLogDao.setQueryCondRankConfig(rank,function(result){
+				//var str1 = ids.join();
+				// var str1 = "";
+				// for(var j = 0;j < ids.length;j++){
+					// if(j == (ids.length - 1)){
+						// str1 += ids[j]
+				// }else{
+					// str1 += ids[j]+",";
+				// }
+				// }
+				//console.log(str1);
+				
+				// var rank =str1;
+				SvseSysLogDao.setQueryCondRankConfig(ras,function(result){
 					console.log(result);
 					console.log("成功！");
 				});
 			},
+			
 		//级别参数设置重新获取
 		"click #SysLogsettingRankrecoverbtn":function(){
 					Meteor.call("svGetSysLogQueryContRankConfigSetting",function(err,Rank){
-								console.log(Rank);
-								if(!Rank) return;
-								//$("#RankSet :type[name=Severities]").val(Rank["Severities"]);
+						console.log(Rank);
+						$(function operateAll(checked){ 
+                        checked = checked || true;
+                        var objects = document.getElementsByTagName("input")
+                        for(var i=0;i<objects.length;i++){
+                                if(objects[i].type=='checkbox'){
+                                  if(checked==false)
+                                        objects[i].checked=""        
+                                        else
+                                        objects[i].checked="checked"
+                                }
+                        }
+                        }); 
+						if(!Rank) return;
+						$("#RankSet :checkbox[name=Severities]").val(Rank["checkbox"]);
 							});
-			// $(function operateAll(checked){ 
-			// checked != checked || false;
-			// var objects = document.getElementsByTagName("input")
-			// for(var i=0;i<objects.length;i++){
-				// if(objects[i].type=='checkbox'){
-				  // if(checked==true)
-					// objects[i].checked=""	
-					// else
-					// objects[i].checked="checked"
-				// }
-			// }
-		// })
-		
-		},
+					console.log("成功B+！");
+				},
 		"click #SysLogsettinKeepDaygapplybtn":function(){
 			var day=$("#keepforday").find(":text[name=KeepDay]").val();
 			//if(!day || day <= 0){
@@ -87,7 +114,7 @@ Template.SysLogsetting.events={
 			var length=$("#keepforday :text[name=KeepDay]").val();
 				   if(length == 0 || length > 9999){
 				 Message.info("记录保持天数必须是大于0的整数(最大只能到9999)！"); 
-				 $("#keepforday :text[name=KeepDay]").val();
+				 $("#keepforday :text[name=KeepDay]").val(0);
 				 return;
 			}
 				
@@ -103,41 +130,80 @@ Template.SysLogsetting.events={
 					console.log("成功！");
 			});
 		},
+		//系统日志的删除事件
 			"click #dellogbtn":function(){
+			var id = "syslog";
+			var endPicker = $('#delDatebox').data('datetimepicker');
+			
+			var endTime = endPicker.getDate();
+			var endDate = ClientUtils.dateToObject(endPicker.getDate());
+			console.log(endDate);
+			console.log("#######################");
+			SvseSysLogDao.DeleteRecordsByIds(id,endDate,function(result){
+			if(!result){
+					console.log("error");
+					return;
+				}
+				console.log(result);
 			  console.log("删除指定时间之前的日志！");
-			},
+			});
+		},
+		//帮助信息
+	"click #SysLogsettinghelpbtn" : function(){
+	$('#helpmessagediv').modal('toggle');
+ 
+	},
 		
 	}
+	
+Template.SysLogsetting_status.rendered = function () {
+	$(function () {
+		//初始化 checkbox事件
+		ClientUtils.tableSelectAll("SysLogsetting_statusselectall");
+	});
+}
 
 Template.SysLogsetting.rendered = function(){
 			var template = this;
 			$(function() { //初始化日期选择器
 				var endDate = new Date();
-				$(template.find("#date")).datetimepicker({
+				$(template.find("#delDatebox")).datetimepicker({
 						format: 'yyyy-MM-dd hh:mm:ss',
 						language: 'zh-CN',
 						endDate : endDate,
 						maskInput: false,
 				});
 			   
-				var endPicker = $(template.find("#date")).data('datetimepicker');
+				var endPicker = $(template.find("#delDatebox")).data('datetimepicker');
 			   
 				endPicker.setDate(endDate);
-		
 			
-							});
-		/*	Meteor.call("svGetSysLogQueryContEntityConfigSetting",function(err,Entity){
-				console.log(Entity);
-			if(!Entity) return;
-			//$("#EntitySet :text[checkbox=checkbox]").val(Entity["checkbox"]);
-
-				 });
+			});
+			Meteor.call("svGetSysLogQueryContEntityConfigSetting",function(err,Entity){
+				console.log(Entity["Facility"]);
+				var result = Entity["Facility"].split(",");
+				console.log(result);
+				for(var i = 0;i < result.length;i++){
+					$("#"+result[i]).attr("checked",true);
+					//$("#EntitySet").find("input:checkbox[id='result[i]']").attr("checked",true);
+				}
+				
+			});
 				 
 			Meteor.call("svGetSysLogQueryContRankConfigSetting",function(err,Rank){
-				console.log(Rank);
-			if(!Rank) return;
-			//$("#RankSet :text[checkbox=checkbox]").val(Rank["checkbox"]);
+				console.log(Rank["Severities"]);
+				var result = Rank["Severities"].split(",");
+				console.log(result);
+				 for(var j = 0;j < result.length;j++){
+					$("#RankSet").find("input:checkbox[name="+result[j]+"]").attr("checked",true);
+				 }					
 
-				 });*/
-							
+			});
+			
+			Meteor.call("svGetSysLogDelCondConfigSetting",function(err,KeepDay){
+					console.log(KeepDay);
+				if(!KeepDay) return;
+					$("#keepforday :text[name='KeepDay']").val(KeepDay["KeepDay"]);
+
+					 });				 
 }

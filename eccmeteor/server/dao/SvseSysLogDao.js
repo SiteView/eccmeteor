@@ -5,10 +5,10 @@ SvseSysLogDaoOnServer = {
 			msg = "Permission isn't enoungh";
 		return {status:status,msg:msg};
 	},
-	//根据id删除系统日志
+	//删除系统日志
 	"DeleteRecordsByIds":function(ids){
 		var log = ids.join();
-		var result = SvseMethodsOnServer.svDeleteMessageIniFileSection(log);
+		var result = SvseMethodsOnServer.svDeleteSysLogInitFilesection(log);
 		if(!result){
 			var msg = "SvseSysLogDaoOnServer's DeleteRecordsByIds"+ids+" faild";
 			Log4js.error(msg);

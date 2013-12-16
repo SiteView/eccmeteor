@@ -78,7 +78,13 @@ dowhat= DeleteQueue,		queuename= XXX;
 dowhat= ClearQueueMessage,	queuename= XXX;
 
 dowhat= GetTask ,		id= XXX	;
-dowhat= CreateTask ,		id= XXX	; //在服务器端创建一个新 task
+
+
+dowhat= CreateTask ,		id= XXX	; //在服务器端创建一个新 task  
+//创建任务后，然后在利用 SubmitTask 接口来上传具体信息
+
+
+
 dowhat= GetAllTaskName ;
 dowhat= DeleteTask ,	id= XXX	;
 dowhat= GetAllTask 	;
@@ -212,7 +218,7 @@ bool SubmitUnivData(     ForestMap & fmap, const NodeData & what, const string &
 
 
 // 以下 submit 函数，若传入的 fmap 中的 return 有 id= XXX， 则修改服务器端已有节点的数据 ，否则创建一个新节点（该动作内嵌了权限控制,并返回该新节点的 id）
-// fmap 提供的数据用于覆盖服务器端的数据，fmap 如果是服务器端的数据的子集，则服务器端 是否 删除与 fmap 对应的补集 ，决定于 del_supplement .
+// fmap 提供的数据用于覆盖服务器端的数据，fmap 如果是服务器端的数据的子集，则服务器端 是否 删除与 fmap 对应的补集 ，决定于 del_supplement . 编辑监视器时一定要设为true
 
 dowhat= SubmitGroup ,		del_supplement= true/false (是否删除补集, 默认为 true ，即若不填为 true ) , parentid= XXX (新建节点时需要此值);
 dowhat= SubmitEntity ,		del_supplement= true/false , parentid= XXX (新建节点时需要此值) ;

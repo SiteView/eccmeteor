@@ -164,7 +164,7 @@ function drawImage(id,count){
 		var count =200;
 	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
 	if(!foreigkeys){
-		SystemLogger("监视器"+id+"不能获取画图数据");
+		Log4j.warn("监视器"+id+"不能获取画图数据");
 		return;
 	}
 	//获取画图数据
@@ -206,6 +206,14 @@ function drawImage(id,count){
 		drawDie(recordsData,"svg#monitorStatisticalPieSvg");
 	});
 }
+
+//画图前 获取相关数据
+function drawNewImage(id,count){
+	if(!count){
+		var count =200;
+	}
+}
+
 
 function emptyImage(){
 	SessionManage.setMonitorStatisticalDetailTableData(null);
