@@ -3,13 +3,35 @@
 	Author：renjie
 	Date:2013-10-18 10:40
 	Content:增加SvseTopNDaoAgent 的agent声明
+
+	================
+
+	Type： add
+	Author：xuqiang
+	Date:2013-12-12 10:40
+	Content:增加  task 声明
+
+	==================
+
+
+	Type： add
+	Author：xuqiang
+	Date:2013-10-28 10:40
+	Content:增加 趋势报告 的agent声明
+
+	====================
+
+	Type： add
+	Author：renjie
+	Date:2013-12-2 13:40
+	Content:增加 syslog 的agent声明
 */ 
 Meteor.methods({
   "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
   "meteorSvForest":meteorSvForest,
   "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
   "svGetSendEmailSetting":svGetSendEmailSetting,
-  "svEmailTest":svEmailTest,
+  //"svEmailTest":svEmailTest,
   "syncTreeData":SyncFunction.sync, //同步数据
   "userDaoAgent":UserDaoAgent.agent,
   "svseDaoAgent":SvseDaoAgent.agent,
@@ -25,19 +47,11 @@ Meteor.methods({
   "svGetSMSComConfigSetting":svGetSMSComConfigSetting,
   "svGetEmailTemplates":svGetEmailTemplates,
   "svseAlertLogDaoAgent":SvseAlertLogDaoAgent.agent,
-  /*
-	Type： add
-	Author：xuqiang
-	Date:2013-10-28 10:40
-	Content:增加 趋势报告 的agent声明
-*/ 
+  "SvseTaskDaoAgent":SvseTaskDaoAgent.agent,
+  "svWriteTaskIniFileSectionString":svWriteTaskIniFileSectionString,
+  "svDeleteSysLogInitFilesection":svDeleteSysLogInitFilesection,
+  //"svGetSmsDllName":svGetSmsDllName,
   "svGetTrendList":svGetTrendList,
-  /*
-	Type： add
-	Author：renjie
-	Date:2013-12-2 13:40
-	Content:增加 syslog 的agent声明
-*/
 	"svseSysLogDaoAgent":SvseSysLogDaoAgent.agent,	
 	"svGetSysLogDelCondConfigSetting":svGetSysLogDelCondConfigSetting,
 	"svGetSysLogQueryContEntityConfigSetting":svGetSysLogQueryContEntityConfigSetting,
@@ -95,9 +109,19 @@ Meteor.methods({
 	Author：renjie
 	Date:2013-12-2 14:40
 	Content:增加 syslog 
+
+	==========================
+
+	Type： add
+	Author：xuqiang
+	Date:2013-12-12 15:40
+	Content:任务计划接口调用的声明
 */
+
 //给服务端调用的。//调用 /lib/svdb.js中定义的方法
 SvseMethodsOnServer = {
+	"svGetReportDataByFilter":svGetReportDataByFilter,
+	"svGetReportData":svGetReportData,
 	"GetAllEntityGroups":GetAllEntityGroups,
 	"GetEntityTemplet":GetEntityTemplet,
 	"svGetEntity":svGetEntity,
@@ -157,6 +181,8 @@ SvseMethodsOnServer = {
 	"svWriteQueryContRankConfigIniFileSectionString":svWriteQueryContRankConfigIniFileSectionString,
 	//"svWriteQueryContConfigIniFileSectionString":svWriteQueryContConfigIniFileSectionString,
 	"svDeleteSysLogInitFilesection":svDeleteSysLogInitFilesection,
+	"svDeleteTaskIniFileSection":svDeleteTaskIniFileSection,
+	"svEmailTest":svEmailTest,
 }
 
 SvseSyncData = {

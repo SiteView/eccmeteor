@@ -183,13 +183,86 @@ svGetMonitorRuntimeRecordsByTime = function(id,beginDate,endDate){
 		throw new Meteor.Error(500,flag);
 	}
 	var fmap = robj.fmap(0);
-
 	var runtiomeRecords = [];
 	for(r in fmap){
 		runtiomeRecords.push(fmap[r]);
 	}
 	return runtiomeRecords;
 }
+/**
+ Type:add
+ Author:huyinghuan
+ Date: 2013-12-10 11:53
+ Content :获取报表数据
+*/
+svGetReportData = function(monitorId,beginDate,endDate){
+	/*
+	{
+		id:id,//id 可以是逗号分隔的多个id
+		compress:compress,//默认压缩数据（即若不填则为true ；另：<400个数据不压缩，>=400压缩到200；不压缩数据的个数极限为50000)
+		dstrNeed:dstrNeed, //true/false 默认不给dstr（即若不填则为 false)
+		byCount:byCount,//(如果有值则按个数查询，而不是按时间)
+		dstrStatusNoNeed:null, //null,ok,warning,error,disable,bad (不需要的dstr状态，如dstrStatusNoNeed=ok 则ok的dstr不传，其他的都传回) 
+		return_value_filter:"return_value_filter", //= XXX,XXX 返回值过滤，如该值为 sv_primary,sv_drawimage ，则只回传 sv_primary=1 且 sv_drawimage=1 的返回值
+		begin_year:XXX,begin_month:XXX, begin_day= XXX,begin_hour= XXX,begin_second= XXX, 
+		end_year= XXX,end_month= XXX,end_day= XXX,end_hour= XXX,end_minute= XXX, end_second= XXX,
+	}
+	mid=1.26.27.3&st=20131207102000&et=20131208102000
+	
+	monitorId = "1.26.27.3";
+	beginDate = {
+		year:"2013",
+		month:"12",
+		day:"01",
+		hour:"10",
+		minute:"20",
+		second:"00"
+	}
+	endDate = {
+		year:"2013",
+		month:"12",
+		day:"08",
+		hour:"10",
+		minute:"20",
+		second:"00"
+	}*/
+	var robj = process.sv_univ({
+		'dowhat':'QueryReportData',
+		id:monitorId,
+	//	dstrNeed:true,
+		dstrStatusNoNeed:null,
+	//	return_value_filter:"sv_primary,sv_drawimage",
+		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
+		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
+	}, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+};
+
+//状态统计的数据 （之获取主键和可画图的数据）
+svGetReportDataByFilter = function(monitorId,beginDate,endDate,filter){
+	var robj = process.sv_univ({
+		'dowhat':'QueryReportData',
+		id:monitorId,
+		dstrStatusNoNeed:null,
+		dstrNeed:true,
+		return_value_filter:filter,
+		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
+		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
+	}, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+};
 
 //获取监视器模板
 svGetMonitorTemplet = function(id){
@@ -349,24 +422,45 @@ svGetTrendList = function(id,type){
 	var fmap = robj.fmap(0);
 	return fmap;
 }
-/*
-Type: add
-Author:xuqiang
-Date:2013.12.15 14:40
-Content:增加对任务计划的操作，添加一条记录到任务计划中
-*/
+	/*
+	Type: add
+	Author:xuqiang
+	Date:2013.12.15 14:40
+	Content:增加对任务计划的操作，添加一条记录到任务计划中
+	*/
 //添加计划任务
-svWriteTaskIniFileSectionString = function(addressname,address){
-	//var dowhat = {'dowhat':'CreateTask'};
-	var robj = process.sv_submit({'dowhat':'CreateTask','id':addressname},0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-			Log4js.error(flag);
-			return null;
+svWriteTaskIniFileSectionString = function(address){
+	console.log(address["sv_name"]);
+	var robj= process.sv_univ({'dowhat':'CreateTask','id':address["sv_name"]},0); //增加
+		if(!robj.isok(0)){
+			console.log(robj.estr(0));
 		}
 		var fmap = robj.fmap(0);
-		return fmap;	
+		//console.log(fmap);
+		var newObj = {
+			return :{id:address["sv_name"],return:true},
+			property :address
+		}
+	var robj2= process.sv_submit(newObj,{'dowhat':'SubmitTask','del_supplement':true},0); //修改	
+	console.log("gooddd");
+	if(!robj2.isok(0)){
+		console.log(robj2.estr(0));
+	}
+	console.log("good");
+	var fmap2 = robj2.fmap(0);
+	console.log(fmap2);
+	return fmap2;
 }
+
+//删除一条任务计划
+svDeleteTaskIniFileSection = function(ids){
+
+	var robj =process.sv_univ(
+	{'dowhat':'DeleteTask',id:ids},0);
+	var fmap = robj.fmap(0);
+	return fmap;
+}
+
 //获取发送邮件的设置
 svGetSendEmailSetting = function(){
 	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",
@@ -437,7 +531,24 @@ svGetTopNList = function(){
 //邮件测试
 svEmailTest = function(emailSetting){
 	emailSetting["dowhat"]="EmailTest";
-	 process.sv_univ(emailSetting,0);
+	// var robj = process.sv_univ({
+		// "dowhat":"EmailTest",
+		// "mailServer":emailSetting.mailServer,
+		// "mailFrom":emailSetting.mailFrom,
+		// "mailTo":emailSetting.mailTo,
+		// "user":emailSetting.user,
+		// "password":emailSetting.password,
+		// "subject":emailSetting.subject,
+		// "content":emailSetting.content
+	// },0);
+	var robj = process.sv_univ(emailSetting,0);
+	if(!robj.isok(0)){
+		//console.log(robj.estr(0));
+		Log4js.error(robj.estr(0),-1);
+		return false;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
 }
 
 /* ==========================Svse 使用部分 ============================ */
@@ -990,21 +1101,21 @@ svGetSMSComConfigSetting = function(){
 	if(!fmap || !fmap["SMSCommConfig"]) return ;
 	return fmap["SMSCommConfig"];
 }
-/*
-//获取短信设置的发送短信方式中的调用动态库的动态库名称(有问题-待修改)
-svGetSmsDllName=function(){
-	var dowhat={'dowhat':'GetSmsDllName'};
-	var robj=process.sv_univ(dowhat,0);
+
+ //获取短信设置的发送短信方式中的调用动态库的动态库名称(有问题-待修改)
+/* svGetSmsDllName = function(){
+	var dowhat = {'dowhat':'GetSmsDllName'};
+	var robj = process.sv_univ(dowhat,0);
 	Log4js.info("11");
 	if(!robj.isok(0)){
 		Log4js.error(robj.estr(0),-1);
 		return false;
 	}
 	Log4js.info("22");
-	var fmap=robj.fmap(0);
+	var fmap = robj.fmap(0);
 	return fmap;
-}
-*/
+} */
+
 /*
 ========================================
 	Type:对报警规则的操作

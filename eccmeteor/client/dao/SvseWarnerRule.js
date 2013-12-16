@@ -86,6 +86,12 @@ SvseWarnerRuleDao = {
 	"getAlertByName":function(alertname){
 		return SvseWarnerRule.findOne({AlertName:alertname});
 	},
+	
+	//根据报警类型获取报警规则
+	"getAlertByAlertType":function(alerttype){
+		return SvseWarnerRule.find({AlertType:alerttype}).fetch();
+	},
+	
 	//获取脚本报警的脚本
 	"getScriptFiles":function(fn){
 		Meteor.call(SvseWarnerRuleDao.AGENT,"getScriptFiles",[],fn);
@@ -101,15 +107,16 @@ SvseWarnerRuleDao = {
 	"getValueOfMultipleSelect":function(number){
 		var numberStr = "";
 		if(number){
-			for(var i = 0;i< number.length;i++){
+			// for(var i = 0;i< number.length;i++){
 				//console.log(number[i]);
-				if(number[i] == number[number.length-1]){
-					numberStr += number[i];
-				}else{
-					numberStr += number[i] + ",";
-				}
-			}
-			//console.log(numberStr);
+				// if(number[i] == number[number.length-1]){
+					// numberStr += number[i];
+				// }else{
+					// numberStr += number[i] + ",";
+				// }
+			// }
+			numberStr = number.join();
+			console.log(numberStr);
 		}
 		return numberStr;
 	}

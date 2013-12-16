@@ -8,20 +8,20 @@ Template.emailsetting.events  = {
 	"click #addemailsetting" : function(){
 		$('#emailaddresssettingdiv').modal('toggle');
 	},
-	"click #delemailsetting" : function(){
-		var ids = getEmailSelectAll();
-		SvseEmailDao.checkEmailSelect(ids);
-		if(ids.length)
-			SvseEmailDao.deleteEmailAddressByIds(ids,function(result){
-				SystemLogger(result);
-			});
-	},
+	// "click #delemailsetting" : function(){
+		// var ids = getEmailSelectAll();
+		// SvseEmailDao.checkEmailSelect(ids);
+		// if(ids.length)
+			// SvseEmailDao.deleteEmailAddressByIds(ids,function(result){
+				// Log4js.info(result);
+			// });
+	// },
 	"click #allowemailsetting" : function(){  //启用邮件地址
 		var ids = getEmailSelectAll();
 		SvseEmailDao.checkEmailSelect(ids);
 		if(ids.length)
 			SvseEmailDao.updateEmailAddressStatus(ids,"0",function(result){
-				SystemLogger(result);
+				Log4js.info(result);
 			});
 	},
 	"click #forbidemailsetting" : function(){ //禁用邮件地址
@@ -29,7 +29,7 @@ Template.emailsetting.events  = {
 		SvseEmailDao.checkEmailSelect(ids);
 		if(ids.length)
 			SvseEmailDao.updateEmailAddressStatus(ids,"1",function(result){
-				SystemLogger(result);
+				Log4js.info(result);
 			});
 	},
 	"click #refreshemailsetting" : function(){
@@ -37,7 +37,7 @@ Template.emailsetting.events  = {
 		SvseEmailDao.sync();
 	},
 	"click #emailtemplatesetting" : function(){
- 
+	
 	},
 	"click #emailhelpmessage" : function(){
  
@@ -48,12 +48,77 @@ Template.emailsetting.rendered = function(){
 	Meteor.call("svGetSendEmailSetting",function(err,setting){
 		//console.log(setting);
 		if(!setting) return;
-		$("#emailbasicsetting :text[name=server]").val(setting["server"]);
-		$("#emailbasicsetting :text[name=from]").val(setting["from"]);
-		$("#emailbasicsetting :text[name=backupserver]").val(setting["backupserver"]);
-		$("#emailbasicsetting :text[name=user]").val(setting["user"]);
-		$("#emailbasicsetting :password[name=password]").val(setting["password"]);
+		$("#emailbasicsetting :text[name='server']").val(setting["server"]);
+		$("#emailbasicsetting :text[name='from']").val(setting["from"]);
+		$("#emailbasicsetting :text[name='backupserver']").val(setting["backupserver"]);
+		$("#emailbasicsetting :text[name='user']").val(setting["user"]);
+		$("#emailbasicsetting :password[name='password']").val(setting["password"]);
 	});
+
+	$(function(){
+		//在点击删除操作时弹出提示框实现进一步提示
+		$("#delemailsetting").confirm({
+			'message':"确定删除操作？",
+			'action':function(){
+				var ids = getEmailSelectAll();
+				console.log(ids);
+				SvseEmailDao.checkEmailSelect(ids);
+				if(ids.length){
+					//在删除之前要先判断报警规则中有没有正在使用的邮件，如果有，则不能删除
+					ids = getEmailNameOfAlertUsing(ids);
+					console.log(ids);
+					if(ids == "") return;
+					SvseEmailDao.deleteEmailAddressByIds(ids,function(result){
+						console.log(result);
+					});
+					//console.log("确定");
+				}
+				$("#delemailsetting").confirm("hide");
+			}
+		});
+		
+		
+	});
+}
+
+var getEmailNameOfAlertUsing = function(ids){
+	//得到所有邮件报警正在使用中的邮件接收地址名称
+	var getAlertByType = SvseWarnerRuleDao.getAlertByAlertType("EmailAlert");
+	console.log(getAlertByType);
+	var emailaddress = [];
+	var rec = {};
+	var names = [];
+	for(var index in getAlertByType){
+		//console.log(getAlertByType[index]["EmailAdress"]);
+		var address = getAlertByType[index]["EmailAdress"];
+		if(!address) continue;
+		var res = address.split(",");
+		for(var i = 0;i < res.length;i++){
+			emailaddress.push(res[i]);
+		}
+	}
+	//console.log(emailaddress);
+	for(var j = 0;j < emailaddress.length;j++){
+		if(!rec[emailaddress[j]]){   
+          rec[emailaddress[j]] = true;   
+          names.push(emailaddress[j]);   
+		}  
+	}
+	var nameStr = [];
+	//var useids = [];
+	for(var i = 0;i < names.length;i++){
+		for(var k = 0;k < ids.length;k++){
+			var email = SvseEmailDao.getEmailById(ids[k]);
+			if(email["Name"] == names[i]){
+				//useids.push(ids[k]);
+				ids.splice(k,1);
+				nameStr.push(email["Name"]);
+				Message.info(nameStr.join() +"正在报警规则中使用，不能删除，请重选");
+			}
+		}
+	}
+	//console.log(ids);
+	return ids;
 	
 }
 
@@ -267,7 +332,63 @@ Template.emailbasicsettingForm.events({
 			console.log("成功！");
 		});
 	},
-	"click #emailbasicsettingtestbtn" : function(){
 	
+	"click #emailbasicsettingtestbtn" : function(){
+		$("#emailtestform")[0].reset();//重置表单
+		MessageTip.close("a1");
+		$("#emailTestDiv").modal("show");
+		
+	},
+});
+
+Template.emailtest.events({
+	"click #cancelsendemail":function(){
+		MessageTip.close("a1");
+		$("#emailTestDiv").modal("hide");
+	},
+	//点击确认发送邮件
+	"click #suresendemail":function(){
+		var emailinfo = ClientUtils.formArrayToObject($("#emailtestform").serializeArray());
+		//console.log(emailinfo);
+		var emailto = emailinfo["mailTo"];
+		if(!emailto){
+			Message.info("Email地址不能为空");
+			return;
+		}
+		//验证邮件地址
+		var flag = SvseEmailDao.checkEmailFormat(emailto);
+		if(!flag) return;
+		
+		var emailSetting = {};
+		for(var i in emailinfo){
+			emailSetting[i] = emailinfo[i];
+		}
+		//console.log(emailSetting);
+		Meteor.call("svGetSendEmailSetting",function(err,setting){
+			if(!setting) return;
+			//console.log(setting);
+			
+			emailSetting["mailServer"] = setting["server"];
+			emailSetting["mailFrom"] = setting["from"];
+			emailSetting["subject"] = setting["backupserver"];
+			emailSetting["user"] = setting["user"];
+			emailSetting["password"] = setting["password"];
+			
+			console.log(emailSetting);
+			SvseEmailDao.emailTest(emailSetting,function(result){
+				console.log(result.status);
+				MessageTip.close("a1");
+				if(!result.status){
+					var content = emailSetting["mailTo"]+"发送失败";
+					MessageTip.error(content,{selector:"body div#emailTestDiv",replace:false,close:true,id:"a1"});
+					return;
+				}
+				var content = emailSetting["mailTo"]+"发送成功";
+				MessageTip.info(content,{selector:"body div#emailTestDiv",replace:false,close:true,id:"a1"});
+			});
+		});
+		
+		//$("#emailTestDiv").modal("hide");
 	}
 });
+

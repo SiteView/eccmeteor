@@ -19,3 +19,21 @@ Date.prototype.format = function(format){
         ("00"+ o[k]).substr((""+ o[k]).length)); 
   return format; 
 }
+Object.defineProperty(Date,"str2Date",{
+  value:function(str,format){
+    var year = +str.substr(format.indexOf("yyyy"),4); //year
+    var month = +str.substr(format.indexOf("MM"),2);//month 
+    var day = +str.substr(format.indexOf("dd"),2);//day
+    var hour = +str.substr(format.indexOf("hh"),2);//hour
+    var minute = +str.substr(format.indexOf("mm"),2);//minute
+    var second = +str.substr(format.indexOf("ss"),2);//hour
+    var d = new Date()
+    d.setFullYear(year);
+    d.setMonth(month-1);
+    d.setDate(day);
+    d.setHours(hour);
+    d.setMinutes(minute);
+    d.setSeconds(second);
+    return d;
+  }
+})

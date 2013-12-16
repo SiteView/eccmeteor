@@ -6,11 +6,11 @@ SvseEmailDao = {
 	"addEmailAddress":function(addressname,address,fn){
 		Meteor.call(SvseEmailDao.AGENT,'addEmailAddress',[addressname,address],function(err,result){
 			if(err){
-				SystemLogger(err);
+				Log4js.info(err);
 				fn({status:false,msg:err})
 			}else{
 				if(result && !result[status]){ // 无权限
-					SystemLogger(err);
+					Log4js.info(err);
 					fn(result);
 				}else{
 					fn({status:true})
@@ -21,9 +21,10 @@ SvseEmailDao = {
 	"setEmailBasicSetting":function(setting,fn){
 		Meteor.call(SvseEmailDao.AGENT,"setEmailBasicSetting",[setting],function(err,result){
 			if(err){
-				SystemLogger(err);
+				Log4js.info(err);
 				fn({status:false,msg:err})
 			}else{
+				//console.log(result);
 				fn(result);
 			}
 		});
@@ -37,11 +38,11 @@ SvseEmailDao = {
 	"updateEmailAddress":function(addressname,address,fn){
 		Meteor.call(SvseEmailDao.AGENT,'updateEmailAddress',[addressname,address],function(err,result){
 			if(err){
-				SystemLogger(err);
+				Log4js.info(err);
 				fn({status:false,msg:err})
 			}else{
 				if(result && !result[status]){ // 无权限
-					SystemLogger(err);
+					Log4js.info(err);
 					fn(result);
 				}else{
 					fn({status:true})
@@ -53,7 +54,7 @@ SvseEmailDao = {
 	"deleteEmailAddressByIds":function(ids,fn){
 		Meteor.call(SvseEmailDao.AGENT,"deleteEmailAddressByIds",[ids],function(err,result){
 			if(err){
-				SystemLogger(err);
+				Log4js.info(err);
 				fn({status:false,msg:err})
 			}else{
 				fn(result);
@@ -64,7 +65,7 @@ SvseEmailDao = {
 	"updateEmailAddressStatus" : function(ids,status,fn){
 		Meteor.call(SvseEmailDao.AGENT,"updateEmailAddressStatus",[ids,status],function(err,result){
 			if(err){
-				SystemLogger(err);
+				Log4js.info(err);
 				fn({status:false,msg:err})
 			}else{
 				fn(result);
@@ -92,4 +93,15 @@ SvseEmailDao = {
 		}
 		return true;
 	},
+	"emailTest":function(emailSetting,fn){
+		Meteor.call(SvseEmailDao.AGENT,"emailTest",[emailSetting],function(err,result){
+			if(err){
+				Log4js.info(err);
+				fn({status:false,msg:err})
+			}else{
+				//console.log(result);
+				fn(result);
+			}
+		});
+	}
 }

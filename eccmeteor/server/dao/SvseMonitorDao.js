@@ -107,4 +107,16 @@ SvseMonitorDaoOnServer = {
 		return SvseMethodsOnServer.svGetMonitorRuntimeRecordsByTime(monitorid,startDate,endDate);
 	}
 }
+/*获取监视器的报告数据*/
+Object.defineProperty(SvseMonitorDaoOnServer,"getMonitorReportData",{
+	value:function(monitorId,beginDate,endDate){
+		return SvseMethodsOnServer.svGetReportData(monitorId,beginDate,endDate);
+	}
+})
 
+/*获取过滤后的监视器的报告数据*/
+Object.defineProperty(SvseMonitorDaoOnServer,"getMonitorReportDataByfilter",{
+	value:function(monitorId,beginDate,endDate,filter){
+		return SvseMethodsOnServer.svGetReportDataByFilter(monitorId,beginDate,endDate,filter);
+	}
+})

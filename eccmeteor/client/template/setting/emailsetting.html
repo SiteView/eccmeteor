@@ -27,6 +27,7 @@
 {{> emailbasicsettingForm}}
 {{> emailbasicsettingofaddress}}
 {{> emailbasicsettingofaddressedit}}
+{{> emailtest}}
 </Template>
 
 <Template name="emailsettingList">
@@ -256,6 +257,38 @@
 		<div class="modal-footer" align="right">
 			<button class="btn btn-large" id="emailbasicsettingofaddresscancelbtnedit">取消</button>
 			<button class="btn btn-primary btn-large" id="emailbasicsettingofaddresssavebtnedit">保存</button>
+		</div>
+	</div>
+</Template>
+
+<Template name="emailtest">
+	<div id="emailTestDiv" class="modal hide fade"
+	data-backdrop="true" data-keyboard="true" data-show="false" 
+	data-width="400" data-modalOverflow="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<label class="label label-info">邮件测试</label>
+		</div>
+		<div class="modal-body">
+			<form class="well" id="emailtestform">
+				<label class="label label-info">email测试</label>
+				<div class="controls">
+					<label class="control-label">邮件接收地址:(填写多个地址时以逗号分开)</label>
+					<div class="controls">
+						<input class="input-xlarge" type="text" name="mailTo" />
+					</div>
+				</div>
+				<div class="controls">
+					<label class="control-label">邮件内容:</label>
+					<div class="controls">
+						<textarea class="input-xlarge" name="content" rows="5"></textarea>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer" align="center">
+			<button class="btn" id="suresendemail">确定</button>
+			<button class="btn" id="cancelsendemail">关闭</button>
 		</div>
 	</div>
 </Template>
