@@ -69,17 +69,9 @@ var SetSvdbAddr = function(){
 Meteor.startup(function(){
 	process.sv_init();
 	SetSvdbAddr();
-<<<<<<< HEAD
-	TestUnit.test();
-	//return;
-	var status = AssetsUtils.getDevConfig("initDatabase");
-	initAllDateStartUp(status);	
-	
-=======
 	if(!TestUnit.test(1)){
 		return;
 	}
 	var status = AssetsUtils.getDevConfig("initDatabase");
 	initAllDateStartUp(status);	
->>>>>>> meteorite-hu
 });
