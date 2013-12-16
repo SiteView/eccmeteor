@@ -21,6 +21,7 @@ Meteor.Router.add( '/TrendReport', 'GET', function () {
 	var et = this.request.query.et;
 	var stime =  coverTime(st);
 	var etime =  coverTime(et);
+	//
   	return [200,
     	{
        		'Content-type': 'text/html',

@@ -12,7 +12,7 @@ Object.defineProperty(DrawTrendReport,"_option",{
 	writable:true
 })
 
-Object.defineProperty(DrawContrastReport,"setOption",{
+Object.defineProperty(DrawTrendReport,"setOption",{
 	value:function(template,css){
 		this._option.htmlTemplate = template;
 		this._option.css = css;
