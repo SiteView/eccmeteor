@@ -7,7 +7,8 @@ SvseSysLogDaoOnServer = {
 	},
 	//删除系统日志
 	"DeleteRecordsByIds":function(ids){
-		var log = ids.join();
+		//var log = ids.split(",")
+		var log = ids.join()
 		var result = SvseMethodsOnServer.svDeleteSysLogInitFilesection(log);
 		if(!result){
 			var msg = "SvseSysLogDaoOnServer's DeleteRecordsByIds"+ids+" faild";
