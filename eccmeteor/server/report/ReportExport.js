@@ -61,8 +61,7 @@ Meteor.Router.add("/StatusReport",'GET',function(){
 
 //时段对比报告
 //time1 :the first time, split start time and end time wiht ','  
-//对比报告 localhost:3000/TimeContrastReport
-//	?mid=1.174.10.1,1.168.2&t1=20131208000000,20131209000000&t2=20131209000000,20131210000000&type=day
+//对比报告 http://localhost:3000/TimeContrastReport?mid=1.174.10.1&t1=20131208000000,20131209000000&t2=20131209000000,20131210000000&type=day
 																						 //mouth,weeks
 Meteor.Router.add("/TimeContrastReport",'GET',function(){
 	var mid = this.request.query.mid;
@@ -73,11 +72,9 @@ Meteor.Router.add("/TimeContrastReport",'GET',function(){
 	var st2 =  coverTime(t2[0]);
 	var et2 =  coverTime(t2[1]);
 	var type = this.request.query.type;
-	DrawTimeContrastReport.export(mid,[st1,et1,st2,et2],type);
-	return ;
   	return [200,
     	{
        		'Content-type': 'text/html',
        		'Content-Disposition': "attachment; filename=contrast_report.html"
-    	},new Buffer(TimeContrastReport.export(mid,[st1,et1,st2,et2]))];
+    	},new Buffer(DrawTimeContrastReport.export(mid,[st1,et1,st2,et2],type))];
 })
