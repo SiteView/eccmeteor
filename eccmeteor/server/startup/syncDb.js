@@ -15,13 +15,13 @@ SysncDb =  {
 				}
 			);
 	},
-	removeGroupByIds : function (id,arr){
+	removeSubGroupByIds : function (id,arr){
 		Svse.update(
 				{ sv_id: id},
 				{ $pullAll: { subgroup: arr  } },
 				function(err){
 					if(!err) return;
-					Log4js.info("removeGroupByIds  SvseTree.update 错误！\n syncDb.js 22 line");
+					Log4js.info("removeSubGroupByIds  SvseTree.update 错误！\n syncDb.js 22 line");
 					Log4js.info(err,-1);
 				}
 			);
@@ -32,7 +32,7 @@ SysncDb =  {
 				{$set:{has_son : false}},
 				function(err){
 					if(!err) return;
-					Log4js.info("removeGroupByIds  SvseTree.update 错误！\n syncDb.js 32 line");
+					Log4js.info("removeSubGroupByIds  SvseTree.update 错误！\n syncDb.js 32 line");
 					Log4js.info(err,-1);
 				}
 			);

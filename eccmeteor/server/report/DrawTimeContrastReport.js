@@ -142,15 +142,63 @@ Object.defineProperty(DrawTimeContrastReport,"drawEmptyLine",{
 	}
 });
 
+//
+Object.defineProperty(DrawTimeContrastReport,"dateFormat",{
+	value:function(type){
+		var format = "";
+		switch(type){
+			case "day" : format = "%H"; break;
+			case "month" : format = "%d";break;
+			case "week" :format = "%w";break;
+			default:format =  "month";
+		}
+		return format;
+	}
+});
+
+Object.defineProperty(DrawTimeContrastReport,"getXcount",{
+	value:function(type){
+		var count = 12;
+		switch(type){
+			case "day" : count = 24; break;
+			case "month" : count = 31;break;
+			case "week" :count = 7;break;
+		}
+		return count;
+	}
+});
+
+Object.defineProperty(DrawTimeContrastReport,"getTimeExtent",{
+	value:function(type,timeArray){
+		var format = "";
+		switch(type){
+		case "day" : format = "%H%M%S"; break;
+		case "month" : format = "%d%H%M%S";break;
+		case "week" :format = "%w";break;
+		default:format =  "month";
+		}
+		var f = d3.time.format(format);
+		var startTime = f.parse(f(timeArray[0]));
+		var endTime = f.parse(f(timeArray[1]));
+		return [startTime,endTime];
+	}
+});
+
 
 //画图
 Object.defineProperty(DrawTimeContrastReport,"drawLine",{
-	value:function(window,originalData,timeArray,type){
+	value:function(window,dataArray,timeArray,type){
+		var originalData = dataArray[0];
+		var data1 =  dataArray[1].data;
 		var data = originalData.data ; //画图数据数组
+		if(originalData.drawimage !== "1"){
+			return;
+		}
+		/*
 		if(data.length === 0){
 			this.drawEmptyLine(window,originalData,startTime,endTime);
 			return;
-		}
+		}*/
 		var Xcoordinate =  "time"; //X坐标的属性
 		var Ycoordinate = "date";//Y坐标的属性
 		var label = originalData.lable;
@@ -158,15 +206,14 @@ Object.defineProperty(DrawTimeContrastReport,"drawLine",{
 		var height = 450;
 		//判断时间间隔 大于2天
 		//formate Date 
-		var dateformate = "";
-		switch(type){
-			case:"day":dateformate="%H";
-		}
+		var dateformate = this.dateFormat(type);
 		var isXAxisAction = dateformate.length > 5 ? true : false;//x轴是否需要做变动？
 		var xAxisRotate =   isXAxisAction ? -25 : 0; //x轴 坐标标签旋转角度
 		var xAxisAnchor = "middle";//x轴 坐标标签对齐方式
-		var xAxisTicks  = 12; //x数轴的段数
+		var xAxisTicks  = this.getXcount(type); //x数轴的段数
 		var yAxisTicks  = 12; //y轴的段数
+		
+		var xTimeExtent = this.getTimeExtent(type,timeArray);
 
 		var margin = {
 			top : 20,
@@ -180,7 +227,7 @@ Object.defineProperty(DrawTimeContrastReport,"drawLine",{
 					.attr("class", "moresvg")
 					.append('svg:svg')
 					.attr('width', width)
-					.attr('height', height)
+					.attr('height', height);
 
 		svg.append('g')
 			.attr("transform", "translate("+(margin.left+1)+","+margin.top+ ")")
@@ -191,15 +238,17 @@ Object.defineProperty(DrawTimeContrastReport,"drawLine",{
 			.attr("height",height - margin.top);
 
 		var xScale = d3.time.scale()
-			.domain([startTime,endTime])
+			.domain(xTimeExtent)
 			.range([margin.left, width-margin.left])
 			.nice();
 
-		var yExtent = [originalData.min,originalData.max]
-	//	var yExtent = [0,originalData.max]
+		var yExtent = [+originalData.min,+originalData.max];
+		
 		//判断Y轴方向的所有数据是否相同，如果相同则则设置区间为0-最大，否则取 最小值和最大值区间
 		yExtent = yExtent[0] === yExtent[1] ? [0,yExtent[0]] : yExtent;
-
+		if(yExtent[0] === yExtent[1] && yExtent[0] == 0){
+			yExtent = [0,1];
+		}
 		var yScale = d3.scale.linear()
 			.domain(yExtent)
 			.range([height-margin.top,margin.top])
@@ -223,7 +272,7 @@ Object.defineProperty(DrawTimeContrastReport,"drawLine",{
 	            "stroke-width" : "1px"
        		});
         
-        ExponentialRegression.exp(data,Ycoordinate);
+   //     ExponentialRegression.exp(data,Ycoordinate);
         //曲线计算
 		var line = d3.svg.line()
 			.x(function (d) {
@@ -233,14 +282,7 @@ Object.defineProperty(DrawTimeContrastReport,"drawLine",{
 				return yScale(d[Ycoordinate]);
 			});
 
-		//趋势线
-		var trendLine = d3.svg.line()
-			.x(function (d) {
-				return xScale(d[Xcoordinate]);
-			})
-			.y(function (d) {
-				return yScale(d["_exp_trend"]);
-			});
+
 		//正常曲线
 		svg.append('g')
 			.attr("clip-path", "url(#lineArea)")
@@ -248,14 +290,15 @@ Object.defineProperty(DrawTimeContrastReport,"drawLine",{
 			.datum(data)
 			.attr("class", "line")
 			.attr("d", line);
-		//趋势曲线
+		/**/
+		//对比曲线
 		svg.append('g')
 			.attr("clip-path", "url(#lineArea)")
 			.append("path")
-			.datum(data)
+			.datum(data1)
 			.attr("class", "trendLine")
-			.attr("d", trendLine);
-
+			.attr("d", line);
+		
 		var xAxis = d3.svg.axis()
 			.scale(xScale)
 			.ticks(xAxisTicks)
@@ -300,10 +343,13 @@ Object.defineProperty(DrawTimeContrastReport,"buildTime",{
 Object.defineProperty(DrawTimeContrastReport,"export",{
 	value:function(monitorId,timeArray,type){
 		var records = this.getMonitorRecords(monitorId,timeArray);//获取监视器原始数据
-		var dataProcess = new TimeContrastReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
+		var dataProcess = new TimeContrastReportDataProcess(records,type);//原始数据的基本处理 //客户端服务端通用
 		var tableData = dataProcess.getTableData();
 		var imageData = dataProcess.getImageData();
 		var baseData = dataProcess.getBaseData();
+	//	Log4js.info(imageData);
+	//	return ;
+
 		var nstartTime1 =  Date.str2Date(this.buildTime(timeArray[0]),"yyyy-MM-dd hh-mm-ss");
 		var nendTime1 =  Date.str2Date(this.buildTime(timeArray[1]),"yyyy-MM-dd hh-mm-ss");
 		var nstartTime2 = Date.str2Date(this.buildTime(timeArray[2]),"yyyy-MM-dd hh-mm-ss");
@@ -323,7 +369,6 @@ Object.defineProperty(DrawTimeContrastReport,"export",{
 			}
 		});
 	    Css.addStyle(this._option.CssTemplate,document);//添加css文件
-
 		var window = document.parentWindow;
 		return this.draw(imageData,window,newDate,type);
 		
@@ -334,9 +379,7 @@ Object.defineProperty(DrawTimeContrastReport,"draw",{
 	value:function(imageData,window,timeArray,type){
 		var length = imageData.length;
 		for(var i = 0; i < length; i++){
-			if(imageData[i].drawimage === "1"){
-				this.drawLine(window,imageData[i],timeArray,type);
-			}
+			this.drawLine(window,imageData[i],timeArray,type);
 		}
 		return window.document.innerHTML;
 	}
