@@ -11,7 +11,6 @@
 	无返回值,但是原数组每个对象里将增加i一个属性值，表示它的计算趋势后的值,如people将变为：
 	[{name:"A",age:1,_exp_trend:1.5},{name:"B",age:2,_exp_trend:1.5},...]:
 */
-var d3 = Meteor.require("d3");
 ExponentialRegression = function(){};
 //求平方
 Object.defineProperty(ExponentialRegression,"square",{
@@ -33,6 +32,12 @@ Object.defineProperty(ExponentialRegression,"parse",{
 //重组数组
 Object.defineProperty(ExponentialRegression,"exp",{
 	value:function(Y,primary){
+		if(Meteor.isServer){
+			var d3 = Meteor.require("d3");
+		}
+		if(typeof d3 === "undefined"){
+			throw new Error("d3 can't be found");
+		}
 		var _self  = this;
    		var parse = _self.parse(primary);
 		var n = Y.length;

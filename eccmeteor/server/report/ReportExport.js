@@ -63,7 +63,7 @@ Meteor.Router.add("/StatusReport",'GET',function(){
 //time1 :the first time, split start time and end time wiht ','  
 //Day对比报告 http://localhost:3000/TimeContrastReport?mid=1.23.4.1&t1=20131215000000,20131215235959&t2=20131216000000,20131216235959&type=day
 //Month  http://localhost:3000/TimeContrastReport?mid=1.23.4.1&t1=20131101000000,20131130235959&t2=20131201000000,20131230235959&type=month
-//weeks  http://localhost:3000/TimeContrastReport?mid=1.23.4.1&t1=20131215000000,20131215235959&t2=20131216000000,20131216235959&type=weeks
+//weeks  http://localhost:3000/TimeContrastReport?mid=1.23.4.1&t1=20131201000000,20131207000000&t2=20131215000000,20131221000000&type=weeks
 Meteor.Router.add("/TimeContrastReport",'GET',function(){
 	var mid = this.request.query.mid;
 	var t1 = this.request.query.t1.split('\,');

@@ -10,12 +10,6 @@ Object.defineProperty(DrawContrastReport,"_option",{
 	writable:true
 })
 
-Object.defineProperty(DrawContrastReport,"getPrimaryKey",{
-	value:function(monitorId){
-		return SvseMonitorTemplateDaoOnServer.getReportDataPrimaryKey(monitorId);
-	}
-});
-
 //获取相关数据
 Object.defineProperty(DrawContrastReport,"getMonitorRecords",{
 	value:function(monitorId,startTime,endTime){
