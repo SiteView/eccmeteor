@@ -14,17 +14,20 @@
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+
 /*
 	Type：add
 	Author：xuqiang
 	Date:2013-12-19 11:20
 	Content:增加了画图的样式
 */ 
+
 .trendLine {
   fill: none;
   stroke: green;
   stroke-width: 1.5px;
 }
+
 .moresvg{
   margin: 20px;
 }

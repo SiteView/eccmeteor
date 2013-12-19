@@ -7,7 +7,8 @@ SvseSysLogDaoOnServer = {
 	},
 	//删除系统日志
 	"DeleteRecordsByIds":function(ids){
-		var log = ids.join();
+		var log = ids.split(",")
+		//var log = ids.join()
 		var result = SvseMethodsOnServer.svDeleteSysLogInitFilesection(log);
 		if(!result){
 			var msg = "SvseSysLogDaoOnServer's DeleteRecordsByIds"+ids+" faild";
@@ -54,5 +55,17 @@ SvseSysLogDaoOnServer = {
 			// throw new Meteor.Error(500,msg);
 		// }
 		// return SvseSysLogDaoOnServer.getReturn(true);
-	// }
+	// },
+	
+	//获取查询日志的数据记录
+	"getQuerySysLog" : function(beginDate,endDate,syslogQueryCondition){
+		var result = SvseMethodsOnServer.svGetQuerySysLog(beginDate,endDate,syslogQueryCondition);
+		if(!result){
+			console.log("error");
+			throw new Meteor.Error(500,"SvseSysLogDaoOnServer.getQuerySysLog failed");
+		}
+		//console.log("resultde");
+		//console.log(result);
+		return result;
+	}
 }

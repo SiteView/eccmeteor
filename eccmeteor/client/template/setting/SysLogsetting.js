@@ -25,9 +25,6 @@ Template.SysLogsetting.events={
 
 		//设备参数设置重新获取
 		"click #SysLogsettingEntityrecoverbtn":function(){
-				 
-		
-				
 				Meteor.call("svGetSysLogQueryContEntityConfigSetting",function(err,Entity){
 				console.log("成功-------！");
 					console.log(Entity["Facility"]);
@@ -131,7 +128,7 @@ Template.SysLogsetting.events={
 			});
 		},
 		//系统日志的删除事件
-			"click #dellogbtn":function(){
+			"click #delsyslogbtn":function(){
 			var id = "syslog";
 			var endPicker = $('#delDatebox').data('datetimepicker');
 			
@@ -205,5 +202,44 @@ Template.SysLogsetting.rendered = function(){
 				if(!KeepDay) return;
 					$("#keepforday :text[name='KeepDay']").val(KeepDay["KeepDay"]);
 
-					 });				 
+					 });
+			
+	/*$(function(){
+		//在点击删除操作时弹出提示框实现进一步提示
+		$("#delsyslogbtn").confirm({
+			'message':"确定删除操作？",
+			'action':function(){
+				/*var ids = getEmailSelectAll();
+				console.log(ids);
+				SvseEmailDao.checkEmailSelect(ids);
+				if(ids.length){
+					//在删除之前要先判断报警规则中有没有正在使用的邮件，如果有，则不能删除
+					ids = getEmailNameOfAlertUsing(ids);
+					console.log(ids);
+					if(ids == "") return;
+					SvseEmailDao.deleteEmailAddressByIds(ids,function(result){
+						console.log(result);
+					});
+					//console.log("确定");
+				}
+				$("#delemailsetting").confirm("hide");*/
+				/*var id = "syslog";
+				var endPicker = $('#delDatebox').data('datetimepicker');
+				
+				var endTime = endPicker.getDate();
+				var endDate = ClientUtils.dateToObject(endPicker.getDate());
+				console.log(endDate);
+				console.log("#######################");
+				SvseSysLogDao.DeleteRecordsByIds(id,endDate,function(result){
+				if(!result){
+						console.log("error");
+						return;
+					}
+					console.log(result);
+				  console.log("删除指定时间之前的日志！");
+				});
+				$("#delsyslogbtn").confirm("hide");	
+				}
+		});				
+	});*/
 }

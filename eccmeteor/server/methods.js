@@ -183,6 +183,13 @@ SvseMethodsOnServer = {
 	"svDeleteSysLogInitFilesection":svDeleteSysLogInitFilesection,
 	"svDeleteTaskIniFileSection":svDeleteTaskIniFileSection,
 	"svEmailTest":svEmailTest,
+	"svGetQuerySysLog":svGetQuerySysLog,
+	/*
+	Type： add
+	Author：renjie
+	Date:2013-12-2 14:40
+	Content:增加 syslog 查询
+*/
 }
 
 SvseSyncData = {
