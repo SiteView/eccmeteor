@@ -34,6 +34,8 @@ Object.defineProperty(ExponentialRegression,"exp",{
 	value:function(Y,primary){
 		if(Meteor.isServer){
 			var d3 = Meteor.require("d3");
+		}else{
+			var d3 = window.d3;
 		}
 		if(typeof d3 === "undefined"){
 			throw new Error("d3 can't be found");
@@ -73,4 +75,4 @@ Object.defineProperty(ExponentialRegression,"exp",{
 		});
 		return y_fit;
 	}
-})
+});

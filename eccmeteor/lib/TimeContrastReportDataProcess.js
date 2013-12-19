@@ -6,32 +6,38 @@ TimeContrastReportDataProcess = function(data,type){
 	this.tableData = [];
 	this.imageData = [];
 	this.baseData = {};
-	this._format = "";
-	this.setFormat(type);
-	this.format = this.getFormat();
+	this._type = type;
 	this.analysis(data);
 };
 
-TimeContrastReportDataProcess.prototype.setFormat = function(type){
+TimeContrastReportDataProcess.prototype.covertTime = function(dateStr){
+	var newDate = Date.str2Date(dateStr,"yyyy-MM-dd hh:mm:ss");
+	var type = this._type;
 	var format = "";
 	switch(type){
 		case "day" : format = "%H%M%S"; break;
 		case "month" : format = "%d%H%M%S";break;
-		case "week" :format = "%w";break;
-		default:format =  "month";
+		case "weeks" :format = "%w";break;
+		default:format =  "%d%H%M%S";
 	}
-	this._format = format;
-}
-
-TimeContrastReportDataProcess.prototype.getFormat = function(){
+	var d3 = null;
 	if(Meteor.isServer){
-		var d3 = Meteor.require("d3");
+		d3 = Meteor.require("d3");
+	}else{
+		d3 = window.d3;
 	}
 	if(typeof(d3) === "undefined"){
 		throw new Error("d3 is not found");
 	}
-	return d3.time.format(this._format);
+	var fm = d3.time.format(format);
+	if(type !== "weeks"){
+		return fm.parse(fm(newDate));
+	}
+	var week = fm(newDate);
+
+
 }
+
 
 //拆分数据
 TimeContrastReportDataProcess.prototype.analysis = function(data){
@@ -83,7 +89,6 @@ TimeContrastReportDataProcess.prototype.getNewData  = function(item){
     
     //状态统计
     var status = {};
-    var format = this.format;
 	for(var i = 0 ; i < length ; i++){
 		//2013-12-08 08:26:54=200
 		if(records[i]===""){
@@ -94,22 +99,12 @@ TimeContrastReportDataProcess.prototype.getNewData  = function(item){
 			this.dealWithStatusData(status,record[1]);//处理当前的状态
 			continue;
 		}
-		/*
-			console.log(record[0]);
-			console.log(Date.str2Date(record[0],"yyyy-MM-dd hh:mm:ss"));
-			console.log(format(Date.str2Date(record[0],"yyyy-MM-dd hh:mm:ss")));
-			console.log(format.parse(format(Date.str2Date(record[0],"yyyy-MM-dd hh:mm:ss"))));
-			console.log(newTime.getHours())
-			console.log("====");
-		*/
-		//console.log(record[0]);
-		var newTime = format.parse(format(Date.str2Date(record[0],"yyyy-MM-dd hh:mm:ss")))
+		var newTime = this.covertTime(record[0]);
 		newRecords.push({
 			time:newTime,
 			data:+record[1]
 		});
 	}
-	//console.log("====");
 	return {
 		data:newRecords,
 		max:item.max,

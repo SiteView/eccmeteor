@@ -142,10 +142,23 @@ Object.defineProperty(DrawTimeContrastReport,"dateFormat",{
 		switch(type){
 			case "day" : format = "%H"; break;
 			case "month" : format = "%d";break;
-			case "week" :format = "%w";break;
-			default:format =  "month";
+			case "weeks" :format = "%w";break;
+			default:format =   "%d";
 		}
-		return format;
+		//return format;
+		
+		if(type === "weeks"){
+			var dateformat = function(date){
+				var f = d3.time.format("%w");
+				var week = f(date);
+				//should be defined I18N
+				var d1 = ["星期日" ,"星期一" ,"星期二", "星期三", "星期四", "星期五" ,"星期六"];
+				return d1[week];
+			}
+			return dateformat;
+		}
+
+		return d3.time.format(format)
 	}
 });
 
@@ -155,7 +168,7 @@ Object.defineProperty(DrawTimeContrastReport,"getXcount",{
 		switch(type){
 			case "day" : count = 24; break;
 			case "month" : count = 15;break;
-			case "week" :count = 7;break;
+			case "weeks" :count = 7;break;
 		}
 		return count;
 	}
@@ -167,7 +180,7 @@ Object.defineProperty(DrawTimeContrastReport,"getTimeExtent",{
 		switch(type){
 		case "day" : format = "%H%M%S"; break;
 		case "month" : format = "%d%H%M%S";break;
-		case "week" :format = "%w";break;
+		case "weeks" :format = "%w";break;
 		default:format =  "month";
 		}
 		var f = d3.time.format(format);
@@ -302,7 +315,7 @@ Object.defineProperty(DrawTimeContrastReport,"drawLine",{
 			.scale(xScale)
 			.ticks(xAxisTicks)
 			.orient("bottom")
-			.tickFormat(d3.time.format(dateformate));//"%H:%M"this.dateformate
+			.tickFormat(dateformate);//"%H:%M"this.dateformate
 			
 		var yAxis = d3.svg.axis()
 			.scale(yScale)
