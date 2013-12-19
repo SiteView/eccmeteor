@@ -268,6 +268,24 @@ svGetReportDataByFilter = function(monitorId,beginDate,endDate,filter){
 	return fmap;
 };
 
+//小报告的数据
+svGetReportDataByCount = function(monitorId,byCount){
+	var robj = process.sv_univ({
+		'dowhat':'QueryReportData',
+		id:monitorId,
+		dstrStatusNoNeed:null,
+		byCount:byCount
+	}, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	var fmap = robj.fmap(0);
+	return fmap;
+};
+
+
 //获取监视器模板
 svGetMonitorTemplet = function(id){
 	var dowhat ={'dowhat':'GetMonitorTemplet',id:id};

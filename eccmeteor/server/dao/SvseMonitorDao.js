@@ -120,4 +120,11 @@ Object.defineProperty(SvseMonitorDaoOnServer,"getMonitorReportDataByfilter",{
 	value:function(monitorId,beginDate,endDate,filter){
 		return SvseMethodsOnServer.svGetReportDataByFilter(monitorId,beginDate,endDate,filter);
 	}
-})
+});
+
+/*获取小报告数据*/
+Object.defineProperty(SvseMonitorDaoOnServer,"getMonitorReportDataByCount",{
+	value:function(monitorId,count){
+		return SvseMethodsOnServer.svGetReportDataByCount(monitorId,count);
+	}
+});
