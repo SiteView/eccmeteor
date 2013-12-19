@@ -54,8 +54,31 @@ Template.messagesetting.events={
 		});
 	},
 	//模板设置
-	"click #messagetemplatesetting" : function(){
- 
+	"click #smsmessagetemplatesetting" : function(){
+		//$("#messageTemplateSettingDiv").modal("show");
+		SvseMessageDao.getMessageTemplates(function(err,result){
+			console.log(result);
+			var messageTemplate = [];
+			var defaulttemplate = {};
+			for(index in result){
+				var temp = {};
+				//console.log(index);
+				//console.log(result[index]);
+				temp["name"] = index;
+				temp["context"] = result[index];
+				console.log(temp);
+				messageTemplate.push(temp);
+				if(index == "Default"){
+					defaulttemplate = temp;
+				}
+				//console.log(messageTemplate);
+				
+			}
+			console.log(messageTemplate);
+			console.log(defaulttemplate);
+			var context = {Template:messageTemplate,showTemplate:defaulttemplate};
+			RenderTemplate.showParents("#messageTemplateSettingDiv","messagetemplatesetting",context);
+		});
 	},
 	//帮助
 	"click #messagehelpmessage" : function(){

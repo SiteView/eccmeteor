@@ -3,8 +3,67 @@ var getstatusStatisticalSelectAll = function(){
 }
 
 Template.statusStatisticalform.events = {
-  
-	"click #select":function(e){
+	"click #sel1":function(){
+		var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+		var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+		var beginDate = startPicker.getDate();
+		var endDate = endPicker.getDate();
+		
+		var startTime = ClientUtils.dateToObject(startPicker.getDate());
+		var endTime = ClientUtils.dateToObject(endPicker.getDate());
+		console.log("#############################");
+		console.log(startTime);
+		console.log(endTime);
+		console.log("#######################");
+		
+		
+		/* var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_status");
+		var nodes = treeObj.getSelectedNodes();
+		console.log(nodes); 
+		if(!nodes || nodes == ""){
+			Message.info("请选择监测器");
+			return;
+		}
+		var arr = $.fn.zTree.getZTreeObj("svse_tree_check_status").getNodesByFilter(function(node){return (node.type === "monitor")});
+		var flag = false;
+		for(index in arr){
+			if(nodes == arr[index].id){
+				flag = true;	
+			}
+		}
+		if(flag){
+			drawTable(nodes);
+		}else{
+			Message.info("请选择监测器");
+			return;
+		} */
+		
+		
+		var monitorId = "1.27.1.1";
+		DrawStatusReport.getData(monitorId,startTime,endTime,function(result){
+			var records = result.content;
+			console.log(records);
+			var dataProcess = new StatusReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
+			var imageData = dataProcess.getImageData();
+			var baseData = dataProcess.getBaseData();
+			// console.log(imageData);
+			// console.log(baseData);
+			
+			console.log(imageData.percent);
+			console.log(imageData.statusList);
+			var renderObj = {
+				baseDate:baseData,
+				startTime:DrawStatusReport.buildTime(startTime),
+				endTime:DrawStatusReport.buildTime(endTime),
+				tableData:imageData.percent,
+				statusList:imageData.statusList
+			};
+			RenderTemplate.renderIn("#statusStatisticallistDiv","statusStatisticallist",renderObj);
+			DrawStatusReport.drawStatusBarChart(imageData.chart);
+			DrawStatusReport.drawStatusPie(imageData.pie);
+		});
+	}
+	/* "click #select":function(e){
 		
 		var methodsendforweb = ClientUtils.formArrayToObject($("#methodsendforweb").serializeArray());
 		console.log(methodsendforweb);
@@ -13,7 +72,7 @@ Template.statusStatisticalform.events = {
 			console.log("成功！");
 		});
 		  console.log("54545llllll");
-	},
+	}, */
 	/*"click #messagewarner":function(e){
 		$('#messagewarnerdiv').modal('show');
 	},
@@ -308,6 +367,52 @@ document.onmouseup = up;
 }
 }
 
+var drawTable = function(monitorId){
+	var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+	var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+	var beginDate = startPicker.getDate();
+	var endDate = endPicker.getDate();
+	
+	var startTime = ClientUtils.dateToObject(startPicker.getDate());
+	var endTime = ClientUtils.dateToObject(endPicker.getDate());
+	console.log("#############################");
+	console.log(startTime);
+	console.log(endTime);
+	console.log("#######################");
+	
+	/* var arr = $.fn.zTree.getZTreeObj("svse_tree_check_status").getNodesByFilter(function(node){return (node.type === "monitor")});
+	for(index in arr){
+		//ids.push(arr[index].id);
+		console.log(arr[index].id);
+	}
+	var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_status");
+	var nodes = treeObj.getSelectedNodes();
+	console.log(nodes); */
+	
+	//var monitorId = "1.27.1.1";
+	DrawStatusReport.getData(monitorId,startTime,endTime,function(result){
+		var records = result.content;
+		console.log(records);
+		var dataProcess = new StatusReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
+		var imageData = dataProcess.getImageData();
+		var baseData = dataProcess.getBaseData();
+		// console.log(imageData);
+		// console.log(baseData);
+		
+		console.log(imageData.percent);
+		console.log(imageData.statusList);
+		var renderObj = {
+			baseDate:baseData,
+			startTime:DrawStatusReport.buildTime(startTime),
+			endTime:DrawStatusReport.buildTime(endTime),
+			tableData:imageData.percent,
+			statusList:imageData.statusList
+		};
+		RenderTemplate.renderIn("#statusStatisticallistDiv","statusStatisticallist",renderObj);
+		DrawStatusReport.drawStatusBarChart(imageData.chart);
+		DrawStatusReport.drawStatusPie(imageData.pie);
+	});
+}
 
 
 Template.statusStatistical.rendered = function(){
@@ -327,49 +432,56 @@ Template.statusStatistical.rendered = function(){
 					pIdKey: "pId",
 					rootPId: "0",
 				}
+			},
+			callback:{
+				onClick:function(event,treeId,treeNode){
+					console.log(treeNode.id);
+					var arr = $.fn.zTree.getZTreeObj("svse_tree_check_status").getNodesByFilter(function(node){return (node.type === "monitor")});
+					var flag = false;
+					for(index in arr){
+						//console.log(arr[index].id);
+						if(treeNode.id == arr[index].id){
+							flag = true;	
+						}
+					}
+					if(flag){
+						drawTable(treeNode.id);
+					}else{
+						Message.info("请选择监测器");
+						return;
+					}
+				}
 			}
 		};
-		$.fn.zTree.init($("#svse_tree_check"), setting, data);
+		$.fn.zTree.init($("#svse_tree_check_status"), setting, data);
 	});
-	/*$(".form_datetime").datetimepicker({
-        format: "dd-MM-yyyy hh:mm",
-        autoclose: true,
-        todayBtn: true,
-		language: 'en',  
-        pickDate: true,  
-        pickTime: true,  
-        hourStep: 1, 
-        minuteStep: 15,  
-        secondStep: 30,  
-        inputMask: true 
-        //pickerPosition: "bottom-left"
-    });*/
+	
 	var template = this;
-        $(function() { //初始化日期选择器
-                var endDate = new Date();
-                var startDate = new Date();
-                startDate.setTime(startDate.getTime() - 1000*60*60*24);
-                $(template.find("#datetimepickerStartDate")).datetimepicker({
-                        format: 'yyyy-MM-dd hh:mm:ss',
-                        language: 'zh-CN',
-                        maskInput: false
-                });
-                $(template.find("#datetimepickerEndDate")).datetimepicker({
-                        format: 'yyyy-MM-dd hh:mm:ss',
-                        language: 'zh-CN',
-                        endDate : endDate,
-                        maskInput: false,
-                });
-                var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
-                var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
-                startPicker.setDate(startDate);
-                endPicker.setDate(endDate);
-//                $('#AlertdatetimepickerStartDate').on('changeDate', function(e) {
-//                        endPicker.setstartDate(e.date);
-//                });
-//                $('#AlertdatetimepickerEndDate').on('changeDate', function(e) {
-//                        startPicker.setEndDate(e.date);
-//                });
-});
+	$(function() { //初始化日期选择器
+			var endDate = new Date();
+			var startDate = new Date();
+			startDate.setTime(startDate.getTime() - 1000*60*60*24);
+			$(template.find("#datetimepickerStartDate")).datetimepicker({
+					format: 'yyyy-MM-dd hh:mm:ss',
+					language: 'zh-CN',
+					maskInput: false
+			});
+			$(template.find("#datetimepickerEndDate")).datetimepicker({
+					format: 'yyyy-MM-dd hh:mm:ss',
+					language: 'zh-CN',
+					endDate : endDate,
+					maskInput: false,
+			});
+			var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
+			var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
+			startPicker.setDate(startDate);
+			endPicker.setDate(endDate);
+			// $('#AlertdatetimepickerStartDate').on('changeDate', function(e) {
+				// endPicker.setstartDate(e.date);
+			// });
+			// $('#AlertdatetimepickerEndDate').on('changeDate', function(e) {
+				// startPicker.setEndDate(e.date);
+			// });
+	});
 
 }

@@ -1,257 +1,183 @@
 <Template name="statusStatistical">
-		<div id="statusStatisticaldiv"
-			data-backdrop="true" data-keyboard="true" data-show="false" 
-			data-width="800" data-modalOverflow="true">
-		  <div class="modal-body">
+	<div id="statusStatisticaldiv"
+		data-backdrop="true" data-keyboard="true" data-show="false" 
+		data-width="800" data-modalOverflow="true">
+		<div class="modal-body">
 			<div class="row-fluid">
-			  <div class="span4" style="overflow:auto" id="treeDemo">
-				<label class="label label-info">状态统计报告</label>
-				<ul id="svse_tree_check" class="ztree">
-				</ul>
-			  </div>
-			  <div class="span8"> 
-			  {{> statusStatisticalform}}
-			  {{> statusStatisticallist}} 
-			  </div>
+				<div class="span3" style="overflow:auto" id="treeDemo">
+					<label class="label label-info">状态统计报告</label>
+					<ul id="svse_tree_check_status" class="ztree">
+					</ul>
+				</div>
+				<div class="span9"> 
+				  {{> statusStatisticalform}}
+				  <div id="statusStatisticallistDiv"></div>
+				 
+				</div>
 			</div>
-		  </div>
 		</div>
+	</div>
 </Template>	
 
 <Template name="statusStatisticalform">
-		<div class="tabbable">
-				<ul class="nav nav-tabs">
-					   <li class="active"><a href="#1" data-toggle="tab">查询</a></li>
-				</ul>
-		</div>
-		<div class="accordion-group">
-				<a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"> 查询条件 </a>
-		<div class="panel-group" id="accordion"> </div>
-				<div id="collapseOne" class="panel-collapse collapse in">
-				<form class="well form-horizontal form-inline" onsubmit="return false;>
-						 <fieldset>
-							<div>
-								<div class="well">
-						  <div class="form-inline">
-									<span>{{language.startTime}}:</span>
-									<div id="datetimepickerStartDate" class="input-append date">
-									  <input type="text" readOnly="readonly" />
-									  <span class="add-on">
+	<div class="tabbable">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#1" data-toggle="tab">查询</a></li>
+		</ul>
+	</div>
+	<div class="accordion-group">
+		<a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"> 查询条件 </a>
+	<div class="panel-group" id="accordion"> </div>
+		<div id="collapseOne" class="panel-collapse collapse in">
+			<form class="well form-horizontal form-inline" onsubmit="return false;">
+				<fieldset>
+					<div>
+						<div class="well">
+							<div class="form-inline">
+								<span>{{language.startTime}}:</span>
+								<div id="datetimepickerStartDate" class="input-append date">
+									<input type="text" readOnly="readonly" />
+									<span class="add-on">
 										<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-									  </span>
-									</div>
-								<br>
-									<span>{{language.endTime}}:</span>
-									<div id="datetimepickerEndDate" class="input-append date">
-									  <input type="text" readOnly="readonly"/>
-									  <span class="add-on">
+									</span>
+								</div>
+								<br/><br/>
+								<span>{{language.endTime}}:</span>
+								<div id="datetimepickerEndDate" class="input-append date">
+									<input type="text" readOnly="readonly"/>
+									<span class="add-on">
 										<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-									  </span>
-									</div>
-									<div>
-									</div>
-									<div class="control-group">
-										<label class="control-label"></label>
-										<button id="sel1" class="btn">查询</button>
-										<button id="sel2" class="btn">导出报表</button>
-										<button id="sel3" class="btn">帮助</button>
-									</div>
+									</span>
+								</div>
+								<div>
+								</div>
+								<div class="control-group">
+									<label class="control-label"></label>
+									<button id="sel1" class="btn">查询</button>
+									<button id="sel2" class="btn">导出报表</button>
+									<button id="sel3" class="btn">帮助</button>
+								</div>
 							</div>
 
 						</div>
 					</div>
-				  </fieldset>
-				</form>
-			</div>
+				</fieldset>
+			</form>
 		</div>
-  <!--<div id="statusStatisticalform" class="well form-horizontal form-inline">
-		
-		<div class="label label-info">查询条件</div>
-		 <div class="control-group" id="form_datetime">
-            <label class="control-label">开始时间:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                 <div class="input-append date form_datetime">
-                     <input size="10" type="text" value="">
-                    <span class="add-on"><i class="icon-th"></i></span>
-                    </div>
-                </div>
-          <div class="control-group" id="form_datetimes" >
-             <label class="control-label">结束时间:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-               <div class="input-append date form_datetime1">
-                     <input size="10" type="text" value="" readonly name="">
-                    <span class="add-on"><i class="icon-th"></i></span>
-                    </div>
-               </div>
-						
-     <div class="btn-toolbar">
-		<div class="btn-group">
-			<button class="btn" id="select">查询</button>
-			</div>
-	    <div class="btn-group">
-			<button class="btn" id="topNofdel">导出报表</button>
-		     </div>
-		<div class="btn-group">
-			<button class="btn" id="allowetopN">{{language.helpmessagebtn}}</button>
-		</div>
-	</div>	
-	</div>-->
+	</div>
+
 </Template>
 
-<Template name="statusStatisticallist">
+<!-- <Template name="statusStatisticallist">
 	<div style="overflow-y: auto; left: 0px;height: 250px;">
-  <div class="accordion-group"> <a> 状态列表 </a>
-        <div>
-      <table class="table table-striped table-condensed table-hover">
-            <thead>
-          <tr></tr>
-          <tr>
-                <th>时间</th>
-                <th>状态</th>
-                <th>持续次数</th>
-                <th>持续时间</th>
-                <th></th>
-              </tr>
-        </thead>
-            <tbody id="warnerrulelist">
-        
-            {{#each rulelist}}
-            <tr></tr>
-            <tr>
-          <td>{{time}}</td>
-          <td>{{status}}</td>
-          <td>{{count}}</td>
-          <td>{{AlertState}}</td>
-          <td><div class="btn-group">
-              <button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-            </div></td>
-        </tr>
-            {{/each}}
-            </tbody>
-            
-          </table>
-    </div>
-      </div>
-  <div class="accordion-group"> <a> 状态分布图 </a>
-        <div>
-      <table class="table table-striped table-condensed table-hover">
-            <thead>
-          <tr></tr>
-          <tr>
-                <td></td>
-                <td></td>
-              </tr>
-          <tr>
-                <div><img id="z_os_5t3" z.type="zul.widget.Img" style="width:1%;" src="imag/status/ok.png"></div>
-              </tr>
-        </thead>
-          </table>
-    </div>
-      </div>
-  <!--<div><table class="table table-striped table-condensed table-hover">
-		<thead>
-			<tr></tr>
-			<tr>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody id="warnerrulelist">
-			{{#each rulelist}}
-			<tr>
-				<td><input type="checkbox" id="{{nIndex}}"/></td>
-				<td>{{AlertName}}</td>
-				<td>{{AlertType}}</td>
-				<td>{{AlertCategory}}</td>
-				<td>{{AlertState}}</td>
-				<td>
-					<div class="btn-group">
-						<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-					</div>
-				</td>
-			</tr>
-			{{/each}}
-		</tbody>
-	</table>
-</div>-->
-  <div class="accordion-group"> <a>状态统计列表</a>
-        <div>
-      <table class="table table-striped table-condensed table-hover">
-            <thead>
-          <tr></tr>
-          <tr>
-                <th> <img src="imag/status/ok.png"> <a title="ok">正常</a> </th>
-                <th> <img src="imag/status/warning.png"> <a title="warning">危险</a> </th>
-                <th> <img src="imag/status/bad.png"> <a title="error">错误</a> </th>
-                <th> <img src="imag/status/disable.png"> <a title="disable">禁止</a> </th>
-                <th> <img src="imag/status/error.png"> <a title="no">无检测数据</a> </th>
-                <th></th>
-              </tr>
-        </thead>
-            <tbody id="warnerrulelist">
-          <tr></tr>
-          <tr>
-                <td></td>
-                <td>{{ok}}</td>
-                <td>{{warning}}</td>
-                <td>{{error}}</td>
-                <td>{{disable}}</td>
-                <td>{{no}}</td>
-                <td></td>
-              </tr>
-        </tbody>
-          </table>
-    </div>
-      </div>
-  <div class="accordion-group"> <a>状态统计图</a> 
-        <!--<div><table class="table table-striped table-condensed table-hover">
-		<thead>
-			<tr>
-			<td></td>
-			<td></td>
-			</tr>
-			<tr><div></div></tr>
-		</thead>
-	</table>
-</div>-->
-        <div>
-      <table class="table table-striped table-condensed table-hover">
-            <!--<thead>
-			<tr></tr>
-			<tr>
-				<th>5555</th>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody id="warnerrulelist">
-			{{#each rulelist}}
-			<tr>
-				<td><input type="checkbox" id="{{nIndex}}"/></td>
-				<td>{{AlertName}}</td>
-				<td>{{AlertType}}</td>
-				<td>{{AlertCategory}}</td>
-				<td>{{AlertState}}</td>
-				<td>
-					<div class="btn-group">
-						<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
-					</div>
-				</td>
-			</tr>
-			{{/each}}
-		</tbody>-->
-            <div>
-          <thead>
-                <tr></tr>
-              </thead>
-          <img id="z_os_5t3" z.type="zul.widget.Img" style="width:100%;" src="imag/status/ok.png"></div>
-          </table>
-    </div>
-      </div>
-</div>
+		<div class="accordion-group"> <a> 状态列表 </a>
+			
+				<table class="table table-striped table-condensed table-hover">
+					<thead>
+						<tr>
+							<th>时间</th>
+							<th>状态</th>
+							<th>持续次数</th>
+							<th>持续时间</th>
+						</tr>
+					</thead>
+					<tbody id="statusList">
+						{{#each statusList}}
+						<tr>
+							<td>{{startTime}}</td>
+							<td>{{flag}}</td>
+							<td>{{count}}</td>
+							<td>{{difference}}</td>
+						</tr>
+						{{/each}}
+					</tbody>
+					
+				</table>
+			
+		</div>
+	</div>
+</Template> -->
+
+<Template name="statusStatisticallist">
+	<div style="overflow-y: auto; left: 0px;height: 500px;">
+		<div class="accordion-group"> <a> 状态列表 </a>
+			<div>
+				<table class="table table-striped table-condensed table-hover">
+					<thead>
+						<tr></tr>
+						<tr>
+							<th>时间</th>
+							<th>状态</th>
+							<th>持续次数</th>
+							<th>持续时间</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody id="statusList">
+						{{#each statusList}}
+						<tr>
+							<td>{{startTime}}</td>
+							<td>{{flag}}</td>
+							<td>{{count}}</td>
+							<td>{{difference}}</td>
+						</tr>
+						{{/each}}
+					</tbody>
+					
+				</table>
+			</div>
+		</div>
+		
+		<div class="accordion-group"> <a> 状态分布图 </a>
+			<table class="table table-hover table-condensed">
+				<tr>
+					<td align="left">{{startTime}}</td>
+					<td align="right">{{endTime}}</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<div id="statisticalList"></div>
+					</td>
+					
+				</tr>
+			</table>
+			
+			
+			
+		</div>
+
+		<div class="accordion-group"> <a>状态统计列表</a>
+			<div>
+				<table class="table table-striped table-condensed table-hover">
+					<thead>
+						
+						<tr>
+							<th> <img src="imag/status/ok.png"> <a title="ok">正常</a> </th>
+							<th> <img src="imag/status/warning.png"> <a title="warning">危险</a> </th>
+							<th> <img src="imag/status/bad.png"> <a title="error">错误</a> </th>
+							<th> <img src="imag/status/disable.png"> <a title="disable">禁止</a> </th>
+							<th> <img src="imag/status/error.png"> <a title="no">无检测数据</a> </th>
+							
+						</tr>
+					</thead>
+					<tbody id="statusStatisticallist">
+						{{#with tableData}}
+						<tr>
+							<td>{{okPercent}}%</td>
+							<td>{{warnPercent}}%</td>
+							<td>{{errorPercent}}%</td>
+							<td>{{disbalePercent}}%</td>
+							<td>{{badPercent}}%</td>
+						</tr>
+						{{/with}}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<div class="accordion-group"> <a>状态统计图</a> 
+			<div id="statistical"></div>
+		</div>
+	
+	</div>
 </Template>

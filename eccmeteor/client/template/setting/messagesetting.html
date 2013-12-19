@@ -6,7 +6,8 @@
 {{> sendingmessagemethods}}
 {{> messagebasicsettingofadd}}
 {{> editmessagebasicsetting}}
-{{> confirmTipModal}}
+
+<div id="messageTemplateSettingDiv"></div>
 {{ide messagesetting}}
 </Template>
 
@@ -21,13 +22,21 @@
 		<div class="btn-group">
 			<button class="btn" id="allowmessagesetting">{{language.allowbtn}}</button>
 			<button class="btn" id="forbidmessagesetting">{{language.forbidbtn}}</button>
+			<button class="btn dropdown-toggle" data-toggle="dropdown">{{language.templatesettiongbtn}}
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu pull-right">	
+				<li><a href="#" id="smsmessagetemplatesetting">短信模板设置</a></li>
+				<li><a href="#" id="webmessagetemplatesetting">Web短信模板设置</a></li>
+			</ul>
+		</div>
+		<div class="btn-group">
 			<button class="btn">更多</button>
 			<button class="btn dropdown-toggle" data-toggle="dropdown">
 				<span class="caret"></span>
 			</button>
-			<ul class="dropdown-menu pull-right">	
+			<ul class="dropdown-menu pull-left">	
 				<li><a href="#" id="refreshmessagesetting">{{language.refreshbtn}}</a></li>
-				<li><a href="#" id="messagetemplatesetting">{{language.templatesettiongbtn}}</a></li>
 				<li class="divider"></li>
 				<li><a href="#" id="messagehelpmessage">{{language.helpmessagebtn}}</a></li>
 			</ul>
