@@ -2,7 +2,7 @@
 	$(function () {
 		var data = SvseDao.getDetailTree();
 		var setting = {
-		/*
+		
 			check : {
 				enable : false,
 				chkStyle : "checkbox",
@@ -11,7 +11,7 @@
 					"N" : "ps"
 				}
 			},
-		*/
+		
 			data : {
 				simpleData : {
 					enable : true,
@@ -23,25 +23,16 @@
 			callback:{
 				onClick:function(event, treeId, treeNode){
 					//设置布局
-					SwithcView.layout(LAYOUTVIEW.SettingLayout);
-					var id= treeNode.id;
-					var type = treeNode.type;
-					var checkedTreeNode = {};
-					checkedTreeNode.id = id;
-					checkedTreeNode.type=type;
-					checkedTreeNode.name = treeNode.name;
-					//记录点击的节点。根据该节点获取 编辑增加设备时的基本信息;
-					SessionManage.setCheckedTreeNode(checkedTreeNode);
-					if(type !== "monitor"){
+					//SwithcView.layout(LAYOUTVIEW.SettingLayout);
+					var monitorId= treeNode.id;
+					//var type = treeNode.type;					
+					if(treeNode.type !== "monitor"){
 						Message.warn("请选择监测器！");
-						//设置视图状态
-					//	SwithcView.view(MONITORVIEW.TRENDMONITOR); 
-					//	SessionManage.setSvseId(id);
-					//	SessionManage.clearMonitorRuntimeDate();//清空一些监视数据session
 						return;
 					}
 					// Message.warn("请选择监测器！");
-					SwithcView.view(REPORT.TREND);
+					draw_trend(monitorId);
+					//SwithcView.view(REPORT.TREND);
 				//	SessionManage.setEntityId(id);
 			},
 			/*
@@ -60,15 +51,6 @@
 	};
 	$.fn.zTree.init($("#svse_tree_check"), setting, data);
 	});
-	/*
-			$(".form_datetime").datetimepicker({
-			format: "yyyy MM dd hh:mm",
-			autoclose: true,
-			todayBtn: true,
-			pickerPosition: "bottom-left"
-		});
-	*/
-	
 		var template = this;
 	$(function() { //初始化日期选择器
 		var endDate = new Date();
@@ -97,182 +79,89 @@
 //		});
 
 	});
-	gettrendList();
-}
-gettrendList = function(){
 
-	var zTree =$.fn.zTree.getZTreeObj("svse_tree_check");
-	var checkedTreeNode = zTree.getNodes();
-/*	var id = nodes[0];
-	var type = treeNode.type;
-	//var type = nodes[0].type;
-	var pid = zTree.getSelectedNodes().pId;
-*/
-	SessionManage.getCheckedTreeNode(checkedTreeNode);	
-		var id = checkedTreeNode.id;
-		var type = checkedTreeNode.type;
-	var result = SvseTrendDao.getTrendList(id,type);
-	console.log(result);
-	/*
-	            alert(treeNode.tId + ", " + treeNode.name);//点击直接返回节点对象treeNode
-            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-            //var nodes = zTree.getNodes();
-            var nodes = zTree.getSelectedNodes();
-            alert(nodes[0].name);//返回被选中节点对象
-	*/
+}
+var draw_trend = function(monitorId){
+	var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+	var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+	var startTime = ClientUtils.dateToObject(startPicker.getDate());
+	var endTime = ClientUtils.dateToObject(endPicker.getDate());
+		DrawTrend.drawTrend(monitorId,startTime,endTime,function (result){
+		console.log(result);
+		var records = result;//获取监视器原始数据
+	//	Log4js.info(records);
+		var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
+		
+		var tableData = dataProcess.getTableData();
+		var imageData = dataProcess.getImageData();
+		var baseData = dataProcess.getBaseData();
+		var nstartTime =  Date.str2Date(DrawTrend.buildTime(startTime),"yyyy-MM-dd hh-mm-ss");
+		var nendTime =  Date.str2Date(DrawTrend.buildTime(endTime),"yyyy-MM-dd hh-mm-ss");
+	//	Log4js.info(tableData);
+	//	Log4js.info(imageData);
+	//	Log4js.info(baseData);
+		//var keysData = dataProcess.getKeysData();
+		//console.log(baseData);
+		var renderObj = {
+			baseDate:baseData,
+			startTime:DrawTrend.buildTime(startTime),
+			endTime:DrawTrend.buildTime(endTime),
+			tableData:tableData
+		}
+		
+		RenderTemplate.renderIn("#TrendResultDiv","trend_date",renderObj);
+		console.log(nstartTime);
+		console.log(nendTime);
+		//console.log(JSON.stringify(imageData));
+		//console.log(imageData);
+		DrawTrend.draw(imageData,nstartTime,nendTime);
+	});
 }
 Template.trend_status.events({
 	"click #search" : function(){
-		//drawDetailLineAgain();
-			//var id="1.22.5.2";
-			var id="1.31.1";
-			var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
-			var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
-			var beginDate = ClientUtils.dateToObject(startPicker.getDate());
-			var endDate = ClientUtils.dateToObject(endPicker.getDate());
-			console.log("#############################");
-			console.log(beginDate);
-			console.log(beginDate["month"]);
-			console.log(endDate);
-			console.log("#######################");
-			SvseMonitorDao.getMonitorRuntimeRecordsByTime(id,beginDate,endDate,function(result){
-				if(!result.status){
-					SystemLogger(result.msg);
-					return;
-				}
-				var dataProcess = new DataProcess(result.content);
-				var resultData = dataProcess.getData();
-				console.log("tt");
-				console.log(resultData);
-				
-			})		
-	}
-});
-/*
-Template.trend.events = {
-	"click #search" : function(){
-		//drawDetailLineAgain();
-			//var id="1.22.5.2";
-			var id="1.26.19.1";
-			var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
-			var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
-			var beginDate = ClientUtils.dateToObject(startPicker.getDate());
-			var endDate = ClientUtils.dateToObject(endPicker.getDate());
-			console.log("#############################");
-			console.log(beginDate);
-			console.log(beginDate["month"]);
-			console.log(endDate);
-			console.log("#######################");
-			SvseMonitorDao.getMonitorRuntimeRecordsByTime(id,beginDate,endDate,function(result){
-				if(!result.status){
-					SystemLogger(result.msg);
-					return;
-				}
-				var dataProcess = new DataProcess(result.content);
-				var resultData = dataProcess.getData();
-				console.log("tt");
-				console.log(resultData);
-				
-			})		
-	},
-	"click ul li a":function(e){
-		var str = e.target.name;
-		var startDate;
-		var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
-		var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
-		var today = endPicker.getDate();	
-		if(str.indexOf(":") === -1){
-			switch(str){
-				case "today": startDate = Date.today();break;
-				case "week" : startDate = today.add({days:1-today.getDay()});break;
-				default		: startDate = today;
+	
+	var monitorId = [];
+	var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
+			for(index in arr){
+				monitorId.push(arr[index].id);
 			}
-		}else{
-			startDate = today.add(JSON.parse(str));
+			
+	//var monitorId ="1.27.3.2" ;
+	var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+	var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+	var startTime = ClientUtils.dateToObject(startPicker.getDate());
+	var endTime = ClientUtils.dateToObject(endPicker.getDate());
+	//console.log(monitorId);
+	DrawTrend.drawTrend(monitorId,startTime,endTime,function (result){
+		console.log(result);
+		var records = result;//获取监视器原始数据
+	//	Log4js.info(records);
+		var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
+		
+		var tableData = dataProcess.getTableData();
+		var imageData = dataProcess.getImageData();
+		var baseData = dataProcess.getBaseData();
+		var nstartTime =  Date.str2Date(DrawTrend.buildTime(startTime),"yyyy-MM-dd hh-mm-ss");
+		var nendTime =  Date.str2Date(DrawTrend.buildTime(endTime),"yyyy-MM-dd hh-mm-ss");
+	//	Log4js.info(tableData);
+	//	Log4js.info(imageData);
+	//	Log4js.info(baseData);
+		//var keysData = dataProcess.getKeysData();
+		//console.log(baseData);
+		var renderObj = {
+			baseDate:baseData,
+			startTime:DrawTrend.buildTime(startTime),
+			endTime:DrawTrend.buildTime(endTime),
+			tableData:tableData
 		}
-		startPicker.setDate(startDate);
-		console.log("#############################");
-		console.log(startDate);
-		console.log(endPicker.getDate());
-		console.log("#######################");
-		drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endPicker.getDate()));
-	}
-}
-*/
-/*
-Template.trend_status.rendered = function(){
-	var template = this;
-	$(function() { //初始化日期选择器
-		var endDate = new Date();
-		var startDate = new Date();
-		startDate.setTime(startDate.getTime() - 1000*60*60*24);
-		$(template.find("#datetimepickerStartDate")).datetimepicker({
-			format: 'yyyy-MM-dd hh:mm:ss',
-			language: 'zh-CN',
-			maskInput: false
-		});
-		$(template.find("#datetimepickerEndDate")).datetimepicker({
-			format: 'yyyy-MM-dd hh:mm:ss',
-			language: 'zh-CN',
-			endDate : endDate,
-			maskInput: false,
-		});
-		var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
-		var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
-		startPicker.setDate(startDate);
-		endPicker.setDate(endDate);
-//		$('#datetimepickerstartDate').on('changeDate', function(e) {
-//			endPicker.setstartDate(e.date);
-//		});
-//		$('#datetimepickerEndDate').on('changeDate', function(e) {
-//			startPicker.setEndDate(e.date);
-//		});
-		drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate));
+		
+		RenderTemplate.renderIn("#TrendResultDiv","trend_date",renderObj);
+		console.log(nstartTime);
+		console.log(nendTime);
+		//console.log(JSON.stringify(imageData));
+		//console.log(imageData);
+		DrawTrend.draw(imageData,nstartTime,nendTime);
 	});
-}
-var drawDetailLine =  function(startDate,endDate){
-	var id = SessionManage.getCheckedMonitorId();
-	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
-	if(!foreigkeys){
-		SystemLogger("监视器"+id+"不能获取画图数据");
-		return;
-	}
-	var selector = "svg#detailLine";
-	if($(selector).length == 0)
-		return;
-	var dateDifference = ClientUtils.getDateDifferenceHour(ClientUtils.objectToDate(startDate),ClientUtils.objectToDate(endDate))
-	var dateformate = dateDifference > 48 ? "%m-%d %H:%M" : "%H:%M";
-	SvseMonitorDao.getMonitorRuntimeRecordsByTime(id,startDate,endDate,function(result){
-		if(!result.status){
-			SystemLogger(result.msg);
-			return;
-		}
-		var dataProcess = new DataProcess(result.content,foreigkeys["monitorForeignKeys"]);
-		var resultData = dataProcess.getData();
-		var line = new DrawLine(
-							resultData,
-							{
-								'key':foreigkeys["monitorPrimary"],
-								'label':foreigkeys["monitorDescript"],
-								'dateformate':dateformate
-							},
-							selector);
-		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图
-	})
-}
 
-var drawDetailLineAgain = function(){
-	if($('#datetimepickerStartDate').length === 0) //判断是否具有时间选择器
-		return;
-	var startDate   =  $('#datetimepickerStartDate').data('datetimepicker').getDate();
-	var enddate   =  $('#datetimepickerEndDate').data('datetimepicker').getDate();
-	drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(enddate));
-}
-//公布一个对象给其他Template调用该Template中的方法 或者检查活性数据源？  重新绘制详细曲线图哪个更合理？
-Deps.autorun(function(){
-	var id = SessionManage.getCheckedMonitorId();
-	if(!id)
-		return;
-	drawDetailLineAgain();
+	}
 });
-*/

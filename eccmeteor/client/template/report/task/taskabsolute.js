@@ -36,21 +36,31 @@ Template.taskabsolute.rendered = function(){
 Template.taskabsolute.events = {
 	"click #taskabsoluteofadd" : function(e){
 	$('#taskabsoluteadddiv').modal('toggle');
-	}
+	},
 /*
-	"click #taskabsoluteofdel":function(){
+    var r=document.getElementsByName("r");  
+    for(var i=0;i<r.length;i++){
+         if(r[i].checked){
+         alert(r[i].value+","+r[i].nextSibling.nodeValue);
+       }
+    } 
+*/
 
+	"click #taskabsoluteofdel":function(){
+/*
+		//var names = document.getElementsByName("");
 		var checks = $("#taskabsolutelist :checkbox[checked]");
 		var ids = [];
 		for(var i = 0;i<checks.length; i++){
-			ids.push($(checks[i].attr("ids"));
+			ids.push($(checks[i].attr("sv_name"));
 		}
 		if(ids.length)
 			SvseTaskDao.deleteTaskByIds(ids,function(result){
 				SystemLogger(result);
 			}
-	}
+	
 */
+	}
 }
 Template.taskabsoluteadd.events = {
 	"click #taskabsoluteaddcancelbtn" : function () {
@@ -80,8 +90,8 @@ Template.taskabsoluteadd.events = {
 		}
 		basicinfoofstatisticaladd["GroupRight"] = targets.join();
 	*/
-		var nIndex = Utils.getUUID();
-		basicinfooftaskabsoluteadd["nIndex"] = nIndex
+		//var nIndex = Utils.getUUID();
+		//basicinfooftaskabsoluteadd["nIndex"] = nIndex
 		console.log(basicinfooftaskabsoluteadd); //控制台打印添加的信息
 		var address = {};
 		//address[nIndex] = basicinfoofstatisticaladd;
