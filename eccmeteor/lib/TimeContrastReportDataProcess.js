@@ -33,9 +33,12 @@ TimeContrastReportDataProcess.prototype.covertTime = function(dateStr){
 	if(type !== "weeks"){
 		return fm.parse(fm(newDate));
 	}
-	var week = fm(newDate);
-
-
+	var week = +fm(newDate)+7;//get The Weeks and add 7
+	var fd = d3.time.format("%H:%M:%S");
+	var hd = fd(newDate);
+	var ds = "1990/1/"+week+" "+hd;
+//	Log4js.log(week+"=="+hd+"=="+ds+"=="+new Date(ds));
+	return new Date(ds);
 }
 
 

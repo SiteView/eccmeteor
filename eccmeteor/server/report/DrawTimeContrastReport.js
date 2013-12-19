@@ -178,15 +178,40 @@ Object.defineProperty(DrawTimeContrastReport,"getTimeExtent",{
 	value:function(type,timeArray){
 		var format = "";
 		switch(type){
-		case "day" : format = "%H%M%S"; break;
-		case "month" : format = "%d%H%M%S";break;
-		case "weeks" :format = "%w";break;
-		default:format =  "month";
+			case "day" : format = "%H%M%S"; break;
+			case "month" : format = "%d%H%M%S";break;
+			case "weeks" :format = "%w";break;
+			default:format =  "%d%H%M%S";
 		}
-		var f = d3.time.format(format);
-		var startTime = f.parse(f(timeArray[0]));
-		var endTime = f.parse(f(timeArray[1]));
-		return [startTime,endTime];
+		var startTime = null;
+		var endTime = null;
+		if(type !== "weeks"){
+			var f = d3.time.format(format);
+			startTime = f.parse(f(timeArray[0]));
+			endTime = f.parse(f(timeArray[1]));
+			return [startTime,endTime];
+		}
+		console.log("开始时间:"); 
+		console.log(timeArray[0]);
+		console.log("结束时间:");
+		console.log(timeArray[1])
+
+		var fm = d3.time.format(format);
+		var fd = d3.time.format("%H:%M:%S");
+		var sweek = +fm(timeArray[0])+7;//get The Weeks and then add 7
+		var shd = fd(timeArray[0]);
+
+		var sdStr = "1990/1/"+sweek+" "+shd;
+		console.log("开始时间Weeks:"+sweek+"==="+shd+"======="+sdStr); 
+		startTime = new Date(sdStr);
+
+		var eweek = +fm(timeArray[1])+7;//get The Weeks
+		var ehd = fd(timeArray[1]);
+		
+		var edStr = "1990/1/"+eweek+" "+ehd;
+		console.log("结束时间 Weeks:"+eweek+"==="+ehd+"====="+edStr); 
+		endTime = new Date(edStr);
+		return [startTime,endTime];	
 	}
 });
 
@@ -216,7 +241,6 @@ Object.defineProperty(DrawTimeContrastReport,"drawLine",{
 		var label = originalData.lable;
 		var width = 800;
 		var height = 450;
-		//判断时间间隔 大于2天
 		//formate Date 
 		var dateformate = this.dateFormat(type);
 		var isXAxisAction = dateformate.length > 5 ? true : false;//x轴是否需要做变动？
