@@ -106,7 +106,7 @@ TimeContrastReportDataProcess.prototype.getNewData  = function(item){
 		var newTime = format.parse(format(Date.str2Date(record[0],"yyyy-MM-dd hh:mm:ss")))
 		newRecords.push({
 			time:newTime,
-			date:+record[1]
+			data:+record[1]
 		});
 	}
 	//console.log("====");

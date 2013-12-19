@@ -19,18 +19,11 @@ Object.defineProperty(DrawTimeContrastReport,"setOption",{
 	}
 });
 
-
-Object.defineProperty(DrawTimeContrastReport,"getPrimaryKey",{
-	value:function(monitorId){
-		return SvseMonitorTemplateDaoOnServer.getReportDataPrimaryKey(monitorId);
-	}
-});
-
 //获取相关数据
 Object.defineProperty(DrawTimeContrastReport,"getMonitorRecords",{
 	value:function(monitorId,timeArray){
-		var r1 = SvseMonitorDaoOnServer.getMonitorReportData(monitorId,timeArray[0],timeArray[1]);
-		var r2 = SvseMonitorDaoOnServer.getMonitorReportData(monitorId,timeArray[2],timeArray[3]);
+		var r1 = SvseMonitorDaoOnServer.getMonitorReportData(monitorId,timeArray[0],timeArray[1],false);//the argument 'false' make the data don't be compress
+		var r2 = SvseMonitorDaoOnServer.getMonitorReportData(monitorId,timeArray[2],timeArray[3],false);
 		var t1 = this.buildTime(timeArray[0]) +"~"+ this.buildTime(timeArray[1]);
 		var t2 = this.buildTime(timeArray[2]) +"~"+ this.buildTime(timeArray[3]);
 		var result = [{
@@ -161,7 +154,7 @@ Object.defineProperty(DrawTimeContrastReport,"getXcount",{
 		var count = 12;
 		switch(type){
 			case "day" : count = 24; break;
-			case "month" : count = 31;break;
+			case "month" : count = 15;break;
 			case "week" :count = 7;break;
 		}
 		return count;
@@ -184,12 +177,18 @@ Object.defineProperty(DrawTimeContrastReport,"getTimeExtent",{
 	}
 });
 
+Object.defineProperty(DrawTimeContrastReport,"getYExtent",{
+	value:function(d0,d1){
+		return d3.extent([+d0.min,+d0.max,+d1.min,+d1.max])
+	}
+});
 
 //画图
 Object.defineProperty(DrawTimeContrastReport,"drawLine",{
 	value:function(window,dataArray,timeArray,type){
 		var originalData = dataArray[0];
-		var data1 =  dataArray[1].data;
+		var originalData1 = dataArray[1];
+		var data1 =  originalData1.data;
 		var data = originalData.data ; //画图数据数组
 		if(originalData.drawimage !== "1"){
 			return;
@@ -200,7 +199,7 @@ Object.defineProperty(DrawTimeContrastReport,"drawLine",{
 			return;
 		}*/
 		var Xcoordinate =  "time"; //X坐标的属性
-		var Ycoordinate = "date";//Y坐标的属性
+		var Ycoordinate = "data";//Y坐标的属性
 		var label = originalData.lable;
 		var width = 800;
 		var height = 450;
@@ -240,9 +239,9 @@ Object.defineProperty(DrawTimeContrastReport,"drawLine",{
 		var xScale = d3.time.scale()
 			.domain(xTimeExtent)
 			.range([margin.left, width-margin.left])
-			.nice();
-
-		var yExtent = [+originalData.min,+originalData.max];
+		//	.nice();
+		//console.log();
+		var yExtent = this.getYExtent(originalData,originalData1);
 		
 		//判断Y轴方向的所有数据是否相同，如果相同则则设置区间为0-最大，否则取 最小值和最大值区间
 		yExtent = yExtent[0] === yExtent[1] ? [0,yExtent[0]] : yExtent;
@@ -252,7 +251,7 @@ Object.defineProperty(DrawTimeContrastReport,"drawLine",{
 		var yScale = d3.scale.linear()
 			.domain(yExtent)
 			.range([height-margin.top,margin.top])
-			.nice();
+		//	.nice();
 		//辅助线
 		svg.append('g')
 			.attr("clip-path", "url(#lineArea)")

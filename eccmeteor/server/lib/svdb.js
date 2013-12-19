@@ -195,7 +195,7 @@ svGetMonitorRuntimeRecordsByTime = function(id,beginDate,endDate){
  Date: 2013-12-10 11:53
  Content :获取报表数据
 */
-svGetReportData = function(monitorId,beginDate,endDate){
+svGetReportData = function(monitorId,beginDate,endDate,compress){
 	/*
 	{
 		id:id,//id 可以是逗号分隔的多个id
@@ -226,10 +226,14 @@ svGetReportData = function(monitorId,beginDate,endDate){
 		minute:"20",
 		second:"00"
 	}*/
+	if(typeof compress === "undefined"){
+		compress = true;
+	}
 	var robj = process.sv_univ({
 		'dowhat':'QueryReportData',
 		id:monitorId,
 	//	dstrNeed:true,
+		compress:compress,
 		dstrStatusNoNeed:null,
 	//	return_value_filter:"sv_primary,sv_drawimage",
 		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
