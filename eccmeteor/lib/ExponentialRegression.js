@@ -16,7 +16,7 @@
 	Author：xuqiang
 	Date:2013-12-19 11:20
 	Content:修改了d3定义、条件判断
-*/ 
+*/
 
 ExponentialRegression = function(){};
 //求平方
@@ -82,4 +82,4 @@ Object.defineProperty(ExponentialRegression,"exp",{
 		});
 		return y_fit;
 	}
-})
+});

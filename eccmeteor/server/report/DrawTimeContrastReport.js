@@ -1,23 +1,43 @@
 var d3 = Meteor.require("d3");
 var Jsdom = Meteor.require("jsdom");
-DrawContrastReport = function(){}
 
-Object.defineProperty(DrawContrastReport,"_option",{
+
+DrawTimeContrastReport = function(){};
+
+Object.defineProperty(DrawTimeContrastReport,"_option",{
 	value:{
-		htmlTemplate:"ContrastReport.html",
+		htmlTemplate:"TimeContrastReport.html",
 		CssTemplate:["TrendReport.css","table.css"]
 	},
 	writable:true
-})
+});
+
+Object.defineProperty(DrawTimeContrastReport,"setOption",{
+	value:function(template,css){
+		this._option.htmlTemplate = template;
+		this._option.css = css;
+	}
+});
 
 //获取相关数据
-Object.defineProperty(DrawContrastReport,"getMonitorRecords",{
-	value:function(monitorId,startTime,endTime){
-		return SvseMonitorDaoOnServer.getMonitorReportData(monitorId,startTime,endTime);
+Object.defineProperty(DrawTimeContrastReport,"getMonitorRecords",{
+	value:function(monitorId,timeArray){
+		var r1 = SvseMonitorDaoOnServer.getMonitorReportData(monitorId,timeArray[0],timeArray[1],false);//the argument 'false' make the data don't be compress
+		var r2 = SvseMonitorDaoOnServer.getMonitorReportData(monitorId,timeArray[2],timeArray[3],false);
+		var t1 = this.buildTime(timeArray[0]) +"~"+ this.buildTime(timeArray[1]);
+		var t2 = this.buildTime(timeArray[2]) +"~"+ this.buildTime(timeArray[3]);
+		var result = [{
+			result:r1,
+			time:t1
+		},{
+			result:r2,
+			time:t2
+		}];
+		return result;
 	}
-})
+});
 //数据为空时画图
-Object.defineProperty(DrawContrastReport,"drawEmptyLine",{
+Object.defineProperty(DrawTimeContrastReport,"drawEmptyLine",{
 	value:function(window,originalData,startTime,endTime){
 		var label = originalData.lable;
 		var width = 800;
@@ -53,7 +73,7 @@ Object.defineProperty(DrawContrastReport,"drawEmptyLine",{
 			.attr("height",height - margin.top);
 
 		var xScale = d3.time.scale()
-			.domain([startTime,endTime])
+			.domain(startTime,endTime)
 			.range([margin.left, width-margin.left])
 			.nice();
 
@@ -113,31 +133,123 @@ Object.defineProperty(DrawContrastReport,"drawEmptyLine",{
 	        .attr('transform','translate(0,10)')
 			.text(label);
 	}
-})
+});
 
+//
+Object.defineProperty(DrawTimeContrastReport,"dateFormat",{
+	value:function(type){
+		var format = "";
+		switch(type){
+			case "day" : format = "%H"; break;
+			case "month" : format = "%d";break;
+			case "weeks" :format = "%w";break;
+			default:format =   "%d";
+		}
+		//return format;
+		
+		if(type === "weeks"){
+			var dateformat = function(date){
+				var f = d3.time.format("%w");
+				var week = f(date);
+				//should be defined I18N
+				var d1 = ["星期日" ,"星期一" ,"星期二", "星期三", "星期四", "星期五" ,"星期六"];
+				return d1[week];
+			}
+			return dateformat;
+		}
+
+		return d3.time.format(format)
+	}
+});
+
+Object.defineProperty(DrawTimeContrastReport,"getXcount",{
+	value:function(type){
+		var count = 12;
+		switch(type){
+			case "day" : count = 24; break;
+			case "month" : count = 15;break;
+			case "weeks" :count = 7;break;
+		}
+		return count;
+	}
+});
+
+Object.defineProperty(DrawTimeContrastReport,"getTimeExtent",{
+	value:function(type,timeArray){
+		var format = "";
+		switch(type){
+			case "day" : format = "%H%M%S"; break;
+			case "month" : format = "%d%H%M%S";break;
+			case "weeks" :format = "%w";break;
+			default:format =  "%d%H%M%S";
+		}
+		var startTime = null;
+		var endTime = null;
+		if(type !== "weeks"){
+			var f = d3.time.format(format);
+			startTime = f.parse(f(timeArray[0]));
+			endTime = f.parse(f(timeArray[1]));
+			return [startTime,endTime];
+		}
+		console.log("开始时间:"); 
+		console.log(timeArray[0]);
+		console.log("结束时间:");
+		console.log(timeArray[1])
+
+		var fm = d3.time.format(format);
+		var fd = d3.time.format("%H:%M:%S");
+		var sweek = +fm(timeArray[0])+7;//get The Weeks and then add 7
+		var shd = fd(timeArray[0]);
+
+		var sdStr = "1990/1/"+sweek+" "+shd;
+		console.log("开始时间Weeks:"+sweek+"==="+shd+"======="+sdStr); 
+		startTime = new Date(sdStr);
+
+		var eweek = +fm(timeArray[1])+7;//get The Weeks
+		var ehd = fd(timeArray[1]);
+		
+		var edStr = "1990/1/"+eweek+" "+ehd;
+		console.log("结束时间 Weeks:"+eweek+"==="+ehd+"====="+edStr); 
+		endTime = new Date(edStr);
+		return [startTime,endTime];	
+	}
+});
+
+Object.defineProperty(DrawTimeContrastReport,"getYExtent",{
+	value:function(d0,d1){
+		return d3.extent([+d0.min,+d0.max,+d1.min,+d1.max])
+	}
+});
 
 //画图
-Object.defineProperty(DrawContrastReport,"drawLine",{
-	value:function(window,originalData,startTime,endTime){
+Object.defineProperty(DrawTimeContrastReport,"drawLine",{
+	value:function(window,dataArray,timeArray,type){
+		var originalData = dataArray[0];
+		var originalData1 = dataArray[1];
+		var data1 =  originalData1.data;
 		var data = originalData.data ; //画图数据数组
+		if(originalData.drawimage !== "1"){
+			return;
+		}
+		/*
 		if(data.length === 0){
 			this.drawEmptyLine(window,originalData,startTime,endTime);
 			return;
-		}
+		}*/
 		var Xcoordinate =  "time"; //X坐标的属性
-		var Ycoordinate = "date";//Y坐标的属性
+		var Ycoordinate = "data";//Y坐标的属性
 		var label = originalData.lable;
 		var width = 800;
 		var height = 450;
-		//判断时间间隔 大于2天
-		var dateformate = (endTime.getTime() - startTime.getTime())/1000 > 3600*24*2 
-							? "%m-%d %H:%M"
-							: "%H:%M";
+		//formate Date 
+		var dateformate = this.dateFormat(type);
 		var isXAxisAction = dateformate.length > 5 ? true : false;//x轴是否需要做变动？
 		var xAxisRotate =   isXAxisAction ? -25 : 0; //x轴 坐标标签旋转角度
 		var xAxisAnchor = "middle";//x轴 坐标标签对齐方式
-		var xAxisTicks  = 12; //x数轴的段数
+		var xAxisTicks  = this.getXcount(type); //x数轴的段数
 		var yAxisTicks  = 12; //y轴的段数
+		
+		var xTimeExtent = this.getTimeExtent(type,timeArray);
 
 		var margin = {
 			top : 20,
@@ -151,7 +263,7 @@ Object.defineProperty(DrawContrastReport,"drawLine",{
 					.attr("class", "moresvg")
 					.append('svg:svg')
 					.attr('width', width)
-					.attr('height', height)
+					.attr('height', height);
 
 		svg.append('g')
 			.attr("transform", "translate("+(margin.left+1)+","+margin.top+ ")")
@@ -162,19 +274,21 @@ Object.defineProperty(DrawContrastReport,"drawLine",{
 			.attr("height",height - margin.top);
 
 		var xScale = d3.time.scale()
-			.domain([startTime,endTime])
+			.domain(xTimeExtent)
 			.range([margin.left, width-margin.left])
-			.nice();
-
-		var yExtent = [originalData.min,originalData.max]
-	//	var yExtent = [0,originalData.max]
+		//	.nice();
+		//console.log();
+		var yExtent = this.getYExtent(originalData,originalData1);
+		
 		//判断Y轴方向的所有数据是否相同，如果相同则则设置区间为0-最大，否则取 最小值和最大值区间
 		yExtent = yExtent[0] === yExtent[1] ? [0,yExtent[0]] : yExtent;
-
+		if(yExtent[0] === yExtent[1] && yExtent[0] == 0){
+			yExtent = [0,1];
+		}
 		var yScale = d3.scale.linear()
 			.domain(yExtent)
 			.range([height-margin.top,margin.top])
-			.nice();
+		//	.nice();
 		//辅助线
 		svg.append('g')
 			.attr("clip-path", "url(#lineArea)")
@@ -194,7 +308,7 @@ Object.defineProperty(DrawContrastReport,"drawLine",{
 	            "stroke-width" : "1px"
        		});
         
-        ExponentialRegression.exp(data,Ycoordinate);
+   //     ExponentialRegression.exp(data,Ycoordinate);
         //曲线计算
 		var line = d3.svg.line()
 			.x(function (d) {
@@ -204,14 +318,7 @@ Object.defineProperty(DrawContrastReport,"drawLine",{
 				return yScale(d[Ycoordinate]);
 			});
 
-		//趋势线
-		var trendLine = d3.svg.line()
-			.x(function (d) {
-				return xScale(d[Xcoordinate]);
-			})
-			.y(function (d) {
-				return yScale(d["_exp_trend"]);
-			});
+
 		//正常曲线
 		svg.append('g')
 			.attr("clip-path", "url(#lineArea)")
@@ -219,19 +326,20 @@ Object.defineProperty(DrawContrastReport,"drawLine",{
 			.datum(data)
 			.attr("class", "line")
 			.attr("d", line);
-		//趋势曲线
+		/**/
+		//对比曲线
 		svg.append('g')
 			.attr("clip-path", "url(#lineArea)")
 			.append("path")
-			.datum(data)
+			.datum(data1)
 			.attr("class", "trendLine")
-			.attr("d", trendLine);
-
+			.attr("d", line);
+		
 		var xAxis = d3.svg.axis()
 			.scale(xScale)
 			.ticks(xAxisTicks)
 			.orient("bottom")
-			.tickFormat(d3.time.format(dateformate));//"%H:%M"this.dateformate
+			.tickFormat(dateformate);//"%H:%M"this.dateformate
 			
 		var yAxis = d3.svg.axis()
 			.scale(yScale)
@@ -261,32 +369,32 @@ Object.defineProperty(DrawContrastReport,"drawLine",{
 });
 
 //拼接时间
-Object.defineProperty(DrawContrastReport,"buildTime",{
+Object.defineProperty(DrawTimeContrastReport,"buildTime",{
 	value:function(obj){
 		return obj.year + "-" + obj.month + "-" +  obj.day+ " " +obj.hour + ":" +obj.minute+":"+obj.second;
 	}
-})
+});
 
 //根据查询条件返回结果
-Object.defineProperty(DrawContrastReport,"export",{
-	value:function(monitorId,startTime,endTime){
-		var records = this.getMonitorRecords(monitorId,startTime,endTime);//获取监视器原始数据
-		
-		var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
-		
+Object.defineProperty(DrawTimeContrastReport,"export",{
+	value:function(monitorId,timeArray,type){
+		var records = this.getMonitorRecords(monitorId,timeArray);//获取监视器原始数据
+		var dataProcess = new TimeContrastReportDataProcess(records,type);//原始数据的基本处理 //客户端服务端通用
 		var tableData = dataProcess.getTableData();
 		var imageData = dataProcess.getImageData();
 		var baseData = dataProcess.getBaseData();
-		var nstartTime =  Date.str2Date(this.buildTime(startTime),"yyyy-MM-dd hh-mm-ss");
-		var nendTime =  Date.str2Date(this.buildTime(endTime),"yyyy-MM-dd hh-mm-ss");
-	//	Log4js.info(tableData);
 	//	Log4js.info(imageData);
-	//	Log4js.info(baseData);
-	//var keysData = dataProcess.getKeysData();
+	//	return ;
+
+		var nstartTime1 =  Date.str2Date(this.buildTime(timeArray[0]),"yyyy-MM-dd hh-mm-ss");
+		var nendTime1 =  Date.str2Date(this.buildTime(timeArray[1]),"yyyy-MM-dd hh-mm-ss");
+		var nstartTime2 = Date.str2Date(this.buildTime(timeArray[2]),"yyyy-MM-dd hh-mm-ss");
+		var nendTime2 =  Date.str2Date(this.buildTime(timeArray[3]),"yyyy-MM-dd hh-mm-ss");
+		
+		var newDate = [nstartTime1,nendTime1,nstartTime2,nendTime2];
+
 		var renderObj = {
 			baseDate:baseData,
-			startTime:this.buildTime(startTime),
-			endTime:this.buildTime(endTime),
 			tableData:tableData
 		}
 		var htmlStub = HtmlTemplate.render(this._option.htmlTemplate,renderObj);
@@ -298,17 +406,16 @@ Object.defineProperty(DrawContrastReport,"export",{
 		});
 	    Css.addStyle(this._option.CssTemplate,document);//添加css文件
 		var window = document.parentWindow;
-		return this.draw(imageData,window,nstartTime,nendTime);
+		return this.draw(imageData,window,newDate,type);
+		
 	}
 });
 
-Object.defineProperty(DrawContrastReport,"draw",{
-	value:function(imageData,window,st,et){
+Object.defineProperty(DrawTimeContrastReport,"draw",{
+	value:function(imageData,window,timeArray,type){
 		var length = imageData.length;
 		for(var i = 0; i < length; i++){
-			if(imageData[i].drawimage === "1"){
-				this.drawLine(window,imageData[i],st,et);
-			}
+			this.drawLine(window,imageData[i],timeArray,type);
 		}
 		return window.document.innerHTML;
 	}

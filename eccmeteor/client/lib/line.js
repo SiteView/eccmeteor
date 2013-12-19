@@ -39,7 +39,7 @@ DrawLine = function(data,setting,selector){
 
 		var svg = d3.select(this.svgDomId)
 			.attr("width", this.width )
-			.attr("height", this.height)
+			.attr("height", this.height);
 
 		svg.append('g')
 			.attr("transform", "translate("+(margin.left+1)+","+margin.top+ ")")
@@ -58,7 +58,7 @@ DrawLine = function(data,setting,selector){
 
 		var yExtent = d3.extent(this.data, function (d) {
 				return d[primary];
-			})
+			});
 		//判断Y轴方向的所有数据是否相同，如果相同则则设置区间为0-最大，否则取 最小值和最大值区间
 		yExtent = yExtent[0] === yExtent[1] ? [0,yExtent[0]] : yExtent;
 		

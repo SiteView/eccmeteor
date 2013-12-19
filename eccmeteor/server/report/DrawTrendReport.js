@@ -2,7 +2,7 @@ var d3 = Meteor.require("d3");
 var Jsdom = Meteor.require("jsdom");
 
  //趋势报告
-DrawTrendReport = function(){}
+DrawTrendReport = function(){};
 
 Object.defineProperty(DrawTrendReport,"_option",{
 	value:{
@@ -10,19 +10,12 @@ Object.defineProperty(DrawTrendReport,"_option",{
 		CssTemplate:["TrendReport.css","table.css"]
 	},
 	writable:true
-})
+});
 
-Object.defineProperty(DrawContrastReport,"setOption",{
+Object.defineProperty(DrawTrendReport,"setOption",{
 	value:function(template,css){
 		this._option.htmlTemplate = template;
 		this._option.css = css;
-	}
-})
-
-
-Object.defineProperty(DrawTrendReport,"getPrimaryKey",{
-	value:function(monitorId){
-		return SvseMonitorTemplateDaoOnServer.getReportDataPrimaryKey(monitorId);
 	}
 });
 
@@ -31,7 +24,7 @@ Object.defineProperty(DrawTrendReport,"getMonitorRecords",{
 	value:function(monitorId,startTime,endTime){
 		return SvseMonitorDaoOnServer.getMonitorReportData(monitorId,startTime,endTime);
 	}
-})
+});
 //数据为空时画图
 Object.defineProperty(DrawTrendReport,"drawEmptyLine",{
 	value:function(window,originalData,startTime,endTime){
@@ -129,7 +122,7 @@ Object.defineProperty(DrawTrendReport,"drawEmptyLine",{
 	        .attr('transform','translate(0,10)')
 			.text(label);
 	}
-})
+});
 
 
 //画图
@@ -281,7 +274,7 @@ Object.defineProperty(DrawTrendReport,"buildTime",{
 	value:function(obj){
 		return obj.year + "-" + obj.month + "-" +  obj.day+ " " +obj.hour + ":" +obj.minute+":"+obj.second;
 	}
-})
+});
 
 //根据查询条件返回结果
 Object.defineProperty(DrawTrendReport,"export",{
@@ -328,4 +321,4 @@ Object.defineProperty(DrawTrendReport,"draw",{
 		}
 		return window.document.innerHTML;
 	}
-})
+});

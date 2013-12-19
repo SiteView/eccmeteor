@@ -109,8 +109,9 @@ SvseMonitorDaoOnServer = {
 }
 /*获取监视器的报告数据*/
 Object.defineProperty(SvseMonitorDaoOnServer,"getMonitorReportData",{
-	value:function(monitorId,beginDate,endDate){
-		return SvseMethodsOnServer.svGetReportData(monitorId,beginDate,endDate);
+	value:function(monitorId,beginDate,endDate,compress){
+		//compress : The Data can be compressed?  true : yes, false:no ,default : yes
+		return SvseMethodsOnServer.svGetReportData(monitorId,beginDate,endDate,compress);
 	}
 })
 
@@ -119,4 +120,11 @@ Object.defineProperty(SvseMonitorDaoOnServer,"getMonitorReportDataByfilter",{
 	value:function(monitorId,beginDate,endDate,filter){
 		return SvseMethodsOnServer.svGetReportDataByFilter(monitorId,beginDate,endDate,filter);
 	}
-})
+});
+
+/*获取小报告数据*/
+Object.defineProperty(SvseMonitorDaoOnServer,"getMonitorReportDataByCount",{
+	value:function(monitorId,count){
+		return SvseMethodsOnServer.svGetReportDataByCount(monitorId,count);
+	}
+});
