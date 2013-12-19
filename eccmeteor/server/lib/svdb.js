@@ -1366,3 +1366,22 @@ svGetQuerySysLog = function(beginDate,endDate,syslogQueryCondition){
 	
 	return sysLogRecords;
 }
+
+//添加短信设置中的短信模板
+svWriteEmailAddressStatusInitFilesection = function(templateName,content){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "TXTTemplate.ini",
+		'user' : "default",
+		'section' : 'SMS',
+		"key" : templateName,
+		"value" : content
+	}, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	var fmap = robj.fmap(0);
+	return fmap; 
+}

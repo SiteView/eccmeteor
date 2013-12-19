@@ -1,8 +1,10 @@
 Template.messagebasicsettingofadd.rendered = function(){
 	//邮件模板下拉列表
 	SvseMessageDao.getMessageTemplates(function(err,result){
+		//console.log(result);
 		for(name in result){
 			//console.log(name);
+			//console.log(result[name]);
 			var option = $("<option value="+name+"></option>").html(name)
 			$("#messagebasicsettingofmessagetemplatelist").append(option);
 		}
