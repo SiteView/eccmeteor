@@ -24,9 +24,10 @@ Template.contrast.Monitors = function(){
 Template.contrast.events = {
     //查询
 	  "click #search" : function(){	     
-			drawDetailLineAgain();
-			console.log("画图成功！");
-			console.log("!!!!!!!!!!");
+			//drawDetailLineAgain();
+			$("#contrastDetailTableData").empty();
+			// console.log("画图成功！");
+			// console.log("!!!!!!!!!!");
 		    var targets = [];
 		    var startDate;
 		    var endDate;
@@ -48,40 +49,57 @@ Template.contrast.events = {
 				if(!contrastlist["AlertTarget"]){
 					Message.info("请选择选择监测器！",{align:"center",time:3});
 			
-				return;
-		}
-		/*var checkedMonitorId = targets;
-		if(SessionManage.getCheckedMonitorId() === checkedMonitorId)
-			return;
-	//	var status = this.status;
-		if(!checkedMonitorId || checkedMonitorId=="") return;
-		//存储选中监视器的id
-		SessionManage.setCheckedMonitorId(checkedMonitorId);
-		drawImage(checkedMonitorId);*/
-			//var id="1.25.1.2";
-			//var ="1.25.1.2";
-			var id = targets;
-			console.log("获取监测器id:"+targets);
-			
-			var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
-			var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
-			var beginDate = ClientUtils.dateToObject(startPicker.getDate());
-			var endDate = ClientUtils.dateToObject(endPicker.getDate());
-			console.log("#############################");
-			console.log(beginDate);
-			console.log(beginDate["month"]);
-			console.log(endDate);
-			console.log("#######################");
-			
-			for(var i = 0;i < targets.length;i++){
-			console.log(targets[i]);
-			SvseMonitorDao.getMonitorRuntimeRecordsByTime(targets[i],beginDate,endDate,function(result){
-			//SvseMonitorDao.getMonitorRuntimeRecords(id,count,function(result){
-				if(!result.status){
-					SystemLogger(result.msg);
-					return;
+						return;
+					}
+			    var monitorId = targets;
+				console.log("获取监测器id:"+targets);
+				//var monitorId = '1.27.1.1';
+				var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+				var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+				// var beginDate = ClientUtils.dateToObject(startPicker.getDate());
+				// var endDate = ClientUtils.dateToObject(endPicker.getDate());
+				var startTime = ClientUtils.dateToObject(startPicker.getDate());
+				var endTime = ClientUtils.dateToObject(endPicker.getDate());
+				console.log("#############################");
+				console.log(startTime);
+				console.log(startTime["month"]);
+				console.log(endTime);
+				console.log("#######################");
+				//DrawContrastReport.drawContrast(monitorId,startTime,endTime);
+				for(var i = 0;i < targets.length;i++){
+				console.log(targets[i]);
+				//SvseMonitorDao.getMonitorReportData(targets[i],beginDate,endDate,function(result){
+				//SvseMonitorDao.getMonitorRuntimeRecords(id,count,function(result){
+				DrawContrastReport.getDate(monitorId,startTime,endTime,function(result){
+				
+				var records = result.content;//获取监视器原始数据
+		
+				var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
+				
+				var tableData = dataProcess.getTableData();
+				var imageData = dataProcess.getImageData();
+				var baseData = dataProcess.getBaseData();
+				var nstartTime =  Date.str2Date(DrawContrastReport.buildTime(startTime),"yyyy-MM-dd hh-mm-ss");
+				var nendTime =  Date.str2Date(DrawContrastReport.buildTime(endTime),"yyyy-MM-dd hh-mm-ss");
+				console.log(tableData);
+				var renderObj = {
+					baseDate:baseData,
+					startTime:DrawContrastReport.buildTime(startTime),
+					endTime:DrawContrastReport.buildTime(endTime),
+					tableData:tableData
 				}
-				var dataProcess = new DataProcess(result.content);
+				
+				RenderTemplate.renderIn("#ContrastDetailData","Contrastlist2",renderObj);
+				//DrawContrastReport.draw(imageData,nstartTime,nendTime);
+				DrawContrastReport.draw(imageData,nstartTime,nendTime);
+				});
+				
+				
+					// if(!result.status){
+						// SystemLogger(result.msg);
+						// return;
+					// }
+				/*var dataProcess = new DataProcess(result.content);
 				var resultData = dataProcess.getData();
 				console.log("tt");
 				console.log(resultData);
@@ -89,12 +107,13 @@ Template.contrast.events = {
 			//绘制表
 			for(var i = 0;i < resultData.length;i++){
 				var data = resultData[i];
-				var tbody = "<tr><td>"+data["sv_ame"]+"</td><td>"+data["label"]+"</td><td>"+data["max"]+"</td>"
-				+"<td>"+data["roundTripTime"]+"</td><td>"+data["packetsGoodPercent"]+"</td><td>"+data["status"]+"</td><td>"+data["dstr"]+"</td></tr>";
+				var tbody = "<tr><td>"+data["MonitorName"]+"</td><td>"+data["ReturnName"]+"</td><td>"+data["max"]+"</td>"
+				+"<td>"+data["average"]+"</td><td>"+data["min"]+"</td><td>"+data["latest"]+"</td><td>"+data["when_max"]+"</td></tr>";
 				$("#contrastDetailTableData").append(tbody);
-			}
-			});
-			}
+				}*/
+			//});
+			
+			 }
 
 		},
 	//导出报告
@@ -345,7 +364,7 @@ Template.contrast.rendered = function(){
 				// $('#AlertdatetimepickerEndDate').on('changeDate', function(e) {
 				// startPicker.setEndDate(e.date);
 				// });
-				drawDetailLine(ClientUtils.dateToObject(beginDate),ClientUtils.dateToObject(endDate));
+			//	drawDetailLine(ClientUtils.dateToObject(beginDate),ClientUtils.dateToObject(endDate));
 });
 
 	
@@ -398,15 +417,15 @@ Template.MonitorList.Monitors = function(){
     return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip());
 }
 
- Template.ContrastDetailData.ContrastDetailTableData = function(){
-	return SessionManage.getContrastDetailTableData();
-}
+ // Template.ContrastDetailData.ContrastDetailTableData = function(){
+	// return SessionManage.getContrastDetailTableData();
+// }
 
 /*Template.ContrastDetailData.monitorStatisticalDetailTableData = function(){
 	return SessionManage.getMonitorStatisticalDetailTableData();
 }*/
 
-var drawDetailLine =  function(beginDate,endDate){
+/*var drawDetailLine =  function(beginDate,endDate){
 	var id = SessionManage.getCheckedMonitorId();
 	console.log(id);
 	//var id = [];

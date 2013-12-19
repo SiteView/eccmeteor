@@ -1,9 +1,24 @@
 SvseSysLogDao = {
         "AGENT":"svseSysLogDaoAgent",
 		//根据id获取设置
-		// "getSysLogsetting_statusById" : function(id){
-		// return SvseSysLogsetting_status.findOne({nIndex:id});
-		// },
+		"getSysLog" : function(id){
+		return SvseSyslogDetailList.findOne({nIndex:id});
+		},
+		//
+		"getSyslogList" : function(){
+		return SvseSyslogDetailList.find().fetch();
+		},
+	
+		//获取查询系统日志的数据记录
+		"getQuerySysLog":function(id,beginDate,endDate,fn){
+			Meteor.call(SvseSysLogDao.AGENT,"getQuerySysLog",[id,beginDate,endDate],function (err,result){
+				if(err){
+					fn({status:false,msg:err})
+					return;
+				}
+				fn({status:true,content:result});
+			});
+		},
 		//删除系统日志
 		"DeleteRecordsByIds":function(id,endDate,fn){
 			Meteor.call(SvseSysLogDao.AGENT,"DeleteRecordsByIds",[id,endDate],function(err,result){

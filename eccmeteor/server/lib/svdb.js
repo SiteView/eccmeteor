@@ -1321,7 +1321,7 @@ svGetSysLogQueryContRankConfigSetting = function(){
 svDeleteSysLogInitFilesection = function (id){
 	var robj = process.sv_univ({
 	    'dowhat':'DeleteRecords',
-		 'id':'syslog',
+		 'id':id,
 		 year:Date["year"],
 		 month:Date["month"],
 		 day:Date["Day"], 
@@ -1336,4 +1336,32 @@ svDeleteSysLogInitFilesection = function (id){
 	}
 	var fmap= robj.fmap(0);
 	return fmap; 
+}
+/*
+	Type:查询syslog
+	Author:renjie
+	Data:2013-12-17
+	Content:querySysLog
+*/
+//查询syslog记录
+svGetQuerySysLog = function(beginDate,endDate,syslogQueryCondition){
+	var robj = process.sv_forest({
+		'dowhat':'QueryRecordsByTime',
+		'id':'syslog',
+		sourceIp:syslogQueryCondition.SourceIp,
+		expression:syslogQueryCondition.Expression,
+		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
+		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
+	}, 0);
+	if(!robj.isok(0)){
+		Log4js.error(robj.estr(0),-1);
+		return false;
+	}
+	var fmap = robj.fmap(0);
+	var sysLogRecords = [];
+	for(r in fmap){
+		sysLogRecords.push(fmap[r]);
+	}
+	
+	return sysLogRecords;
 }

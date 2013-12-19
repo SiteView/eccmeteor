@@ -14,3 +14,13 @@
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+
+.trendLine {
+  fill: none;
+  stroke: green;
+  stroke-width: 1.5px;
+}
+
+.moresvg{
+  margin: 20px;
+}
