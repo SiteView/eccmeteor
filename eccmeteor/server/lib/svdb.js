@@ -453,15 +453,15 @@ svGetTrendList = function(id,type){
 //添加计划任务
 svWriteTaskIniFileSectionString = function(address){
 	console.log(address["sv_name"]);
-	var name = String(address["sv_name"]);
-	var robj= process.sv_univ({'dowhat':'CreateTask','id':'name'},0); //增加
+	//var name = String(address["sv_name"]);
+	var robj= process.sv_univ({'dowhat':'CreateTask','id':address["sv_name"]},0); //增加
 		if(!robj.isok(0)){
 			console.log(robj.estr(0));
 		}
 		var fmap = robj.fmap(0);
 		//console.log(fmap);
 		var newObj = {
-			return :{id:'name',return:true},
+			return :{id:address["sv_name"],return:true},
 			property :address
 		}
 	var robj2= process.sv_submit(newObj,{'dowhat':'SubmitTask','del_supplement':true},0); //修改	
