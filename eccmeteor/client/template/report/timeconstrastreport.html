@@ -1,0 +1,135 @@
+<template name="timeconstrastreport">
+	<div id="timeconstrastdiv"
+		data-backdrop="true" data-keyboard="true" data-show="false" 
+		data-width="800" data-modalOverflow="true">
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="span3" style="overflow:auto" id="treeDemo">
+					<label class="label label-info">时间段对比报告</label>
+					<ul id="svse_tree_check_time" class="ztree">
+					</ul>
+				</div>
+				<div class="span9"> 
+				  {{> timeconstrastform}}
+				  
+				 
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+<Template name="timeconstrastform">
+	<div class="tabbable">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#1" data-toggle="tab">查询</a></li>
+		</ul>
+	</div>
+	<div class="accordion-group">
+		<a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"> 查询条件 </a>
+	<div class="panel-group" id="accordion"> </div>
+		<div id="collapseOne" class="panel-collapse collapse in">
+			<form class="well form-horizontal form-inline" onsubmit="return false;">
+				<fieldset>
+					<div class="form-horizontal" style="float:left">
+					<table>
+						<tr>
+							<td>
+								<div class="control-group">
+									<label class="control-label">对比方式:</label>
+									<div class="controls">
+										<select id="timeconstrast" name="selecttime">
+											<option value="Day" checked>按天对比</option>
+											<option value="Week" checked>按周对比</option>
+											<option value="Month" checked>按月对比</option>
+											
+										</select>
+									</div>
+								</div>	
+							</td>
+							<td>
+								<div class="form-horizontal" style="float:left">
+								<div class="control-group">
+									<label class="control-label"></label>
+									<div class="controls">
+										
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label class="control-label">第一时间:</label>
+								<div id="datetimepickerStartDate" class="input-append date">
+									<input type="text" readOnly="readonly" />
+									<span class="add-on">
+										<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+									</span>
+								</div>	
+							</td>
+							<td>
+								<div class="form-horizontal" style="float:left">
+								<div class="control-group">
+									<label class="control-label"></label>
+									<div class="controls">
+										
+									</div>
+								</div>
+							</td>					
+						</tr>
+						<tr>
+							<td>
+								<label class="control-label">第二时间:</label>
+								<div id="datetimepickerEndDate" class="input-append date">
+									<input type="text" readOnly="readonly"/>
+									<span class="add-on">
+										<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+									</span>
+								</div>						
+							</td>
+							<td>
+								<div class="form-horizontal" style="float:left">
+								<div class="control-group">
+									<label class="control-label"></label>
+									<div class="controls">
+										
+									</div>
+								</div>
+							</td>						
+						</tr>
+						<tr>
+							<td>
+								<div class="control-group">
+									<label class="control-label"></label>
+									<button id="timeselectbtn" class="btn">查询</button>
+									<button id="sel2" class="btn">导出报表</button>
+									<button id="sel3" class="btn">帮助</button>
+								</div>						
+							</td>
+							<td>
+								<div class="form-horizontal" style="float:left">
+								<div class="control-group">
+									<label class="control-label"></label>
+									<div class="controls">
+										
+									</div>
+								</div>
+							</td>						
+						</tr>
+					</table>
+						
+
+						<br/><br/>
+
+						<div>
+						</div>
+
+					</div>
+				
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	
+	<div id="timeconstrastDiv"></div>
+
+</Template>

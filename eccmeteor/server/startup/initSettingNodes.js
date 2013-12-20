@@ -37,7 +37,7 @@ initSettingNodes = function(status){
 			{id:34,pId:3,name:"statusStatistical",action:"statusStatistical",type:"report",icon:"imag/setting/statusStatistical.png"},
 			{id:35,pId:3,name:"contrast",action:"contrast",type:"report",icon:"imag/setting/contrast.png"},
 			{id:36,pId:3,name:"operationAndMaintenance",action:"operationAndMaintenance",type:"setting",icon:"imag/setting/operationAndMaintenance.png"},
-			{id:37,pId:3,name:"time",action:"time",type:"report",icon:"imag/setting/time.png"},
+			{id:37,pId:3,name:"time",action:"timeconstrastreport",type:"report",icon:"imag/setting/time.png"},
 			{id:38,pId:3,name:"monitorInfo",action:"monitorInfo",type:"report",icon:"imag/setting/monitorInfo.png"},
 			{id:39,pId:3,name:"SysLogQuery",action:"SysLogQuery",type:"report",icon:"imag/setting/SysLogQuery.png"},
 
