@@ -68,6 +68,7 @@ Object.defineProperty(DrawStatusReport,"export",{
 		return window.document.innerHTML;
 	}
 });
+
 Object.defineProperty(DrawStatusReport,"chooseColor",{
 	value:function(d){
 		if(typeof d === "string"){
@@ -89,7 +90,7 @@ Object.defineProperty(DrawStatusReport,"chooseColor",{
 	   		}
    		}
 	}
-})
+});
 
 Object.defineProperty(DrawStatusReport,"drawStatusBarChart",{
 	value:function(data,window){
@@ -153,6 +154,9 @@ Object.defineProperty(DrawStatusReport,"drawStatusPie",{
 				.attr("transform", "translate(" + outerRadius + ", " + outerRadius + ")")
 			.append("path")
 				.attr("fill", function(d) {
+					if(d.data.count === 0){
+						d3.select(this).style({'stroke-width': 0})
+					}
 					return color(d.data.status);
 				})
 			.attr("d", arc)

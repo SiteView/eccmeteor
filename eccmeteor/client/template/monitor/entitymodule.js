@@ -14,7 +14,8 @@ Template.MonitorList.Monitors = function(){
 }
 
 Template.MonitorList.events={
-	"click tbody tr":function(e){
+	"click tbody tr":function(e,t){
+		/*
 		var checkedMonitorId = this.sv_id;
 		if(SessionManage.getCheckedMonitorId() === checkedMonitorId)
 			return;
@@ -22,7 +23,8 @@ Template.MonitorList.events={
 		if(!checkedMonitorId || checkedMonitorId=="") return;
 		//存储选中监视器的id
 		SessionManage.setCheckedMonitorId(checkedMonitorId);
-		drawImage(checkedMonitorId);
+		drawImage(checkedMonitorId);*/
+		EntityMouduleDomAction.drawReportLine(e,t,this);
 	},
     "click #showMonitorList button[name='trash']":function(e){
 		var id = this.sv_id;
@@ -104,7 +106,10 @@ Template.MonitorList.events={
     }
 }
 
-Template.MonitorList.rendered = function(){ //默认选中第一个监视进行绘图
+Template.MonitorList.rendered = function(){
+	EntityMouduleDomAction.MonitorListRendered(this);
+	/* 
+	//默认选中第一个监视进行绘图
 	//初始化checkbox全选效果
 	$(function(){
         //隐藏所有操作按钮
@@ -140,7 +145,8 @@ Template.MonitorList.rendered = function(){ //默认选中第一个监视进行�
 		drawImage(defaultMonitorId);
 	}else{
 		emptyImage();
-	}	
+	}
+	*/
 }
 
 Template.MonitorStatisticalSimpleData.recordsData = function(){

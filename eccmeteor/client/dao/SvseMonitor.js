@@ -167,7 +167,7 @@ Object.defineProperty(SvseMonitorDao,"getMonitorReportDataByCount",{
 	value:function(id,count,fn){
 		Meteor.call(SvseMonitorDao.AGENT,"getMonitorReportDataByCount",[id,count],function (err,result){
 			if(err){
-				fn({status:false,msg:err})
+				fn({status:false,msg:err});
 			}else{
 				fn({status:true,content:result});
 			}

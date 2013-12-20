@@ -191,10 +191,6 @@ Object.defineProperty(DrawTimeContrastReport,"getTimeExtent",{
 			endTime = f.parse(f(timeArray[1]));
 			return [startTime,endTime];
 		}
-		console.log("开始时间:"); 
-		console.log(timeArray[0]);
-		console.log("结束时间:");
-		console.log(timeArray[1])
 
 		var fm = d3.time.format(format);
 		var fd = d3.time.format("%H:%M:%S");
@@ -202,14 +198,12 @@ Object.defineProperty(DrawTimeContrastReport,"getTimeExtent",{
 		var shd = fd(timeArray[0]);
 
 		var sdStr = "1990/1/"+sweek+" "+shd;
-		console.log("开始时间Weeks:"+sweek+"==="+shd+"======="+sdStr); 
 		startTime = new Date(sdStr);
 
 		var eweek = +fm(timeArray[1])+7;//get The Weeks
 		var ehd = fd(timeArray[1]);
 		
 		var edStr = "1990/1/"+eweek+" "+ehd;
-		console.log("结束时间 Weeks:"+eweek+"==="+ehd+"====="+edStr); 
 		endTime = new Date(edStr);
 		return [startTime,endTime];	
 	}

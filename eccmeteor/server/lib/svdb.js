@@ -273,6 +273,7 @@ svGetReportDataByCount = function(monitorId,byCount){
 	var robj = process.sv_univ({
 		'dowhat':'QueryReportData',
 		id:monitorId,
+		dstrNeed:true,
 		dstrStatusNoNeed:null,
 		byCount:byCount
 	}, 0);
