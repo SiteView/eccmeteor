@@ -46,7 +46,7 @@ Object.defineProperty(ExponentialRegression,"exp",{
 		}
 		if(typeof d3 === "undefined"){
 			throw new Error("d3 can't be found");
-		}
+		}	
 		var _self  = this;
    		var parse = _self.parse(primary);
 		var n = Y.length;

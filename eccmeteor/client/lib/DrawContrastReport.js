@@ -120,8 +120,8 @@ Object.defineProperty(DrawContrastReport,"drawEmptyLine",{
 	        .attr('transform','translate(0,10)')
 			.text(label);
 	}
-})*/
-
+})
+*/
 //画图
 Object.defineProperty(DrawContrastReport,"drawLine",{
 	value:function(originalData,startTime,endTime){
@@ -151,7 +151,7 @@ Object.defineProperty(DrawContrastReport,"drawLine",{
 		};
 		margin.top = this.isXAxisAction ? 70 : 40;
 		//var el = window.document.querySelector('#dataviz-container');
-		var svg = d3.select("#drow")
+		var svg = d3.select("#drowContrast")
 					.append("div")
 					.attr("class", "moresvg")
 					.append('svg:svg')
