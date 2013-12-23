@@ -359,11 +359,11 @@ Template.contrast.rendered = function(){
 			// return PagerMonitor.create(SvseTreeDao.getNodeCountsByIds(childrenIds));
 		// }
 
-Template.MonitorList.Monitors = function(){
-	var entityId = SessionManage.getCheckedTreeNode("id");
-    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
-    return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip());
-}
+// Template.MonitorList.Monitors = function(){
+	// var entityId = SessionManage.getCheckedTreeNode("id");
+    // var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
+    // return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip());
+// }
 
  // Template.ContrastDetailData.ContrastDetailTableData = function(){
 	// return SessionManage.getContrastDetailTableData();
