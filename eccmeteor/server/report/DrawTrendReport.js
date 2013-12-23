@@ -175,7 +175,7 @@ Object.defineProperty(DrawTrendReport,"drawLine",{
 			.range([margin.left, width-margin.left])
 			.nice();
 
-		var yExtent = [originalData.min,originalData.max]
+		var yExtent = [+originalData.min,+originalData.max]
 	//	var yExtent = [0,originalData.max]
 		//判断Y轴方向的所有数据是否相同，如果相同则则设置区间为0-最大，否则取 最小值和最大值区间
 		yExtent = yExtent[0] === yExtent[1] ? [0,yExtent[0]] : yExtent;

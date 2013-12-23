@@ -57,6 +57,7 @@ Meteor.methods({
 	"svGetSysLogQueryContEntityConfigSetting":svGetSysLogQueryContEntityConfigSetting,
 	"svGetSysLogQueryContRankConfigSetting":svGetSysLogQueryContRankConfigSetting,
 	//"svGetSysLogQueryContConfigSetting":svGetSysLogQueryContConfigSetting,
+  "svWriteEmailAddressStatusInitFilesection":svWriteEmailAddressStatusInitFilesection,
 });//给客户端调用的
  /**
 	Type： add | modify 

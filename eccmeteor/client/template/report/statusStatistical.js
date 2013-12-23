@@ -3,6 +3,7 @@ var getstatusStatisticalSelectAll = function(){
 }
 
 Template.statusStatisticalform.events = {
+	//查询显示图表
 	"click #sel1":function(){
 		//获取树中选中的节点-监测器id
 		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_status");
@@ -28,7 +29,36 @@ Template.statusStatisticalform.events = {
 		}
 		
 		
+	},
+	
+	//导出报表
+	"click #exportstatusreportbtn":function(){
+		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_status");
+		var nodes = treeObj.getSelectedNodes();
+		console.log(nodes); 
+		if(!nodes || nodes == ""){
+			Message.info("请选择监测器");
+			return;
+		}
+		
+		var startPicker = $('#statusdatetimepickerStartDate').data('datetimepicker');
+		var endPicker = $('#statusdatetimepickerEndDate').data('datetimepicker');
+		var beginDate = startPicker.getDate();
+		var endDate = endPicker.getDate();
+		
+		var startTime = ClientUtils.dateToObject(startPicker.getDate());
+		var endTime = ClientUtils.dateToObject(endPicker.getDate());
+		console.log("#############################");
+		console.log(startTime);
+		console.log(endTime);
+		console.log("#######################");
+		var st = coverTime(startTime);
+		var et = coverTime(endTime);
+		console.log(st);
+		console.log(et);
+		window.location.href="/StatusReport?mid="+nodes+"&st="+st+"&et="+et+"";
 	}
+	
 	/* "click #select":function(e){
 		
 		var methodsendforweb = ClientUtils.formArrayToObject($("#methodsendforweb").serializeArray());
@@ -79,6 +109,17 @@ Template.statusStatisticalform.events = {
 		console.log("warnerrulehelpmessage");
 	},*/
 
+}
+
+//将时间对象转换成字符串
+var coverTime = function(obj){
+	var year = obj.year;
+	var month = (obj.month < 10 ? "0" + obj.month : obj.month);
+	var day = (obj.day < 10 ? "0" + obj.day : obj.day);
+	var hour = (obj.hour < 10 ? "0" + obj.hour : obj.hour);
+	var minute = (obj.minute < 10 ? "0" + obj.minute : obj.minute);
+	var second = (obj.second < 10 ? "0" + obj.second : obj.second);
+	return "" + year + month + day + hour + minute + second;
 }
 
 Template.warnerrulelist.rendered = function(){
@@ -334,8 +375,8 @@ document.onmouseup = up;
 }
 
 var drawTableAndChart = function(monitorId){
-	var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
-	var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+	var startPicker = $('#statusdatetimepickerStartDate').data('datetimepicker');
+	var endPicker = $('#statusdatetimepickerEndDate').data('datetimepicker');
 	var beginDate = startPicker.getDate();
 	var endDate = endPicker.getDate();
 	
@@ -353,7 +394,7 @@ var drawTableAndChart = function(monitorId){
 		var imageData = dataProcess.getImageData();
 		var baseData = dataProcess.getBaseData();
 		// console.log(imageData);
-		// console.log(baseData);
+		console.log(baseData);
 		
 		console.log(imageData.percent);
 		console.log(imageData.statusList);
@@ -424,11 +465,9 @@ Template.statusStatistical.rendered = function(){
 			callback:{
 				onClick:function(event,treeId,treeNode){
 					console.log(treeNode.id);	//点击的节点--对应监测器id
-					//选中指定的树的节点
-					var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_status");
-					treeObj.selectNode(treeNode.id);
-					console.log("select");
-					
+					//console.log(treeNode.name);
+					//console.log("select");
+					Session.set("selectnode",treeNode.id);
 					/* //获取树中所有监测器类型的id
 					var type = treeNode.type;
 					var checkedTreeNode = changeTreeNodeToCheckedNode(treeNode);
@@ -455,7 +494,6 @@ Template.statusStatistical.rendered = function(){
 						drawTableAndChart(treeNode.id);
 						
 					}else{
-						Message.info("请选择监测器");
 						return;
 					}
 				},
@@ -476,9 +514,16 @@ Template.statusStatistical.rendered = function(){
 		if(!$.fn.zTree){
 			return ;
 		}
-
+		console.log("============");
+		var selectNodeid = Session.get("selectnode");
+		console.log(selectNodeid);
+		if(!selectNodeid){
+			$.fn.zTree.init($("#svse_tree_check_status"), setting, data);
+			return;
+		}
 		var tree = $.fn.zTree.init($("#svse_tree_check_status"), setting,expandSimpleTreeNode(data,TreeNodeRemenber.get()));
-		//$.fn.zTree.init($("#svse_tree_check_status"), setting, data);
+		tree.selectNode(selectNodeid);
+		
 	});
 	
 	var template = this;
@@ -486,19 +531,19 @@ Template.statusStatistical.rendered = function(){
 			var endDate = new Date();
 			var startDate = new Date();
 			startDate.setTime(startDate.getTime() - 1000*60*60*24);
-			$(template.find("#datetimepickerStartDate")).datetimepicker({
+			$(template.find("#statusdatetimepickerStartDate")).datetimepicker({
 					format: 'yyyy-MM-dd hh:mm:ss',
 					language: 'zh-CN',
 					maskInput: false
 			});
-			$(template.find("#datetimepickerEndDate")).datetimepicker({
+			$(template.find("#statusdatetimepickerEndDate")).datetimepicker({
 					format: 'yyyy-MM-dd hh:mm:ss',
 					language: 'zh-CN',
 					endDate : endDate,
 					maskInput: false,
 			});
-			var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
-			var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
+			var startPicker = $(template.find("#statusdatetimepickerStartDate")).data('datetimepicker');
+			var endPicker = $(template.find("#statusdatetimepickerEndDate")).data('datetimepicker');
 			startPicker.setDate(startDate);
 			endPicker.setDate(endDate);
 			// $('#AlertdatetimepickerStartDate').on('changeDate', function(e) {

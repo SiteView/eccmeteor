@@ -28,7 +28,15 @@ var NavigationSettingTreeEvents = {
 	"statistical":function(){
 		SwithcView.view(REPORT.STATISTICAL);
 	},
-
+	/*
+	Type： add 
+	Author：xuqiang
+	Date:2013-11-13 09:40
+	Content:增加trend趋势报告
+	*/
+	"timeconstrastreport":function(){
+		SwithcView.view(REPORT.TIMECONSTRASTREPORT);
+	},
 	/*
 	Type： add 
 	Author：xuqiang

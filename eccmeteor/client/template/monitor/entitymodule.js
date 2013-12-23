@@ -14,15 +14,8 @@ Template.MonitorList.Monitors = function(){
 }
 
 Template.MonitorList.events={
-	"click tbody tr":function(e){
-		var checkedMonitorId = this.sv_id;
-		if(SessionManage.getCheckedMonitorId() === checkedMonitorId)
-			return;
-	//	var status = this.status;
-		if(!checkedMonitorId || checkedMonitorId=="") return;
-		//存储选中监视器的id
-		SessionManage.setCheckedMonitorId(checkedMonitorId);
-		drawImage(checkedMonitorId);
+	"click tbody tr":function(e,t){
+		EntityMouduleDomAction.drawReportLine(e,t,this);
 	},
     "click #showMonitorList button[name='trash']":function(e){
 		var id = this.sv_id;
@@ -104,43 +97,8 @@ Template.MonitorList.events={
     }
 }
 
-Template.MonitorList.rendered = function(){ //默认选中第一个监视进行绘图
-	//初始化checkbox全选效果
-	$(function(){
-        //隐藏所有操作按钮
-		ClientUtils.hideOperateBtnInTd("showMonitorList");
-		//初始化 checkbox事件
-		ClientUtils.tableSelectAll("showMonitorTableSelectAll");
-		//初始化tr点击变色效果
-		ClientUtils.trOfTableClickedChangeColor("showMonitorList");
-		//tr 鼠标悬停显示操作按钮效果
-		ClientUtils.showOperateBtnInTd("showMonitorList");
-    });
-	//默认选中第一个监视器，展示数据
-	//console.log("默认画图id是："+this.find("td input:checkbox").id);
-	//第一判断当前是否还有监视器
-	var defaultMonitor = this.find("td input:checkbox");
-	if(!defaultMonitor){
-		emptyImage();
-		return;
-	}
-	//第二 先默认选择第一个监视器的id
-	var defaultMonitorId = defaultMonitor.id;
-	//第三 判断页面刷新前是否已经选中了监视器
-	var parentid  = SessionManage.getCheckedTreeNode("id");
-	var checkedMonitorId = SessionManage.getCheckedMonitorId();
-	if(checkedMonitorId && checkedMonitorId.indexOf(parentid) !== -1){ //当后台数据自动更新时 不切换当前选中监视器
-		//判断已经选中的监视器是否还存在 //避免多客户端对当前监视器进行删除
-		if(this.find("input:checkbox[id='"+checkedMonitorId+"']")){
-			defaultMonitorId = checkedMonitorId;  //存在 的话
-		}
-	}
-	if(defaultMonitorId && defaultMonitorId !== ""){
-		$(this.find("input:checkbox[id='"+defaultMonitorId+"']")).parents("tr").addClass("success");
-		drawImage(defaultMonitorId);
-	}else{
-		emptyImage();
-	}	
+Template.MonitorList.rendered = function(){
+	EntityMouduleDomAction.MonitorListRendered(this);
 }
 
 Template.MonitorStatisticalSimpleData.recordsData = function(){
@@ -156,76 +114,6 @@ Template.svg.events({
 
 Template.MonitorStatisticalDetailData.monitorStatisticalDetailTableData = function(){
 	return SessionManage.getMonitorStatisticalDetailTableData();
-}
-
-//画图前 获取相关数据
-function drawImage(id,count){
-	if(!count) 
-		var count =200;
-	var foreigkeys =SvseMonitorDao.getMonitorForeignKeys(id);
-	if(!foreigkeys){
-		Log4j.warn("监视器"+id+"不能获取画图数据");
-		return;
-	}
-	//获取画图数据
-	SvseMonitorDao.getMonitorRuntimeRecords(id,count,function(result){
-		if(!result.status){
-			Log4js.error(result.msg);
-			return;
-		}
-		var records = result.content;
-		if(!records)
-			return;
-		var dataProcess = new DataProcess(records,foreigkeys["monitorForeignKeys"]);
-		var resultData = dataProcess.getData();
-		var recordsData = dataProcess.getRecordsDate();
-		var keys = dataProcess.getDataKey();
-		SessionManage.setMonitorStatisticalDetailTableData(keys);
-		var selector = "svg#line";
-		var line = new DrawLine(
-							resultData,
-							{
-								'key':foreigkeys["monitorPrimary"],
-								'label':foreigkeys["monitorDescript"],
-								'width':$(selector).parent().width(),
-								'height':$(selector).parent().height(),
-								'dateformate':"%H:%M"
-							},
-							selector);
-
-		line.drawLine();//调用 client/lib 下的line.js 中的drawLine函数画图;
-	/*	SessionManage.setMonitorRuntimeTableData(recordsData);
-		var selectorPie = "svg#monitorStatisticalPieSvg";
-		var pie = new DrawPie(
-				recordsData,
-				selectorPie,
-				{}
-			)
-		pie.draw();
-	*/
-		drawDie(recordsData,"svg#monitorStatisticalPieSvg");
-	});
-}
-
-function emptyImage(){
-	SessionManage.setMonitorStatisticalDetailTableData(null);
-	SessionManage.setMonitorRuntimeTableData({
-		ok:0,
-		warning:0,
-		error:0,
-		disable:0,
-		starttime:"---",
-		endtime:"---"
-	});
-	$("svg#line").empty();	
-	d3.select("svg#line")
-		.attr("height",150)
-		.append("g")
-		.append("text")
-		.attr("x","50%")
-		.attr("y","50%")
-		.text("暂无数据")
-		.style("text-anchor", "middle");	
 }
 
 

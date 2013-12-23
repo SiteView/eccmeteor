@@ -68,7 +68,9 @@ REPORT ={
 	CONTRAST:"contrast",//对比报告
 	STATUSSTATISTICAL:"statusStatistical",//"状态统计报告"
 	MONITORINFO:"monitorInfo",//监测器信息报告, 搜索测试
-	SYSLOGQUERY:"sysLogQuery"
+	SYSLOGQUERY:"sysLogQuery",
+	TIMECONSTRASTREPORT:"timeconstrastreport"//时间段对比报告
+	
 }
 /*
 Type： add 

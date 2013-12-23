@@ -42,13 +42,44 @@ Template.messagetemplatesetting.events({
 		}
 		var addtemplateinfo = ClientUtils.formArrayToObject($("#templateinfo").serializeArray());
 		console.log(addtemplateinfo);
-		
+		Meteor.call("svWriteEmailAddressStatusInitFilesection",title,addtemplateinfo.context,function(result){
+			console.log("短信模板添加成功");
+			console.log(result);
+		});
 	},
 	
 	//删除选中的短信模板
 	"click #deletemessagetemplatebtn":function(){
 		
 	},
+	
+	/* //模板设置
+	"click #smsmessagetemplatesetting" : function(){
+		//$("#messageTemplateSettingDiv").modal("show");
+		SvseMessageDao.getMessageTemplates(function(err,result){
+			console.log(result);
+			var messageTemplate = [];
+			var defaulttemplate = {};
+			for(index in result){
+				var temp = {};
+				//console.log(index);
+				//console.log(result[index]);
+				temp["name"] = index;
+				temp["context"] = result[index];
+				console.log(temp);
+				messageTemplate.push(temp);
+				if(index == "Default"){
+					defaulttemplate = temp;
+				}
+				//console.log(messageTemplate);
+				
+			}
+			console.log(messageTemplate);
+			console.log(defaulttemplate);
+			var context = {Template:messageTemplate,showTemplate:defaulttemplate};
+			RenderTemplate.showParents("#messageTemplateSettingDiv","messagetemplatesetting",context);
+		});
+	}, */
 	
 });
 

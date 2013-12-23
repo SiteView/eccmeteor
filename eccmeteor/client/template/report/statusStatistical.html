@@ -4,7 +4,7 @@
 		data-width="800" data-modalOverflow="true">
 		<div class="modal-body">
 			<div class="row-fluid">
-				<div class="span3" style="overflow:auto" id="treeDemo">
+				<div class="span3" style="overflow:auto;width:50" id="treeDemo">
 					<label class="label label-info">状态统计报告</label>
 					<ul id="svse_tree_check_status" class="ztree">
 					</ul>
@@ -26,24 +26,24 @@
 		</ul>
 	</div>
 	<div class="accordion-group">
-		<a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"> 查询条件 </a>
+		<label class="label label-info">查询条件</label>
 	<div class="panel-group" id="accordion"> </div>
 		<div id="collapseOne" class="panel-collapse collapse in">
 			<form class="well form-horizontal form-inline" onsubmit="return false;">
 				<fieldset>
 					<div>
-						<div class="well">
+						<div>
 							<div class="form-inline">
 								<span>{{language.startTime}}:</span>
-								<div id="datetimepickerStartDate" class="input-append date">
+								<div id="statusdatetimepickerStartDate" class="input-append date" style="padding-bottom:10px">
 									<input type="text" readOnly="readonly" />
 									<span class="add-on">
 										<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
 									</span>
 								</div>
-								<br/><br/>
+								<br/>
 								<span>{{language.endTime}}:</span>
-								<div id="datetimepickerEndDate" class="input-append date">
+								<div id="statusdatetimepickerEndDate" class="input-append date" style="padding-bottom:10px">
 									<input type="text" readOnly="readonly"/>
 									<span class="add-on">
 										<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
@@ -51,11 +51,11 @@
 								</div>
 								<div>
 								</div>
-								<div class="control-group">
-									<label class="control-label"></label>
+								<div class="control-group" style="padding-left:65px">
+									
 									<button id="sel1" class="btn">查询</button>
-									<button id="sel2" class="btn">导出报表</button>
-									<button id="sel3" class="btn">帮助</button>
+									<button id="exportstatusreportbtn" class="btn">导出报表</button>
+									<button id="reporthelpbtn" class="btn">帮助</button>
 								</div>
 							</div>
 
@@ -102,7 +102,8 @@
 
 <Template name="statusStatisticallist">
 	<div style="overflow-y: auto; left: 0px;height: 500px;">
-		<div class="accordion-group"> <a> 状态列表 </a>
+		<div class="accordion-group">
+			<label class="label label-info">状态列表</label>
 			<div>
 				<table class="table table-striped table-condensed table-hover">
 					<thead>
@@ -130,7 +131,8 @@
 			</div>
 		</div>
 		
-		<div class="accordion-group"> <a> 状态分布图 </a>
+		<div class="accordion-group">
+			<label class="label label-info">状态分布图</label>
 			<table class="table table-hover table-condensed">
 				<tr>
 					<td align="left">{{startTime}}</td>
@@ -148,7 +150,8 @@
 			
 		</div>
 
-		<div class="accordion-group"> <a>状态统计列表</a>
+		<div class="accordion-group"> 
+			<label class="label label-info">状态统计列表</label>
 			<div>
 				<table class="table table-striped table-condensed table-hover">
 					<thead>
@@ -177,8 +180,12 @@
 			</div>
 		</div>
 		
-		<div class="accordion-group"> <a>状态统计图</a> 
-			<div id="statistical"></div>
+		<div class="accordion-group">
+			<label class="label label-info">状态统计图</label>
+			<br/>
+			<label class="" align="center">{{baseDate.MonitorName}}</label>
+			
+			<div id="statistical" class="well"></div>
 		</div>
 	
 	</div>
