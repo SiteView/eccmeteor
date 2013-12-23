@@ -22,7 +22,7 @@ Template.MonitorList.events={
 		console.log("删除监视器id:"+id);
 		var parentid  = SessionManage.getCheckedTreeNode("id");
 		SvseMonitorDao.deleteMonitor(id,parentid,function(result){
-			SystemLogger(result);
+			Log4js.info(result);
 		});
     },
  	"click #showMonitorList button[name='edit']":function(e){
@@ -108,7 +108,9 @@ Template.MonitorStatisticalSimpleData.recordsData = function(){
 Template.svg.events({
 	"click .btn#monitoryDetailBtn" :  function(){
 	//	SwithcView.view(MONITORVIEW.MONITORDETAIL);//设置视图状态为监视器详细信息
-		$("#showMonitorDetailSvgDiv").modal('show');
+	//	$("#showMonitorDetailSvgDiv").modal('show');
+			
+	RenderTemplate.showParents("#MonitorDetailSvgModal","showMonitorDetailSvg");
 	}
 })
 
