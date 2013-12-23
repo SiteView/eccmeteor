@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="QueryData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stlini.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StringMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="svdbtype.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="svdbApi.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="svapi.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="otherfunc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Des.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="safedog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SVSE.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjCache.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Group.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcePool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RecordType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RcdStat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RecordSet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="QueryData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stlini.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StringMap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="svdbtype.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="svdbApi.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralApi.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="svapi.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="complexFunc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="otherfunc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="otherfunc2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Des.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SVSE.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SVSEAPI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjCache.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Group.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupAPI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceAPI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RcdStat.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RecordSet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RecordType.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
