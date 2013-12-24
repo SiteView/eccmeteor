@@ -19,20 +19,13 @@ Object.defineProperty(MonitorDetailAction,"render",{
 		var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
 		startPicker.setDate(startDate);
 		endPicker.setDate(endDate);
-//		$('#datetimepickerstartDate').on('changeDate', function(e) {
-//			endPicker.setstartDate(e.date);
-//		});
-//		$('#datetimepickerEndDate').on('changeDate', function(e) {
-//			startPicker.setEndDate(e.date);
-//		});
-		//drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate));
 		var monitorId  = template.find("input:hidden").value;
-		this.draw(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate),monitorId);
+		this.draw(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate),monitorId,template);
 	}
 });
 
 Object.defineProperty(MonitorDetailAction,"timeLinkClick",{
-	value:function(e,t,context){
+	value:function(e,template,context){
 		var str = e.currentTarget.name;
 		var startDate;
 		var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
@@ -48,16 +41,14 @@ Object.defineProperty(MonitorDetailAction,"timeLinkClick",{
 			startDate = today.add(JSON.parse(str));
 		}
 		startPicker.setDate(startDate);
-		console.log("#############################");
-		console.log(startDate);
-		console.log(endPicker.getDate());
-		console.log("#######################");
-		drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endPicker.getDate()));
+		var endDate = endPicker.getDate();
+		var monitorId  = template.find("input:hidden").value;
+		this.draw(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate),monitorId,template);
 	}
 });
 
 Object.defineProperty(MonitorDetailAction,"draw",{
-	value:function(start,end,checkedMonitorId){
+	value:function(start,end,checkedMonitorId,template){
 		//画图前 获取相关数据
 		SvseMonitorDao.getMonitorReportData(checkedMonitorId,start,end,function(result){
 			if(!result.status){
@@ -65,19 +56,21 @@ Object.defineProperty(MonitorDetailAction,"draw",{
 				return;
 			}
 			var dataProcess = new ReportDataProcess(result.content);
-		//	var tableData = dataProcess.getTableData();
 			var imageData = dataProcess.getImageData();
-			var baseData = dataProcess.getBaseData();
-		//	var statusData = dataProcess.getStatusData();
-			var extendDate = dataProcess.getExtentDate();
-			SessionManage.setMonitorStatisticalDetailTableData(tableData);
-			
-			var selector = "svg#line";
-			var setting = {
-				'width':$(selector).parent().width(),
-				'height':$(selector).parent().height()
-			};
-			DrawMonitorModuleLine.draw(imageData,selector,setting,extendDate);
+			var extendDate = dataProcess.getExtentDate();	
+			var selector = template.find("svg#detailLine");
+			DrawMonitorModuleDetailLine.draw(imageData,selector,extendDate);
 		});
+	}
+});
+Object.defineProperty(MonitorDetailAction,"queryDetailLineDataAction",{
+	value:function(e,template,context,template){
+		var monitorId  = template.find("input:hidden").value;
+		if($(template.find("#datetimepickerStartDate")).length === 0){ //判断是否具有时间选择器
+			return;
+		}
+		var startDate   = $(template.find("#datetimepickerStartDate")).data('datetimepicker').getDate();
+		var endDate   =  $(template.find("#datetimepickerEndDate")).data('datetimepicker').getDate();
+		this.draw(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate),monitorId,template);
 	}
 });
