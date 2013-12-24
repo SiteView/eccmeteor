@@ -106,11 +106,9 @@ Template.MonitorStatisticalSimpleData.recordsData = function(){
 }
 
 Template.svg.events({
-	"click .btn#monitoryDetailBtn" :  function(){
-	//	SwithcView.view(MONITORVIEW.MONITORDETAIL);//设置视图状态为监视器详细信息
-	//	$("#showMonitorDetailSvgDiv").modal('show');
-			
-	RenderTemplate.showParents("#MonitorDetailSvgModal","showMonitorDetailSvg");
+	"click .btn#monitoryDetailBtn" :  function(){		
+		var monitorId = SessionManage.getCheckedMonitorId();
+		RenderTemplate.showParents("#MonitorDetailSvgModal","showMonitorDetailSvg",{monitorId:monitorId});
 	}
 })
 

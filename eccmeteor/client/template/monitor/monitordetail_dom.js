@@ -25,7 +25,9 @@ Object.defineProperty(MonitorDetailAction,"render",{
 //		$('#datetimepickerEndDate').on('changeDate', function(e) {
 //			startPicker.setEndDate(e.date);
 //		});
-		drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate));
+		//drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate));
+		var monitorId  = template.find("input:hidden").value;
+		this.draw(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate),monitorId);
 	}
 });
 
@@ -51,5 +53,31 @@ Object.defineProperty(MonitorDetailAction,"timeLinkClick",{
 		console.log(endPicker.getDate());
 		console.log("#######################");
 		drawDetailLine(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endPicker.getDate()));
+	}
+});
+
+Object.defineProperty(MonitorDetailAction,"draw",{
+	value:function(start,end,checkedMonitorId){
+		//画图前 获取相关数据
+		SvseMonitorDao.getMonitorReportData(checkedMonitorId,start,end,function(result){
+			if(!result.status){
+				Message.error(result.msg);
+				return;
+			}
+			var dataProcess = new ReportDataProcess(result.content);
+		//	var tableData = dataProcess.getTableData();
+			var imageData = dataProcess.getImageData();
+			var baseData = dataProcess.getBaseData();
+		//	var statusData = dataProcess.getStatusData();
+			var extendDate = dataProcess.getExtentDate();
+			SessionManage.setMonitorStatisticalDetailTableData(tableData);
+			
+			var selector = "svg#line";
+			var setting = {
+				'width':$(selector).parent().width(),
+				'height':$(selector).parent().height()
+			};
+			DrawMonitorModuleLine.draw(imageData,selector,setting,extendDate);
+		});
 	}
 });
