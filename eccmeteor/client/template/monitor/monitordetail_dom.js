@@ -26,6 +26,11 @@ Object.defineProperty(MonitorDetailAction,"render",{
 
 Object.defineProperty(MonitorDetailAction,"timeLinkClick",{
 	value:function(e,template,context){
+		/**deal with css*/
+		var target = $(e.currentTarget);
+		target.parents("ul").find("a").removeClass();
+		target.addClass("label label-success");
+
 		var str = e.currentTarget.name;
 		var startDate;
 		var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
@@ -57,14 +62,16 @@ Object.defineProperty(MonitorDetailAction,"draw",{
 			}
 			var dataProcess = new ReportDataProcess(result.content);
 			var imageData = dataProcess.getImageData();
-			var extendDate = dataProcess.getExtentDate();	
+			var st = ClientUtils.objectToDate(start);
+			var et = ClientUtils.objectToDate(end);
+			var extendDate = [st,et];
 			var selector = template.find("svg#detailLine");
 			DrawMonitorModuleDetailLine.draw(imageData,selector,extendDate);
 		});
 	}
 });
 Object.defineProperty(MonitorDetailAction,"queryDetailLineDataAction",{
-	value:function(e,template,context,template){
+	value:function(e,template,context){
 		var monitorId  = template.find("input:hidden").value;
 		if($(template.find("#datetimepickerStartDate")).length === 0){ //判断是否具有时间选择器
 			return;

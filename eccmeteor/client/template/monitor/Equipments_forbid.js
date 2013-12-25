@@ -70,5 +70,8 @@ Template.ForbidEquipments.events = {
 	},
 	"click #ForbidEquipmentsDivFormCancelBtn":function(e,t){
 		RenderTemplate.hideParents(t);
+	},
+	"click .close":function(e,t){
+		RenderTemplate.hideParents(t);
 	}
 }
