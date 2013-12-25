@@ -1,0 +1,18 @@
+<Template name="UserPromission">
+	<div class="modal hide fade">
+		<div class="modal-header">
+			{{#with user}}
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<span class="badge badge-info" id="promissionUsername">用户授权:{{username}}</span>
+			<input type="hidden" id="promissionUserId" value="{{_id}}">
+			{{/with}}
+		</div>
+		<div class="modal-body">
+		</div>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-large" id="cancel">取消</button>
+			<button class="btn btn-primary btn-large" id="save">保存</button>
+		</div>
+		
+	</div>
+</Template>

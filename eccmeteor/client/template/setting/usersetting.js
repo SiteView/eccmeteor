@@ -85,7 +85,7 @@ Template.usersettingListTable.events({
 			SystemLogger("promission 数据暂未缓冲");
 			return;
 		}
-		RenderTemplate.showParents("#UserPromissionSettingModal","userPromissionSetting",{user:user});
+		RenderTemplate.showParents("#UserPromissionSettingModal","UserPromission",{user:user});
 	}
 });
 
