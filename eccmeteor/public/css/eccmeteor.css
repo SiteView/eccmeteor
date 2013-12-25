@@ -77,3 +77,6 @@ body{
   padding:10px;
   margin-bottom: 15px;
 }
+.well-overflow{
+  overflow:auto;
+}

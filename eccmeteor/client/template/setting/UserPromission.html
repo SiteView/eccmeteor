@@ -1,5 +1,6 @@
 <Template name="UserPromission">
-	<div class="modal hide fade">
+	<div class="modal hide fade" data-backdrop="true" data-keyboard="true" data-show="false" 
+		data-maxHeight='500' data-width="650" data-height="545" data-modalOverflow="true">
 		<div class="modal-header">
 			{{#with user}}
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -8,6 +9,15 @@
 			{{/with}}
 		</div>
 		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="span6 well well-condensed well-overflow">
+					<ul id="svse_tree_promission_check" class="ztree"></ul>
+					<ul id="svse_other_promission_check" class="ztree"></ul>
+				</div>
+				<div class="span6 well-overflow">
+					
+				</div>
+			</div>
 		</div>
 		<div class="modal-footer" align="right">
 			<button class="btn btn-large" id="cancel">取消</button>
