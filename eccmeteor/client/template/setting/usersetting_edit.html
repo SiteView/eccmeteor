@@ -1,23 +1,23 @@
 <Template name="usersettingedit">
-	<div id="usersettingeditdiv" class="modal hide fade">
+	<div class="modal hide fade">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<label class="label label-info">编辑用户</label>
-			{{ide "usersettingedit"}}
 		</div>
 		<div class="modal-body">
+		{{#with user}}
 		<form id="usersettingeditform" class="well form-horizontal" submit="return fasle;">
 			<fieldset>
 				<div class="control-group">
 				  <label class="control-label">登录名:</label>
 				  <div class="controls">
-					<input type="text" class="input-big" name="username" readOnly>
+					<input type="text" class="input-big" name="username" value="{{username}}" readOnly>
 				  </div>
 				</div>
 				<div class="control-group">
 				  <label class="control-label">用户名:</label>
 				  <div class="controls">
-					<input type="text" class="input-big" name="aliasname">
+					<input type="text" class="input-big" name="aliasname" value="{{profile.aliasname}}">
 				  </div>
 				</div>
 				<div class="control-group">
@@ -34,6 +34,7 @@
 				</div>
 			</fieldset>
 		</form>
+		{{/with}}
 		<div class="modal-footer" align="right">
 			<button class="btn btn-large" id="usersettingeditformcanclebtn">取消</button>
 			<button class="btn btn-primary btn-large" id="usersettingeditformsavebtn">保存</button>
