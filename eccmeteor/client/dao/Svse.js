@@ -10,65 +10,6 @@ SvseDao = {
 	},
 	getNodesByRootId:function(rootId){
 		return Svse.find({parentid:rootId}).fetch();
-	},
-	getTreeSimple:function(){//不包含监视器 简单数据类型
-		if(typeof Svse === "undefined")
-			return [];
-		var nodes = Svse.find().fetch();
-		var branch = [];
-		for(index in nodes){
-			var obj = nodes[index];
-			var branchNode = {};
-			var treeNode = SvseTree.findOne({sv_id:obj["sv_id"]});
-			if(!treeNode){
-				treeNode = {sv_name:"",status:"ok"}
-			}
-			branchNode["id"] = obj["sv_id"];
-			branchNode["pId"] = obj["parentid"];
-			branchNode["type"] = obj["type"];
-			branchNode["name"] = treeNode["sv_name"];
-			branchNode["isParent"] = true;
-			branchNode["icon"] = "imag/status/"+obj["type"]+(treeNode["status"]?treeNode["status"]:"")+".png";
-			if(branchNode["pId"] === "0"){
-				branchNode["open"] = true;
-				//记住这个节点
-				TreeNodeRemenber.remenber(obj["sv_id"])
-			}
-			if(obj["type"] === "entity"){
-				branchNode["isParent"] = false;
-			}
-			branch.push(branchNode);
-		}
-		return branch;
-	},
-	getDetailTree:function(){ //包含监视器	
-		var nodes = Svse.find().fetch();
-		var branch = [];
-		for(index in nodes){
-			var obj = nodes[index];
-			var branchNode = {};
-			branchNode["id"] = obj["sv_id"];
-			branchNode["pId"] = obj["parentid"];
-			branchNode["type"] = obj["type"];
-			branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]})["sv_name"];
-			branchNode["isParent"] = true;
-			if(branchNode["pId"] === "0") branchNode["open"] = true;
-			if(obj["type"] === "entity" && obj["submonitor"] && obj["submonitor"].length){
-				
-				var submonitor = obj["submonitor"];
-				for(subindex in submonitor){
-					var subobj = {};
-					subobj["id"] = submonitor[subindex];
-					subobj["pId"] = obj["sv_id"];
-					subobj["type"] = "monitor";
-					subobj["name"] = SvseTree.findOne({sv_id:submonitor[subindex]})["sv_name"];
-					branch.push(subobj);
-				}
-			}
-			branch.push(branchNode);
-		}
-		return branch;
-		
 	},	
 	removeNodesById:function(id,fn){  //根据ID删除节点 返回删除的节点数
 		//同时删除SvseTree和Svse中的数据而且删除其子节点。
@@ -393,5 +334,78 @@ Object.defineProperty(SvseDao,"calculateEntityAllEntityAndMonitorStatus",{
 			data[ms] = data[ms] +1;
 		}
 		return data;
+	}
+});
+
+/*
+//包含监视器	
+*/
+Object.defineProperty(SvseDao,"getDetailTree",{
+	value:function(){ //包含监视器	
+		var nodes = Svse.find().fetch();
+		var branch = [];
+		for(index in nodes){
+			var obj = nodes[index];
+			var branchNode = {};
+			var treeNode = SvseTree.findOne({sv_id:obj["sv_id"]});
+			branchNode["id"] = obj["sv_id"];
+			branchNode["pId"] = obj["parentid"];
+			branchNode["type"] = obj["type"];
+			branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]})["sv_name"];
+			branchNode["isParent"] = true;
+			branchNode["icon"] = "imag/status/"+obj["type"]+(treeNode["status"]?treeNode["status"]:"")+".png";
+			if(branchNode["pId"] === "0") branchNode["open"] = true;
+			if(obj["type"] === "entity" && obj["submonitor"] && obj["submonitor"].length){	
+				var submonitor = obj["submonitor"];
+				for(subindex in submonitor){
+					var subobj = {};
+					var monitor = SvseTree.findOne({sv_id:submonitor[subindex]})
+					subobj["id"] = submonitor[subindex];
+					subobj["pId"] = obj["sv_id"];
+					subobj["type"] = "monitor";
+					subobj["name"] = monitor["sv_name"];
+					subobj["icon"] = "imag/status/monitor"+(monitor["status"]?monitor["status"]:"")+".png";
+					branch.push(subobj);
+				}
+			}
+			branch.push(branchNode);
+		}
+		return branch;
+	}
+});
+
+/*
+//不包含监视器 简单数据类型	
+*/
+Object.defineProperty(SvseDao,"getTreeSimple",{
+	value:function(){
+		if(typeof Svse === "undefined")
+			return [];
+		var nodes = Svse.find().fetch();
+		var branch = [];
+		for(index in nodes){
+			var obj = nodes[index];
+			var branchNode = {};
+			var treeNode = SvseTree.findOne({sv_id:obj["sv_id"]});
+			if(!treeNode){
+				treeNode = {sv_name:"",status:"ok"}
+			}
+			branchNode["id"] = obj["sv_id"];
+			branchNode["pId"] = obj["parentid"];
+			branchNode["type"] = obj["type"];
+			branchNode["name"] = treeNode["sv_name"];
+			branchNode["isParent"] = true;
+			branchNode["icon"] = "imag/status/"+obj["type"]+(treeNode["status"]?treeNode["status"]:"")+".png";
+			if(branchNode["pId"] === "0"){
+				branchNode["open"] = true;
+				//记住这个节点
+				TreeNodeRemenber.remenber(obj["sv_id"])
+			}
+			if(obj["type"] === "entity"){
+				branchNode["isParent"] = false;
+			}
+			branch.push(branchNode);
+		}
+		return branch;
 	}
 });
