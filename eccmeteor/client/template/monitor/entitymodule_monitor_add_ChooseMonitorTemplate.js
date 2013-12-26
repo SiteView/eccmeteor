@@ -49,6 +49,9 @@ Template.ChooseeMonitorTemplateModal.events({
 			context.MonityTemplateParameters[DynamicParameters.index]["selects"] = DynamicDataList;
 			RenderTemplate.showParents("#AddMoniorFormModal","AddMoniorFormModal",context);
 		});
+	},
+	"click .modal-header button.close":function(e,t){
+		RenderTemplate.hideParents(t);
 	}
 });
 var getMonitorInfoContext = function(monitorTemplateId,monityTemplateName){

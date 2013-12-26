@@ -13,28 +13,23 @@ Template.usersettingadd.rendered = function(){
 }
 
 Template.usersettingadd.events({
-	"click #usersettingaddformsavebtn":function(){
+	"click #usersettingaddformsavebtn":function(e,t){
 		var user = ClientUtils.formArrayToObject($("#usersettingaddform").serializeArray());
 		if(!user.password.length || user.password !== user.password2) return;
 		SvseUserDao.register(user,function(result){
 			if(result.status){
-				Log4js.info("注册成功");
-				$("#usersettingaddform :text").val("");
-				$("#usersettingaddform :password").val("");
-				$("#usersettingaddform :text[name='username']").closest("div.controls").find("span").css("display","none");
-				$("#usersettingaddform :text[name='username']").closest("div.control-group").removeClass("error");
-				$('#usersettingadddiv').modal('toggle');
+				Message.success("注册成功",{align:"center",time:1});
+				RenderTemplate.hideParents(t);
 			}else{
 				$("#usersettingaddform :text[name='username']").closest("div.controls").find("span").css("display","block").html(result.msg);
 				$("#usersettingaddform :text[name='username']").closest("div.control-group").addClass("error");
 			}
 		});
 	},
-	"click #usersettingaddformcanclebtn":function(){
-		$("#usersettingaddform :text").val("");
-		$("#usersettingaddform :password").each(function(){$(this).val("")});
-		$("#usersettingaddform :text[name='username']").closest("div.controls").find("span").css("display","none");
-		$("#usersettingaddform :text[name='username']").closest("div.control-group").removeClass("error");
-		$('#usersettingadddiv').modal('toggle');
+	"click #usersettingaddformcanclebtn":function(e,t){
+		RenderTemplate.hideParents(t);
+	},
+	"click .modal-header button.close":function(e,t){
+		RenderTemplate.hideParents(t);
 	}
 });
