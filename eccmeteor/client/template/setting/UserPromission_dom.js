@@ -1,41 +1,8 @@
-UserSettingPromissionAction = function(){};
+UserPromissionAction = function(){};
 
-Object.defineProperty(UserSettingPromissionAction,"userPromissionRender",{
-	value:function(template){
 
-		this.initTree(template);
-		return;
-		console.log("render Master");
-		var uid = template.find("input:hidden#promissionUserId");
-		var data = SvseUserDao.getNodeOpratePermissionByUserId(uid); //初始化当前用户的授权信息到临时数据
-		Session.set("userPromissionSettingGroupControlData",data);//存储设备节点的操作信息到临时数据里面
-		var operationData = SvseUserDao.getSettingOperatePermissionByUserId(uid);
-		Session.set("userPromissionSettingOperationControlData",operationData);//存储其他 节点的操作信息
-		//左上 树的勾选
-		var displayNodes = SvseUserDao.getDisplayNodesByUserId(uid);//获取设备树的展示状态
-		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_promission_check");
-		console.log(typeof treeObj);
-		treeObj.checkAllNodes(false);//清空上一个用户状态
-		//节点勾选
-		for(var index  = 0; index < displayNodes.length ; index++){
-			treeObj.checkNode(treeObj.getNodesByFilter(function(node){
-				return  node.id  === displayNodes[index];
-			}, true), true);
-		}
-		//左下 树的勾选
-		var displaySettingNodes = SvseUserDao.getDisplaySettingNodesByUserId(user._id);//获取设置树的展示状态
-		var treeObj2 = $.fn.zTree.getZTreeObj("svse_other_promission_check");
-		treeObj2.checkAllNodes(false);//清空上一个用户状态
-		//节点勾选
-		for(var index2  = 0; index2 < displaySettingNodes.length ; index2++){
-			treeObj2.checkNode(treeObj2.getNodesByFilter(function(node){
-				return  node.action  === displaySettingNodes[index2];
-			}, true), true);
-		}
-	}
-});
 
-Object.defineProperty(UserSettingPromissionAction,"userPromissionSave",{
+Object.defineProperty(UserPromissionAction,"userPromissionSave",{
 	value:function(e,t,context){
 		var  data  = Session.get("userPromissionSettingGroupControlData");
 		var operationData =  Session.get("userPromissionSettingOperationControlData");
@@ -81,7 +48,7 @@ Object.defineProperty(UserSettingPromissionAction,"userPromissionSave",{
 	}
 });
 
-Object.defineProperty(UserSettingPromissionAction,"userPromissionCancel",{
+Object.defineProperty(UserPromissionAction,"userPromissionCancel",{
 	value:function(e,t,context){
 		console.log("userPromissionSettingCloseBtn close");
 		this.clearUserPromissionSettingGroupControlData();//清空Session中的临时数据
@@ -89,8 +56,22 @@ Object.defineProperty(UserSettingPromissionAction,"userPromissionCancel",{
 	}
 });
 
+Object.defineProperty(UserPromissionAction,"chooseUserPromissionViewType",{
+	value:function(type,template){
+		var templateName = "";
+		switch(type){
+			case "entity" : templateName = "UserPromissionTypeOfEntity";
+				break;
+			case "group" : templateName = "UserPromissionTypeOfGroup";
+				break;
+		}
+		if(templateName !== ""){
+			RenderTemplate.renderIn("#userPromissionViewType",templateName);
+		}
+	}
+});
 //清除临时数据
-Object.defineProperty(UserSettingPromissionAction,"clearUserPromissionSettingGroupControlData",{
+Object.defineProperty(UserPromissionAction,"clearUserPromissionSettingGroupControlData",{
 	value:function(){
 		Session.set("userPromissionSettingGroupControlData",null);//清空Session中的临时数据
 		Session.set("userPromissionSettingGroupControlNodeId",null);
@@ -101,14 +82,14 @@ Object.defineProperty(UserSettingPromissionAction,"clearUserPromissionSettingGro
 	}
 });
 
-Object.defineProperty(UserSettingPromissionAction,"initTree",{
+Object.defineProperty(UserPromissionAction,"initTree",{
 	value:function(template){
 		this.initTreeSimple(template);
 		this.initSettingTree(template);
 	}
 });
 
-Object.defineProperty(UserSettingPromissionAction,"initTreeSimple",{
+Object.defineProperty(UserPromissionAction,"initTreeSimple",{
 	value:function(template){
 		var action = this.treeSimpleNodeClickAction;
 		var data = SvseDao.getTreeSimple();
@@ -136,13 +117,16 @@ Object.defineProperty(UserSettingPromissionAction,"initTreeSimple",{
 	}
 });
 
-Object.defineProperty(UserSettingPromissionAction,"treeSimpleNodeClickAction",{
+Object.defineProperty(UserPromissionAction,"treeSimpleNodeClickAction",{
 	value:function(treeId, treeNode){
-		Session.set("userpromissViewType","svse")
+		
 		//第一步  获取当前操作节点 
 		var currend_id= treeNode.id;	//当前节点的ID
 		var current_type = treeNode.type === "entity" ? "entity" : "group" ;//当前节点类型
 		console.log("当前节点ID是" + currend_id  +"  节点类型是 " + current_type);
+
+		UserPromissionAction.chooseUserPromissionViewType(current_type);
+		return;
 		//第二步  从内存中读取当前节点的操作权限，在界面上选中相关节点
 		var  data  = Session.get("userPromissionSettingGroupControlData");
 		//绘制当前节点的权限的checkbox选中情况 //当且仅当连续连两次点击的节点类型相同时进行重绘
@@ -182,7 +166,7 @@ Object.defineProperty(UserSettingPromissionAction,"treeSimpleNodeClickAction",{
 	}
 });
 
-Object.defineProperty(UserSettingPromissionAction,"initSettingTree",{
+Object.defineProperty(UserPromissionAction,"initSettingTree",{
 	value:function(template){
 		//其他设置的树
 		var settingdata = NavigationSettingTree.getTreeData();
@@ -214,19 +198,19 @@ Object.defineProperty(UserSettingPromissionAction,"initSettingTree",{
 	}
 });
 
-Object.defineProperty(UserSettingPromissionAction,"initPromissionDate",{
+Object.defineProperty(UserPromissionAction,"initPromissionData",{
 	value:function(template){
-		var uid = template.find("input:hidden#promissionUserId");
+		var uid = template.find("input:hidden#promissionUserId").value;
 		var entityPermissionData = SvseUserDao.getNodeOpratePermissionByUserId(uid); //初始化当前用户的授权信息到临时数据
-		Session.set("userPromissionSettingGroupControlData",data);//存储设备节点的操作信息到临时数据里面
+		Session.set("userPromissionSettingGroupControlData",entityPermissionData);//存储设备节点的操作信息到临时数据里面
 		var operationData = SvseUserDao.getSettingOperatePermissionByUserId(uid);
 		Session.set("userPromissionSettingOperationControlData",operationData);//存储其他 节点的操作信息
 	}
 });
 
-Object.defineProperty(UserSettingPromissionAction,"initChooseTreeNode",{
+Object.defineProperty(UserPromissionAction,"initChooseTreeNode",{
 	value:function(template){
-		var uid = template.find("input:hidden#promissionUserId");
+		var uid = template.find("input:hidden#promissionUserId").value;
 		//左上 树的勾选
 		var displayNodes = SvseUserDao.getDisplayNodesByUserId(uid);//获取设备树的展示状态
 		if(displayNodes && displayNodes.length){
@@ -239,7 +223,7 @@ Object.defineProperty(UserSettingPromissionAction,"initChooseTreeNode",{
 			}
 		}
 		//左下 树的勾选
-		var displaySettingNodes = SvseUserDao.getDisplaySettingNodesByUserId(user._id);//获取设置树的展示状态
+		var displaySettingNodes = SvseUserDao.getDisplaySettingNodesByUserId(uid);//获取设置树的展示状态
 		if(displaySettingNodes && displaySettingNodes.length){
 			var treeObj2 = $.fn.zTree.getZTreeObj("svse_other_promission_check");
 			//节点勾选

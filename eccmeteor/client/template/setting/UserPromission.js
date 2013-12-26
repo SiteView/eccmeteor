@@ -8,12 +8,13 @@ Template.UserPromission.events({
 });
 
 Template.UserPromission.rendered = function(){
+			console.log("initTree run");
 	//init tree
-	UserSettingPromissionAction.initTree(this);
+	UserPromissionAction.initTree(this);
 
 	//get promission date and set them into Session
-	UserSettingPromissionAction.initPromissionDate(this);
+	UserPromissionAction.initPromissionData(this);
 	
 	//choose the profile's node own user  
-	UserSettingPromissionAction.initChooseTreeNode(this)
+	UserPromissionAction.initChooseTreeNode(this)
 }
