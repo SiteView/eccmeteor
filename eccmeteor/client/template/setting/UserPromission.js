@@ -3,12 +3,11 @@ Template.UserPromission.events({
 		RenderTemplate.hideParents(t);
 	},
 	"click button#save" :function(e,t){
-		console.log("save");
+		UserPromissionAction.userPromissionSave(e,t,this);
 	}
 });
 
 Template.UserPromission.rendered = function(){
-			console.log("initTree run");
 	//init tree
 	UserPromissionAction.initTree(this);
 
