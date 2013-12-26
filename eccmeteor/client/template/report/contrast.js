@@ -12,12 +12,12 @@ Template.contrast.events = {
 		    var endDate;
 		    var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
 		    var contrastlist = ClientUtils.formArrayToObject($("#contrastlist").serializeArray());
-		    var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
+		    var arr = $.fn.zTree.getZTreeObj("svse_tree_check_contrast").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
 			for(index in arr){
 				targets.push(arr[index].id);
 			}
 			console.log(targets);
-			Session.set("nodeid",targets);
+			
 			contrastlist["GroupRight"] = targets.join();
 			
 			$(":checkbox[name='Status']").each(function(){
@@ -45,9 +45,9 @@ Template.contrast.events = {
 			console.log(startTime["month"]);
 			console.log(endTime);
 			console.log("#######################");
-			
+			Session.set("selectnode",targets);
 			for(var i = 0;i < targets.length;i++){
-			//console.log(targets[i]);
+			console.log(targets[i]);
 			
 			DrawContrastReport.getDate(monitorId,startTime,endTime,function(result){
 			
@@ -68,7 +68,7 @@ Template.contrast.events = {
 				endTime:DrawContrastReport.buildTime(endTime),
 				tableData:tableData
 			}
-			
+			var target = Session.get("selectnode");	
 			RenderTemplate.renderIn("#ContrastDetailData","Contrastlist2",renderObj);
 			
 			DrawContrastReport.draw(imageData,nstartTime,nendTime);
@@ -94,7 +94,7 @@ Template.contrast.events = {
 			var et = coverTime(endTime);
 			console.log(st);
 			console.log(et);
-			var target = Session.get("nodeid");	
+			var target = Session.get("selectnode");	
 			console.log(target);
 			window.location.href="/ContrastReport?mid="+target+"&st="+st+"&et="+et+"";
 		  // window.location.href="/StatusReport?mid="+target+"&st="+st+"&et="+et+"";
@@ -139,9 +139,9 @@ Object.defineProperty(DrawContrastReport,"buildTime",{
 		return nodes;		‌
 	}‌*/
 		
-Template.contrast.rendered = function(){
+Template.contrast.rendered = function(e){
 //监视器选择树
-	$(function(){
+	$(function(e){
 		var data = SvseDao.getDetailTree();
 		var setting = {
 			check:{
@@ -150,7 +150,7 @@ Template.contrast.rendered = function(){
 				chkboxType: { "Y": "ps",
  				              "N": "ps" }
 			},
-			callback : {
+			/*callback : {
 				    onRightClick : function (event, treeId, treeNode) {
 				     console.log("45");
 					zTree = $.fn.zTree.getZTreeObj("svse_tree_check");
@@ -163,10 +163,7 @@ Template.contrast.rendered = function(){
 					}
 					
 				},
-				
-				onClick:function(event, treeId, treeNode){
-				
-				},
+				*/
 				/*onClick:function(event, treeId, treeNode){
 					var id= treeNode.id;
 					var type = treeNode.type;
@@ -186,7 +183,7 @@ Template.contrast.rendered = function(){
 				
 				console.log("45");
 				} */ 
-			},
+			//},
 			data: {
 				simpleData: {
 					enable: true,
@@ -194,10 +191,61 @@ Template.contrast.rendered = function(){
 					pIdKey: "pId",
 					rootPId: "0",
 				}
+			},
+			callback:{
+				onCheck:function(event,treeId,treeNode,e){
+					console.log(treeNode.id+"钩选的节点--对应监测器id");//钩选的节点--对应监测器id
+					//Session.set("nodeid",targets);
+					SwithcView.layout(LAYOUTVIEW.SettingLayout);
+					Session.set("selectnode",treeNode.id);
+					var arr = $.fn.zTree.getZTreeObj("svse_tree_check_contrast").getNodesByFilter(function(node){return (node.type === "monitor")});
+					var flag = false;
+					for(index in arr){
+						//console.log(arr[index].id);
+						if(treeNode.id == arr[index].id){
+							flag = true;	
+						}
+					}
+					if(flag){
+							DrawContrastReport(treeNode.id);
+							
+						}else{
+							return;
+						}
+				},
+				/*
+				*节点展开事件
+				*/
+				onExpand:function(event, treeId, treeNode){
+					TreeNodeRemenber.remenber(treeNode.id); //记住展开节点
+				},
+				/*
+				*节点折叠事件
+				*/
+				onCollapse:function(event, treeId, treeNode){	
+					TreeNodeRemenber.forget(treeNode.id); //删除展开节点
+				}
 			}
-		};
-		$.fn.zTree.init($("#svse_tree_check"), setting, data);
-	});
+		};		
+		if(!$.fn.zTree){
+			return ;
+		}
+		console.log("============");
+		var selectNodeid = Session.get("selectnode");
+		console.log(selectNodeid);
+		if(!selectNodeid){
+			$.fn.zTree.init($("#svse_tree_check_contrast"), setting, data);
+			return;
+		}
+		var tree = $.fn.zTree.init($("#svse_tree_check_contrast"), setting,expandSimpleTreeNode(data,TreeNodeRemenber.get()));
+		console.log("-------");
+		//tree.checkNode(selectNodeid,true,true);
+		for(var i = 0;i < selectNodeid.length;i++){
+			console.log(selectNodeid[i]);
+			tree.checkNode(selectNodeid[i],true,true);
+		}
+		console.log("======");
+		});
 	
 		function showRMenu(type, x, y) {
 			//$("#rMenu ul").show();
@@ -296,7 +344,6 @@ Template.contrast.rendered = function(){
 			//	drawDetailLine(ClientUtils.dateToObject(beginDate),ClientUtils.dateToObject(endDate));
 });
 
-	
 	/*var defaultMonitor = this.find("td input:checkbox");
 		if(!defaultMonitor){
 			emptyImage();
@@ -330,6 +377,34 @@ Template.contrast.rendered = function(){
 		ClientUtils.showOperateBtnInTd("showMonitorList");
     });
 
+}
+/*
+*展开树
+*/
+var expandSimpleTreeNode = function(zNodes,expandnodeids){
+	var branch = [];
+	if(!expandnodeids.length) 
+		return zNodes;
+	for(index in expandnodeids){
+		for(jndex in zNodes){
+			if(expandnodeids[index] == zNodes[jndex].id){
+				zNodes[jndex].open = true;
+				break;
+			}
+		}
+	}
+	return zNodes;
+}
+
+/**
+树节点转存在Session中的节点
+*/
+var changeTreeNodeToCheckedNode = function(treeNode){
+	return {
+		id:treeNode.id,
+		type:treeNode.type,
+		name:treeNode.name
+	};
 }
 
 // Template.MonitorList.Monitors = function(){

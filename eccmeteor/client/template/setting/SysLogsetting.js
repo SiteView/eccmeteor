@@ -26,29 +26,28 @@ Template.SysLogsetting.events={
 		//设备参数设置重新获取
 		"click #SysLogsettingEntityrecoverbtn":function(){
 				Meteor.call("svGetSysLogQueryContEntityConfigSetting",function(err,Entity){
-				console.log("成功-------！");
-					console.log(Entity["Facility"]);
+				console.log(Entity["Facility"]);
 					$(function operateAll(checked){ 
                         checked = checked || true;
                         var objects = document.getElementsByTagName("input")
-                        for(var i=0;i<objects.length;i++){
-                                if(objects[i].type=='checkbox'){
-                                  if(checked==false)
-                                        objects[i].checked=""        
-                                        else
-                                        objects[i].checked="checked"
-                                }
-                        }
+						for(var i=0;i<objects.length;i++){
+							if(objects[i].type=='checkbox'){
+							if(checked==false)
+								objects[i].checked=""        
+								else
+								objects[i].checked="checked"
+								}
+							}
                         }); 
-				var result = Entity["Facility"].split(",");
-				console.log(result);
-				for(var i = 0;i < result.length;i++){
-					$("#"+result[i]).attr("checked",true);
-					
-				}
-				});
-				console.log("成功B！");
-				},
+						var result = Entity["Facility"].split(",");
+							console.log(result);
+							for(var i = 0;i < result.length;i++){
+								$("#"+result[i]).attr("checked",true);
+								
+							}
+							});
+							console.log("成功B！");
+							},
 		//级别参数设置应用
 		"click #SysLogsettingRankapplybtn":function(){
 		       //var Rank=$("#RankSet").find(":checkbox[name='Severities']").val();
@@ -88,12 +87,12 @@ Template.SysLogsetting.events={
                         checked = checked || true;
                         var objects = document.getElementsByTagName("input")
                         for(var i=0;i<objects.length;i++){
-                                if(objects[i].type=='checkbox'){
-                                  if(checked==false)
-                                        objects[i].checked=""        
-                                        else
-                                        objects[i].checked="checked"
-                                }
+							if(objects[i].type=='checkbox'){
+							  if(checked==false)
+									objects[i].checked=""        
+									else
+									objects[i].checked="checked"
+							}
                         }
                         }); 
 						if(!Rank) return;
@@ -103,7 +102,6 @@ Template.SysLogsetting.events={
 				},
 		"click #SysLogsettinKeepDaygapplybtn":function(){
 			var day=$("#keepforday").find(":text[name=KeepDay]").val();
-			//if(!day || day <= 0){
 			if(!day){
 				Message.info("记录保持天数不能为空！");
 				return;
@@ -129,7 +127,7 @@ Template.SysLogsetting.events={
 		},
 		//系统日志的删除事件
 			"click #delsyslogbtn":function(){
-			var id = "syslog";
+			var id = 'syslog';
 			var endPicker = $('#delDatebox').data('datetimepicker');
 			
 			var endTime = endPicker.getDate();
@@ -137,6 +135,7 @@ Template.SysLogsetting.events={
 			console.log(endDate);
 			console.log("#######################");
 			SvseSysLogDao.DeleteRecordsByIds(id,endDate,function(result){
+			console.log(endPicker);
 			if(!result){
 					console.log("error");
 					return;
@@ -149,9 +148,9 @@ Template.SysLogsetting.events={
 	"click #SysLogsettinghelpbtn" : function(){
 	$('#helpmessagediv').modal('toggle');
  
-	},
-		
 	}
+		
+}
 	
 Template.SysLogsetting_status.rendered = function () {
 	$(function () {
@@ -182,7 +181,6 @@ Template.SysLogsetting.rendered = function(){
 				console.log(result);
 				for(var i = 0;i < result.length;i++){
 					$("#"+result[i]).attr("checked",true);
-					//$("#EntitySet").find("input:checkbox[id='result[i]']").attr("checked",true);
 				}
 				
 			});

@@ -1,15 +1,29 @@
+
+
+//获取查询条件
+/*Template.sysLogQuery.expressions = function(){
+	//console.log(expression());
+	return expression();
+}*/
+
+
+
 //Syslog的查询事件
 Template.sysLogQuery.events({
 		"click #selectsyslogbtn":function(){
 				var syslogquerycondition = ClientUtils.formArrayToObject($("#syslogquerycondition").serializeArray());
+				 //var syslogquerycondition = ClientUtils.tableGetSelectedAll("syslogquerycondition");
 				 console.log(syslogquerycondition);
-				 
-				var expression = $("#expression").find(":text[name=expression]").val();
-				 // if(!expression){
-				// Message.info("不能为空！");
-				// return;}
-				var SourceIp = $("#SourceIp").find(":text[name=SourceIp]").val();
-			
+						 
+				//查询条件（正则表达式）		 
+				var expression = $("#expression").val();
+				console.log(expression);
+
+				//查询条件（IP）
+				var SourceIp = $("#SourceIp").val();
+				
+					console.log(SourceIp);
+					
 				$("#syslogDetailList").empty();
 				var startPicker = $('#syslogdatetimepickerStartDate').data('datetimepicker');
 				var endPicker = $('#syslogdatetimepickerEndDate').data('datetimepicker');
@@ -20,7 +34,7 @@ Template.sysLogQuery.events({
 						Message.info("开始时间大于结束时间！");
 						return;
 					}
-				}								
+				}	
 				var beginDate = ClientUtils.dateToObject(startPicker.getDate());
 				var endDate = ClientUtils.dateToObject(endPicker.getDate());
 				console.log("#############################");
@@ -28,6 +42,7 @@ Template.sysLogQuery.events({
 				console.log(endDate);
 				console.log("#######################");
 				
+				//id = 'syslog';
 				SvseSysLogDao.getQuerySysLog(beginDate,endDate,syslogquerycondition,function(result){
 					console.log("result");
 					if(!result.status){
@@ -36,33 +51,64 @@ Template.sysLogQuery.events({
 					}
 					console.log(result);
 					var dataProcess = new DataProcess(result.content);
-					var resultData = dataProcess.getData();
+					var resultData= dataProcess.getData();
+
 					if(!resultData){
 						Message.info("没有要显示的数据！");
 						return;
 					}
 					console.log(resultData.length);
 					console.log(resultData);
+					console.log("------------------");
+					var table = [];
+					for(var i = 0;i < resultData.length;i++){
+						table.push(resultData[i]);
+					}
+					//console.log(table);
+					//判断正则表达式
+					/*if(expression){
+						var temList = [];
+						for(var i = 0;i< table.length;i++){
+							expression = new RegExp("ain","g");
+							var syslogmsg = table[i]["_SysLogMsg"]
+							var flag = expression.match(syslogmsg);
+							if(flag){
+								temList.push(table[i]);
+								console.log("yes");
+							}
+						}
+					}
+					
+					console.log("------------------");
+					console.log(temList);*/
+					if(SourceIp){
+						var temList = [];
+						for(var i = 0;i< table.length;i++){
+							var _SourceIp = table[i]["_SourceIp"]
+							if(SourceIp == _SourceIp){
+								temList.push(table[i]);
+								console.log("yes");
+							}
+						}
+					}
+					console.log("------------");
+					console.log(temList);
+					var types = SvseSysLogDao.defineparameterTypeData();
 					//绘制表
 					for(var i = 0;i < resultData.length;i++){
 						var data = resultData[i];
-						//判断报警状态的显示
-						// if(data["_AlertStatus"] == 0){
-							// data["_AlertStatus"] = "Fail";
-						// }
-						// if(data["_AlertStatus"] == 1){
-							// data["_AlertStatus"] = "Success";
-						// }
-						// for(var j = 0; j < types.length;j++){
-							// if(data["_AlertType"] == types[j]["id"]){
-								// data["_AlertType"] = types[j]["type"];
-							// }
-						// }
+						for(var j = 0; j < types.length;j++){
+							if(data["_Level"] == types[j]["name"]){
+								data["_Level"] = types[j]["type"];
+							}
+							if(data["_Facility"] == types[j]["id"]){
+								data["_Facility"] = types[j]["type"];
+							}
+						}
 						var tbody = "<tr><td>"+data["creat_time"]+"</td><td>"+data["_SourceIp"]+"</td><td>"+data["_Facility"]+"</td>"
 						+"<td>"+data["_Level"]+"</td><td>"+data["_SysLogMsg"]+"</td></tr>";
 						$("#syslogDetailList").append(tbody);
 					}
-					console.log("pppppp");
 				});
 			}
 		});
@@ -136,7 +182,7 @@ Template.sysLogQuery.rendered = function(){
 						console.log(result);
 						for(var i = 0;i < result.length;i++){
 							$("#"+result[i]).attr("checked",true);
-							//$("#EntitySet").find("input:checkbox[id='result[i]']").attr("checked",true);
+							//$("#syslogquerycondition").find("input:checkbox[id='result[i]']").attr("checked",true);
 						}
 						
 					});
@@ -146,7 +192,7 @@ Template.sysLogQuery.rendered = function(){
 				var result = Rank["Severities"].split(",");
 				console.log(result);
 				 for(var j = 0;j < result.length;j++){
-					$("#levellist").find("input:checkbox[name="+result[j]+"]").attr("checked",true);
+					$("#syslogquerycondition").find("input:checkbox[name="+result[j]+"]").attr("checked",true);
 				 }					
 
 			});

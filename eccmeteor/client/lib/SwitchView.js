@@ -22,10 +22,11 @@ SETTINGVIEW = {
 	USERSETTING:"usersetting", //用户设置
 /*Type：add
 	Author：renjie
-	Date:2013-11-27 09:20
-	Content:增加"SysLog设置"SysLogsetting
+	Date:2013-12-23 09:20
+	Content:增加"软件许可"License
 */ 
-	SYSLOGSETTING:"SysLogsetting" //SysLog设置
+	SYSLOGSETTING:"SysLogsetting",	//SysLog设置
+	LICENSE:"License"//软件许可
 }
 //报警试图
 ALERTVIEW = {
@@ -68,7 +69,7 @@ REPORT ={
 	CONTRAST:"contrast",//对比报告
 	STATUSSTATISTICAL:"statusStatistical",//"状态统计报告"
 	MONITORINFO:"monitorInfo",//监测器信息报告, 搜索测试
-	SYSLOGQUERY:"sysLogQuery",
+	SYSLOGQUERY:"sysLogQuery",//syslog查询
 	TIMECONSTRASTREPORT:"timeconstrastreport"//时间段对比报告
 	
 }

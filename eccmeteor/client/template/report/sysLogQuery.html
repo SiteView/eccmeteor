@@ -2,9 +2,11 @@
 	<div id="syslogqueryconditionDiv">
 		<div class="row-fluid" style="height:390px;overflow:auto"> 
 		<div class="accordion-group">
-			<div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" href="#sysLogListCollapseOne">查询条件</a>
+		<div class="accordion-group">
+			<div class="breadcrumb">
+					<a class="accordion-toggle" data-toggle="collapse" href="#sysLogListCollapseOne">查询条件</a>
 			</div>
+		</div>
 			<div id="sysLogListCollapseOne" class="panel-collapse collapse in">
 				<form id="syslogquerycondition" onsubmit="return false;">
 					<div class="form-horizontal" style="float:left">
@@ -13,17 +15,18 @@
 							<td>
 							<div class="control-group">
 								<label class="control-label">正则表达式:</label>
-								<div class="controls">
+								<div class="controls">								 
 									<input id="expression" type="text" name="expression" />
 								</div>
 							</div>
 							</td>
 							<td>
 								<div class="form-horizontal" style="float:left">
-								<div class="control-group">
-									<label class="control-label">IP地址:</label>
-									<div class="controls">
-										<input id="SourceIp" type="text" name="SourceIp" autocomplete="on" onkeyup="this.value=this.value.replace(/[^\d]/g,'.') "/>
+									<div class="control-group">
+										<label class="control-label">IP地址:</label>
+										<div class="controls">
+											<input id="SourceIp" type="text" name="SourceIp" autocomplete="on" onkeyup="this.value=this.value.replace(/[^\d]/g,'.') "/>
+										</div>
 									</div>
 								</div>
 							</td>
@@ -61,7 +64,7 @@
 						<div class="control-group">
 							<label class="control-label">设备:</label>
 							<div class="controls">
-								<form id="facilitylist">
+
 									<div style="height:150px;overflow-y:scroll"> 
 										<table class="table table-striped table-condensed">
 											<tr>
@@ -211,7 +214,7 @@
 										</table>
 									
 									</div>
-								</form>
+								
 							</div>
 						</div>
 					</td>		
@@ -219,61 +222,61 @@
 						<div class="control-group">
 							<label class="control-label">级别:</label>
 							<div class="controls">
-								<form id="levellist">
+								
 									<div style="height:150px;overflow-y:scroll">
 										<table class="table table-striped table-condensed">
 											<tr>
 												<td>
-													<input id="cb2_0" type="checkbox" name="0" value="0" />
+													<input id="0" type="checkbox" name="0" value="0" />
 														Emergency
 												</td>
 											</tr>
 											<tr>
 												<td>
-													<input id="cb2_1" type="checkbox" name="1" value="1" />
+													<input id="01" type="checkbox" name="1" value="1" />
 														Alert
 												</td>
 											</tr>
 											<tr>
 												<td>
-													<input id="cb2_2" type="checkbox" name="2" value="2" />
+													<input id="02" type="checkbox" name="2" value="2" />
 														Critical
 												</td>
 											</tr>
 											<tr>
 												<td>
-													<input id="cb2_3" type="checkbox" name="3" value="3" />
+													<input id="03" type="checkbox" name="3" value="3" />
 														Error
 												</td>
 											</tr>
 											<tr>
 												<td>
-													<input id="cb2_4" type="checkbox" name="4" value="4" />
+													<input id="04" type="checkbox" name="4" value="4" />
 														Warning
 												</td>
 											</tr>
 											<tr>
 												<td>
-													<input id="cb2_5" type="checkbox" name="5" value="5" />
+													<input id="05" type="checkbox" name="5" value="5" />
 														Notice
 												</td>
 											</tr>
 											<tr>
 												<td>
-													<input id="cb2_6" type="checkbox" name="6" value="6" />
+													<input id="06" type="checkbox" name="6" value="6" />
 														Informational
 												</td>
 											</tr>
 											<tr>
 												<td>
-													<input id="cb2_7" type="checkbox" name="7" value="7" />
+													<input id="07" type="checkbox" name="7" value="7" />
 														Debug
 												</td>
 											</tr>
 											
 										</table>
 									</div>
-								</form>
+								
 							</div>
 						</div>
 					</td>
@@ -282,9 +285,9 @@
 							<td colspan="2">
 								<div class="control-group" style="padding-left:88px">
 								<div style="padding-left:100px">
-									<button class="btn" id="selectsyslogbtn">查询</button>
-									<button class="btn" id="exportreport">导出报表</button>
-									<button class="btn" id="sysloghelpbtn">帮助</button>
+									<button class="btn" id="selectsyslogbtn"><img src="imag/setting/query_bt.gif">查询</button>
+									<button class="btn" id="exportreport"><img src="imag/setting/save_bt.gif">导出报表</button>
+									<button class="btn" id="sysloghelpbtn"><img src="imag/setting/help.gif">帮助</button>
 								</div>
 								</div>
 							</td>
@@ -302,7 +305,7 @@
 <Template name="sysLogList">
 	<div id="syslogquerylistdiv">
 		<div class="accordion-group">
-			<div class="accordion-heading">
+			<div class="breadcrumb">
 					<a class="accordion-toggle" data-toggle="collapse" href="#sysLogListCollapseTwo">SysLog</a>
 			</div>
 		</div>

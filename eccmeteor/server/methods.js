@@ -58,6 +58,14 @@ Meteor.methods({
 	"svGetSysLogQueryContRankConfigSetting":svGetSysLogQueryContRankConfigSetting,
 	//"svGetSysLogQueryContConfigSetting":svGetSysLogQueryContConfigSetting,
   "svWriteEmailAddressStatusInitFilesection":svWriteEmailAddressStatusInitFilesection,
+  
+	/*
+	Type： add
+	Author：renjie
+	Date:2013-12-23 14:40
+	Content:增加 软件许可
+*/
+  "svGetLicenselist":svGetLicenselist,
 });//给客户端调用的
  /**
 	Type： add | modify 
@@ -186,12 +194,7 @@ SvseMethodsOnServer = {
 	"svDeleteTaskIniFileSection":svDeleteTaskIniFileSection,
 	"svEmailTest":svEmailTest,
 	"svGetQuerySysLog":svGetQuerySysLog,
-	/*
-	Type： add
-	Author：renjie
-	Date:2013-12-2 14:40
-	Content:增加 syslog 查询
-*/
+	
 }
 
 SvseSyncData = {
