@@ -118,7 +118,40 @@ SvseMessageDao = {
 		}
 		return true;
 	},
-	
+	//添加短信设置的短信模板设置
+	"WriteSMSTemplateSetting":function(name,content,fn){
+		Meteor.call(SvseMessageDao.AGENT,"WriteSMSTemplateSetting",[name,content],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn(result);
+			}
+		});
+	},
+	/* //添加短信设置的WEB短信模板设置
+	"WriteWebSMSTemplateSetting":function(name,content,fn){
+		Meteor.call(SvseMessageDao.AGENT,"WriteWebSMSTemplateSetting",[name,content],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				fn(result);
+			}
+		});
+	}, */
+	//删除短信模板
+	"deleteSMSTemplateSetting":function(key,section,fn){
+		Meteor.call(SvseMessageDao.AGENT,"deleteSMSTemplateSetting",[key,section],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				console.log(result);
+				fn(result);
+			}
+		});
+	},
 	/* "getSmsDllName":function(){
 		Meteor.call(SvseMessageDao.AGENT,"getSmsDllName",function(err,result){
 			if(err){

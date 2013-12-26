@@ -97,6 +97,36 @@ SvseMessageDaoOnServer = {
 		}
 		return SvseMessageDaoOnServer.getReturn(true);
 	},
+	"WriteSMSTemplateSetting":function(name,content){
+		var result = SvseMethodsOnServer.svWriteSMSTemplateSettingFilesection(name,content);
+		//console.log(result);
+		if(!result){
+			var msg = "SvseMessageDaoOnServer's WriteSMSTemplateSetting faild";
+			Log4js.error(msg);
+			throw new Meteor.Error(500,msg);
+		}
+		return SvseMessageDaoOnServer.getReturn(true);
+	},
+	// "WriteWebSMSTemplateSetting":function(name,content){
+		// var result = SvseMethodsOnServer.svGetWebMessageTemplates(name,content);
+		// console.log(result);
+		// if(!result){
+			// var msg = "SvseMessageDaoOnServer's WriteWebSMSTemplateSetting faild";
+			// Log4js.error(msg);
+			// throw new Meteor.Error(500,msg);
+		// }
+		// return SvseMessageDaoOnServer.getReturn(true);
+	// },
+	"deleteSMSTemplateSetting":function(key,section){
+		var result = SvseMethodsOnServer.svDeleteSMSTemplateSettingFilesection(key,section);
+		//console.log(result);
+		if(!result){
+			var msg = "SvseMessageDaoOnServer's deleteSMSTemplateSetting faild";
+			Log4js.error(msg);
+			throw new Meteor.Error(500,msg);
+		}
+		return SvseMessageDaoOnServer.getReturn(true);
+	},
 	/* "getSmsDllName":function(){
 		var result = SvseMethodsOnServer.svGetSmsDllName();
 		if(!result){

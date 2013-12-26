@@ -1025,12 +1025,14 @@ svDeleteMessageIniFileSection = function(ids){
 svGetMessageTemplates = function(){
 	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"TXTtemplate.ini",
 			"user":"default","sections":"SMS"}, 0);
-	var fmap= robj.fmap(0);
 	var flag = checkErrorOnServer(robj);
 	if(typeof flag === "string"){
 		Log4js.error(flag);
 		return null;
 	}
+	var fmap = robj.fmap(0);
+	// console.log(fmap);
+	// console.log(fmap["SMS"]);
 	return fmap["SMS"];
 }
 
@@ -1042,12 +1044,12 @@ svGetWebMessageTemplates=function(){
 		'user':'default',
 		'sections':'WebSmsConfige'
 	},0);
-	var fmap = robj.fmap(0);
 	var flag = checkErrorOnServer(robj);
 	if(typeof flag === "string"){
 		Log4js.error(flag);
 		return null;
 	}
+	var fmap = robj.fmap(0);
 	return fmap["WebSmsConfige"];
 }
 
@@ -1390,21 +1392,71 @@ svGetQuerySysLog = function(beginDate,endDate,syslogQueryCondition){
 	return sysLogRecords;
 }
 
-//添加短信设置中的短信模板
-svWriteEmailAddressStatusInitFilesection = function(templateName,content){
+//添加SMS短信设置中的短信模板--by zhuqing(有问题)
+svWriteSMSTemplateSettingFilesection = function(name,content){
+	console.log(name);
+	console.log(content);
 	var robj = process.sv_univ({
 		'dowhat' : 'WriteIniFileString',
 		'filename' : "TXTTemplate.ini",
 		'user' : "default",
 		'section' : 'SMS',
-		"key" : templateName,
+		"key" : name,
 		"value" : content
 	}, 0);
+	// var flag = checkErrorOnServer(robj);
+	// console.log(flag);
+	// if(typeof flag === "string"){
+		// Log4js.error(flag);
+		// return null;
+	// }
+	console.log("11");
+	Log4js.info("111");
+	//传入的请求包含异常字符(可能是中文字符引起的)
+	if(!robj.isok(0)){
+		Log4js.error(robj.estr(0),-1);
+		return false;
+	}
+	console.log("22");
+	var fmap = robj.fmap(0);
+	//console.log(fmap);
+	return fmap; 
+}
+
+//删除SMS短信模板-根据key
+svDeleteSMSTemplateSettingFilesection = function(key,section){
+	var robj = process.sv_univ({
+		'dowhat' : 'DeleteIniFileKey',
+		'filename' : "TXTTemplate.ini",
+		'user' : "default",
+		'section' : section,
+		"key" : key
+	}, 0);
+
 	var flag = checkErrorOnServer(robj);
 	if(typeof flag === "string"){
 		Log4js.error(flag);
 		return null;
 	}
 	var fmap = robj.fmap(0);
+	console.log(fmap);
 	return fmap; 
+}
+
+//更新短信模板的value值
+svUpdateSMSTemplateSettingFilesection = function(key,value){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "smsphoneset.ini",
+		'user' : "default",
+		'section' : "SMS",
+		"key" : key,
+		"value" : value
+	}, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	return robj.fmap(0);
 }
