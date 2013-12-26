@@ -1,21 +1,6 @@
-//小报告 线性画图
-DrawMonitorModuleLine = function(){};
-Object.defineProperty(DrawMonitorModuleLine,"clear",{
-	value:function(selector){
-		$(selector).empty();	
-		d3.select(selector)
-			.attr("height",150)
-			.append("g")
-			.append("text")
-			.attr("x","50%")
-			.attr("y","50%")
-			.text("暂无数据")
-			.style("text-anchor", "middle");	
-		}
-})
-
-Object.defineProperty(DrawMonitorModuleLine,"draw",{
-	value:function(data,selector,setting,xExtent){
+DrawMonitorModuleDetailLine = function(){};
+Object.defineProperty(DrawMonitorModuleDetailLine,"draw",{
+	value:function(data,selector,xExtent){
 		var originalData = null;
 		for(var i = 0; i < data.length; i++){
 			if(data[i].primary == "1" && data[i].drawimage == "1"){
@@ -24,12 +9,11 @@ Object.defineProperty(DrawMonitorModuleLine,"draw",{
 			}
 		}
 		if(originalData == null){
-			this.clear(selector);
 			return;
 		}
 		var imageData = originalData.data;
 		if(imageData.length === 0){
-			this.drawEmptyLine(originalData,selector,setting);
+			this.drawEmptyLine(originalData,selector);
 			return;
 		}
 		var Xcoordinate =  "time"; //X坐标的属性
@@ -39,8 +23,8 @@ Object.defineProperty(DrawMonitorModuleLine,"draw",{
 		//var xExtent = this.getXExtent(imageData,Xcoordinate);//X 数轴范围  已经传进来不用计算
 
 		var label = originalData.lable;
-		var width = setting.width  ? setting.width :750;
-		var height = setting.height ? setting.height : 380;
+		var width = 750;
+		var height = 380;
 
 		var dateformate = this.getDateFormat(xExtent);
 		
@@ -58,7 +42,6 @@ Object.defineProperty(DrawMonitorModuleLine,"draw",{
 		margin.top = isXAxisAction ? 40 : 20;
 		//clear all
 		d3.select(selector).text('');
-
 		var svg = d3.select(selector)
 			.attr("width", width )
 			.attr("height", height);
@@ -148,13 +131,13 @@ Object.defineProperty(DrawMonitorModuleLine,"draw",{
 	}
 });
 
-Object.defineProperty(DrawMonitorModuleLine,"drawEmptyLine",{
+Object.defineProperty(DrawMonitorModuleDetailLine,"drawEmptyLine",{
 	value:function(data,selector,setting){
 		//...
 	}
 });
 
-Object.defineProperty(DrawMonitorModuleLine,"getYExtent",{
+Object.defineProperty(DrawMonitorModuleDetailLine,"getYExtent",{
 	value:function(data){
 		var yExtent = [+data.min,+data.max];
 		//判断Y轴方向的所有数据是否相同，如果相同则则设置区间为0-最大，否则取 最小值和最大值区间
@@ -166,7 +149,7 @@ Object.defineProperty(DrawMonitorModuleLine,"getYExtent",{
 	}
 });
 
-Object.defineProperty(DrawMonitorModuleLine,"getDateFormat",{
+Object.defineProperty(DrawMonitorModuleDetailLine,"getDateFormat",{
 	value:function(timeExtent){
 		var second = (timeExtent[1].getTime() - timeExtent[0].getTime())/1000;
 		var day = Math.ceil(second / (3600*24));

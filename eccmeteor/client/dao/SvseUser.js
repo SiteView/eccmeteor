@@ -36,10 +36,18 @@ SvseUserDao = {
 	},
 	'getNodePermissionByUserIdAndNodeId':function(userId,nodeId){
 		var user = Meteor.users.findOne(userId);
-		return user.profile.nodeOpratePermission ? user.profile.nodeOpratePermission[nodeId] : undefined;
+		if(!user){
+			Log4js.warn("user is not exist.uid:"+userId);
+			return null;
+		}
+		return user.profile.nodeOpratePermission ? user.profile.nodeOpratePermission[nodeId] : null;
 	},
 	"getNodeOpratePermissionByUserId" : function(userId){
 		var user = Meteor.users.findOne(userId);
+		if(!user){
+			Log4js.warn("user is not exist.uid:"+userId);
+			return null;
+		}
 		return user.profile.nodeOpratePermission ? ClientUtils.changePointAndLine(user.profile.nodeOpratePermission,-1) : {};
 	},
 	"setNodeOpratePermission":function(userId,nodePermission,fn){
@@ -52,14 +60,26 @@ SvseUserDao = {
 	},
 	'getDisplayNodesByUserId':function(userId){
 		var user = Meteor.users.findOne(userId);
+		if(!user){
+			Log4js.warn("user is not exist.uid:"+userId);
+			return null;
+		}
 		return user.profile.nodeDisplayPermission ? user.profile.nodeDisplayPermission : [];
 	},
 	'getDisplaySettingNodesByUserId':function(userId){
 		var user = Meteor.users.findOne(userId);
+		if(!user){
+			Log4js.warn("user is not exist.uid:"+userId);
+			return null;
+		}
 		return user.profile.settingNodeDisplayPermission ? user.profile.settingNodeDisplayPermission : [];
 	},
 	'getSettingOperatePermissionByUserId':function(userId){
 		var user = Meteor.users.findOne(userId);
+		if(!user){
+			Log4js.warn("user is not exist.uid:"+userId);
+			return null;
+		}
 		return user.profile.settingOperatePermission ? user.profile.settingOperatePermission : {};
 	},
 	"setSettingOperatePermission":function(userId,nodePermission,fn){

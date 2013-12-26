@@ -16,5 +16,8 @@ Template.GroupEdit.events({
 	},
 	"click #showGroupEditFormCancelBtn":function(e,t){
 	    RenderTemplate.hideParents(t);
+	},
+	"click .close":function(e,t){
+		RenderTemplate.hideParents(t);
 	}
 });

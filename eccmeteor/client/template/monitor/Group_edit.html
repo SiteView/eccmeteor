@@ -1,12 +1,15 @@
 <Template name="GroupEdit">
-<div class="modal hide fade">
-    <div class="modal-header">编辑组</div>
+<div class="modal hide fade" data-backdrop="static" data-keyboard="true" data-show="false">
+    <div class="modal-header">
+    	<button type="button" class="close">×</button>
+    	<label class="label label-info">编辑组</label>
+    </div>
 	<div class="modal-body">
 		<input type="hidden" value="{{id}}">
         <form id="showGroupEditForm">
 	        {{#with Group}}
 	        <label>*组名称</label>
-	        <input name="sv_name" value="{{sv_name}}"/>
+	        <input type="text" name="sv_name" value="{{sv_name}}"/>
 	        <br />======================<br />
 	        <label>描述</label>
 	        <textarea name="sv_description">{{sv_description}}</textarea>
