@@ -615,16 +615,14 @@ Template.topNofadd.rendered = function(){
 			$("#marklist").append(option);
 		}
 	}),
-	
-        console.log("QQQQ");
        
          function zTreeOnChange(event, treeId, treeNode) {
             operDiyDom(treeId, treeNode);
         }
-	function show(type, x, y) {
-			$("#basicinfooftopNadd select").show();
-			$("body").bind("change", onBodyChange);
-		}
+		function show(type, x, y) {
+				$("#basicinfooftopNadd select").show();
+				$("body").bind("change", onBodyChange);
+			}
 		
 		function hideMenu() {
 			if (basicinfooftopNadd) $("#basicinfooftopNadd").css({"visibility": "hidden"});
@@ -640,8 +638,8 @@ Template.topNofadd.rendered = function(){
 			
 			var newNode = { name:"增加" + (addCount++)};
 			if (zTree.getSelectedNodes()[0]) {
-				newNode.checked = zTree.getSelectedNodes()[0].checked;
-				zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
+					newNode.checked = zTree.getSelectedNodes()[0].checked;
+					zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
 			} else {
 				zTree.addNodes(null, newNode);
 			}
@@ -676,23 +674,21 @@ Template.topNofadd.rendered = function(){
 	
 }
 
-
 Template.topNofedit.topNeditform = function(){
 	return Session.get("topNeditform");
 }
 
 Template.topNofedit.events = {
-         "change #Typelisted":function(){
-	  
-               //var index = document.getElementById('s1').selectedIndex; 
-        if(document.getElementById("Typelisted").value=="Default"){
- 
-            document.getElementById('marklisted').disabled=false;
-       }else{
-            document.getElementById('marklisted').disabled=true;
+        "change #Typelisted":function(){
+			if(document.getElementById("Typelisted").value=="Default"){
+	 
+					document.getElementById('marklisted').disabled=false;
 				}
-        },
-         "change #reporttypePeriodlisted":function(){
+				else{
+					document.getElementById('marklisted').disabled=true;
+					}
+			},
+        "change #reporttypePeriodlisted":function(){
 	  
                 if(document.getElementById("reporttypePeriodlisted").value=="Week"){
 			   
@@ -702,40 +698,37 @@ Template.topNofedit.events = {
 				 document.getElementById("topNtypetemplatelisted").disabled=true;
 				}
         },
-		
-		
-		
-		
-         "click #topNofaddcancelbtnedit":function(){
-          $('#topNofadddivedit').modal('toggle');
+        "click #topNofaddcancelbtnedit":function(){
+		 
+			$('#topNofadddivedit').modal('toggle');
          },
-          "click #topNofaddsavebtnedit":function(){
-       var topNofaddfromedit = ClientUtils.formArrayToObject($("#topNofaddfromedit").serializeArray());
-       console.log("form:"+topNofaddfromedit);
-	   //E-mail的判断
-	     var email=topNofaddfromedit["EmailSend"];
-		
-           if(!email){
-            Message.info("E-mail不能为空！",{align:"center",time:3});
-			 //alert("邮件中必须包含@");
-            return;
-         }
-		  //判断邮箱格式是否正确  
-		 var mailStr =  'aa@bb.com;bb@aa.com;cc@aa.com';
-		 var mail_arr =mailStr.split(";");
-		 //if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email))      {  
-		 if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*([,;][,;\s]*(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)*)*$/.test(email))      {   
-             Message.info("E-mail格式错误!",{align:"center",time:3});   
-             return false;
-        }
-       var nIndex = topNofaddfromedit["nIndex"];
-       var address = {};
-           address[nIndex] = topNofaddfromedit;
-          console.log("nIndex:"+nIndex);
-          SvseTopNDao.updateTopN(nIndex,address,function(result){
-          console.log("12313");
-          $('#topNofadddivedit').modal('toggle');
-          console.log("%%%%");
-              });
-            }
-       }
+        "click #topNofaddsavebtnedit":function(){
+			   var topNofaddfromedit = ClientUtils.formArrayToObject($("#topNofaddfromedit").serializeArray());
+			   console.log("form:"+topNofaddfromedit);
+			    //E-mail的判断
+				 var email=topNofaddfromedit["EmailSend"];
+				
+				   if(!email){
+					Message.info("E-mail不能为空！",{align:"center",time:3});
+					 //alert("邮件中必须包含@");
+					return;
+				 }
+				//判断邮箱格式是否正确  
+				 var mailStr =  'aa@bb.com;bb@aa.com;cc@aa.com';
+				 var mail_arr =mailStr.split(";");
+				 //if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email))      {  
+				 if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*([,;][,;\s]*(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)*)*$/.test(email))      {   
+		             Message.info("E-mail格式错误!",{align:"center",time:3});   
+		             return false;
+				}
+				var nIndex = topNofaddfromedit["nIndex"];
+				var address = {};
+				   address[nIndex] = topNofaddfromedit;
+				  console.log("nIndex:"+nIndex);
+				  SvseTopNDao.updateTopN(nIndex,address,function(result){
+				  console.log("12313");
+				  $('#topNofadddivedit').modal('toggle');
+				  console.log("%%%%");
+					  });
+					}
+		}

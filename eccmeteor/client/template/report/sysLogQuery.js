@@ -75,7 +75,7 @@ Template.sysLogQuery.events({
 					}
 					//console.log(table);
 					//判断正则表达式
-					if(expression){
+					/*if(expression){
 						var resultData = [];
 						for(var i = 0;i< table.length;i++){
 							expression = new RegExp("([ftph]+://[a-zA-Z0-9\._-]+)","img");
@@ -91,7 +91,7 @@ Template.sysLogQuery.events({
 					}
 					console.log(resultData);
 					console.log("以上是正则表达式筛选");
-					
+					*/
 					//判断IP地址
 					if(SourceIp){
 						var resultData = [];
