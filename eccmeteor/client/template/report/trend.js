@@ -149,14 +149,13 @@ var draw_trend = function(monitorId){
 }
 Template.trend_status.events({
 	"click #search" : function(){
-	
-	//var monitorId = [];
-	// var arr = $.fn.zTree.getZTreeObj("svse_tree_check_trend").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
-			// for(index in arr){
-				// monitorId.push(arr[index].id);
-			// }
+//获取选中的检测器id	
 	var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_trend");
 	var monitorId = treeObj.getSelectedNodes();
+		if(!monitorId || monitorId == ""){
+		Message.info("请选择监测器");
+		return;
+		}
 	console.log(monitorId);	
 	//var monitorId ="1.27.3.2" ;
 	var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
@@ -199,7 +198,12 @@ Template.trend_status.events({
 	"click #output_trend_report":function(){
 		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_trend");
 		var nodes = treeObj.getSelectedNodes();
-		console.log(nodes); 		
+		if(!nodes || nodes == ""){
+			Message.info("请选择监测器");
+			return;
+		}
+		var nodeid = nodes[0].id;
+		console.log(nodeid); 		
 		var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
 		var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
 		var startTime = ClientUtils.dateToObject(startPicker.getDate());
@@ -212,10 +216,10 @@ Template.trend_status.events({
 		var et = coverTime(endTime);
 		console.log(st);
 		console.log(et);
-		window.location.href="/TrendReport?mid="+nodes+"&st="+st+"&et="+et+"";	
+		window.location.href="/TrendReport?mid="+nodeid+"&st="+st+"&et="+et+"";	
 	//	window.location.href="/StatusReport?mid="+nodes+"&st="+st+"&et="+et+"";
 	//	window.open("http://localhost:3000/TrendReport?mid=1.27.3.3&st=20131219145000&et=20131220145000","_blank");
-	//window.location.href ="/TrendReport?mid=1.27.3.3&st=20131219145000&et=20131220145000";
+	//  window.location.href ="/TrendReport?mid=1.27.3.3&st=20131219145000&et=20131220145000";
 	}
 });
 //将时间对象转换成字符串
