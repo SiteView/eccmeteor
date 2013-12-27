@@ -230,6 +230,7 @@ svGetReportData = function(monitorId,beginDate,endDate,compress){
 	if(typeof compress === "undefined"){
 		compress = true;
 	}
+	console.log(beginDate);
 	var robj = process.sv_univ({
 		'dowhat':'QueryReportData',
 		id:monitorId,
@@ -430,22 +431,6 @@ svGetStatisticalList = function(){
 	var fmap= robj.fmap(0);
 	return fmap;
 }
-/*
-Type：   add 
-Author：xuqiang
-Date:2013-11-28 09:40
-Content:增加svGetTrendList的操作，获取趋势报告列表
-*/ 
-svGetTrendList = function(id,type){
-	var dowhat ={'dowhat':'QueryInfo',needkey:id,needtype:type};
-	var robj = process.sv_univ(dowhat,0);	
-	if(!robj.isok(0)){
-		console.log("Errors: \n"+robj.estr(0));
-		return;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
-}
 	/*
 	Type: add
 	Author:xuqiang
@@ -478,10 +463,10 @@ svWriteTaskIniFileSectionString = function(address){
 }
 
 //删除一条任务计划
-svDeleteTaskIniFileSection = function(ids){
+svDeleteTaskIniFileSection = function(address){
 
 	var robj =process.sv_univ(
-	{'dowhat':'DeleteTask',id:ids},0);
+	{'dowhat':'DeleteTask',id:address},0);
 	var fmap = robj.fmap(0);
 	return fmap;
 }

@@ -39,6 +39,7 @@
 	</div>
 	{{> taskabsolutelist}}
 	{{> taskabsoluteadd}}
+	{{> taskabsoluteedit}}
 </Template>
 <template name="taskabsolutelist">
 	<!--列表表格展示-->
@@ -55,12 +56,12 @@
 		<tbody id="taskabsolutelist" class="eventList">
 			{{#each taskabsoluteresultlist}}
 				<tr>
-					<td><input type="checkbox" name="checkbox" id="{{nIndex}}"/></td>
+					<td><input type="checkbox" name="checkbox" id="{{sv_name}}"/></td>
 					<td>{{sv_name}}</td>
 					<td>{{Description}}</td>
 					<td>
 						<div class="btn-group">
-							<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+							<button id="{{sv_name}}" class="btn"><i class="icon-edit"></i>编辑</button>
 						</div>
 					</td>
 				</tr>
@@ -173,12 +174,12 @@
 		</div>
 	</div>
 </Template>
-<!--
-<Template name="taskabsoluteedit">
 
-	<div id="taskabsoluteeditdiv" class="modal hide fade"
-		data-backdrop="true" data-keyboard="true" data-show="false" 
-		data-width="800" data-modalOverflow="true">
+<Template name="taskabsoluteedit">
+	<div id="taskabsoluteeditdiv" class = "modal hide fade">
+	</div>
+</Template>
+<Template name="taskabsolute_editform">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<label class="label label-info">编辑绝对时间任务计划</label>
@@ -197,56 +198,56 @@
 							<div class="control-group">								
 								<label class="control-label">任务计划名称*:</label>
 								<div class="controls">
-									<input type="text"  name="sv_name" id="name">
+									<input type="text"  name="sv_name" id="name" value="{{sv_name}}"/>
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">星期日:</label>
 								<div class="controls">
 									<input type="checkbox" name="Allow0"/>允许
-									<input type="time" name="start0"/>                       
+									<input type="time" name="start0" value="{{start0}}"/>                       
 								</div>              
 							</div>
 							<div class="control-group">
 								<label class="control-label">星期一:</label>
 								<div class="controls">
 									<input type="checkbox" name="Allow1"/>允许
-									<input type="time" name="start1"/>                       
+									<input type="time" name="start1" value="{{start1}}"/>                       
 								</div>              
 							</div>
 							<div class="control-group">
 								<label class="control-label">星期二:</label>
 								<div class="controls">
 									<input type="checkbox" name="Allow2"/>允许
-									<input type="time" name="start2"/>                       
+									<input type="time" name="start2"value="{{start2}}"/>                       
 								</div>              
 							</div>
 							<div class="control-group">
 								<label class="control-label">星期三:</label>
 								<div class="controls">
 									<input type="checkbox" name="Allow3"/>允许
-									<input type="time" name="start3"/>                       
+									<input type="time" name="start3" value="{{start3}}"/>                       
 								</div>              
 							</div>
 							<div class="control-group">
 								<label class="control-label">星期四:</label>
 								<div class="controls">
 									<input type="checkbox" name="Allow4"/>允许
-									<input type="time" name="start4"/>                       
+									<input type="time" name="start4" value="{{start4}}"/>                       
 								</div>              
 							</div>
 							<div class="control-group">
 								<label class="control-label">星期五:</label>
 								<div class="controls">
 									<input type="checkbox" name="Allow5"/>允许
-									<input type="time" name="start5"/>                       
+									<input type="time" name="start5" value="{{start5}}"/>                       
 								</div>              
 							</div>
 							<div class="control-group">
 								<label class="control-label">星期六:</label>
 								<div class="controls">
 									<input type="checkbox" name="Allow6"/>允许
-									<input type="time" name="start6"/>                       
+									<input type="time" name="start6" value="{{start6}}"/>                       
 								</div>              
 							</div>
 						</fieldset>						
@@ -257,7 +258,7 @@
 								<label class="control-label">描述:</label>
 							</div>
 							<div id="div3" class="span11">
-								<textarea class="form-control" rows="12" name="Description"></textarea>
+								<textarea class="form-control" rows="12" name="Description" value="{{Description}}"></textarea>
 							</div>
 
 						</div>
@@ -269,6 +270,5 @@
 			<button class="btn btn-primary" id="taskabsoluteeditofsavebtn">保存</button>
 			<button class="btn" id="taskabsoluteeditcancelbtn">取消</button>
 		</div>
-	</div>
+	
 </Template>
--->

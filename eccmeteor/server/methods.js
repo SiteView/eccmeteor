@@ -51,7 +51,6 @@ Meteor.methods({
   "svWriteTaskIniFileSectionString":svWriteTaskIniFileSectionString,
   "svDeleteSysLogInitFilesection":svDeleteSysLogInitFilesection,
   //"svGetSmsDllName":svGetSmsDllName,
-  "svGetTrendList":svGetTrendList,
 	"svseSysLogDaoAgent":SvseSysLogDaoAgent.agent,	
 	"svGetSysLogDelCondConfigSetting":svGetSysLogDelCondConfigSetting,
 	"svGetSysLogQueryContEntityConfigSetting":svGetSysLogQueryContEntityConfigSetting,
@@ -100,6 +99,7 @@ Meteor.methods({
 	Date:2013-10-28 10:40
 	Content:增加 趋势报告 的agent声明
 */ 
+
 /*
 	Type： add
 	Author：xuqiang
@@ -177,7 +177,6 @@ SvseMethodsOnServer = {
 	"svGetStatisticalList": svGetStatisticalList,
 	"svDeleteStatisticalIniFileSection":svDeleteStatisticalIniFileSection,
 	"svWriteStatisticalStatusInitFilesection":svWriteStatisticalStatusInitFilesection,
-	"svGetTrendList":svGetTrendList,
 	"svWriteTaskIniFileSectionString":svWriteTaskIniFileSectionString,
     "svWriteDelContConfigIniFileSectionString":svWriteDelContConfigIniFileSectionString,
 	"svWriteQueryContEntityConfigIniFileSectionString":svWriteQueryContEntityConfigIniFileSectionString,
