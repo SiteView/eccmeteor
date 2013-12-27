@@ -35,40 +35,40 @@
 
 <br />
 {{> usersettingListTable}}
-{{> usersettingadd}}
-{{> usersettingedit}}
-{{> userPromissionSetting}}
+<div id="UserSettingAddModal"></div>
+<div id="UserSettingEditModal"></div>
+<div id="UserPromissionSettingModal"></div>
 </Template>
 
 <Template name="usersettingListTable">
 <table class="table table-striped table-condensed table-hover">
-		<thead>
-			<tr></tr>
-			<tr>
-				<th><input type="checkbox" id="usersettingtableselectall"></th>
-				<th>登录名</th>
-				<th>用户名</th>
-				<th>用户状态</th>
-				<th>用户类型</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody id="userSettingList">
-			{{#each userlist}}
-			<tr>
-				<td><input type="checkbox" id="{{_id}}"></td>
-				<td>{{username}}</td>
-				<td>{{profile.aliasname}}</td>
-				<td>{{profile.accountstatus}}</td>
-				<td>{{profile.accounttype}}</td>
-				<td>
-					<div class="btn-group">
-						<button id="{{_id}}" class="btn" name="edit"><i class="icon-edit"></i>编辑</button>
-						<button id="{{_id}}" class="btn" name="promission"><i class="icon-edit"></i>授权</button>
-					</div>
-				</td>
-			</tr>
-			{{/each}}
-		</tbody>
+	<thead>
+		<tr></tr>
+		<tr>
+			<th><input type="checkbox" id="usersettingtableselectall"></th>
+			<th>登录名</th>
+			<th>用户名</th>
+			<th>用户状态</th>
+			<th>用户类型</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody id="userSettingList">
+		{{#each userlist}}
+		<tr>
+			<td><input type="checkbox" id="{{_id}}"></td>
+			<td>{{username}}</td>
+			<td>{{profile.aliasname}}</td>
+			<td>{{profile.accountstatus}}</td>
+			<td>{{profile.accounttype}}</td>
+			<td>
+				<div class="btn-group">
+					<button class="btn" name="edit"><i class="icon-edit"></i>编辑</button>
+					<button class="btn" name="promission"><i class="icon-edit"></i>授权</button>
+				</div>
+			</td>
+		</tr>
+		{{/each}}
+	</tbody>
 </table>
 </Template>

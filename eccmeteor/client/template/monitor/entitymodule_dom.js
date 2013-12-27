@@ -3,7 +3,7 @@ EntityMouduleDomAction = function(){};
 Object.defineProperty(EntityMouduleDomAction,"draw",{
 	value:function(checkedMonitorId){
 		//存储选中监视器的id
-		SessionManage.setCheckedMonitorId(checkedMonitorId);
+		SessionManage.setCheckedMonitorId(checkedMonitorId);//详细报告
 		//画图前 获取相关数据
 		SvseMonitorDao.getMonitorReportDataByCount(checkedMonitorId,200,function(result){
 			if(!result.status){
@@ -101,6 +101,6 @@ Object.defineProperty(EntityMouduleDomAction,"MonitorListRendered",{
 			this.clear();
 		}
 	}
-})
+});
 
 
