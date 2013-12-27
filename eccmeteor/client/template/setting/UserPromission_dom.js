@@ -1,57 +1,45 @@
 UserPromissionAction = function(){};
 
-
-
 Object.defineProperty(UserPromissionAction,"userPromissionSave",{
-	value:function(e,t,context){
-		var  data  = Session.get("userPromissionSettingGroupControlData");
-		var operationData =  Session.get("userPromissionSettingOperationControlData");
-		if(!data){
-			RenderTemplate.hideParents(t);
-			return;
-		}
-		console.log("权限是");
-		console.log(data);
-		
-		var svsenodes = [];
-		//获取可见节点授权
-		var svsenodearr = $.fn.zTree.getZTreeObj("svse_tree_promission_check").getNodesByFilter(function(node){return node.checked});
-		for(index in svsenodearr){
-			svsenodes.push(svsenodearr[index].id);
-		}
+	value:function(e,template,context){
+		var uid = template.find("input:hidden#promissionUserId").value;
+		//save the lastest action
+		UserPromissionAction.saveNodeAtLastActionChecked();
+
+		var  nodeControlData  = Session.get("userPromissionSettingGroupControlData");
+		console.log(nodeControlData);
+		var nodeDisplayData = UserPromissionAction.getChoosedTreeNodes();
+	//	console.log("勾选tree节点是：");
+	//	console.log(nodeDisplayData);
+		//RenderTemplate.hideParents(t);
+		var settingControlData  = Session.get("userPromissionSettingOperationControlData");
+		var settingNodeDisplayData = UserPromissionAction.getChoosedSettingTreeNodes();
 		console.log("勾选节点是：");
-		console.log(svsenodes);
-		var uid = $("#userPromissionSettingDiv #promissionUserId").val();
+		console.log(settingNodeDisplayData);
+		console.log(settingControlData);
+		//RenderTemplate.hideParents(t
 		
-		var svseOperateNodeArr = $.fn.zTree.getZTreeObj("svse_other_promission_check").getNodesByFilter(function(node){return node.checked});
-		var svseOperateNodes = [];
-		for(svseOperateNodeArrIndex in svseOperateNodeArr){
-			svseOperateNodes.push(svseOperateNodeArr[svseOperateNodeArrIndex].action);
-		}
-		//存储可见节点数据
-		SvseUserDao.setDisplayPermission(uid,svsenodes,svseOperateNodes,function(result){
-			console.log(result);
-		});
-		console.log("uid setNodeOpratePermission " +uid);
+		//save diplay nodes  include svse node and setting node
+		UserPromissionAction.saveDisplayNodesToDataBase(uid,nodeDisplayData,settingNodeDisplayData);
+
 		//存储节点操作权限
-		SvseUserDao.setNodeOpratePermission(uid,ClientUtils.changePointAndLine(data),function(result){
+		SvseUserDao.setNodeOpratePermission(uid,nodeControlData,function(result){
 			console.log(result);
 		});
 		console.log("uid setSettingOperatePermission " +uid);
 		//存储设置节点操作权限
-		SvseUserDao.setSettingOperatePermission(uid,operationData,function(result){
+		SvseUserDao.setSettingOperatePermission(uid,settingControlData,function(result){
 			console.log(result);
 		});
 		//清空Session中的临时数据
-		this.clearUserPromissionSettingGroupControlData();
-		RenderTemplate.hideParents(t);
+		UserPromissionAction.clearUserPromissionSettingGroupControlData();
+		RenderTemplate.hideParents(template);
 	}
 });
 
 Object.defineProperty(UserPromissionAction,"userPromissionCancel",{
 	value:function(e,t,context){
-		console.log("userPromissionSettingCloseBtn close");
-		this.clearUserPromissionSettingGroupControlData();//清空Session中的临时数据
+		UserPromissionAction.clearUserPromissionSettingGroupControlData();//清空Session中的临时数据
 		RenderTemplate.hideParents(t);
 	}
 });
@@ -62,14 +50,24 @@ Object.defineProperty(UserPromissionAction,"chooseUserPromissionViewType",{
 		switch(type){
 			case "entity" : templateName = "UserPromissionTypeOfEntity";
 				break;
-			case "group" : templateName = "UserPromissionTypeOfGroup";
+			case "group" : templateName  = "UserPromissionTypeOfGroup";
+				break;
+			case "AlertRule" : templateName  = "UserPromissionTypeOfAlertRule";
+				break;
+			case "AlertLog" : templateName = "UserPromissionTypeOfAlertLog";
+				break;
+			case "AlertPlan" :templateName = "UserPromissionTypeOfAlertStrategy";
+				break;
+			case "contrast" : templateName = "UserPromissionTypeOfStatisticsReport";
 				break;
 		}
 		if(templateName !== ""){
-			RenderTemplate.renderIn("#userPromissionViewType",templateName);
+			RenderTemplate.renderIn(UserPromissionAction._selector,templateName);
 		}
 	}
 });
+
+
 //清除临时数据
 Object.defineProperty(UserPromissionAction,"clearUserPromissionSettingGroupControlData",{
 	value:function(){
@@ -117,52 +115,166 @@ Object.defineProperty(UserPromissionAction,"initTreeSimple",{
 	}
 });
 
-Object.defineProperty(UserPromissionAction,"treeSimpleNodeClickAction",{
-	value:function(treeId, treeNode){
-		
-		//第一步  获取当前操作节点 
-		var currend_id= treeNode.id;	//当前节点的ID
-		var current_type = treeNode.type === "entity" ? "entity" : "group" ;//当前节点类型
-		console.log("当前节点ID是" + currend_id  +"  节点类型是 " + current_type);
+Object.defineProperty(UserPromissionAction,"saveNodeAtLastActionChecked",{
+	value:function(){
+		var lastCheckedNodes = UserPromissionAction.getCheckedbox();
+		var type = Session.get("userPromissionLastNodeType");
+		if(type === "svse"){
+			var id = Session.get("userPromissionSettingGroupControlNodeId");
+			id = UserPromissionAction.coverIdToSaveId(id);
+			UserPromissionAction.saveTemporaryNodeData(id,lastCheckedNodes);
+		}else if(type === "setting"){
+			var action = Session.get("userPromissionSettingOperationControlAction");
+			UserPromissionAction.saveTemporarySettingNodeData(action,lastCheckedNodes);
+		}
+	}
+});
 
-		UserPromissionAction.chooseUserPromissionViewType(current_type);
-		return;
-		//第二步  从内存中读取当前节点的操作权限，在界面上选中相关节点
-		var  data  = Session.get("userPromissionSettingGroupControlData");
-		//绘制当前节点的权限的checkbox选中情况 //当且仅当连续连两次点击的节点类型相同时进行重绘
-		if(Session.get("userPromissionSettingGroupControlType") !== current_type){
-			//存储当前节点信息
-			Session.set("userPromissionSettingGroupControlNodeId",currend_id); //存储临时信息
-			Session.set("userPromissionSettingGroupControlType",current_type); //改变模板状态	
+Object.defineProperty(UserPromissionAction,"_selector",{
+	value:"#userPromissionViewType"
+});
+
+Object.defineProperty(UserPromissionAction,"getCheckedbox",{
+	value:function(selector){
+		if(typeof selector === "undefined"){
+			selector = UserPromissionAction._selector;
+		}
+		var beforeCheckbox = $(selector).find(":checkbox[checked]");
+		var obj = {};
+		if(!beforeCheckbox.length){
+			return obj;
+		}
+		beforeCheckbox.each(function(){
+			var d = this;
+			obj[d.name] = true;
+		});
+		return obj;
+	}
+});
+
+Object.defineProperty(UserPromissionAction,"setCheckedbox",{
+	value:function(data,selector){
+		if(typeof selector === "undefined"){
+			selector =  UserPromissionAction._selector;
+		}
+		//如果当前节点不存在授权
+		if(!data){
 			return;
 		}
+		
+		//勾选相应的权限选项
+		for(promission in data){
+			var box = $(selector).find(":checkbox[name="+promission+"]")[0];
+			if(!box){
+				continue;
+			}
+			box.checked =  data[promission];
+		}	
+	}
+});
+
+Object.defineProperty(UserPromissionAction,"coverIdToSaveId",{
+	value:function(id){
+		if(id){
+			return id.replace(/\./g,"-");
+		}
+	}
+});
+
+Object.defineProperty(UserPromissionAction,"compareSettingAndSvse",{
+	value:function(current){
+		var before = Session.get("userPromissionLastNodeType");
+		if(before === current){
+
+		}
+	}
+});
+
+Object.defineProperty(UserPromissionAction,"saveTemporaryNodeData",{
+	value:function(nid,data){
+		var  controlData  = Session.get("userPromissionSettingGroupControlData");
+		if(typeof controlData === "undefined" || controlData == null){
+			controlData = {};
+		}
+		if(!nid || typeof nid !== "string"){
+			return;
+		}
+		controlData[nid] = data;
+		Session.set("userPromissionSettingGroupControlData",controlData);
+	}
+});
+
+Object.defineProperty(UserPromissionAction,"saveTemporarySettingNodeData",{
+	value:function(nid,data){
+		console.log("Save Action is");
+		console.log(nid);
+		console.log(data);
+		var  controlData  = Session.get("userPromissionSettingOperationControlData");	
+				if(typeof controlData === "undefined" || controlData == null){
+			controlData = {};
+		}
+		if(!nid || typeof nid !== "string"){
+			return;
+		}
+		controlData[nid] = data;
+		console.log(controlData);
+		Session.set("userPromissionSettingOperationControlData",controlData);
+	}
+});
+
+
+Object.defineProperty(UserPromissionAction,"treeSimpleNodeClickAction",{
+	value:function(treeId, treeNode){
+		//1  获取当前操作节点 
+		var currend_id= treeNode.id;	//当前节点的ID
+		currend_id = UserPromissionAction.coverIdToSaveId(currend_id);
+		var current_type = treeNode.type === "entity" ? "entity" : "group" ;//当前节点类型
+
+		//2 获取并存储上一个节点的信息
+		UserPromissionAction.saveNodeAtLastActionChecked();
+
+
+		//3 改变节点赋予视图
+		UserPromissionAction.chooseUserPromissionViewType(current_type);
+
+		//4 存储当前节点信息
+		Session.set("userPromissionSettingGroupControlNodeId",currend_id); //存储临时信息
+		Session.set("userPromissionSettingGroupControlType",current_type); //改变模板状态	
+		Session.set("userPromissionLastNodeType","svse");
+		//5  从内存中读取当前节点的操作权限，在界面上选中相关节点
+		var  data  = Session.get("userPromissionSettingGroupControlData");
 		if(!data){
 			return;
 		}
 		var promissionCheckboxs = data[currend_id];
-		console.log("promissionCheckboxs:  ");
-		console.log(promissionCheckboxs);
-		//改变权限checkbox的状态为未选中
-		$("#userPromissionSettingGroupControlForm :checkbox").each(function(){
-			this.checked = false;
-		});//清空选项
-		//如果当前节点不存在授权
-		if(!promissionCheckboxs)
+		UserPromissionAction.setCheckedbox(promissionCheckboxs);	
+	}
+});
+
+
+Object.defineProperty(UserPromissionAction,"treeSettingNodeClickAction",{
+	value:function(treeNode){
+		//第一步  获取当前操作节点
+		var currend_action = treeNode.action;
+		console.log("current action is " + currend_action);
+		//2 获取并存储上一个节点的信息
+		UserPromissionAction.saveNodeAtLastActionChecked();
+
+		//3 改变节点赋予视图
+		UserPromissionAction.chooseUserPromissionViewType(currend_action);
+		
+
+		//4 存储当前节点信息
+		Session.set("userPromissionLastNodeType","setting");
+		Session.set("userPromissionSettingOperationControlAction",currend_action);
+
+		//5  从内存中读取当前节点的操作权限，在界面上选中相关节点
+		var  data  = Session.get("userPromissionSettingOperationControlData");
+		if(!data){
 			return;
-		//勾选相应的权限选项
-		for(promission in promissionCheckboxs){
-			if(!$("#userPromissionSettingGroupControlForm :checkbox[name="+promission+"]")[0]){
-				console.log(promission);
-				continue;
-			}
-			try{
-				$("#userPromissionSettingGroupControlForm :checkbox[name="+promission+"]")[0].checked = promissionCheckboxs[promission];
-			}catch(e){
-				console.log(e);
-			}
-		}	
-		Session.set("userPromissionSettingGroupControlNodeId",currend_id); //存储临时信息
-		Session.set("userPromissionSettingGroupControlType",current_type); //改变模板状态			
+		}
+		var promissionCheckboxs = data[currend_action];
+		UserPromissionAction.setCheckedbox(promissionCheckboxs);				
 	}
 });
 
@@ -186,11 +298,7 @@ Object.defineProperty(UserPromissionAction,"initSettingTree",{
 			},
 			callback:{
 				onClick:function(event, treeId, treeNode){	
-					//第一步  获取当前操作节点
-					var currend_viewType = treeNode.type;
-					var currend_action = treeNode.action;
-					Session.set("userpromissViewType",currend_viewType);
-					Session.set("userPromissionSettingOperationControlAction",currend_action); //改变模板状态					
+					UserPromissionAction.treeSettingNodeClickAction(treeNode);
 				}
 			}
 		}
@@ -233,5 +341,36 @@ Object.defineProperty(UserPromissionAction,"initChooseTreeNode",{
 				}, true),true);
 			}
 		}
+	}
+});
+
+Object.defineProperty(UserPromissionAction,"getChoosedTreeNodes",{
+	value:function(){
+		var svsenodearr = $.fn.zTree.getZTreeObj("svse_tree_promission_check").getNodesByFilter(function(node){return node.checked});
+		var svsenodes = [];
+		for(index in svsenodearr){
+			svsenodes.push(svsenodearr[index].id);
+		}
+		return svsenodes;
+	}
+});
+
+Object.defineProperty(UserPromissionAction,"getChoosedSettingTreeNodes",{
+	value:function(){
+		var svseOperateNodeArr = $.fn.zTree.getZTreeObj("svse_other_promission_check").getNodesByFilter(function(node){return node.checked});
+		var svseOperateNodes = [];
+		for(svseOperateNodeArrIndex in svseOperateNodeArr){
+			svseOperateNodes.push(svseOperateNodeArr[svseOperateNodeArrIndex].action);
+		}
+		return svseOperateNodes;
+	}
+});
+
+Object.defineProperty(UserPromissionAction,"saveDisplayNodesToDataBase",{
+	value:function(uid,svsenodes,svseOperateNodes){
+		//存储可见节点数据
+		SvseUserDao.setDisplayPermission(uid,svsenodes,svseOperateNodes,function(result){
+			console.log(result);
+		});
 	}
 });
