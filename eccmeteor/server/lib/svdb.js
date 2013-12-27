@@ -1403,6 +1403,7 @@ svUpdateSMSTemplateSettingFilesection = function(key,value){
 		return null;
 	}
 	return robj.fmap(0);
+}
 /*
 	Type:add 软件许可
 	Author:renjie
@@ -1418,10 +1419,12 @@ svGetLicenselist = function(){
 		return;
 	}
 	var fmap= robj.fmap(0);
-	if(!fmap || !fmap["license"]) return ;
-		fmap["license"]["point"] = svDecryptOne(fmap["license"]["point"]);
-		fmap["license"]["nw"] = svDecryptOne(fmap["license"]["nw"]);
-		fmap["license"]["starttime"] = svDecryptOne(fmap["license"]["starttime"]);
-		fmap["license"]["lasttime"] = svDecryptOne(fmap["license"]["lasttime"]);
+	if(!fmap || !fmap["license"]){
+		return ;
+	} 
+	fmap["license"]["point"] = svDecryptOne(fmap["license"]["point"]);
+	fmap["license"]["nw"] = svDecryptOne(fmap["license"]["nw"]);
+	fmap["license"]["starttime"] = svDecryptOne(fmap["license"]["starttime"]);
+	fmap["license"]["lasttime"] = svDecryptOne(fmap["license"]["lasttime"]);
 	return fmap["license"];
 }
