@@ -6,11 +6,12 @@
 */
 var checkErrorOnServer = function(robj){
 	if(typeof robj === "string"){
-		throw new Error("传入参数错误，请在相关日志中搜索具体信息");
+		console.log("传入参数错误，请在相关日志中搜索具体信息");
 		return robj;
 	}
 	if(!robj.isok(0) &&robj.estr(0) !== ""){
-		throw new Error("传入参数错误，请在相关日志中搜索具体信息");
+	//	throw new Error("传入参数错误，请在相关日志中搜索具体信息");
+		console.log("robj.isok 传入参数错误，请在相关日志中搜索具体信息");
 		return robj.estr(0);
 	}
 	return false;
