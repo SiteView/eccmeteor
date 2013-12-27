@@ -38,9 +38,9 @@
 									<label class="control-label">对比方式:</label>
 									<div class="controls">
 										<select id="timeconstrast" name="selecttime">
-											<option value="Day" checked>按天对比</option>
-											<option value="Week" checked>按周对比</option>
-											<option value="Month" checked>按月对比</option>
+											<option value="day" checked>按天对比</option>
+											<option value="weeks" checked>按周对比</option>
+											<option value="month" checked>按月对比</option>
 											
 										</select>
 									</div>
@@ -132,4 +132,46 @@
 	
 	<div id="timeconstrastDiv"></div>
 
+</Template>
+<Template name="timeconstrast_date">
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			
+			 <a class="accordion-toggle" data-toggle="collapse" href="#showGroupAndEntityTableEntityListCollapseThree">
+			  图表
+			</a>
+		</div>
+		<div id="showGroupAndEntityTableEntityListCollapseThree" class="accordion-body collapse in">
+			<table class="table table-striped table-condensed table-hover">
+				<thead>
+					<tr></tr>
+					<tr>
+						
+						<th>名称</th>
+						<th>最大值</th>
+						<th>平均值</th>
+						<th>最小值</th>
+						<th>最大值时间</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					{{#each tableData}}
+						<tr>
+							
+							<td>{{MonitorName}}</td>
+							<td>{{max}}</td>
+							<td>{{average}}</td>
+							<td>{{min}}</td>
+							<td>{{when_max}}</td>
+						
+						</tr>
+					{{/each}}
+
+				</tbody>
+			</table>
+			<div id="drawtimeconstrast">
+		</div>
+		</div>
+	</div>
 </Template>
