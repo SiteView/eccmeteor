@@ -122,7 +122,7 @@ Template.warnerrulelog.events({
 				return;
 			}
 			//console.log(resultData.length);
-			console.log(resultData);
+			//console.log(resultData);
 			var types = SvseAlertLogDao.defineAlertTypeData();
 			//绘制表
 			for(var i = 0;i < resultData.length;i++){

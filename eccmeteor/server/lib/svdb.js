@@ -1347,7 +1347,7 @@ svWriteSMSTemplateSettingFilesection = function(name,content){
 		'section' : 'SMS',
 		"key" : name,
 		"value" : content
-	}, 0);
+	}, 2);
 	// var flag = checkErrorOnServer(robj);
 	// console.log(flag);
 	// if(typeof flag === "string"){
