@@ -7,9 +7,9 @@ Object.defineProperty(UserPromissionAction,"userPromissionSave",{
 		UserPromissionAction.saveNodeAtLastActionChecked();
 
 		var  nodeControlData  = Session.get("userPromissionSettingGroupControlData");
-	//	console.log(nodeControlData);
+		console.log(nodeControlData);
 		var nodeDisplayData = UserPromissionAction.getChoosedTreeNodes();
-	//	console.log("勾选节点是：");
+	//	console.log("勾选tree节点是：");
 	//	console.log(nodeDisplayData);
 		//RenderTemplate.hideParents(t);
 		var settingControlData  = Session.get("userPromissionSettingOperationControlData");
@@ -18,14 +18,28 @@ Object.defineProperty(UserPromissionAction,"userPromissionSave",{
 		console.log(settingNodeDisplayData);
 		console.log(settingControlData);
 		//RenderTemplate.hideParents(t
+		
 		//save diplay nodes  include svse node and setting node
-	//	UserPromissionAction.saveDisplayNodesToDataBase(uid,nodeDisplayData,settingNodeDisplayData);
+		UserPromissionAction.saveDisplayNodesToDataBase(uid,nodeDisplayData,settingNodeDisplayData);
+
+		//存储节点操作权限
+		SvseUserDao.setNodeOpratePermission(uid,nodeControlData,function(result){
+			console.log(result);
+		});
+		console.log("uid setSettingOperatePermission " +uid);
+		//存储设置节点操作权限
+		SvseUserDao.setSettingOperatePermission(uid,settingControlData,function(result){
+			console.log(result);
+		});
+		//清空Session中的临时数据
+		UserPromissionAction.clearUserPromissionSettingGroupControlData();
+		RenderTemplate.hideParents(t);
 	}
 });
 
 Object.defineProperty(UserPromissionAction,"userPromissionCancel",{
 	value:function(e,t,context){
-		this.clearUserPromissionSettingGroupControlData();//清空Session中的临时数据
+		UserPromissionAction.clearUserPromissionSettingGroupControlData();//清空Session中的临时数据
 		RenderTemplate.hideParents(t);
 	}
 });
@@ -114,7 +128,7 @@ Object.defineProperty(UserPromissionAction,"saveNodeAtLastActionChecked",{
 			UserPromissionAction.saveTemporarySettingNodeData(action,lastCheckedNodes);
 		}
 	}
-})
+});
 
 Object.defineProperty(UserPromissionAction,"_selector",{
 	value:"#userPromissionViewType"
@@ -192,6 +206,9 @@ Object.defineProperty(UserPromissionAction,"saveTemporaryNodeData",{
 
 Object.defineProperty(UserPromissionAction,"saveTemporarySettingNodeData",{
 	value:function(nid,data){
+		console.log("Save Action is");
+		console.log(nid);
+		console.log(data);
 		var  controlData  = Session.get("userPromissionSettingOperationControlData");	
 				if(typeof controlData === "undefined" || controlData == null){
 			controlData = {};
@@ -200,6 +217,7 @@ Object.defineProperty(UserPromissionAction,"saveTemporarySettingNodeData",{
 			return;
 		}
 		controlData[nid] = data;
+		console.log(controlData);
 		Session.set("userPromissionSettingOperationControlData",controlData);
 	}
 });
@@ -213,9 +231,8 @@ Object.defineProperty(UserPromissionAction,"treeSimpleNodeClickAction",{
 		var current_type = treeNode.type === "entity" ? "entity" : "group" ;//当前节点类型
 
 		//2 获取并存储上一个节点的信息
-		var beforeCheckbox = UserPromissionAction.getCheckedbox();
-		var beforeNodeId = Session.get("userPromissionSettingGroupControlNodeId");
-		UserPromissionAction.saveTemporaryNodeData(beforeNodeId,beforeCheckbox);
+		UserPromissionAction.saveNodeAtLastActionChecked();
+
 
 		//3 改变节点赋予视图
 		UserPromissionAction.chooseUserPromissionViewType(current_type);
@@ -241,9 +258,7 @@ Object.defineProperty(UserPromissionAction,"treeSettingNodeClickAction",{
 		var currend_action = treeNode.action;
 		console.log("current action is " + currend_action);
 		//2 获取并存储上一个节点的信息
-		var beforeCheckbox = UserPromissionAction.getCheckedbox();
-		var beforeAction = Session.get("userPromissionSettingOperationControlAction");
-		UserPromissionAction.saveTemporarySettingNodeData(beforeAction,beforeCheckbox);
+		UserPromissionAction.saveNodeAtLastActionChecked();
 
 		//3 改变节点赋予视图
 		UserPromissionAction.chooseUserPromissionViewType(currend_action);
@@ -251,7 +266,7 @@ Object.defineProperty(UserPromissionAction,"treeSettingNodeClickAction",{
 
 		//4 存储当前节点信息
 		Session.set("userPromissionLastNodeType","setting");
-
+		Session.set("userPromissionSettingOperationControlAction",currend_action);
 
 		//5  从内存中读取当前节点的操作权限，在界面上选中相关节点
 		var  data  = Session.get("userPromissionSettingOperationControlData");
