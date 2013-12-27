@@ -23,21 +23,3 @@ SvseTrendOnServer={
 		//return SvseMethodsOnServer.svGetTrendList(); 
 	}
 }
-/*
-	"addStatistical":function(addressname,address){
-		Log4js.info("SvseStatisticalOnServer addStatistical");
-		var result = SvseMethodsOnServer.svWriteStatisticalIniFileSectionString(addressname,address);
-		if(!result){
-			var msg = "SvseStatisticalOnServer's addStatistical  add " + addressname +" faild";
-			SystemLogger.log(msg,-1);
-			throw new Meteor.Error(500,msg);
-		}
-		var addressresult = result[addressname];
-		SvseStatisticalresultlist.insert(addressresult,function(err,r_id){
-			if(err){
-				SystemLogger(err,-1);
-				throw new Meteor.Error(500,err);
-			}
-		})
-	},
-*/
