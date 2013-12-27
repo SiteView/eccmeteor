@@ -83,7 +83,16 @@ var NavigationSettingTreeEvents = {
 	//zhuqing add SysLogQuery
 	"SysLogQuery":function(){
 		SwithcView.view(REPORT.SYSLOGQUERY);
-	}
+	},
+/*
+	Type：add
+	Author：renjie
+	Date:2013-11-18 15:20
+	Content:添加contrast对比报告
+	*/ 
+	"License":function(){
+       SwithcView.view(SETTINGVIEW.LICENSE);
+    }
 }
 NavigationSettingTree = {
 	getTreeData:function(){

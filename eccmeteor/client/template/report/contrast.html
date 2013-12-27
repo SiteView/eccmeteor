@@ -2,11 +2,11 @@
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div id="div1" class="span3" >
-			<div>
+			<div class="breadcrumb">
 				<span class="label label-info">对比报告</span>
 			</div>
-			<div  style="overflow:auto" id="treeDemo">
-				<ul id="svse_tree_check" class="ztree" style="height:300px; width: 180px;"></ul>
+			<div class="well form-horizontal form-inline" style="overflow:auto" id="treeDemo">
+				<ul id="svse_tree_check_contrast" class="ztree" style="height:300px; width: 180px;"></ul>
 			</div>
 			<a href="#2" data-toggle="tab">组名：</a>
 			<div class="control-group" align="right">
@@ -28,18 +28,22 @@
 </Template>
 
 <Template name="Contrastlist">
+
 	<ul id="myTab" class="nav nav-tabs">
 		<li class="active">
+		<div class="breadcrumb">
 			<a href="#home1" data-toggle="tab">查询</a>
+		</div>
 		</li>
 	</ul>
+
 	<div id="mytabcontent" class="tab-content"></div>
 	<div class="tab-pane active" id="home1"></div>
 			<div class="accordion-group">
-				<label class="label label-info">查询</label>
+				<label class="label label-info">查询条件</label>
 					
 					<div id="contrastListCollapseOne" class="panel-collapse collapse in">
-						<form class="well form-horizontal form-inline" onsubmit="return false;">
+						<form id="Con" class="well form-horizontal form-inline" onsubmit="return false;">
 							<fieldset>
 								<div>
 								
@@ -60,12 +64,12 @@
 										
 										<div class="control-group" style="padding-left:68px">
 											
-											<button class="btn" id="search">查询</button>
+											<button class="btn" id="search"><img src="imag/setting/query_bt.gif">查询</button>
 											<button id="exportreport" class="btn">
-												<a href="#">{{language.exportreport}}</a>
+												<a href="#"><img src="imag/setting/save_bt.gif">{{language.exportreport}}</a>
 											</button>
 											<button id="helpmessagebtn" class="btn">
-												<a href="#">{{language.helpmessagebtn}}</a>
+												<a href="#"><img src="imag/setting/help.gif">{{language.helpmessagebtn}}</a>
 											</button>
 										</div>
 									</div>
@@ -84,7 +88,9 @@
 		
 			<div class="accordion-group">
 				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseTwo">运行报表情况表</a>
+					<ol class="breadcrumb">
+					  <li><a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseTwo">运行报表情况表</a></li>
+					</ol>
 				</div>
 				<div id="contrastListCollapseTwo" class="panel-collapse collapse in">
 					<div style="overflow-y: auto; left: 0px;height:100px;">
@@ -126,7 +132,10 @@
 	
 		<div class="accordion-group">
 			<div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseThree">图表</a>
+					<ol class="breadcrumb">
+					  <li><a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseThree">图表</a></li>
+					</ol>
+				
 			</div>
 			<div id="contrastListCollapseThree" class="panel-collapse collapse in">
 			<div style="overflow-y: auto; left: 0px;height:400px;">

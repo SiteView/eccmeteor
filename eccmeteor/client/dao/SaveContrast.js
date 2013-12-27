@@ -6,6 +6,9 @@ SvseContrastDao = {
        return;
      }
     },
+	"getContrastById":function(id){
+	return SvseContrastlist.findOne({nIndex:id});
+	},
 	// 根据时间段获取实时数据
 	getMonitorReportData : function(id,beginDate,endDate,fn){
 		Meteor.call(SvseMonitorDao.AGENT,"getMonitorReportData",[id,beginDate,endDate],function (err,result){

@@ -25,6 +25,12 @@
 	Author：renjie
 	Date:2013-12-2 13:40
 	Content:增加 syslog 的agent声明
+
+	======================
+	Type： add
+	Author：renjie
+	Date:2013-12-23 14:40
+	Content:增加 软件许可
 */ 
 Meteor.methods({
   "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
@@ -58,6 +64,9 @@ Meteor.methods({
 	//"svGetSysLogQueryContConfigSetting":svGetSysLogQueryContConfigSetting,
   "svWriteSMSTemplateSettingFilesection":svWriteSMSTemplateSettingFilesection,
   //"svDeleteSMSTemplateSettingFilesection":svDeleteSMSTemplateSettingFilesection,
+
+  "svWriteEmailAddressStatusInitFilesection":svWriteEmailAddressStatusInitFilesection,
+  "svGetLicenselist":svGetLicenselist,
 });//给客户端调用的
  /**
 	Type： add | modify 

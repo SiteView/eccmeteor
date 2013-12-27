@@ -1217,35 +1217,9 @@ svGetSysLogDelCondConfigSetting = function(){
 	if(!fmap || !fmap["DelCond"]) return ;
 	return fmap["DelCond"];
 }
-//获取设置--------
-// svGetSysLogQueryContConfigSetting = function(){
-	// var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"syslog.ini",
-		// "user":"default","section":"QueryCont"}, 0);
-	// if(!robj.isok(0)){
-		// return;
-	// }
-	// var fmap= robj.fmap(0);
-	// if(!fmap || !fmap["QueryCont"]) return ;
-	// return fmap["QueryCont"];
-// }
-// svWriteQueryContConfigIniFileSectionString = function(section){
-	// console.log(section);
-	// var ini = {"QueryCond":section};
-	// var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"syslog.ini",'user':"default",'section':"QueryCond"},0); 
-	// var flag = checkErrorOnServer(robj);
-	// if(typeof flag === "string"){
-		// Log4js.error(flag);
-		// return null;
-	// }
-	// Log4js.info(robj.fmap(0));
-	// return robj.fmap(0);
-// }
 
 svWriteQueryContEntityConfigIniFileSectionString = function(section){
 	console.log(section);
-	//section["Facility"]= svEncryptOne(section["Facility"]);
-	//section["Severities"] = svEncryptOne(section["Severities"]);
-	//var ini = {"QueryCond":section};
 	var robj= process.sv_univ({
 	'dowhat':'WriteIniFileString',
 	'filename':"syslog.ini",
@@ -1263,22 +1237,7 @@ svWriteQueryContEntityConfigIniFileSectionString = function(section){
 	Log4js.info(robj.fmap(0));
 	return robj.fmap(0);
 }
-/*svWriteQueryContEntityConfigIniFileSectionString = function(section){
-	var robj = process.sv_univ({
-		'dowhat' : 'WriteIniFileString',
-		'filename' : "syslog.ini",
-		'user' : "default",
-		'section' : "QueryCond",
-		"key" : "Facility",
-		"value" : status
-	},0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	return robj.fmap(0);
-}*/
+
 //获取Entity参数设置
 svGetSysLogQueryContEntityConfigSetting = function(){
 	var robj = process.sv_univ({
@@ -1333,7 +1292,7 @@ svGetSysLogQueryContRankConfigSetting = function(){
 svDeleteSysLogInitFilesection = function (id){
 	var robj = process.sv_univ({
 	    'dowhat':'DeleteRecords',
-		 'id':id,
+		 'id':'syslog',
 		 year:Date["year"],
 		 month:Date["month"],
 		 day:Date["Day"], 
@@ -1342,12 +1301,11 @@ svDeleteSysLogInitFilesection = function (id){
 		 second:Date["Second"],
 	 }, 0);
 	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap= robj.fmap(0);
-	return fmap; 
+		if(typeof flag === "string"){
+			Log4js.error(flag);
+			return null;
+		}
+		return robj.fmap(0);
 }
 /*
 	Type:查询syslog
@@ -1360,8 +1318,8 @@ svGetQuerySysLog = function(beginDate,endDate,syslogQueryCondition){
 	var robj = process.sv_forest({
 		'dowhat':'QueryRecordsByTime',
 		'id':'syslog',
-		sourceIp:syslogQueryCondition.SourceIp,
 		expression:syslogQueryCondition.Expression,
+		sourceIp:syslogQueryCondition.SourceIp,
 		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
 		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
 	}, 0);
@@ -1445,4 +1403,25 @@ svUpdateSMSTemplateSettingFilesection = function(key,value){
 		return null;
 	}
 	return robj.fmap(0);
+/*
+	Type:add 软件许可
+	Author:renjie
+	Data:2013-12-23
+	Content:license
+*/
+//获取软件许可列表模板
+svGetLicenselist = function(){
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"general.ini",
+			"user":"default","section":"license"}, 0);
+	if(!robj.isok(0)){
+		Log4js.error(robj.estr(0),-1);
+		return;
+	}
+	var fmap= robj.fmap(0);
+	if(!fmap || !fmap["license"]) return ;
+		fmap["license"]["point"] = svDecryptOne(fmap["license"]["point"]);
+		fmap["license"]["nw"] = svDecryptOne(fmap["license"]["nw"]);
+		fmap["license"]["starttime"] = svDecryptOne(fmap["license"]["starttime"]);
+		fmap["license"]["lasttime"] = svDecryptOne(fmap["license"]["lasttime"]);
+	return fmap["license"];
 }
