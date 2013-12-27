@@ -9,15 +9,15 @@
 				</div>
 				<div class="btn-group">
 						
-						<button class="btn" id="statisticalofdel">{{language.delbtn}}</button>
+						<button class="btn" id="taskperiodofdel">{{language.delbtn}}</button>
 				</div>
 				<div class="btn-group">
 						
-						<button class="btn" id="statisticalofdel">{{language.refreshbtn}}</button>
+						<button class="btn" id="taskperiodofdel">{{language.refreshbtn}}</button>
 				</div>
 				<div class="btn-group">
 						
-						<button class="btn" id="statisticalofdel">{{language.helpmessagebtn}}</button>
+						<button class="btn" id="taskperiodofdel">{{language.helpmessagebtn}}</button>
 				</div>
 			</div>
 		</div>
@@ -41,13 +41,13 @@
 			<tbody id="taskperiodlist" class="eventList">
 				{{#each taskperiodresultlist}}
 					<tr>
-						<td><input type="checkbox" id="{{nIndex}}"/></td>
+						<td><input type="checkbox" id="{{sv_name}}"/></td>
 						<td>{{sv_name}}</td>
 						<td>{{Description}}</td>
 						<td></td>
 						<td>
 							<div class="btn-group">
-								<button id="{{nIndex}}" class="btn"><i class="icon-edit"></i>编辑</button>
+								<button id="{{sv_name}}" class="btn"><i class="icon-edit"></i>编辑</button>
 							</div>
 						</td>
 					</tr>

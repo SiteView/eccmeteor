@@ -29,16 +29,19 @@
 	},
 	"deleteTaskByIds" : function(ids){
 		var address = ids.join();
+		console.log("********");
+		console.log(address);
+		console.log("********");
+		
 		var result = SvseMethodsOnServer.svDeleteTaskIniFileSection(address);
 		if(!result){
 			var msg = "SvseTaskOnServer's deleteTaskByIds"+ids+" faild";
 			SystemLogger.log(msg,-1);
 			throw new Meteor.Error(500,msg);
 		}
-		for(index in ids){
-			SvseStatisticalresultlist.remove(SvseStatisticalresultlist.findOne({nIndex:ids[index]})._id);
-		}
-		return SvseStatisticalOnServer.getReturn(true);
+			SvseTask.remove({sv_name:address});
+			
+		return SvseTaskDaoOnServer.getReturn(true);
 	},
 	"setMessageCommConfig":function(section){
 		var result = SvseTaskDaoOnServer.svWriteSMSCommConfigIniFileSectionString(section);

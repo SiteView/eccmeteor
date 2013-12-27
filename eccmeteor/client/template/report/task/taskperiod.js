@@ -28,6 +28,21 @@ Template.taskperiodlist.rendered = function () {
 Template.taskperiod.events = {
 	"click #taskperiodofadd" : function(e){
 	$('#taskperiodadddiv').modal('toggle');
+	},
+	"click #taskperiodofdel":function(){
+		var checks = $("#taskperiodlist :checkbox[checked]");
+		var ids = [];
+		for (var i = 0; i < checks.length; i++) {
+			ids.push($(checks[i]).attr("id"));
+			console.log(ids);
+		}
+		if (ids.length)
+			SvseTaskDao.deleteTaskByIds(ids, function(result) {
+				SystemLogger(result);
+					console.log(ids);
+			});
+			
+	
 	}
 }
 Template.taskperiodadd.rendered = function(){
