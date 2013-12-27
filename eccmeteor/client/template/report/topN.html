@@ -127,38 +127,9 @@ data-maxHeight='500' data-width="800" data-height="500" data-modalOverflow="true
 			<div class="controls">
 				<input type="text" class="span6" name="Descript" title="输入报告备注信息"></div>
 		</div>
-    <!--
-    <script type="text/javascript">
-      	var marklist=new Array();
-		marklist[0]=["CPU使用率(%)"];
-		marklist[1]=["Memory使用率(%)","剩余空间(MB)","内存总量(MB)"];
-		marklist[2]=["包成功率(%)","数据往返时间(ms)","状态值(200表示成功 300表示出错)"];
-		marklist[3]=["数据往返时间(ms)"];
-		marklist[4]=["CPU使用率(%)"];
-		marklist[5]=["IDS_640_AS400","System ASP总量(MB)","剩余空间(MB)"];
-
-		function getMarklist(provinceid){
-		    var objsel=document.getElementById("marklist");
-		    var pmarklist;
-		       objsel.options.length=0;
-		       pmarklist=marklist[provinceid];
-		     for(var i=0;i<pmarklist.length;i++){
-		       objsel.options[i]=new Option(pmarklist[i],pmarklist[i]);
-		}
- 	</script>
-	-->
 		<div class="control-group">
 			<label class="control-label">监测器类型:</label>
 			<div class="controls">
-        <!--<select id="Typelist" name="Type" onChange="getMarklist(this.value)">
-				
-				<option value="0" checked>CPU (Unix)</option>‌
-				<option value="1" checked>Memory (Unix)</option>‌
-				<option value="2" checked>Ping</option>‌
-				<option value="3" checked>Port</option>‌
-				<option value="4" checked>SNMP_CPU</option>‌
-				<option value="5" checked>System ASP</option>‌
-					</select>-->
 				<select id="Typelist" name="sv_type" title="选择要统计的检测器类型">
 					{{#each monitortypelist}}
 					<option value="{{sv_name}}">{{sv_label}}</option>
@@ -166,15 +137,6 @@ data-maxHeight='500' data-width="800" data-height="500" data-modalOverflow="true
 				</select>
 			</div>
 		</div>
-    <!--<label class="control-label">选择指标:</label>
-				<div class="controls">
-				<select id="marklist" name="Mark">
-				<option value="0" checked>包成功率(%)</option>
-				<option value="1" checked>数据往返时间(ms)</option>
-				<option value="2" checked>状态值(200表示成功 300表示出错)</option>
-					</select>
-				</div>
-			</div>-->
 		<div class="control-group">
 			<label class="control-label">选择指标:</label>
 			<div class="controls">
@@ -300,9 +262,6 @@ data-maxHeight='500' data-width="800" data-height="500" data-modalOverflow="true
 								<label class="control-label">监测器类型:</label>
 								<div class="controls">
 									<select id="Typelisted" name="Type" title="选择要统计的检测器类型">
-										<!--{{#each monitortypelist}}
-	<option value="{{sv_name}}">{{sv_label}}</option>
-									{{/each}}-->
 								</select>
 							</div>
 						</div>
@@ -399,7 +358,6 @@ data-maxHeight='500' data-width="800" data-height="500" data-modalOverflow="true
 		</div>
 	</div>
 	<div class="modal-footer" align="right">
-		‌
 		<button class="btn btn-large" id="topNofaddcancelbtnedit">取消</button>
 		<button class="btn btn-primary btn-large" id="topNofaddsavebtnedit">保存</button>
 	</div>
