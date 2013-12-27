@@ -33,7 +33,7 @@ Object.defineProperty(UserPromissionAction,"userPromissionSave",{
 		});
 		//清空Session中的临时数据
 		UserPromissionAction.clearUserPromissionSettingGroupControlData();
-		RenderTemplate.hideParents(t);
+		RenderTemplate.hideParents(template);
 	}
 });
 
