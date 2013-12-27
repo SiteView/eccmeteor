@@ -31,6 +31,7 @@ Template.contrast.events = {
 		
 					return;
 				}
+			
 			var monitorId = targets;
 			console.log("获取监测器id:"+targets);
 			//var monitorId = '1.27.1.1';
@@ -69,7 +70,7 @@ Template.contrast.events = {
 				tableData:tableData
 			}
 			var target = Session.get("selectnode");	
-			RenderTemplate.renderIn("#ContrastDetailData","Contrastlist2",renderObj);
+			RenderTemplate.renderIn("#ContrastDetailData","Contrastlist2",renderObj,false);
 			
 			DrawContrastReport.draw(imageData,nstartTime,nendTime);
 			
@@ -78,7 +79,33 @@ Template.contrast.events = {
 
 	},
 	//导出报告
-	"click #exportreport":function(e){				
+	"click #exportreport":function(e){	
+			var targets = [];
+		    var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
+		    var contrastlist = ClientUtils.formArrayToObject($("#contrastlist").serializeArray());
+		    var arr = $.fn.zTree.getZTreeObj("svse_tree_check_contrast").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
+			for(index in arr){
+				targets.push(arr[index].id);
+			}
+			console.log(targets);
+			
+			contrastlist["GroupRight"] = targets.join();
+			
+			$(":checkbox[name='Status']").each(function(){
+				if(!this.checked) contrastlist["Status"]="Yes";
+			});
+		
+			//是否选择选择监测器
+			contrastlist["AlertTarget"] = targets.join();
+			if(!contrastlist["AlertTarget"]){
+				Message.info("请选择选择监测器！",{align:"center",time:3});
+		
+					return;
+				}
+			
+			var monitorId = targets;
+			console.log("获取监测器id:"+targets);
+
 			var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
 			var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
 			var beginDate = startPicker.getDate();
@@ -239,14 +266,23 @@ Template.contrast.rendered = function(e){
 		}
 		var tree = $.fn.zTree.init($("#svse_tree_check_contrast"), setting,expandSimpleTreeNode(data,TreeNodeRemenber.get()));
 		console.log("-------");
-		//tree.checkNode(selectNodeid,true,true);
-		for(var i = 0;i < selectNodeid.length;i++){
-			console.log(selectNodeid[i]);
-			tree.checkNode(selectNodeid[i],true,true);
-		}
+		tree.checkNode(selectNodeid,true,true);
+		// for(var i = 0;i < selectNodeid.length;i++){
+			// console.log(selectNodeid[i]);
+			// tree.checkNode(selectNodeid[i],true,true);
+		// }
 		console.log("======");
 		});
-	
+		//var checkednodes = result.GroupRight.split("\,")
+		 //左边树的勾选
+		//var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_contrast");
+		//treeObj.checkAllNodes(false); //清空上一个用户状态
+		/*  //节点勾选
+		for(var index  = 0; index < selectNodeid.length ; index++){
+			treeObj.checkNode(treeObj.getNodesByFilter(function(node){
+				return  node.id  === selectNodeid[index];
+			}, true), true);
+		} */
 		function showRMenu(type, x, y) {
 			//$("#rMenu ul").show();
 			$("#rMenu").css({

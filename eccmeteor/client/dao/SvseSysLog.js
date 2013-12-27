@@ -10,12 +10,13 @@ SvseSysLogDao = {
 		},
 	
 		//获取查询系统日志的数据记录
-		"getQuerySysLog":function(beginDate,endDate,syslogQueryCondition,fn){
-			Meteor.call(SvseSysLogDao.AGENT,"getQuerySysLog",[beginDate,endDate,syslogQueryCondition],function (err,result){
+		"getQuerySysLog":function(beginDate,endDate,fn){
+			Meteor.call(SvseSysLogDao.AGENT,"getQuerySysLog",[beginDate,endDate],function (err,result){
 				if(err){
 					fn({status:false,msg:err})
 					return;
 				}
+				console.log("55555");
 				fn({status:true,content:result});
 			});
 		},

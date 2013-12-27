@@ -133,8 +133,8 @@ Object.defineProperty(DrawContrastReport,"drawLine",{
 		var Xcoordinate =  "time"; //X坐标的属性
 		var Ycoordinate = "date";//Y坐标的属性
 		var label = originalData.lable;
-		var width = 560;
-		var height = 350;
+		var width = 650;
+		var height = 300;
 		//判断时间间隔 大于2天
 		var dateformate = (endTime.getTime() - startTime.getTime())/1000 > 3600*24*2 
 							? "%m-%d %H:%M"
