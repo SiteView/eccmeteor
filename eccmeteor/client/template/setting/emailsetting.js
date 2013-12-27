@@ -37,7 +37,29 @@ Template.emailsetting.events  = {
 		SvseEmailDao.sync();
 	},
 	"click #emailtemplatesetting" : function(){
-	
+		SvseEmailDao.getEmailTemplates(function(err,result){
+			console.log(result);
+			var emailTemplate = [];
+			var defaulttemplate = {};
+			for(index in result){
+				var temp = {};
+				//console.log(index);
+				//console.log(result[index]);
+				temp["name"] = index;
+				temp["context"] = result[index];
+				console.log(temp);
+				emailTemplate.push(temp);
+				if(index == "Default"){
+					defaulttemplate = temp;
+				}
+				//console.log(emailTemplate);
+				
+			}
+			// console.log(emailTemplate);
+			// console.log(defaulttemplate);
+			var context = {emailTemplate:emailTemplate,showTemplate:defaulttemplate};
+			RenderTemplate.showParents("#emailTemplateSettingDiv","emailtemplatesetting",context);
+		});
 	},
 	"click #emailhelpmessage" : function(){
  

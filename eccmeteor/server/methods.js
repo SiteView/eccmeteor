@@ -57,7 +57,8 @@ Meteor.methods({
 	"svGetSysLogQueryContEntityConfigSetting":svGetSysLogQueryContEntityConfigSetting,
 	"svGetSysLogQueryContRankConfigSetting":svGetSysLogQueryContRankConfigSetting,
 	//"svGetSysLogQueryContConfigSetting":svGetSysLogQueryContConfigSetting,
-  "svWriteEmailAddressStatusInitFilesection":svWriteEmailAddressStatusInitFilesection,
+  "svWriteSMSTemplateSettingFilesection":svWriteSMSTemplateSettingFilesection,
+  //"svDeleteSMSTemplateSettingFilesection":svDeleteSMSTemplateSettingFilesection,
 });//给客户端调用的
  /**
 	Type： add | modify 
@@ -186,6 +187,9 @@ SvseMethodsOnServer = {
 	"svDeleteTaskIniFileSection":svDeleteTaskIniFileSection,
 	"svEmailTest":svEmailTest,
 	"svGetQuerySysLog":svGetQuerySysLog,
+	"svWriteSMSTemplateSettingFilesection":svWriteSMSTemplateSettingFilesection,
+	"svDeleteSMSTemplateSettingFilesection":svDeleteSMSTemplateSettingFilesection,
+	"svUpdateSMSTemplateSettingFilesection":svUpdateSMSTemplateSettingFilesection,
 	/*
 	Type： add
 	Author：renjie
