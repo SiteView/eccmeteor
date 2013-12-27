@@ -1,20 +1,21 @@
 <Template name="userPromissionSetting"> <!--用户授权 -->
-	<div id="userPromissionSettingDiv" class="modal hide fade"
+	{{#with user}}
+	<div class="modal hide fade"
 		data-backdrop="true" data-keyboard="true" data-show="false" 
 		data-maxHeight='500' data-width="800" data-height="545" data-modalOverflow="true"
 	>
 		<div class="modal-header">
-			用户授权<span class="badge badge-info" id="promissionUsername"></span>
-			<input type="hidden" id="promissionUserId">
-			{{ide "userPromissionSetting"}}
+			<span class="badge badge-info" id="promissionUsername">用户授权:{{username}}</span>
+			<input type="hidden" id="promissionUserId" value="{{_id}}">
 		</div>
 		<div class="modal-body" style="height:400px">
 			<div class="row-fluid">
 				<div class="span6 well" style="overflow:auto">
-					{{> userPromissionSettingTree}}
+					<ul id="svse_tree_promission_check" class="ztree"></ul>
+					<ul id="svse_other_promission_check" class="ztree"></ul>
 				</div>
 				<div class="span6" style="overflow:auto">
-					{{> userPromissViewControle}}
+					
 				</div>
 			</div>
 		</div>
@@ -23,23 +24,8 @@
 			<button class="btn btn-primary btn-large" id="userPromissionSettingCloseBtn">关闭</button>
 		</div>
 	</div>
-</Template>
 
-<Template name="userPromissionSettingTree">
-	<ul id="svse_tree_promission_check" class="ztree"></ul>
-	<ul id="svse_other_promission_check" class="ztree"></ul>
-</Template>
-
-<Template name="userPromissViewControle">
-	{{#if equal userpromissViewType "svse"}}
-		{{> userPromissionSettingGroupControl}}
-	{{/if}}
-	{{#if equal userpromissViewType 'warner'}}
-		{{> userPromissionSettingWarnerControl}}
-	{{/if}}
-	{{#if equal userpromissViewType 'setting'}}
-		{{> userPromissionSettingSettingControl}}
-	{{/if}}
+	{{/with}}
 </Template>
 
 <Template name="userPromissionSettingGroupControl">

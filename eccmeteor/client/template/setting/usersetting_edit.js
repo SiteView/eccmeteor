@@ -13,22 +13,20 @@ Template.usersettingedit.rendered = function(){
 }
 
 Template.usersettingedit.events({
-	"click #usersettingeditformcanclebtn":function(){
-		$("#usersettingeditform :password").each(function(){$(this).val("")});
-		$('#usersettingeditdiv').modal('toggle');
+	"click #usersettingeditformcanclebtn":function(e,t){
+		RenderTemplate.hideParents(t);
 	},
-	"click #usersettingeditformsavebtn":function(){
+	"click #usersettingeditformsavebtn":function(e,t){
 		var user = ClientUtils.formArrayToObject($("#usersettingeditform").serializeArray());
 		if(!user.password.length || user.password !== user.password2) return;
 		console.log(user);
 		SvseUserDao.setPassword(user,function(result){
 			if(!result.status){
-				console.log(result.msg);
+				Message.error("密码修改失败，请重试");
 			}else{
-				$("#usersettingeditform :password").each(function(){$(this).val("")});
-				$('#usersettingeditdiv').modal('toggle');
+				Message.success("密码修改成功",{align:"center",time:1});
+				RenderTemplate.hideParents(t);
 			}
 		});
-		
 	}
 });

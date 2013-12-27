@@ -35,6 +35,9 @@ Template.AddEntity.events = {
 		RenderTemplate.hideParents(t);
 		var group = SvseEntityTemplateDao.getEntityGroup();
 		RenderTemplate.showParents("#ChooseEntityTemplateForAddEntity","EntitiesGroupByType",{entityGroup:group});
+	},
+	"click .close":function(e,t){
+		RenderTemplate.hideParents(t);
 	}
 };
 

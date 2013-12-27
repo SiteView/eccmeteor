@@ -22,5 +22,8 @@ Template.EditEntity.events = {
 	},
 	"click #showEditEntityFormCancelBtn":function(e,t){
 		RenderTemplate.hideParents(t);
+	},
+	"click .close":function(e,t){
+		RenderTemplate.hideParents(t);
 	}
 }

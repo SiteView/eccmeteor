@@ -1,25 +1,6 @@
 	var getContrastListSelectAll = function(){
 		return ClientUtils.tableGetSelectedAll("contrastlist");
 	}
-		/*	var PagerMonitor = new Pagination("subentitylist");
-
-		Template.contrast.pagerMonitor = function(){
-				var entityId = SessionManage.getCheckedTreeNode("id");
-				var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
-				return PagerMonitor.create(SvseTreeDao.getNodeCountsByIds(childrenIds));
-		}
-		Template.contrast.Monitors = function(){
-			var entityId = SessionManage.getCheckedTreeNode("id");
-			var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
-			var perPage = Session.get("PERPAGE");
-			return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip({perPage:perPage}));
-		}
-		//获取报警规则列表
-		/*Template.warnerrulelog.warnerruleoflist = function(){
-			console.log(SvseWarnerRuleDao.getWarnerRuleList());
-			return SvseWarnerRuleDao.getWarnerRuleList();
-		}
-		*/
 
 Template.contrast.events = {
     //查询
@@ -351,19 +332,11 @@ Template.contrast.rendered = function(){
 
 }
 
-		// var PagerMonitor = new Pagination("subentitylist",{currentPage: 1,perPage:5});
-
-		// Template.MonitorList.pagerMonitor = function(){
-			// var entityId = SessionManage.getCheckedTreeNode("id");
-			// var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
-			// return PagerMonitor.create(SvseTreeDao.getNodeCountsByIds(childrenIds));
-		// }
-
-Template.MonitorList.Monitors = function(){
-	var entityId = SessionManage.getCheckedTreeNode("id");
-    var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
-    return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip());
-}
+// Template.MonitorList.Monitors = function(){
+	// var entityId = SessionManage.getCheckedTreeNode("id");
+    // var childrenIds = SvseDao.getChildrenIdsByRootIdAndChildSubType(entityId,"submonitor");
+    // return SvseTreeDao.getNodesByIds(childrenIds,false,PagerMonitor.skip());
+// }
 
  // Template.ContrastDetailData.ContrastDetailTableData = function(){
 	// return SessionManage.getContrastDetailTableData();
