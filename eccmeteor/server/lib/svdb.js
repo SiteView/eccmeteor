@@ -1314,12 +1314,12 @@ svDeleteSysLogInitFilesection = function (id){
 	Content:querySysLog
 */
 //查询syslog记录
-svGetQuerySysLog = function(beginDate,endDate,syslogQueryCondition){
+svGetQuerySysLog = function(beginDate,endDate){
 	var robj = process.sv_forest({
 		'dowhat':'QueryRecordsByTime',
 		'id':'syslog',
-		expression:syslogQueryCondition.Expression,
-		sourceIp:syslogQueryCondition.SourceIp,
+		// expression:syslogQueryCondition.Expression,
+		// sourceIp:syslogQueryCondition.SourceIp,
 		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
 		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
 	}, 0);

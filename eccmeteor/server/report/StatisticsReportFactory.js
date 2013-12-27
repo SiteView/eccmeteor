@@ -1,0 +1,1 @@
+StatisticsReportFactory = function(){};

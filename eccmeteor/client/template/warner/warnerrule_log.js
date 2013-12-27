@@ -115,8 +115,8 @@ Template.warnerrulelog.events({
 				return;
 			}
 			console.log(result);
-			var dataProcess = new DataProcess(result.content);
-			var resultData = dataProcess.getData();
+			//var dataProcess = new DataProcess(result.content);
+			var resultData = result.content;
 			if(!resultData){
 				console.log("查出报警日志没有数据");
 				return;
