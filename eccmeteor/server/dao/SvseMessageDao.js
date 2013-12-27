@@ -127,6 +127,16 @@ SvseMessageDaoOnServer = {
 		}
 		return SvseMessageDaoOnServer.getReturn(true);
 	},
+	"updateSMSTemplateSetting":function(key,value){
+		var result = SvseMethodsOnServer.svUpdateSMSTemplateSettingFilesection(key,value);
+		//console.log(result);
+		if(!result){
+			var msg = "SvseMessageDaoOnServer's updateSMSTemplateSetting faild";
+			Log4js.error(msg);
+			throw new Meteor.Error(500,msg);
+		}
+		return SvseMessageDaoOnServer.getReturn(true);
+	},
 	/* "getSmsDllName":function(){
 		var result = SvseMethodsOnServer.svGetSmsDllName();
 		if(!result){

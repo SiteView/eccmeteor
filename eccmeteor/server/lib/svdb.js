@@ -1426,11 +1426,11 @@ svWriteSMSTemplateSettingFilesection = function(name,content){
 //删除SMS短信模板-根据key
 svDeleteSMSTemplateSettingFilesection = function(key,section){
 	var robj = process.sv_univ({
-		'dowhat' : 'DeleteIniFileKey',
+		'dowhat' : 'DeleteIniFileKeys',
 		'filename' : "TXTTemplate.ini",
 		'user' : "default",
 		'section' : section,
-		"key" : key
+		"keys" : key
 	}, 0);
 
 	var flag = checkErrorOnServer(robj);

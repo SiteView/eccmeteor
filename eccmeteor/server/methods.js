@@ -189,6 +189,7 @@ SvseMethodsOnServer = {
 	"svGetQuerySysLog":svGetQuerySysLog,
 	"svWriteSMSTemplateSettingFilesection":svWriteSMSTemplateSettingFilesection,
 	"svDeleteSMSTemplateSettingFilesection":svDeleteSMSTemplateSettingFilesection,
+	"svUpdateSMSTemplateSettingFilesection":svUpdateSMSTemplateSettingFilesection,
 	/*
 	Type： add
 	Author：renjie

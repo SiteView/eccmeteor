@@ -124,7 +124,26 @@ Template.messagetemplatesetting.events({
 	},
 	
 	//更新选中的短信模板
-	
+	"click #updatemessagetemplatebtn":function(){
+		var check = $("#messagetemplatelist :checkbox[checked]");
+		var key = $(check).attr("id");
+		console.log(key);
+		if(!key){
+			Message.info("请选择要更新的短信模板");
+			return;
+		}
+		if(key == "Default" || key == "SelfDefine" || key == "Simple"){
+			Message.info("系统自定义模板，不能被更新");
+			return;
+		}
+		var templateinfo = ClientUtils.formArrayToObject($("#templateinfo").serializeArray());
+		var title = templateinfo.messagetitle;
+		var value = title + "&" + templateinfo.context;
+		console.log(value);
+		// SvseMessageDao.updateSMSTemplateSetting(key,value,function(result){
+			// console.log(result);
+		// });
+	},
 	
 	//关闭模板窗口
 	"click #closemessagetemplatebtn":function(e,t){

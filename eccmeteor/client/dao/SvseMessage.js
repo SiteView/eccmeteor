@@ -152,6 +152,18 @@ SvseMessageDao = {
 			}
 		});
 	},
+	//更新短信模板
+	"updateSMSTemplateSetting":function(key,value,fn){
+		Meteor.call(SvseMessageDao.AGENT,"updateSMSTemplateSetting",[key,value],function(err,result){
+			if(err){
+				Log4js.error(err);
+				fn({status:false,msg:err})
+			}else{
+				console.log(result);
+				fn(result);
+			}
+		});
+	},
 	/* "getSmsDllName":function(){
 		Meteor.call(SvseMessageDao.AGENT,"getSmsDllName",function(err,result){
 			if(err){
