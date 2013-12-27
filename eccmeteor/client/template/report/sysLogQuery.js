@@ -1,17 +1,23 @@
 
+//查询结果分页
+ /*var logPage = new Pagination("sysLogList",{currentPage:1,perPage:6});
 
-//获取查询条件
-/*Template.sysLogQuery.expressions = function(){
-	//console.log(expression());
-	return expression();
-}*/
+Template.sysLogList.querysyslog = function(){
+	var querysyslog = Session.get("querysyslog");
+	console.log(querysyslog);
+	return querysyslog(logPage.skip());
+}
 
-
+Template.sysLogList.logPager = function(){
+	var querysyslog = Session.get("querysyslog");
+	var count = querysyslog.length;
+	return logPage.create(count);
+} */
 
 //Syslog的查询事件
 Template.sysLogQuery.events({
 		"click #selectsyslogbtn":function(){
-				var syslogquerycondition = ClientUtils.formArrayToObject($("#syslogquerycondition").serializeArray());
+				// var syslogquerycondition = ClientUtils.formArrayToObject($("#syslogquerycondition").serializeArray());
 				 //var syslogquerycondition = ClientUtils.tableGetSelectedAll("syslogquerycondition");
 				 console.log(syslogquerycondition);
 						 
@@ -43,16 +49,19 @@ Template.sysLogQuery.events({
 				console.log("#######################");
 				
 				//id = 'syslog';
-				SvseSysLogDao.getQuerySysLog(beginDate,endDate,syslogquerycondition,function(result){
+				SvseSysLogDao.getQuerySysLog(beginDate,endDate,function(result){
 					console.log("result");
 					if(!result.status){
 						Log4js.info(result.msg);
 						return;
 					}
 					console.log(result);
-					var dataProcess = new DataProcess(result.content);
-					var resultData= dataProcess.getData();
-
+					/*
+					//var dataProcess = new DataProcess(result.content);
+					//console.log(dataProcess);
+					//var resultData= dataProcess.getData();
+					*/
+					var resultData = result.content;
 					if(!resultData){
 						Message.info("没有要显示的数据！");
 						return;
@@ -66,33 +75,65 @@ Template.sysLogQuery.events({
 					}
 					//console.log(table);
 					//判断正则表达式
-					/*if(expression){
-						var temList = [];
+					if(expression){
+						var resultData = [];
 						for(var i = 0;i< table.length;i++){
-							expression = new RegExp("ain","g");
+							expression = new RegExp("([ftph]+://[a-zA-Z0-9\._-]+)","img");
+							//expression = new RegExp("[\u4e00-\u9fa5\\w]+","img");
+							//expression.test(syslogmsg);
 							var syslogmsg = table[i]["_SysLogMsg"]
-							var flag = expression.match(syslogmsg);
+							var flag = syslogmsg.match(expression);
 							if(flag){
-								temList.push(table[i]);
+								resultData.push(table[i]);
 								console.log("yes");
 							}
 						}
 					}
+					console.log(resultData);
+					console.log("以上是正则表达式筛选");
 					
-					console.log("------------------");
-					console.log(temList);*/
+					//判断IP地址
 					if(SourceIp){
-						var temList = [];
+						var resultData = [];
 						for(var i = 0;i< table.length;i++){
 							var _SourceIp = table[i]["_SourceIp"]
 							if(SourceIp == _SourceIp){
-								temList.push(table[i]);
+								resultData.push(table[i]);
 								console.log("yes");
 							}
 						}
 					}
-					console.log("------------");
-					console.log(temList);
+					 console.log("以下判断IP地址筛选");
+					 console.log(resultData);
+					//复选框的选中条件查询
+					/*	var syslogquerycondition = ClientUtils.formArrayToObject($("#syslogquerycondition").serializeArray());
+							console.log(syslogquerycondition);
+						var resultData =[];
+						for(var r in syslogquerycondition){
+							console.log(syslogquerycondition[r]);
+							resultData.push(syslogquerycondition[r]);
+						}
+						console.log(resultData.join());
+						
+					var ids = [];
+					for(var i=0;i<ids.length;i++){
+					     if(ids[i].checked == true){
+						 //查询
+						 }
+					else{
+					
+					}
+					
+					}*/
+					/*if (0.isChecked() || 1.isChecked() || 2.isChecked()
+						|| 3.isChecked() || 4.isChecked() || 5.isChecked()
+						|| 6.isChecked() || 7.isChecked() || 8.isChecked()
+						|| 9.isChecked() || 10.isChecked() || 11.isChecked()
+						|| 12.isChecked() || 13.isChecked() || 14.isChecked()
+						|| 15.isChecked() || 16.isChecked() || 17.isChecked()
+						|| 18.isChecked() || 19.isChecked() || 20.isChecked()
+						|| 21.isChecked() || 22.isChecked() || 23.isChecked()) {						
+						}*/
 					var types = SvseSysLogDao.defineparameterTypeData();
 					//绘制表
 					for(var i = 0;i < resultData.length;i++){

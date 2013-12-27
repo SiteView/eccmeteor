@@ -58,8 +58,8 @@ SvseSysLogDaoOnServer = {
 	// },
 	
 	//获取查询日志的数据记录
-	"getQuerySysLog" : function(beginDate,endDate,syslogQueryCondition){
-		var result = SvseMethodsOnServer.svGetQuerySysLog(beginDate,endDate,syslogQueryCondition);
+	"getQuerySysLog" : function(beginDate,endDate){
+		var result = SvseMethodsOnServer.svGetQuerySysLog(beginDate,endDate);
 		if(!result){
 			console.log("error");
 			throw new Meteor.Error(500,"SvseSysLogDaoOnServer.getQuerySysLog failed");
