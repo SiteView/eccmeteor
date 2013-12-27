@@ -31,6 +31,35 @@ Template.timeconstrastform.events = {
 		var tableData = dataProcess.getTableData();
 		var imageData = dataProcess.getImageData();
 		var baseData = dataProcess.getBaseData();
+		for (var i= 0; i<tableData.length;i++){
+			for(var j = 0; j<tableData[i].TableData.length ; j++){
+			  var ReturnName = [];
+			  var TabelDat = [];
+			  ReturnName[j] = tableData[i].TableData[ReturnName];
+			  TabelDat[j] = tableData[i].TableData[j];
+			}
+			//var tableDa =[];
+			//tableDa[i]= 
+		}
+		console.log(ReturnName);
+		console.log(TabelDat);
+		
+/*		<%for(var i = 0 ; i < tableData.length ; i++){%>
+					<%for(var j = 0 ; j < tableData[i].TableData.length ; j++){%>
+					<tr>
+						<%if(j == 0){%>
+							<td rowspan=2><%= tableData[i].ReturnName%></td>
+						<%}%>
+							<td ><%= tableData[i].TableData[j].time%></td>
+							<td><%= tableData[i].TableData[j].max%></td>
+							<td><%= tableData[i].TableData[j].min%></td>
+							<td><%= tableData[i].TableData[j].average%></td>
+							<td><%= tableData[i].TableData[j].latest%></td>
+							<td><%= tableData[i].TableData[j].when_max%></td>
+					</tr>
+					<%}%>
+				<%}%>
+*/				
 	//	Log4js.info(imageData);
 	//	return ;
 		var nstartTime1 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[0]),"yyyy-MM-dd hh-mm-ss");
@@ -43,6 +72,8 @@ Template.timeconstrastform.events = {
 			baseDate:baseData,
 			tableData:tableData
 		}
+		console.log(tableData);
+		
 		RenderTemplate.renderIn("#timeconstrastDiv","timeconstrast_date",renderObj);
 		//console.log(nstartTime);
 		//console.log(nendTime);

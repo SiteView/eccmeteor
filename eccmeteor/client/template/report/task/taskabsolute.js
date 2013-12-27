@@ -68,8 +68,9 @@ Template.taskabsolutelist.events({
 	"click td .btn" : function (e,t) {
 		console.log(e.currentTarget.id);
 		var result = SvseTaskDao.getTaskById(e.currentTarget.id);
-		
-		RenderTemplate.showParents("#taskabsoluteedit","taskabsolute_editform",result);
+		console.log(result);
+		var content = {result:result};
+		RenderTemplate.showParents("#taskabsoluteeditdiv","taskabsolute_editform",content);
 		
 /*		var html = Meteor.render(function(){
 			return Template.taskabsolute_editform(result);
