@@ -19,7 +19,7 @@ Template.operateNode.statisticalData = function(){
 		entity:0,
 		monitor:0,
 		ok:0,
-		error:0,
+		bad:0,
 		warning:0,
 		disable:0
 	}

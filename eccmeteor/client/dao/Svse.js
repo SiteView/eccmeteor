@@ -292,7 +292,11 @@ Object.defineProperty(SvseDao,"calculateGroupsAllEntityAndMonitorStatus",{
 					if(!subMonitorOne){
 						continue;
 					}
-					data[subMonitorOne.status] = data[subMonitorOne.status] + 1
+					if(subMonitorOne.status === "error"){
+						data["bad"] = data["bad"] + 1;
+					}else{
+						data[subMonitorOne.status] = data[subMonitorOne.status] + 1;
+					}
 				}
 			}
 		}
