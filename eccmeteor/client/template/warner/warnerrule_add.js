@@ -119,7 +119,12 @@ Template.warnerruleofmessage.rendered = function(){
 				}
 			}
 		};
-		$.fn.zTree.init($("#svse_tree_check_add"), setting, data);
+		var treeObj = $.fn.zTree.init($("#svse_tree_check_add"), setting, data);
+		
+		treeObj.checkNode(treeObj.getNodesByFilter(function(node){
+			return  node.id  === "1.27.1.1";
+		}, true), true);
+		
 	});
 }
 

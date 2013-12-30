@@ -1,58 +1,70 @@
 <Template name="emailtemplatesetting">
-	<div id="emailTemplateSettingDiv" class="modal hide fade" 
+	<div class="modal hide fade" 
 	data-backdrop="true" data-keyboard="true" data-show="false" 
-	data-width="550" data-height="300" data-maxHeight="500" data-modalOverflow="true">
+	data-width="560" data-height="300" data-maxHeight="500" data-modalOverflow="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<label class="label label-info">短信模板设置</label>
+			<label class="label label-info">Email模板设置</label>
 		</div>
 		<div class="modal-body">
 			<div class="row-fluid">
-				
 				<div class="span3">
-					<div id="messagetemplatelist">
-						<label class="label label-info">短信模板列表</label><br/><br/>
-						{{#each Template}}
-						<a id="{{name}}"><label class="control-label">{{name}}</label></a>
-						{{/each}}
-						
+					<div id="etemplatelist">
+						<label class="label label-info">Email模板列表</label><br/><br/>
+						<div id="emailtemplatelist" style="width:100px;height:230px;overflow:auto">
+							<table class="table table-striped table-condensed">
+								<tr>
+									<!-- <td>
+										<input id="{{name}}" type="checkbox" class="hide" />
+									</td> -->
+								</tr>
+								{{#each emailTemplate}}
+								<tr>
+									<td>
+										<input id="{{name}}" type="checkbox" class="hide" />
+											{{name}}
+									</td>
+								</tr>
+								{{/each}}
+							</table>
+							
+						</div>
 					</div>
 				</div>
 				<div class="span6">
-					<form id="templateinfo">
-					{{#with showTemplate}}
-					
-					<label class="label label-info">短信模板设置</label>
-					<div class="controls">
-						<label class="control-label">短信标题*:</label>
+					<form id="emailtemplateinfo">
+						{{#with showTemplate}}
+						<label class="label label-info">Email模板设置</label>
 						<div class="controls">
-							<input type="text" name="messagetitle" value="{{name}}"/>
+							<label class="control-label">邮件标题*:</label>
+							<div class="controls">
+								<input type="text" class="span10" name="messagetitle" value="{{name}}"/>
+							</div>
 						</div>
-					</div>
-					
-					<div class="controls">
-						<label class="control-label">短信内容:</label>
+						
 						<div class="controls">
-							<textarea id="messagecontent" name="context" rows="5">{{context}}</textarea>
+							<label class="control-label">邮件内容:</label>
+							<div class="controls">
+								<textarea id="emailcontent" class="span10" name="context" rows="5">{{context}}</textarea>
+							</div>
 						</div>
-					</div>
-					{{/with}}
-					<div class="controls">
-						<label class="control-label">模板标题*:</label>
+						{{/with}}
 						<div class="controls">
-							<input type="text" name="templatetitle" id="messageTemplateTitle"/>
+							<label class="control-label">模板模板*:</label>
+							<div class="controls">
+								<input type="text" class="span10" name="templatetitle" id="emailTemplateTitle"/>
+							</div>
 						</div>
-					</div>
 					</form>
 				</div>
 				
 				<div class="span3">
 					<div class="controls" style="padding-top:38px">
-						<button class="btn" id="addmessagetemplatebtn">添加</button><br/><br/>
-						<button class="btn" id="deletemessagetemplatebtn">删除</button><br/><br/>
-						<button class="btn" id="updatemessagetemplatebtn">更新</button><br/><br/>
-						<button class="btn" id="closemessagetemplatebtn">关闭</button><br/><br/>
-						<button class="btn" id="systemvariablebtn">系统变量说明</button>
+						<button class="btn" id="addemailtemplatebtn">添加</button><br/><br/>
+						<button class="btn" id="deleteemailtemplatebtn">删除</button><br/><br/>
+						<button class="btn" id="updateemailtemplatebtn">更新</button><br/><br/>
+						<button class="btn" id="closeemailtemplatebtn">关闭</button><br/><br/>
+						<button class="btn" id="emailsystemvariablebtn">系统变量说明</button>
 					</div>
 				</div>
 			</div>
@@ -62,10 +74,11 @@
 </Template>
 
 <Template name="showemailexplanationlist">
-	<div id="explanationlist" class="well hide">
+	<div id="emailexplanationlist" class="well hide">
 		<label class="label label-info">说明列表</label><br/><br/>
 		<label class="control-label">注意：</label>
 		<label class="control-label">系统模板不可以删除和修改你可以拷贝参数，请不要随意输入“@”和两个“@”间的参数变量,可以参考系统模板进行添加。</label>
+		<label class="control-label">参数变量如下：</label>
 		<label class="control-label">@FullPathGroup@ :监测点所在设备所在组的全部路径名称</label>
 		<label class="control-label">@Status@监测器点的状态</label>
 		<label class="control-label">@AllGroup@ :监测点所在设备所在组名称</label>
@@ -73,61 +86,62 @@
 		<label class="control-label">@Device@ :监测点所在设备的名称</label>
 		<label class="control-label">@Monitor@ :监测点名称</label>
 		<label class="control-label">@MonitorDstr@ :监测点报警描述，在监测点高级设置中设置</label>
+		<label class="control-label">@MonitorAlertDes@ :监测点报警描述，在监测点高级设置中设置 </label>
 		<label class="control-label">@Time@ : 报警时间</label>
 	</div>
 </Template>
 
-<Template name="webemailtemplatesetting">
-	<div id="webmessageTemplateSettingDiv" class="modal hide fade" 
-	data-backdrop="true" data-keyboard="true" data-show="false" 
-	data-width="550" data-height="300" data-maxHeight="500" data-modalOverflow="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<label class="label label-info">Web短信模板设置</label>
-		</div>
-		<div class="modal-body">
-			<div class="row-fluid">
-				<div class="span3">
-					<div id="webmessagetemplatelist">
-						<label class="label label-info">Web模板列表</label><br/><br/>
-						<label class="control-label">Default</label>
-						<label class="control-label">WebDefine</label>
-						
-					</div>
-				</div>
-				<div class="span6">
-					<label class="label label-info">Web短信模板设置</label>
-					<div class="controls">
-						<label class="control-label">Web发送模板*:</label>
-						<div class="controls">
-							<input type="text" name="websendtemplate" />
-						</div>
-					</div>
+<Template name="semailtemplatesetting">
+<div id="webmessageTemplateSettingDiv" class="modal hide fade" 
+data-backdrop="true" data-keyboard="true" data-show="false" 
+data-width="550" data-height="300" data-maxHeight="500" data-modalOverflow="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<label class="label label-info">Web短信模板设置</label>
+	</div>
+	<div class="modal-body">
+		<div class="row-fluid">
+			<div class="span3">
+				<div id="webmessagetemplatelist">
+					<label class="label label-info">Web模板列表</label><br/><br/>
+					<label class="control-label">Default</label>
+					<label class="control-label">WebDefine</label>
 					
+				</div>
+			</div>
+			<div class="span6">
+				<label class="label label-info">Web短信模板设置</label>
+				<div class="controls">
+					<label class="control-label">Web发送模板*:</label>
 					<div class="controls">
-						<label class="control-label">短信内容:</label>
-						<div class="controls">
-							<textarea name="content" rows="5"></textarea>
-						</div>
-					</div>
-					<div class="controls">
-						<label class="control-label">模板标题*:</label>
-						<div class="controls">
-							<input type="text" name="templatetitle" />
-						</div>
+						<input type="text" name="websendtemplate" />
 					</div>
 				</div>
-				<div class="span3">
-					<div class="controls" style="padding-top:38px">
-						<button class="btn" id="addwebmessagetemplatebtn">添加</button><br/><br/>
-						<button class="btn" id="deletewebmessagetemplatebtn">删除</button><br/><br/>
-						<button class="btn" id="updatewebmessagetemplatebtn">更新</button><br/><br/>
-						<button class="btn" id="closewebmessagetemplatebtn">关闭</button><br/><br/>
-						<button class="btn" id="websystemvariablebtn">系统变量说明</button>
+				
+				<div class="controls">
+					<label class="control-label">短信内容:</label>
+					<div class="controls">
+						<textarea name="content" rows="5"></textarea>
+					</div>
+				</div>
+				<div class="controls">
+					<label class="control-label">模板标题*:</label>
+					<div class="controls">
+						<input type="text" name="templatetitle" />
 					</div>
 				</div>
 			</div>
-			{{> showemailexplanationlist}}
+			<div class="span3">
+				<div class="controls" style="padding-top:38px">
+					<button class="btn" id="addwebmessagetemplatebtn">添加</button><br/><br/>
+					<button class="btn" id="deletewebmessagetemplatebtn">删除</button><br/><br/>
+					<button class="btn" id="updatewebmessagetemplatebtn">更新</button><br/><br/>
+					<button class="btn" id="closewebmessagetemplatebtn">关闭</button><br/><br/>
+					<button class="btn" id="websystemvariablebtn">系统变量说明</button>
+				</div>
+			</div>
 		</div>
+		{{> showemailexplanationlist}}
 	</div>
+</div>
 </Template>

@@ -3,12 +3,11 @@ Template.UserPromission.events({
 		RenderTemplate.hideParents(t);
 	},
 	"click button#save" :function(e,t){
-		console.log("save");
+		UserPromissionAction.userPromissionSave(e,t,this);
 	}
 });
 
 Template.UserPromission.rendered = function(){
-			console.log("initTree run");
 	//init tree
 	UserPromissionAction.initTree(this);
 
@@ -16,5 +15,9 @@ Template.UserPromission.rendered = function(){
 	UserPromissionAction.initPromissionData(this);
 	
 	//choose the profile's node own user  
-	UserPromissionAction.initChooseTreeNode(this)
+	UserPromissionAction.initChooseTreeNode(this);
+	
+	$("#userPromissionViewType").find(":checkbox [name='checkAll']").click(function(){
+		console.log("ok");
+	});
 }

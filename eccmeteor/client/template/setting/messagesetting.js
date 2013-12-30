@@ -54,6 +54,7 @@ Template.messagesetting.events={
 		});
 	},
 	//模板设置
+	//短信模板设置
 	"click #smsmessagetemplatesetting" : function(){
 		//$("#messageTemplateSettingDiv").modal("show");
 		SvseMessageDao.getMessageTemplates(function(err,result){
@@ -74,10 +75,40 @@ Template.messagesetting.events={
 				//console.log(messageTemplate);
 				
 			}
-			console.log(messageTemplate);
-			console.log(defaulttemplate);
+			// console.log(messageTemplate);
+			// console.log(defaulttemplate);
 			var context = {Template:messageTemplate,showTemplate:defaulttemplate};
 			RenderTemplate.showParents("#messageTemplateSettingDiv","messagetemplatesetting",context);
+		});
+	},
+	
+	//web短信模板设置
+	"click #webmessagetemplatesetting" : function(){
+		SvseMessageDao.getWebMessageTemplates(function(err,result){
+			console.log(result);
+			var webmessageTemplate = [];
+			var defaultwebtemplate = {};
+			for(index in result){
+				var temp = {};
+				// console.log(index);
+				// console.log(result[index]);
+				var context = result[index].split("\\;");
+				console.log(context);
+				temp["name"] = index;
+				temp["webtemplatetitle"] = context[0];
+				temp["messagecontext"] = context[1];
+				console.log(temp);
+				webmessageTemplate.push(temp);
+				if(index == "Simple"){
+					defaultwebtemplate = temp;
+				}
+				//console.log(webmessageTemplate);
+				
+			}
+			console.log(webmessageTemplate);
+			console.log(defaultwebtemplate);
+			var content = {webTemplate:webmessageTemplate,showWebTemplate:defaultwebtemplate};
+			RenderTemplate.showParents("#webmessageTemplateSettingDiv","webmessagetemplatesetting",content);
 		});
 	},
 	//帮助

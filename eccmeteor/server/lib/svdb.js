@@ -6,11 +6,12 @@
 */
 var checkErrorOnServer = function(robj){
 	if(typeof robj === "string"){
-		throw new Error("传入参数错误，请在相关日志中搜索具体信息");
+		console.log("传入参数错误，请在相关日志中搜索具体信息");
 		return robj;
 	}
 	if(!robj.isok(0) &&robj.estr(0) !== ""){
-		throw new Error("传入参数错误，请在相关日志中搜索具体信息");
+	//	throw new Error("传入参数错误，请在相关日志中搜索具体信息");
+		console.log("robj.isok 传入参数错误，请在相关日志中搜索具体信息");
 		return robj.estr(0);
 	}
 	return false;
@@ -229,6 +230,7 @@ svGetReportData = function(monitorId,beginDate,endDate,compress){
 	if(typeof compress === "undefined"){
 		compress = true;
 	}
+	console.log(beginDate);
 	var robj = process.sv_univ({
 		'dowhat':'QueryReportData',
 		id:monitorId,
@@ -429,22 +431,6 @@ svGetStatisticalList = function(){
 	var fmap= robj.fmap(0);
 	return fmap;
 }
-/*
-Type：   add 
-Author：xuqiang
-Date:2013-11-28 09:40
-Content:增加svGetTrendList的操作，获取趋势报告列表
-*/ 
-svGetTrendList = function(id,type){
-	var dowhat ={'dowhat':'QueryInfo',needkey:id,needtype:type};
-	var robj = process.sv_univ(dowhat,0);	
-	if(!robj.isok(0)){
-		console.log("Errors: \n"+robj.estr(0));
-		return;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
-}
 	/*
 	Type: add
 	Author:xuqiang
@@ -477,10 +463,10 @@ svWriteTaskIniFileSectionString = function(address){
 }
 
 //删除一条任务计划
-svDeleteTaskIniFileSection = function(ids){
+svDeleteTaskIniFileSection = function(address){
 
 	var robj =process.sv_univ(
-	{'dowhat':'DeleteTask',id:ids},0);
+	{'dowhat':'DeleteTask',id:address},0);
 	var fmap = robj.fmap(0);
 	return fmap;
 }
@@ -1025,12 +1011,14 @@ svDeleteMessageIniFileSection = function(ids){
 svGetMessageTemplates = function(){
 	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"TXTtemplate.ini",
 			"user":"default","sections":"SMS"}, 0);
-	var fmap= robj.fmap(0);
 	var flag = checkErrorOnServer(robj);
 	if(typeof flag === "string"){
 		Log4js.error(flag);
 		return null;
 	}
+	var fmap = robj.fmap(0);
+	// console.log(fmap);
+	// console.log(fmap["SMS"]);
 	return fmap["SMS"];
 }
 
@@ -1042,12 +1030,12 @@ svGetWebMessageTemplates=function(){
 		'user':'default',
 		'sections':'WebSmsConfige'
 	},0);
-	var fmap = robj.fmap(0);
 	var flag = checkErrorOnServer(robj);
 	if(typeof flag === "string"){
 		Log4js.error(flag);
 		return null;
 	}
+	var fmap = robj.fmap(0);
 	return fmap["WebSmsConfige"];
 }
 
@@ -1348,23 +1336,73 @@ svGetQuerySysLog = function(beginDate,endDate){
 	return sysLogRecords;
 }
 
-//添加短信设置中的短信模板
-svWriteEmailAddressStatusInitFilesection = function(templateName,content){
+//添加SMS短信设置中的短信模板--by zhuqing(有问题)
+svWriteSMSTemplateSettingFilesection = function(name,content){
+	console.log(name);
+	console.log(content);
 	var robj = process.sv_univ({
 		'dowhat' : 'WriteIniFileString',
 		'filename' : "TXTTemplate.ini",
 		'user' : "default",
 		'section' : 'SMS',
-		"key" : templateName,
+		"key" : name,
 		"value" : content
+	}, 2);
+	// var flag = checkErrorOnServer(robj);
+	// console.log(flag);
+	// if(typeof flag === "string"){
+		// Log4js.error(flag);
+		// return null;
+	// }
+	console.log("11");
+	Log4js.info("111");
+	//传入的请求包含异常字符(可能是中文字符引起的)
+	if(!robj.isok(0)){
+		Log4js.error(robj.estr(0),-1);
+		return false;
+	}
+	console.log("22");
+	var fmap = robj.fmap(0);
+	//console.log(fmap);
+	return fmap; 
+}
+
+//删除SMS短信模板-根据key
+svDeleteSMSTemplateSettingFilesection = function(key,section){
+	var robj = process.sv_univ({
+		'dowhat' : 'DeleteIniFileKeys',
+		'filename' : "TXTTemplate.ini",
+		'user' : "default",
+		'section' : section,
+		"keys" : key
 	}, 0);
+
 	var flag = checkErrorOnServer(robj);
 	if(typeof flag === "string"){
 		Log4js.error(flag);
 		return null;
 	}
 	var fmap = robj.fmap(0);
+	console.log(fmap);
 	return fmap; 
+}
+
+//更新短信模板的value值
+svUpdateSMSTemplateSettingFilesection = function(key,value){
+	var robj = process.sv_univ({
+		'dowhat' : 'WriteIniFileString',
+		'filename' : "smsphoneset.ini",
+		'user' : "default",
+		'section' : "SMS",
+		"key" : key,
+		"value" : value
+	}, 0);
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
+	}
+	return robj.fmap(0);
 }
 /*
 	Type:add 软件许可
@@ -1381,10 +1419,12 @@ svGetLicenselist = function(){
 		return;
 	}
 	var fmap= robj.fmap(0);
-	if(!fmap || !fmap["license"]) return ;
-		fmap["license"]["point"] = svDecryptOne(fmap["license"]["point"]);
-		fmap["license"]["nw"] = svDecryptOne(fmap["license"]["nw"]);
-		fmap["license"]["starttime"] = svDecryptOne(fmap["license"]["starttime"]);
-		fmap["license"]["lasttime"] = svDecryptOne(fmap["license"]["lasttime"]);
+	if(!fmap || !fmap["license"]){
+		return ;
+	} 
+	fmap["license"]["point"] = svDecryptOne(fmap["license"]["point"]);
+	fmap["license"]["nw"] = svDecryptOne(fmap["license"]["nw"]);
+	fmap["license"]["starttime"] = svDecryptOne(fmap["license"]["starttime"]);
+	fmap["license"]["lasttime"] = svDecryptOne(fmap["license"]["lasttime"]);
 	return fmap["license"];
 }

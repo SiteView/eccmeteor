@@ -51,39 +51,32 @@
 		}
 
 	};
-	var selectnode = Session.get("selectnode");
-	var tree = $.fn.zTree.init($("#svse_tree_check"), setting,expandSimpleTreeNode(data,TreeNodeRemenber.get()));
-	tree.selectNode(selectnode);
-	//$.fn.zTree.init($("#svse_tree_check"), setting, data);
-	});
+		var selectnode = Session.get("selectnode");
+		var tree = $.fn.zTree.init($("#svse_tree_check_trend"), setting,expandSimpleTreeNode(data,TreeNodeRemenber.get()));
+		tree.selectNode(selectnode);
+		//$.fn.zTree.init($("#svse_tree_check_trend"), setting, data);
+		});
 		var template = this;
-	$(function() { //初始化日期选择器
-		var endDate = new Date();
-		var startDate = new Date();
-		startDate.setTime(startDate.getTime() - 1000*60*60*24);
-		$(template.find("#datetimepickerStartDate")).datetimepicker({
-			format: 'yyyy-MM-dd hh:mm:ss',
-			language: 'zh-CN',
-			maskInput: false
+		$(function() { //初始化日期选择器
+			var endDate = new Date();
+			var startDate = new Date();
+			startDate.setTime(startDate.getTime() - 1000*60*60*24);
+			$(template.find("#datetimepickerStartDate")).datetimepicker({
+				format: 'yyyy-MM-dd hh:mm:ss',
+				language: 'zh-CN',
+				maskInput: false
+			});
+			$(template.find("#datetimepickerEndDate")).datetimepicker({
+				format: 'yyyy-MM-dd hh:mm:ss',
+				language: 'zh-CN',
+				endDate : endDate,
+				maskInput: false,
+			});
+			var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
+			var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
+			startPicker.setDate(startDate);
+			endPicker.setDate(endDate);
 		});
-		$(template.find("#datetimepickerEndDate")).datetimepicker({
-			format: 'yyyy-MM-dd hh:mm:ss',
-			language: 'zh-CN',
-			endDate : endDate,
-			maskInput: false,
-		});
-		var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
-		var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
-		startPicker.setDate(startDate);
-		endPicker.setDate(endDate);
-//		$('#datetimepickerStartDate').on('changeDate', function(e) {
-//			endPicker.setstartDate(e.date);
-//		});
-//		$('#datetimepickerEndDate').on('changeDate', function(e) {
-//			startPicker.setEndDate(e.date);
-//		});
-
-	});
 
 }
 
@@ -94,15 +87,15 @@ var expandSimpleTreeNode = function(zNodes,expandnodeids){
 	var branch = [];
 	if(!expandnodeids.length) 
 		return zNodes;
-	for(index in expandnodeids){
-		for(jndex in zNodes){
-			if(expandnodeids[index] == zNodes[jndex].id){
-				zNodes[jndex].open = true;
-				break;
+		for(index in expandnodeids){
+			for(jndex in zNodes){
+				if(expandnodeids[index] == zNodes[jndex].id){
+					zNodes[jndex].open = true;
+					break;
+				}
 			}
 		}
-	}
-	return zNodes;
+		return zNodes;
 }
 
 /**
@@ -145,18 +138,17 @@ var draw_trend = function(monitorId){
 			//console.log(JSON.stringify(imageData));
 			//console.log(imageData);
 			DrawTrend.draw(imageData,nstartTime,nendTime);
-	});
+			});
 }
 Template.trend_status.events({
 	"click #search" : function(){
-	
-	//var monitorId = [];
-	// var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
-			// for(index in arr){
-				// monitorId.push(arr[index].id);
-			// }
-	var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check");
+//获取选中的检测器id	
+	var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_trend");
 	var monitorId = treeObj.getSelectedNodes();
+		if(!monitorId || monitorId == ""){
+		Message.info("请选择监测器");
+		return;
+		}
 	console.log(monitorId);	
 	//var monitorId ="1.27.3.2" ;
 	var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
@@ -197,9 +189,14 @@ Template.trend_status.events({
 
 	},
 	"click #output_trend_report":function(){
-		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check");
+		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_trend");
 		var nodes = treeObj.getSelectedNodes();
-		console.log(nodes); 		
+		if(!nodes || nodes == ""){
+			Message.info("请选择监测器");
+			return;
+		}
+		var nodeid = nodes[0].id;
+		console.log(nodeid); 		
 		var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
 		var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
 		var startTime = ClientUtils.dateToObject(startPicker.getDate());
@@ -212,9 +209,10 @@ Template.trend_status.events({
 		var et = coverTime(endTime);
 		console.log(st);
 		console.log(et);
-		window.location.href="/StatusReport?mid="+nodes+"&st="+st+"&et="+et+"";	
+		window.location.href="/TrendReport?mid="+nodeid+"&st="+st+"&et="+et+"";	
+	//	window.location.href="/StatusReport?mid="+nodes+"&st="+st+"&et="+et+"";
 	//	window.open("http://localhost:3000/TrendReport?mid=1.27.3.3&st=20131219145000&et=20131220145000","_blank");
-	window.location.href ="/TrendReport?mid=1.27.3.3&st=20131219145000&et=20131220145000";
+	//  window.location.href ="/TrendReport?mid=1.27.3.3&st=20131219145000&et=20131220145000";
 	}
 });
 //将时间对象转换成字符串

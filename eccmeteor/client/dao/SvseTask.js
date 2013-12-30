@@ -17,14 +17,20 @@ SvseTaskDao = {
 	"deleteTaskByIds":function(ids,fn){
 		Meteor.call(SvseTaskDao.AGENT,"deleteTaskByIds",[ids],function(err,result){
 			if(err){
+			console.log("11111111");
 				SystemLogger(err);
 				fn({status:false,msg:err})
+			console.log("11111111");
 			}else{
 				fn(result);
+			console.log("2222222");
 			}
 		});
 	},
-
+	//根据id从数据集里获取一条任务计划的记录
+	"getTaskById" : function(id){
+	return SvseTask.findOne({sv_name:id});
+	},
 /*		
 	"addtaskabsolute":function(address){
 		SvseTask.insert(address);

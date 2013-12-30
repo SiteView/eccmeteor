@@ -34,6 +34,7 @@ Template.taskabsolute.rendered = function(){
 	ModalDrag.draggable("#taskabsoluteadddiv");
 }
 Template.taskabsolute.events = {
+//添加一条任务操作
 	"click #taskabsoluteofadd" : function(e){
 	$('#taskabsoluteadddiv').modal('toggle');
 	},
@@ -45,23 +46,44 @@ Template.taskabsolute.events = {
        }
     } 
 */
-
+//删除任务操作
 	"click #taskabsoluteofdel":function(){
-/*
-		//var names = document.getElementsByName("");
+	
 		var checks = $("#taskabsolutelist :checkbox[checked]");
 		var ids = [];
-		for(var i = 0;i<checks.length; i++){
-			ids.push($(checks[i].attr("sv_name"));
+		for (var i = 0; i < checks.length; i++) {
+			ids.push($(checks[i]).attr("id"));
+			console.log(ids);
 		}
-		if(ids.length)
-			SvseTaskDao.deleteTaskByIds(ids,function(result){
+		if (ids.length)
+			SvseTaskDao.deleteTaskByIds(ids, function(result) {
 				SystemLogger(result);
-			}
-	
-*/
+					console.log(ids);
+			});
+			
 	}
 }
+//根据id编辑一条记录
+Template.taskabsolutelist.events({
+	"click td .btn" : function (e,t) {
+		console.log(e.currentTarget.id);
+		var result = SvseTaskDao.getTaskById(e.currentTarget.id);
+		console.log(result);
+		var content = {result:result};
+		RenderTemplate.showParents("#taskabsoluteeditdiv","taskabsolute_editform",content);
+		
+/*		var html = Meteor.render(function(){
+			return Template.taskabsolute_editform(result);
+		})
+		$("#taskabsoluteeditdiv").empty().html(html);
+		$("#taskabsoluteeditdiv").modal('show');
+		console.log("111111");
+		console.log(result);
+*/
+	//	$('#statisticalofadddivedit').modal('toggle');
+	}
+});
+
 Template.taskabsoluteadd.events = {
 	"click #taskabsoluteaddcancelbtn" : function () {
 		$('#taskabsoluteadddiv').modal('toggle');

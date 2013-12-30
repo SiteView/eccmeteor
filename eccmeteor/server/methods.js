@@ -25,6 +25,12 @@
 	Author：renjie
 	Date:2013-12-2 13:40
 	Content:增加 syslog 的agent声明
+
+	======================
+	Type： add
+	Author：renjie
+	Date:2013-12-23 14:40
+	Content:增加 软件许可
 */ 
 Meteor.methods({
   "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
@@ -51,20 +57,15 @@ Meteor.methods({
   "svWriteTaskIniFileSectionString":svWriteTaskIniFileSectionString,
   "svDeleteSysLogInitFilesection":svDeleteSysLogInitFilesection,
   //"svGetSmsDllName":svGetSmsDllName,
-  "svGetTrendList":svGetTrendList,
 	"svseSysLogDaoAgent":SvseSysLogDaoAgent.agent,	
 	"svGetSysLogDelCondConfigSetting":svGetSysLogDelCondConfigSetting,
 	"svGetSysLogQueryContEntityConfigSetting":svGetSysLogQueryContEntityConfigSetting,
 	"svGetSysLogQueryContRankConfigSetting":svGetSysLogQueryContRankConfigSetting,
 	//"svGetSysLogQueryContConfigSetting":svGetSysLogQueryContConfigSetting,
+  "svWriteSMSTemplateSettingFilesection":svWriteSMSTemplateSettingFilesection,
+  //"svDeleteSMSTemplateSettingFilesection":svDeleteSMSTemplateSettingFilesection,
+
   "svWriteEmailAddressStatusInitFilesection":svWriteEmailAddressStatusInitFilesection,
-  
-	/*
-	Type： add
-	Author：renjie
-	Date:2013-12-23 14:40
-	Content:增加 软件许可
-*/
   "svGetLicenselist":svGetLicenselist,
 });//给客户端调用的
  /**
@@ -107,6 +108,7 @@ Meteor.methods({
 	Date:2013-10-28 10:40
 	Content:增加 趋势报告 的agent声明
 */ 
+
 /*
 	Type： add
 	Author：xuqiang
@@ -184,7 +186,6 @@ SvseMethodsOnServer = {
 	"svGetStatisticalList": svGetStatisticalList,
 	"svDeleteStatisticalIniFileSection":svDeleteStatisticalIniFileSection,
 	"svWriteStatisticalStatusInitFilesection":svWriteStatisticalStatusInitFilesection,
-	"svGetTrendList":svGetTrendList,
 	"svWriteTaskIniFileSectionString":svWriteTaskIniFileSectionString,
     "svWriteDelContConfigIniFileSectionString":svWriteDelContConfigIniFileSectionString,
 	"svWriteQueryContEntityConfigIniFileSectionString":svWriteQueryContEntityConfigIniFileSectionString,
@@ -194,7 +195,15 @@ SvseMethodsOnServer = {
 	"svDeleteTaskIniFileSection":svDeleteTaskIniFileSection,
 	"svEmailTest":svEmailTest,
 	"svGetQuerySysLog":svGetQuerySysLog,
-	
+	"svWriteSMSTemplateSettingFilesection":svWriteSMSTemplateSettingFilesection,
+	"svDeleteSMSTemplateSettingFilesection":svDeleteSMSTemplateSettingFilesection,
+	"svUpdateSMSTemplateSettingFilesection":svUpdateSMSTemplateSettingFilesection,
+	/*
+	Type： add
+	Author：renjie
+	Date:2013-12-2 14:40
+	Content:增加 syslog 查询
+*/
 }
 
 SvseSyncData = {

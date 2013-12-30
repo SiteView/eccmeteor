@@ -479,14 +479,14 @@ Template.warnerrulelist.events = {
 				return;
 			}
 			console.log(result);
-			var dataProcess = new DataProcess(result.content);
-			var resultData = dataProcess.getData();
+			//var dataProcess = new DataProcess(result.content);
+			var resultData = result.content;
 			if(!resultData){
 				console.log("查出报警日志没有数据");
 				return;
 			}
 			//console.log(resultData.length);
-			console.log(resultData);
+			//console.log(resultData);
 			var types = SvseAlertLogDao.defineAlertTypeData();
 			//绘制表
 			for(var i = 0;i < resultData.length;i++){

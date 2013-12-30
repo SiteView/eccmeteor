@@ -12,80 +12,118 @@ Template.timeconstrastform.events = {
 		var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
 		var startTime = ClientUtils.dateToObject(startPicker.getDate());
 		var endTime = ClientUtils.dateToObject(endPicker.getDate());
-		
+		 console.log(endTime);
+		//var nstartTime =  Date.str2Date(DrawTimeContrastReport.buildTime(startTime),"yyyy-MM-dd hh-mm-ss");
+		//var nendTime =  Date.str2Date(DrawTimeContrastReport.buildTime(endTime),"yyyy-MM-dd hh-mm-ss"); 		 
 		var timeArr = [];
 		timeArr[0] = startTime;
 		timeArr[1] = endTime;
-		console.log(timeArr);
+		timeArr[2] = startTime;
+		timeArr[3] = endTime;
+		//console.log(timeArr[1]);
 		//var compress = false;
-		DrawTimeContrastReport.getData(monitorId,timeArr[0],timeArr[1],function(result){
-			console.log(result);
-		});
-		
-		
-		//console.log(monitorId);
-		/* DrawTimeContrastReport.drawTrend(monitorId,startTime,endTime,function (result){
-			console.log(result);
-			var records = result;//获取监视器原始数据
-		//	Log4js.info(records);
-			var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
-			
-			var tableData = dataProcess.getTableData();
-			var imageData = dataProcess.getImageData();
-			var baseData = dataProcess.getBaseData();
-			var nstartTime =  Date.str2Date(DrawTimeContrastReport.buildTime(startTime),"yyyy-MM-dd hh-mm-ss");
-			var nendTime =  Date.str2Date(DrawTimeContrastReport.buildTime(endTime),"yyyy-MM-dd hh-mm-ss");
-		//	Log4js.info(tableData);
-		//	Log4js.info(imageData);
-		//	Log4js.info(baseData);
-			//var keysData = dataProcess.getKeysData();
-			//console.log(baseData);
-			var renderObj = {
-				baseDate:baseData,
-				startTime:DrawTimeContrastReport.buildTime(startTime),
-				endTime:DrawTimeContrastReport.buildTime(endTime),
-				tableData:tableData
-			}
-			
-			RenderTemplate.renderIn("#timeconstrastDiv","trend_date",renderObj);
-			console.log(nstartTime);
-			console.log(nendTime);
-			//console.log(JSON.stringify(imageData));
-			//console.log(imageData);
-			DrawTimeContrastReport.draw(imageData,nstartTime,nendTime);
-		}); */
-	}
-}
-//画时间段报告的方法
-var draw_timeconstrast = function(monitorId){
-		var r1 = SvseMonitorDaoOnServer.getMonitorReportData(monitorId,timeArray[0],timeArray[1],false);//the argument 'false' make the data don't be compress
-		var r2 = SvseMonitorDaoOnServer.getMonitorReportData(monitorId,timeArray[2],timeArray[3],false);
-		var t1 = this.buildTime(timeArray[0]) +"~"+ this.buildTime(timeArray[1]);
-		var t2 = this.buildTime(timeArray[2]) +"~"+ this.buildTime(timeArray[3]);
-
-		DrawTimeContrastReport.getMonitorRecords(monitorId,timeArray[0],timeArray[1],function (result){
-
-		
-		var records = this.getMonitorRecords(monitorId,timeArray);//获取监视器原始数据
+		DrawTimeContrastReport.getData(monitorId,timeArr,function(result){
+		console.log(result);
+		var records = result;//获取监视器原始数据
+		var type = $("#timeconstrast").val();
+		console.log(type);
 		var dataProcess = new TimeContrastReportDataProcess(records,type);//原始数据的基本处理 //客户端服务端通用
 		var tableData = dataProcess.getTableData();
 		var imageData = dataProcess.getImageData();
 		var baseData = dataProcess.getBaseData();
+		for (var i= 0; i<tableData.length;i++){
+			for(var j = 0; j<tableData[i].TableData.length ; j++){
+			  var ReturnName = [];
+			  var TabelDat = [];
+			  ReturnName[j] = tableData[i].TableData[ReturnName];
+			  TabelDat[j] = tableData[i].TableData[j];
+			}
+			//var tableDa =[];
+			//tableDa[i]= 
+		}
+		console.log(ReturnName);
+		console.log(TabelDat);
+		
+/*		<%for(var i = 0 ; i < tableData.length ; i++){%>
+					<%for(var j = 0 ; j < tableData[i].TableData.length ; j++){%>
+					<tr>
+						<%if(j == 0){%>
+							<td rowspan=2><%= tableData[i].ReturnName%></td>
+						<%}%>
+							<td ><%= tableData[i].TableData[j].time%></td>
+							<td><%= tableData[i].TableData[j].max%></td>
+							<td><%= tableData[i].TableData[j].min%></td>
+							<td><%= tableData[i].TableData[j].average%></td>
+							<td><%= tableData[i].TableData[j].latest%></td>
+							<td><%= tableData[i].TableData[j].when_max%></td>
+					</tr>
+					<%}%>
+				<%}%>
+*/				
 	//	Log4js.info(imageData);
 	//	return ;
-
-		var nstartTime1 =  Date.str2Date(this.buildTime(timeArray[0]),"yyyy-MM-dd hh-mm-ss");
-		var nendTime1 =  Date.str2Date(this.buildTime(timeArray[1]),"yyyy-MM-dd hh-mm-ss");
-		var nstartTime2 = Date.str2Date(this.buildTime(timeArray[2]),"yyyy-MM-dd hh-mm-ss");
-		var nendTime2 =  Date.str2Date(this.buildTime(timeArray[3]),"yyyy-MM-dd hh-mm-ss");
+		var nstartTime1 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[0]),"yyyy-MM-dd hh-mm-ss");
+		var nendTime1 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[1]),"yyyy-MM-dd hh-mm-ss");
+		var nstartTime2 = Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[2]),"yyyy-MM-dd hh-mm-ss");
+		var nendTime2 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[3]),"yyyy-MM-dd hh-mm-ss");
 		
 		var newDate = [nstartTime1,nendTime1,nstartTime2,nendTime2];
-
 		var renderObj = {
 			baseDate:baseData,
 			tableData:tableData
 		}
-		DrawTimeContrastReport.draw(imageData,window,timeArray,type);
+		console.log(tableData);
+		
+		RenderTemplate.renderIn("#timeconstrastDiv","timeconstrast_date",renderObj);
+		//console.log(nstartTime);
+		//console.log(nendTime);
+		//console.log(JSON.stringify(imageData));
+		//console.log(imageData);
+		DrawTimeContrastReport.draw(imageData,newDate,type);		
+		});
+		
+	}
+}
+//画时间段报告的方法
+var draw_timeconstrast = function(monitorId){
+	var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+	var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+	var startTime = ClientUtils.dateToObject(startPicker.getDate());
+	var endTime = ClientUtils.dateToObject(endPicker.getDate());
+	var timeArr = [];
+		timeArr[0] = startTime;
+		timeArr[1] = endTime;
+		timeArr[2] = startTime;
+		timeArr[3] = endTime;
+		//console.log(timeArr[1]);
+		//var compress = false;
+	DrawTimeContrastReport.getData(monitorId,timeArr,function(result){
+		console.log(result);
+		var records = result;//获取监视器原始数据
+		var type = $("#timeconstrast").val();
+		console.log(type);
+		var dataProcess = new TimeContrastReportDataProcess(records,type);//原始数据的基本处理 //客户端服务端通用
+		var tableData = dataProcess.getTableData();
+		var imageData = dataProcess.getImageData();
+		var baseData = dataProcess.getBaseData();
+//	Log4js.info(imageData);
+//	return ;
+		var nstartTime1 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[0]),"yyyy-MM-dd hh-mm-ss");
+		var nendTime1 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[1]),"yyyy-MM-dd hh-mm-ss");
+		var nstartTime2 = Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[2]),"yyyy-MM-dd hh-mm-ss");
+		var nendTime2 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[3]),"yyyy-MM-dd hh-mm-ss");
+	
+		var newDate = [nstartTime1,nendTime1,nstartTime2,nendTime2];
+		var renderObj = {
+			baseDate:baseData,
+			tableData:tableData
+		}
+		RenderTemplate.renderIn("#timeconstrastDiv","timeconstrast_date",renderObj);
+	//console.log(nstartTime);
+	//console.log(nendTime);
+	//console.log(JSON.stringify(imageData));
+	//console.log(imageData);
+		DrawTimeContrastReport.draw(imageData,newDate,type);		
 	});
 }
 
