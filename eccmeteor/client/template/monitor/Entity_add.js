@@ -38,6 +38,9 @@ Template.AddEntity.events = {
 	},
 	"click .close":function(e,t){
 		RenderTemplate.hideParents(t);
+	},
+	"keyup #showEntityForm input:first":function(e,t){
+		t.find("input:text[name='sv_name']").value = e.currentTarget.value ;
 	}
 };
 

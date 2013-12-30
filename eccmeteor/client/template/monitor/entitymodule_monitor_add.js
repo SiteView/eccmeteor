@@ -3,7 +3,11 @@ Template.AddMoniorFormModal.events({
 		return false;
 	},
 	"click #monityTemplateFormsSavelBtn":function(e,t){
-        var monitorTemplateId = t.find("input:text").value;
+        var monitorTemplateId = t.find("input:hidden#monitorTemplateId").value;
+
+        var tmp = SvseMonitorTemplateDao.getTemplateById(monitorTemplateId);
+        console.log(tmp);
+        return;
         var monityTemplateParameter = ClientUtils.formArrayToObject($("#monityTemplateParameter").serializeArray());
         var monityTemplateAdvanceParameters = ClientUtils.formArrayToObject($("#monityTemplateAdvanceParameters").serializeArray());
         var monityCommonParameters = ClientUtils.formArrayToObject($("#monityTemplateCommonParameters").serializeArray());
@@ -19,7 +23,7 @@ Template.AddMoniorFormModal.events({
                 monityParameter["sv_errfreq"] = +monityParameter["sv_errfreqsave"];
         }
         monityParameter["_frequency"] = +monityParameter["_frequency"];
-        monityParameter["_frequency1"] = monityParameter["_frequency"]
+        monityParameter["_frequency1"] = monityParameter["_frequency"];
         var error =  ClientUtils.statusFormToObj($("#errorsStatusForm").serializeArray());
         var good =  ClientUtils.statusFormToObj($("#goodStatusForm").serializeArray());
         var warning =  ClientUtils.statusFormToObj($("#warningStatusForm").serializeArray());

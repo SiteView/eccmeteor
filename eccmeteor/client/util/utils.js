@@ -230,6 +230,7 @@
 	*接收一个tbdoy的id 参数
 	*/
 	"hideOperateBtnInTd":function(id){
+		return;
 		$("#"+id+" tr").each(function(){
 			$(this).children("td:last").children(".btn-group").css("visibility","hidden");
 		})
@@ -239,6 +240,7 @@
 	*接收一个tbdoy的id 参数
 	*/
 	"showOperateBtnInTd":function(id){
+		return;
 		$("#"+id+" tr").mouseenter(function(){
 			$(this).children("td:last").children(".btn-group").css("visibility","visible");
 			$(this).siblings("tr").each(function(){
