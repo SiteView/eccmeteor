@@ -1,12 +1,13 @@
 Template.editmessagebasicsetting.rendered = function(){
 	//邮件模板下拉列表
+	//var t = this;
+	
 	SvseMessageDao.getMessageTemplates(function(err,result){
 		for(name in result){
 			var option = $("<option value="+name+"></option>").html(name)
 			$("#messagebasicsettingofmessagetemplatelistedit").append(option);
 		}
 	});
-	
 	$(function(){
 		//点击取消编辑
 		$("button#editmessagebasicsettingofcancelbtn").click(function(){
@@ -40,7 +41,6 @@ Template.editmessagebasicsetting.rendered = function(){
 		});
 		//获取加载任务计划列表
 		getLoadTaskName();
-		
 		//改变模板类型(com和web),对应不同的信息模板
 		$("#editmessageTemplateTypelist").change(function(){
 			var type=$(this).val();
@@ -82,14 +82,14 @@ var getLoadTaskName = function(){
 	console.log("tasktype:"+tasktype);
 	//获取任务计划列表
 	if(tasktype){
-		$("#editmessagePlanlist").empty();//清空上一个状态的任务计划值
-		var tasks = SvseTaskDao.getTaskNameByType(tasktype);
-		console.log(tasks);
-		for(var i=0;i<tasks.length;i++){
-			if(tasks[i] == "") continue;
-			var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
-			$("#editmessagePlanlist").append(option);
-		}
+			$("#editmessagePlanlist").empty();//清空上一个状态的任务计划值
+			var tasks = SvseTaskDao.getTaskNameByType(tasktype);
+			console.log(tasks);
+			for(var i=0;i<tasks.length;i++){
+					if(tasks[i] == "") continue;
+					var option = $("<option value="+tasks[i]+"></option>").html(tasks[i]);
+					$("#editmessagePlanlist").append(option);
+			}
 	}
 };
 
@@ -113,20 +113,24 @@ var getEditTaskName = function(){
 		}
 	}
 };
-/*
-Template.editmessagebasicsetting.events={
-	"click #editmessagebasicsettingofcancelbtn":function(){
-		$("#editmessagesettingdiv").modal("hide");
+
+/* Template.editmessagebasicsetting.events({
+	
+	 "click #editmessagebasicsettingofcancelbtn":function(e,t){
+		console.log("cancel----");
+		console.log(t);
+		//RenderTemplate.hideParents(t);
 	},
-	"click #editmessagebasicsettingofsavebtn":function(){
+	
+	"click #editmessagebasicsettingofsavebtn":function(e,t){
 		var editmessagebasicsettingofbasciinfo = ClientUtils.formArrayToObject($("#editmessagebasicsettingofbasciinfo").serializeArray());
 			var nIndex = editmessagebasicsettingofbasciinfo["nIndex"];
 			var message = {};
 			message[nIndex] = editmessagebasicsettingofbasciinfo;
 		//	console.log(message);
 			SvseMessageDao.updateMessage(nIndex,message,function(){
-				$('#editmessagesettingdiv').modal('hide');
+				RenderTemplate.hideParents(t);
 			});
 	}
-}
-*/
+}); */
+

@@ -139,10 +139,13 @@ Template.warnerrulelog.events({
 						data["_AlertType"] = types[j]["type"];
 					}
 				}
-				var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
-				+"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
-				$("#warnerloglist").append(tbody);
+				
+				// var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
+				// +"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
+				// $("#warnerloglist").append(tbody);
 			}
+			var context = {QueryData:resultData};
+			RenderTemplate.renderIn("#selectwarnerloglistDiv","selectwarnerloglist",context);
 			
 		});
 	}

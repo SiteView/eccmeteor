@@ -147,6 +147,7 @@ Template.messagetemplatesetting.events({
 	
 	//关闭模板窗口
 	"click #closemessagetemplatebtn":function(e,t){
+		//console.log(t);
 		RenderTemplate.hideParents(t);
 	},
 	
