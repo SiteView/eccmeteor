@@ -3,7 +3,7 @@
 <br/>
 {{> warnerrulelist}}
 <br/>
-{{> warnerloglist}}
+<div id="warnerloglistDiv"></div>
 
 {{> warnerruleofemail}}
 {{> warnerruleofemailedit}}
@@ -403,7 +403,17 @@
 				</tr>
 			</thead>
 			<tbody id="warnerruleloglist">
-				
+				{{#each QueryWarnData}}
+				<tr>
+					<td>{{_AlertTime}}</td>
+					<td>{{_AlertRuleName}}</td>
+					<td>{{_DeviceName}}</td>
+					<td>{{_MonitorName}}</td>
+					<td>{{_AlertType}}</td>
+					<td>{{_AlertReceive}}</td>
+					<td>{{_AlertStatus}}</td>
+				</tr>
+				{{/each}}
 			</tbody>
 		</table>
 	</div>

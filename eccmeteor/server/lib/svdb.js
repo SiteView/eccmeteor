@@ -1092,14 +1092,18 @@ svWriteSMSCommConfigIniFileSectionString = function(section){
 }
 //获取以web方式发送短信的设置
 svGetSMSWebConfigSetting = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"smsconfig.ini",
+	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections','filename':'smsconfig.ini',
 		"user":"default","section":"SMSWebConfig"}, 0);
 	if(!robj.isok(0)){
 		return;
 	}
 	var fmap= robj.fmap(0);
 	if(!fmap || !fmap["SMSWebConfig"]) return ;
-	fmap["SMSWebConfig"]["Pwd"] = svDecryptOne(fmap["SMSWebConfig"]["Pwd"]);
+	if(fmap["SMSWebConfig"]["Pwd"] != ""){
+		fmap["SMSWebConfig"]["Pwd"] = svDecryptOne(fmap["SMSWebConfig"]["Pwd"]);
+	}else{
+		fmap["SMSWebConfig"]["Pwd"] = "";
+	}
 	return fmap["SMSWebConfig"];
 }
 //获取以com方式发送短信的设置

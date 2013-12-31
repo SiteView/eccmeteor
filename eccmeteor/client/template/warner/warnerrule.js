@@ -503,11 +503,12 @@ Template.warnerrulelist.events = {
 						data["_AlertType"] = types[j]["type"];
 					}
 				}
-				var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
-				+"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
-				$("#warnerruleloglist").append(tbody);
+				// var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
+				// +"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
+				// $("#warnerruleloglist").append(tbody);
 			}
-			
+			var context = {QueryWarnData:resultData};
+			RenderTemplate.renderIn("#warnerloglistDiv","warnerloglist",context);
 		});
 	}
 
@@ -519,7 +520,7 @@ Template.warnerruleofemailedit.rendered = function(){
 		var emaillist = SvseEmailDao.getEmailList();
 		var emailaddressselect = $("#emailwarnerdivedit").find(".emailmultiselectedit:first");
 		for(var l = 0 ; l < emaillist.length ; l++){
-			console.log(emaillist[l]);
+			//console.log(emaillist[l]);
 			var name = emaillist[l].Name;
 			var option = $("<option value="+name+"></option>").html(name);
 			emailaddressselect.append(option);

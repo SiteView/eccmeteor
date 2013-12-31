@@ -121,10 +121,6 @@ Template.warnerruleofmessage.rendered = function(){
 		};
 		var treeObj = $.fn.zTree.init($("#svse_tree_check_add"), setting, data);
 		
-		treeObj.checkNode(treeObj.getNodesByFilter(function(node){
-			return  node.id  === "1.27.1.1";
-		}, true), true);
-		
 	});
 }
 
@@ -176,7 +172,7 @@ Template.messagewarnerformedit.rendered=function(){
 		//填充报警接收手机号下拉列表
 		var messagelist = SvseMessageDao.getMessageList();
 		for(var l = 0 ; l < messagelist.length ; l++){
-			console.log(messagelist[l]);
+			//console.log(messagelist[l]);
 			var name = messagelist[l].Name;
 			var option = $("<option value="+name+"></option>").html(name);
 			$("#warnersmsnumber").append(option);

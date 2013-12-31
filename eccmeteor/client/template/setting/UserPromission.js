@@ -16,8 +16,5 @@ Template.UserPromission.rendered = function(){
 	
 	//choose the profile's node own user  
 	UserPromissionAction.initChooseTreeNode(this);
-	
-	$("#userPromissionViewType").find(":checkbox [name='checkAll']").click(function(){
-		console.log("ok");
-	});
+
 }
