@@ -12,7 +12,7 @@ Template.timeconstrastform.events = {
 		var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
 		var startTime = ClientUtils.dateToObject(startPicker.getDate());
 		var endTime = ClientUtils.dateToObject(endPicker.getDate());
-		 console.log(endTime);
+		// console.log(endTime);
 		//var nstartTime =  Date.str2Date(DrawTimeContrastReport.buildTime(startTime),"yyyy-MM-dd hh-mm-ss");
 		//var nendTime =  Date.str2Date(DrawTimeContrastReport.buildTime(endTime),"yyyy-MM-dd hh-mm-ss"); 		 
 		var timeArr = [];
@@ -26,7 +26,6 @@ Template.timeconstrastform.events = {
 		console.log(result);
 		var records = result;//获取监视器原始数据
 		var type = $("#timeconstrast").val();
-		console.log(type);
 		var dataProcess = new TimeContrastReportDataProcess(records,type);//原始数据的基本处理 //客户端服务端通用
 		var tableData = dataProcess.getTableData();
 		var imageData = dataProcess.getImageData();
@@ -41,27 +40,6 @@ Template.timeconstrastform.events = {
 			//var tableDa =[];
 			//tableDa[i]= 
 		}
-		console.log(ReturnName);
-		console.log(TabelDat);
-		
-/*		<%for(var i = 0 ; i < tableData.length ; i++){%>
-					<%for(var j = 0 ; j < tableData[i].TableData.length ; j++){%>
-					<tr>
-						<%if(j == 0){%>
-							<td rowspan=2><%= tableData[i].ReturnName%></td>
-						<%}%>
-							<td ><%= tableData[i].TableData[j].time%></td>
-							<td><%= tableData[i].TableData[j].max%></td>
-							<td><%= tableData[i].TableData[j].min%></td>
-							<td><%= tableData[i].TableData[j].average%></td>
-							<td><%= tableData[i].TableData[j].latest%></td>
-							<td><%= tableData[i].TableData[j].when_max%></td>
-					</tr>
-					<%}%>
-				<%}%>
-*/				
-	//	Log4js.info(imageData);
-	//	return ;
 		var nstartTime1 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[0]),"yyyy-MM-dd hh-mm-ss");
 		var nendTime1 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[1]),"yyyy-MM-dd hh-mm-ss");
 		var nstartTime2 = Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[2]),"yyyy-MM-dd hh-mm-ss");
@@ -73,6 +51,7 @@ Template.timeconstrastform.events = {
 			tableData:tableData
 		}
 		console.log(tableData);
+		console.log(baseData);
 		
 		RenderTemplate.renderIn("#timeconstrastDiv","timeconstrast_date",renderObj);
 		//console.log(nstartTime);
