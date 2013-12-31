@@ -69,7 +69,7 @@ var SetSvdbAddr = function(){
 Meteor.startup(function(){
 	process.sv_init();
 	SetSvdbAddr();
-	if(!TestUnit.test(1)){
+	if(!TestUnit.test(0)){
 		return;
 	}
 	var status = AssetsUtils.getDevConfig("initDatabase");

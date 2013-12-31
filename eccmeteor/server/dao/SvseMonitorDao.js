@@ -1,6 +1,6 @@
 SvseMonitorDaoOnServer = {
 	addMonitor : function(parentid,monitor){
-		var isAddPoint = this.idCalculateMonitorPoint(parentid);
+		var isAddPoint = SvseMonitorDaoOnServer.isCalculateMonitorPoint(parentid);
 		if(isAddPoint){
 			monitor.property.sv_intpos = 1;
 		}
@@ -37,7 +37,7 @@ SvseMonitorDaoOnServer = {
 		return r_monitor;
 	},
 	editMonitor : function(parentid,monitor){
-		var isAddPoint = this.idCalculateMonitorPoint(parentid);
+		var isAddPoint = SvseMonitorDaoOnServer.isCalculateMonitorPoint(parentid);
 		if(isAddPoint){
 			monitor.property.sv_intpos = 1;
 		}
@@ -140,15 +140,15 @@ Object.defineProperty(SvseMonitorDaoOnServer,"getMonitorReportDataByCount",{
 /*
 *设备监视统计点数
 */
-Object.defineProperty(SvseMonitorDaoOnServer,"idCalculateMonitorPoint",{
+Object.defineProperty(SvseMonitorDaoOnServer,"isCalculateMonitorPoint",{
 	value:function(parentid){
 		var license = SvseMethodsOnServer.svGetLicenselist();
+		console.log("license:====================");
 		console.log(license);
 		var entity  = SvseEntityInfo.findOne({"return.id":parentid});
 		if(entity && entity.property){
 			return entity.property.sv_network === "true" ? false : true;
 		}	
 		return true;
-
 	}
 });

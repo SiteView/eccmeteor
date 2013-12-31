@@ -9,8 +9,7 @@ SvseEntityTemplateDao= {
 	//	SyncFunction.SyncEmailList();
 	},
 	"addEntity":function(parentid,entity){
-
-		var isNetwork = this.isNetwork(entity.property.sv_devicetype);
+		var isNetwork = SvseEntityTemplateDao.isNetwork(entity.property.sv_devicetype);
 		if(isNetwork){
 			entity.property.sv_network = "true";
 		}

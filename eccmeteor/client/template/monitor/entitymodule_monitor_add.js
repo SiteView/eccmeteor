@@ -4,10 +4,6 @@ Template.AddMoniorFormModal.events({
 	},
 	"click #monityTemplateFormsSavelBtn":function(e,t){
         var monitorTemplateId = t.find("input:hidden#monitorTemplateId").value;
-
-        var tmp = SvseMonitorTemplateDao.getTemplateById(monitorTemplateId);
-        console.log(tmp);
-        return;
         var monityTemplateParameter = ClientUtils.formArrayToObject($("#monityTemplateParameter").serializeArray());
         var monityTemplateAdvanceParameters = ClientUtils.formArrayToObject($("#monityTemplateAdvanceParameters").serializeArray());
         var monityCommonParameters = ClientUtils.formArrayToObject($("#monityTemplateCommonParameters").serializeArray());
@@ -28,7 +24,7 @@ Template.AddMoniorFormModal.events({
         var good =  ClientUtils.statusFormToObj($("#goodStatusForm").serializeArray());
         var warning =  ClientUtils.statusFormToObj($("#warningStatusForm").serializeArray());
         var property = {
-                sv_disable : false,
+                sv_disable : "",
                 sv_endtime : "",
                 sv_monitortype : checkedMonityTemolateProperty.sv_id,
                 sv_name : checkedMonityTemolateProperty.sv_name,
@@ -52,7 +48,7 @@ Template.AddMoniorFormModal.events({
         SvseMonitorDao.addMonitor(monitor,parentid,function(result){
             LoadingModal.loaded();
             if(result && !result.status){
-                    Message.error(result.msg);
+                Message.error(result.msg);
             }
             else{
             }
