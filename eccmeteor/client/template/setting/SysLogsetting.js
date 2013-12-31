@@ -11,7 +11,7 @@ Template.SysLogsetting.events={
 					// return false;
 					//  }  
 					//var ids = ClientUtils.tableGetSelectedAll($("EntitySet").serialize());
-				var ids = ClientUtils.tableGetSelectedAll("EntitySet");
+				/*var ids = ClientUtils.tableGetSelectedAll("EntitySet");
 				var str = ids.join();
 				console.log(str);
 				var entity =str;		
@@ -19,7 +19,19 @@ Template.SysLogsetting.events={
 				SvseSysLogDao.setQueryCondEntityConfig(entity,function(result){
 					console.log(result);
 					console.log("成功A！");
-				 });
+				 });*/
+				 var Entity = ClientUtils.formArrayToObject($("#EntitySet").serializeArray());
+				console.log(Entity);
+				var Ent =[];
+				for(var E in Entity){
+					console.log(Entity[E]);
+					Ent.push(Entity[E]);
+				}
+				console.log(Ent.join());
+				SvseSysLogDao.setQueryCondEntityConfig(Ent,function(result){
+					console.log(result);
+					console.log("成功！");
+				});
 				 
 				},
 
@@ -180,8 +192,8 @@ Template.SysLogsetting.rendered = function(){
 			var result = Entity["Facility"].split(",");
 			console.log(result);
 			for(var i = 0;i < result.length;i++){
-				$("#"+result[i]).attr("checked",true);
-				//$("#RankSet").find("input:checkbox[id="+result[i]+"]").attr("checked",true);
+				//$("#"+result[i]).attr("checked",true);
+				$("#EntitySet").find("input:checkbox[name="+result[i]+"]").attr("checked",true);
 			}
 			
 		});
