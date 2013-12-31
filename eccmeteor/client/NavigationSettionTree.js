@@ -98,6 +98,9 @@ NavigationSettingTree = {
 	getTreeData:function(){
 		var nodes = [];
 		SvseSettingNodes.find().forEach(function(node){
+			if(!NavigationSettingTree.isOwnSettingNode(node)){
+				return;
+			}
 			node.name = LanguageModel.getLanaguage("SettingNodeTree")[node.name];
 			nodes.push(node);
 		});
@@ -107,3 +110,23 @@ NavigationSettingTree = {
 		NavigationSettingTreeEvents[action]();
 	}
 }
+
+Object.defineProperty(NavigationSettingTree,"isOwnSettingNode",{
+	value:function(node){
+		if(UserUtils.isAdmin()){
+			return true;
+		}
+		var user = Meteor.user();
+		var displayNodes = user.profile.settingNodeDisplayPermission;
+		if(!displayNodes || !displayNodes.length){
+			return false;
+		}
+		var action = node.action;
+		for(var index = 0; index < displayNodes.length; index++){
+			if(action === displayNodes[index]){
+				return true;
+			}
+		}
+		return false;
+	}
+});

@@ -7,6 +7,8 @@
 **/
 //TreeDate的数据集
 Meteor.publish("svse_tree", function (fieldsObj) {
+	return SvseTree.find();
+	/*
 	if(!this.userId)
 		return null;
     //如果为管理员权限
@@ -15,6 +17,7 @@ Meteor.publish("svse_tree", function (fieldsObj) {
     var nodes = UserDaoOnServer.getOwnMonitorsNodes(this.userId);
     Log4js.info(nodes);
     return SvseTree.find({$or:[{sv_id: {$in: nodes}},{type:"monitor"}]},{sort:[["sv_id","asc"]]});
+    */
 });
 /**
 	Type:add
@@ -25,6 +28,8 @@ Meteor.publish("svse_tree", function (fieldsObj) {
 **/
 //Svse的数据集
 Meteor.publish("svse",function(){
+	return Svse.find();
+	/*
 	if(!this.userId)
 		return null;
 	if(UserUtils.isAdmin(this.userId))
@@ -45,6 +50,7 @@ Meteor.publish("svse",function(){
 		}
 	})
 	self.ready();
+	*/
 });
 //监视器模板
 Meteor.publish("svse_monitor_template",function(){

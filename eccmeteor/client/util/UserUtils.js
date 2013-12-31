@@ -23,7 +23,7 @@ Object.defineProperty(UserUtils,"gotUser",{
 
 //判断当前用户是否为管理员
 Object.defineProperty(UserUtils, "isAdmin", {
-	value:function(id){
+	value:function(){
 		var user = Meteor.user();
 		if(!user || !user.profile)
 			return false;

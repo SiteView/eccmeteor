@@ -6,7 +6,10 @@ SvseDao = {
 		var node = Svse.findOne({sv_id:id});
 		if(!node) return [];
 		if(!node[subtype])return [];
-		return node[subtype];
+		if(subtype === "submonitor"){
+			return node[subtype];
+		}
+		return SvseDao.getNodesOwnSelf(node[subtype]);
 	},
 	getNodesByRootId:function(rootId){
 		return Svse.find({parentid:rootId}).fetch();
@@ -251,10 +254,31 @@ Object.defineProperty(SvseDao,"deletEquipmentsMul",{
 	}
 })
 
+Object.defineProperty(SvseDao,"addSelfMonitorStatusCount",{
+	value:function(data,status){
+		switch(status){
+			case "ok" : data["ok"] = data["ok"] + 1;
+				break;
+			case "bad" : data["bad"] = data["bad"] + 1;
+				break;
+			case "warning" : data["warning"] = data["warning"] + 1;
+				break;
+			case "disable" : data["disable"] = data["disable"] + 1;
+				break;
+			case "monitor" : data["monitor"] = data["monitor"] + 1;
+				break;
+			case "entity" : data["entity"] = data["entity"] + 1;
+				break;
+			default :  data["bad"] = data["bad"] + 1;
+		}
+		return data;
+	}
+})
+
+
 /*
 计算一个组的设备数量，监视器状态，以及监视器状态的个数
 */
-
 Object.defineProperty(SvseDao,"calculateGroupsAllEntityAndMonitorStatus",{
 	value:function(id){
 		var data = {
@@ -270,7 +294,7 @@ Object.defineProperty(SvseDao,"calculateGroupsAllEntityAndMonitorStatus",{
 			return data; //避免数据错误
 		}
 		//计算当前节点的设备数
-		var subEntities = group.subentity;
+		var subEntities = SvseDao.getNodesOwnSelf(group.subentity);
 		var subEntitiesNumber = subEntities ? subEntities.length : 0 ; 
 		data.entity = data.entity + subEntitiesNumber;
 		if(subEntitiesNumber){ //计算当前节点的设备的监视器数
@@ -292,11 +316,7 @@ Object.defineProperty(SvseDao,"calculateGroupsAllEntityAndMonitorStatus",{
 					if(!subMonitorOne){
 						continue;
 					}
-					if(subMonitorOne.status === "error"){
-						data["bad"] = data["bad"] + 1;
-					}else{
-						data[subMonitorOne.status] = data[subMonitorOne.status] + 1;
-					}
+					SvseDao.addSelfMonitorStatusCount(data,subMonitorOne.status);
 				}
 			}
 		}
@@ -335,7 +355,7 @@ Object.defineProperty(SvseDao,"calculateEntityAllEntityAndMonitorStatus",{
 		data["monitor"] = sub.length;
 		for(i in sub){
 			var ms = SvseTree.findOne({sv_id:sub[i]}).status;
-			data[ms] = data[ms] +1;
+			SvseDao.addSelfMonitorStatusCount(data,ms);
 		}
 		return data;
 	}
@@ -350,6 +370,9 @@ Object.defineProperty(SvseDao,"getDetailTree",{
 		var branch = [];
 		for(index in nodes){
 			var obj = nodes[index];
+			if(!SvseDao.hasDisplayPermission(obj["sv_id"])){
+				continue;
+			}
 			var branchNode = {};
 			var treeNode = SvseTree.findOne({sv_id:obj["sv_id"]});
 			branchNode["id"] = obj["sv_id"];
@@ -389,6 +412,9 @@ Object.defineProperty(SvseDao,"getTreeSimple",{
 		var branch = [];
 		for(index in nodes){
 			var obj = nodes[index];
+			if(!SvseDao.hasDisplayPermission(obj["sv_id"])){
+				continue;
+			}
 			var branchNode = {};
 			var treeNode = SvseTree.findOne({sv_id:obj["sv_id"]});
 			if(!treeNode){
@@ -413,3 +439,47 @@ Object.defineProperty(SvseDao,"getTreeSimple",{
 		return branch;
 	}
 });
+
+Object.defineProperty(SvseDao,"hasDisplayPermission",{
+	value:function(nid){
+		if(UserUtils.isAdmin()){
+			return true;
+		}
+		var user = Meteor.user();
+		var profile  = user.profile;
+		var displayNodes = profile.nodeDisplayPermission;
+		if(!displayNodes || !displayNodes.length){
+			return false;
+		}
+		for(x in displayNodes){
+			if(displayNodes[x] === nid){
+				return true;
+			}
+		}
+		return false;
+	}
+});
+
+Object.defineProperty(SvseDao,"getNodesOwnSelf",{
+	value:function(notFilterNodes){
+		if(UserUtils.isAdmin()){
+			return notFilterNodes;
+		}
+		var user = Meteor.user();
+		var profile  = user.profile;
+		var displayNodes = profile.nodeDisplayPermission;
+		
+		if(!displayNodes || !displayNodes.length){
+			return [];
+		}
+		var ownNodes = [];
+		for(var i = 0; i < displayNodes.length; i++){
+			for(var j = 0; j < notFilterNodes.length; j++){
+				if(displayNodes[i] == notFilterNodes[j]){
+					ownNodes.push(displayNodes[i]);
+				}
+			}
+		}
+		return ownNodes;
+	}
+})
