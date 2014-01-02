@@ -87,3 +87,39 @@ SvseEntityTemplateDao= {
 		})
 	}
 }
+
+//客户端异步加载
+Object.defineProperty(SvseEntityTemplateDao,"getEntityGroupAsync",{
+	value:function(){
+		var groupArray = SvseEntityTempletGroup.find({},{sort:{sv_index:1}}).fetch();
+		var array = new Array();
+		for(var i = 0; i < groupArray.length; i++){
+			var group = groupArray[i];
+			var newGroup = {
+				sv_hidden:group.sv_hidden,
+				sv_index:group.sv_index,
+				group_id:group.sv_id,
+				sv_name:group.sv_name,
+				entityTemplates:[]
+			};
+			var entityTemplates = new Array();
+			var entityTemplateIds = group.entityTemplateId;
+			for(var j =0; j<entityTemplateIds.length;j++){
+				var template = SvseEntityTemplet.findOne({"return.id":entityTemplateIds[j]},{fields: {property: 1}});
+				if(template == null){
+					console.log(entityTemplateIds[j]+" is not exist");
+				}else{
+					var property = template.property;
+					entityTemplates.push({
+						sv_id:property.sv_id,
+						sv_name:property.sv_name,
+						sv_description:property.sv_description
+					});
+				}
+			}
+			newGroup.entityTemplates = entityTemplates;
+			array.push(newGroup);
+		}
+		return array;
+	}
+});

@@ -150,4 +150,66 @@ Object.defineProperty(SvseEntityTemplateDao,"getStaticEntityItems",{
 		}
 		return {};
 	}
-})
+});
+
+//isEmpty  判断当前数据为空
+Object.defineProperty(SvseEntityTemplateDao,"isEmpty",{
+	value:function(){
+		//如果当前数据为空，则缓存数据
+		if(SvseEntityTempletGroup.findOne() == null){
+			Session.set(Subscribe.LOADSVSEENTITYTEMPLATEGROUP,true);
+			Session.set(Subscribe.LOADSVSEENTITYTEMPLATE,true);
+			return true;
+		}
+		return false;
+	}
+});
+//同步获取设备分组情况
+Object.defineProperty(SvseEntityTemplateDao,"getEntityGroupSync",{
+	value:function(){
+		var groupArray = SvseEntityTempletGroup.find({},{sort:{sv_index:1}}).fetch();
+		var array = new Array();
+		for(var i = 0; i < groupArray.length; i++){
+			var group = groupArray[i];
+			var newGroup = {
+				sv_hidden:group.sv_hidden,
+				sv_index:group.sv_index,
+				group_id:group.sv_id,
+				sv_name:group.sv_name,
+				entityTemplates:[]
+			};
+			var entityTemplates = new Array();
+			var entityTemplateIds = group.entityTemplateId;
+			for(var j =0; j<entityTemplateIds.length;j++){
+				var template = SvseEntityTemplet.findOne({"return.id":entityTemplateIds[j]},{fields: {property: 1}});
+				if(template == null){
+					console.log(entityTemplateIds[j]+" is not exist");
+				}else{
+					console.log("running");
+					var property = template.property;
+					entityTemplates.push({
+						sv_id:property.sv_id,
+						sv_name:property.sv_name,
+						sv_description:property.sv_description
+					});
+				}
+			}
+			newGroup.entityTemplates = entityTemplates;
+			array.push(newGroup);
+		}
+		return array;
+	}
+});
+
+//异步获取设备分组情况
+Object.defineProperty(SvseEntityTemplateDao,"getEntityGroupAsync",{
+	value:function(fn){
+		Meteor.call(SvseEntityTemplateDao.AGENT,"getEntityGroupAsync",function(error,result){
+			if(error){
+				Log4js.info(error);
+			}else{
+				fn(result);
+			}
+		})
+	}
+});

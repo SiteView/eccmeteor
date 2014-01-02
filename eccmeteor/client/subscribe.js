@@ -1,3 +1,13 @@
+Subscribe = function(){};
+
+Object.defineProperty(Subscribe,"LOADSVSEENTITYTEMPLATEGROUP",{
+   value:"LOADSVSEENTITYTEMPLATEGROUP"
+});
+
+Object.defineProperty(Subscribe,"LOADSVSEENTITYTEMPLATE",{
+   value:"LOADSVSEENTITYTEMPLATE"
+});
+
 Meteor.subscribe("svse_tree",function(){
 	SystemLogger("重新订阅");
 	SessionManage.collectionCompleted(CONLLECTIONMAP.SVSETREE);
@@ -6,9 +16,19 @@ Meteor.subscribe("svse_tree",function(){
 Meteor.subscribe("svse",function(){
 	SessionManage.collectionCompleted(CONLLECTIONMAP.SVSE);//客户端订阅数据完成
 });
+
+Deps.autorun(function(c){
+   if(Session.get(Subscribe.LOADSVSEENTITYTEMPLATEGROUP)){
+      Meteor.subscribe("svse_entity_template_group");
+   }
+});
+Deps.autorun(function(c){
+   if(Session.get(Subscribe.LOADSVSEENTITYTEMPLATE)){
+      Meteor.subscribe("svse_entity_template");
+   }
+});
+
 Meteor.subscribe("svse_monitor_template");
-Meteor.subscribe("svse_entity_template_group");
-Meteor.subscribe("svse_entity_template");
 Meteor.subscribe("svse_entity_info");
 Meteor.subscribe("svse_task");
 Meteor.subscribe("svse_emaillist");
