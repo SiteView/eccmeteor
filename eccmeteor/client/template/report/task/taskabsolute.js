@@ -38,14 +38,6 @@ Template.taskabsolute.events = {
 	"click #taskabsoluteofadd" : function(e){
 	$('#taskabsoluteadddiv').modal('toggle');
 	},
-/*
-    var r=document.getElementsByName("r");  
-    for(var i=0;i<r.length;i++){
-         if(r[i].checked){
-         alert(r[i].value+","+r[i].nextSibling.nodeValue);
-       }
-    } 
-*/
 //删除任务操作
 	"click #taskabsoluteofdel":function(){
 	
@@ -63,26 +55,41 @@ Template.taskabsolute.events = {
 			
 	}
 }
-//根据id编辑一条记录
+//编辑一条任务计划记录
 Template.taskabsolutelist.events({
 	"click td .btn" : function (e,t) {
 		console.log(e.currentTarget.id);
 		var result = SvseTaskDao.getTaskById(e.currentTarget.id);
-		
-		RenderTemplate.showParents("#taskabsoluteedit","taskabsolute_editform",result);
-		
-/*		var html = Meteor.render(function(){
-			return Template.taskabsolute_editform(result);
-		})
-		$("#taskabsoluteeditdiv").empty().html(html);
-		$("#taskabsoluteeditdiv").modal('show');
-		console.log("111111");
 		console.log(result);
-*/
-	//	$('#statisticalofadddivedit').modal('toggle');
+		var content = {result:result};
+		RenderTemplate.showParents("#taskabsoluteeditdiv","taskabsolute_editform",content);
 	}
 });
+//编辑一条任务计划后保存
+Template.taskabsolute_editform.events = {
+	"click #taskabsoluteeditcancelbtn":function(e,t){
+		RenderTemplate.hideParents(t);
+	},
+	"click #taskabsoluteeditofsavebtn":function(e,t){
+		var basicinfooftaskabsoluteedit = ClientUtils.formArrayToObject($("#taskabsoluteeditofbasciinfo").serializeArray());
+		var address = {};
+		address = basicinfooftaskabsoluteedit;
+		console.log(address);		
+		SvseTaskDao.addtaskabsolute(address, function (err,result) {
+			   RenderTemplate.hideParents(t);	
+			// console.log(result);
+			// console.log("123");
+			// console.log(result); //控制台打印添加的信息
+			// console.log("123");
+			// $('#taskabsoluteadddiv').modal('toggle');
 
+		});		
+	},
+	"click .close":function(e,t){
+		RenderTemplate.hideParents(t);
+	}
+};
+//添加任务计划
 Template.taskabsoluteadd.events = {
 	"click #taskabsoluteaddcancelbtn" : function () {
 		$('#taskabsoluteadddiv').modal('toggle');
@@ -102,25 +109,13 @@ Template.taskabsoluteadd.events = {
 			return;
 		}
 	*/
-	/*	var targets = [];
-		var arr = $.fn.zTree.getZTreeObj("svse_tree_check").getNodesByFilter(function (node) {
-				return (node.checked && node.type === "monitor")
-			});
-		for (index in arr) {
-			targets.push(arr[index].id);
-		}
-		basicinfoofstatisticaladd["GroupRight"] = targets.join();
-	*/
-		//var nIndex = Utils.getUUID();
-		//basicinfooftaskabsoluteadd["nIndex"] = nIndex
 		console.log(basicinfooftaskabsoluteadd); //控制台打印添加的信息
 		var address = {};
 		//address[nIndex] = basicinfoofstatisticaladd;
 		//address["nIndex"] = nIndex;
 		address = basicinfooftaskabsoluteadd;
 		//address = basicinfooftaskabsoluteadd;
-		console.log(address);
-		
+		console.log(address);		
 		SvseTaskDao.addtaskabsolute(address, function (err,result) {
 			console.log(result);
 			console.log("123");
@@ -131,61 +126,3 @@ Template.taskabsoluteadd.events = {
 		});
 	}
 }
-
-Template.taskabsolutelist.events({
-	"click #taskabsoluteeditcancelbtn":function(){
-		$("#taskabsoluteeditdiv").modal('toggle');
-	},
-	"click td .btn" : function (e) {
-		console.log(e.currentTarget.id);
-/*		var result = SvseStatisticalDao.getStatisticalById(e.currentTarget.id);
-		console.log("111111");
-		console.log(result);
-		$("#statisticalofadddivedit").find(":input[type='text'][name='Title']:first").val(result.Title);
-		$("#statisticalofadddivedit").find(":text[name='Descript']:first").val(result.Descript);
-		$("#statisticalofadddivedit").find("input[type='email'][name='EmailSend']:first").val(result.EmailSend);
-		$("#statisticalofadddivedit").find("input[type='number'][name='Generate']:first").val(result.Generate);
-		$("#statisticalofadddivedit").find(":input[type='time'][name='EndTime']:first").val(result.EndTime);
-		$("#statisticalofadddivedit").find(":text[name='WeekEndTime']:first").val(result.WeekEndTime);
-		$("#statisticalofadddivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
-
-		$("#reporttypePeriodlisted").find("option[value = '" + result["Period"] + "']:first").attr("selected", "selected");
-		$("#statisticalofaddtypelisted").find("option[value = '" + result["ComboGraphic"] + "']:first").attr("selected", "selected");
-		$("#statisticaloutputtypeed").find("option[value = '" + result["fileType"] + "']:first").attr("selected", "selected");
-
-		var CheckedGraphic = result.Graphic;
-		$("#statisticalofadddivedit").find(":checkbox[name='Graphic']").each(function () {
-			if ($(this).val() === CheckedGraphic) {
-				$(this).attr("checked", true);
-			}
-		});
-
-		var CheckedListError = result.ListError;
-		$("#statisticalofadddivedit").find(":checkbox[name='ListError']").each(function () {
-			if ($(this).val() === CheckedListError) {
-				$(this).attr("checked", true);
-			}
-		});
-
-		var CheckedListDanger = result.ListDanger;
-		$("#statisticalofadddivedit").find(":checkbox[name='ListDanger']").each(function () {
-			if ($(this).val() === CheckedListDanger) {
-				$(this).attr("checked", true);
-			}
-		});
-		var CheckedParameter = result.Parameter;
-		$("#statisticalofadddivedit").find(":checkbox[name='Parameter']").each(function () {
-			if ($(this).val() === CheckedParameter) {
-				$(this).attr("checked", true);
-			}
-		});
-		var CheckedDeny = result.Deny;
-		$("#statisticalofadddivedit").find(":checkbox[name='Deny']").each(function () {
-			if ($(this).val() === CheckedDeny) {
-				$(this).attr("checked", true);
-			}
-		});
-		//Session.set("emailbasicsettingofaddressbasciinfoeditform",result);
-*/		$('#taskabsoluteeditdiv').modal('toggle');
-	}
-});

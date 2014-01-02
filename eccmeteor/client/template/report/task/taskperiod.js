@@ -96,57 +96,12 @@ Template.taskperiodadd.events = {
 		});
 	}
 }
+//点击编辑一条任务计划
 Template.taskperiodlist.events({
-	"click td .btn" : function (e) {
+	"click td .btn" : function (e,t) {
 		console.log(e.currentTarget.id);
-/*		var result = SvseStatisticalDao.getStatisticalById(e.currentTarget.id);
-		console.log("111111");
-		console.log(result);
-		$("#statisticalofadddivedit").find(":input[type='text'][name='Title']:first").val(result.Title);
-		$("#statisticalofadddivedit").find(":text[name='Descript']:first").val(result.Descript);
-		$("#statisticalofadddivedit").find("input[type='email'][name='EmailSend']:first").val(result.EmailSend);
-		$("#statisticalofadddivedit").find("input[type='number'][name='Generate']:first").val(result.Generate);
-		$("#statisticalofadddivedit").find(":input[type='time'][name='EndTime']:first").val(result.EndTime);
-		$("#statisticalofadddivedit").find(":text[name='WeekEndTime']:first").val(result.WeekEndTime);
-		$("#statisticalofadddivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
-
-		$("#reporttypePeriodlisted").find("option[value = '" + result["Period"] + "']:first").attr("selected", "selected");
-		$("#statisticalofaddtypelisted").find("option[value = '" + result["ComboGraphic"] + "']:first").attr("selected", "selected");
-		$("#statisticaloutputtypeed").find("option[value = '" + result["fileType"] + "']:first").attr("selected", "selected");
-
-		var CheckedGraphic = result.Graphic;
-		$("#statisticalofadddivedit").find(":checkbox[name='Graphic']").each(function () {
-			if ($(this).val() === CheckedGraphic) {
-				$(this).attr("checked", true);
-			}
-		});
-
-		var CheckedListError = result.ListError;
-		$("#statisticalofadddivedit").find(":checkbox[name='ListError']").each(function () {
-			if ($(this).val() === CheckedListError) {
-				$(this).attr("checked", true);
-			}
-		});
-
-		var CheckedListDanger = result.ListDanger;
-		$("#statisticalofadddivedit").find(":checkbox[name='ListDanger']").each(function () {
-			if ($(this).val() === CheckedListDanger) {
-				$(this).attr("checked", true);
-			}
-		});
-		var CheckedParameter = result.Parameter;
-		$("#statisticalofadddivedit").find(":checkbox[name='Parameter']").each(function () {
-			if ($(this).val() === CheckedParameter) {
-				$(this).attr("checked", true);
-			}
-		});
-		var CheckedDeny = result.Deny;
-		$("#statisticalofadddivedit").find(":checkbox[name='Deny']").each(function () {
-			if ($(this).val() === CheckedDeny) {
-				$(this).attr("checked", true);
-			}
-		});
-		//Session.set("emailbasicsettingofaddressbasciinfoeditform",result);
-*/		$('#taskperiodeditdiv').modal('toggle');
+		var result = SvseTaskDao.getTaskById(e.currentTarget.id);
+		var content ={result:result}
+		RenderTemplate.showParents("#taskperiodeditDiv","taskperiodedit_form",content);
 	}
 });

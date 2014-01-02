@@ -67,7 +67,7 @@
 			</div>
 		</form>
 	</div>
-{{> selectwarnerloglist}}
+<div id="selectwarnerloglistDiv"></div>
 </Template>
 
 <Template name="selectwarnerloglist">
@@ -90,7 +90,17 @@
 					</tr>
 				</thead>
 				<tbody id="warnerloglist">
-					
+					{{#each QueryData}}
+					<tr>
+						<td>{{_AlertTime}}</td>
+						<td>{{_AlertRuleName}}</td>
+						<td>{{_DeviceName}}</td>
+						<td>{{_MonitorName}}</td>
+						<td>{{_AlertType}}</td>
+						<td>{{_AlertReceive}}</td>
+						<td>{{_AlertStatus}}</td>
+					</tr>
+					{{/each}}
 				</tbody>
 				
 			</table>

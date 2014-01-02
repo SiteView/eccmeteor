@@ -24,9 +24,9 @@
 	</div>
 	<br />
 	{{> emailsettingList}}
-	{{> emailbasicsettingForm}}
-	{{> emailbasicsettingofaddress}}
-	{{> emailbasicsettingofaddressedit}}
+	<div id="emailbasicsettingFormDiv"></div>
+	<div id="emailaddresssettingDiv"></div>
+	<div id="emailaddresssettingeditDiv"></div>
 	{{> emailtest}}
 	<div id="emailTemplateSettingDiv"></div>
 </Template>
@@ -66,47 +66,49 @@
 	<!--邮件设置---基础数据设置表单-->
 <form id="emailbasicsetting" class="form-horizontal" onsubmit="return false;">
  	<fieldset>
+		{{#with BasicSetting}}
 	    <legend>{{language.basicsettiontilte}}</legend>
 	    <div class="control-group">
 	      <label class="control-label">{{language.emailsettingmodel.sendserverSMTPlab}}:</label>
 	      <div class="controls">
-	        <input type="text" class="span4" name="server">
+	        <input type="text" class="span4" name="server" value="{{server}}">
 	      </div>
 	    </div>
 	    <div class="control-group">
 	      <label class="control-label">{{language.emailsettingmodel.sendemailAddresslab}}:</label>
 	      <div class="controls">
-	        <input type="text" class="span4" name="from">
+	        <input type="text" class="span4" name="from" value="{{from}}">
 	      </div>
 		</div>
 		<div class="control-group">
 	      <label class="control-label">{{language.emailsettingmodel.sendbackupserverlab}}:</label>
 	      <div class="controls">
-	        <input type="text" class="span4" name="backupserver">
+	        <input type="text" class="span4" name="backupserver" value="{{backupserver}}">
 	      </div>
 	    </div>
 		<div class="control-group">
 	      <label class="control-label">{{language.emailsettingmodel.usernamelab}}:</label>
 	      <div class="controls">
-	        <input type="text" class="span4" name="user">
+	        <input type="text" class="span4" name="user" value="{{user}}">
 	      </div>
 	    </div>
 		<div class="control-group">
 	      <label class="control-label" >{{language.emailsettingmodel.passwordlab}}:</label>
 	      <div class="controls">
-	        <input type="password" class="span4" name="password">
+	        <input type="password" class="span4" name="password" value="{{password}}">
 	      </div>
 	    </div>
 		<div class="form-actions">
 			<button class="btn btn-primary" id="emailbasicsettingapplybtn">{{language.emailsettingmodel.applybtn}}</button>
 			<button class="btn" id="emailbasicsettingtestbtn">{{language.emailsettingmodel.testbtn}}</button>
 		</div>
+		{{/with}}
   	</fieldset>
 </form>
 </Template>
 
 <Template name="emailbasicsettingofaddress">
-	<div id="emailaddresssettingdiv" class="modal hide fade"
+	<div class="modal hide fade"
 	data-backdrop="true" data-keyboard="true" data-show="false" 
 	data-width="800" data-modalOverflow="true"
 	>
@@ -146,6 +148,9 @@
 						<label class="control-label">Email模板:</label>
 						<div class="controls">
 							<select id="emailbasicsettingofaddressemailtemplatelist" name="Template">
+							{{#each EmailTemplate}}
+								<option value="{{this}}">{{this}}</option>
+							{{/each}}
 							</select>
 						</div>
 					</div>
@@ -153,8 +158,8 @@
 						<label class="control-label">任务计划类型:</label>
 						<div class="controls">
 							<select name="TaskType" id="emailTaskTypelist">
-								<option value="1" selected>绝对时间任务计划</option>
-								<option value="2">时间段任务计划</option>
+								<option value="1">绝对时间任务计划</option>
+								<option value="2" selected>时间段任务计划</option>
 								<option value="3">相对时间任务计划</option>
 							</select>
 						</div>
@@ -163,7 +168,9 @@
 						<label class="control-label">任务计划:</label>
 						<div class="controls">
 							<select name="Schedule" id="emailSchedulelist">
-								
+							{{#each Tasks}}
+								<option value="{{this}}">{{this}}</option>
+							{{/each}}	
 							</select>
 						</div>
 					</div>
@@ -185,37 +192,38 @@
 
 
 <Template name="emailbasicsettingofaddressedit">
-	<div id="emailaddresssettingdivedit" class="modal hide fade">
+	<div class="modal hide fade" data-backdrop="true" data-keyboard="true" data-show="false" 
+	data-width="800" data-modalOverflow="true">
 		<div class="modal-header">			
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<label class="label label-info">邮件地址设置</label>{{ide "emailsetting"}}
 		</div>
 		<div class="modal-body">
-			{{#with emailbasicsettingofaddressbasciinfoeditform}}
+			{{#with EmailInfo}}
 			<form class="well form-horizontal form-inline" id="emailbasicsettingofaddressbasciinfoedit">
-				<input type="hidden" name="nIndex" value="{{nIndex}}">
+				<input type="hidden" name="nIndex" value="{{Email.nIndex}}">
 				<fieldset>
 					<span class="label label-info">基本选项</span><br /><br />
 					<div class="control-group">
 					  <label class="control-label">*名称:</label>
 					  <div class="controls">
-						<input type="text"  name="Name" value="{{Name}}">
+						<input type="text"  name="Name" value="{{Email.Name}}">
 					  </div>
 					</div>
 					<div class="control-group">
 					  <label class="control-label">*接收Email地址:</label>
 					  <div class="controls">
-						<input type="text"  name="MailList" value="{{MailList}}">
+						<input type="text"  name="MailList" value="{{Email.MailList}}">
 					  </div>
 					</div>
 					<div class="control-group">
 					  <label class="control-label">状态:</label>
 					  <div class="controls">
 						<label class="radio">
-							<input type="radio"  name="bCheck" value="0"> 允许
+							<input type="radio"  name="bCheck" value="0" {{#if equal Email.bCheck "0"}}checked="checked"{{/if}}> 允许
 						</label>
 						<label class="radio">
-							<input type="radio"  name="bCheck" value="1"> 禁止
+							<input type="radio"  name="bCheck" value="1" {{#if equal Email.bCheck "1"}}checked="checked"{{/if}}> 禁止
 						</label>
 					  </div>
 					</div>
@@ -224,6 +232,9 @@
 						<label class="control-label">Email模板:</label>
 						<div class="controls">
 							<select id="emailbasicsettingofaddressemailtemplatelistedit" name="Template">
+							{{#each EmailTemplate}}
+								<option value="{{this}}">{{this}}</option>
+							{{/each}}
 							</select>
 						</div>
 					</div>
@@ -231,9 +242,9 @@
 						<label class="control-label">任务计划类型:</label>
 						<div class="controls">
 							<select name="TaskType" id="editemailTaskTypelist">
-								<option value="1" selected>绝对时间任务计划</option>
-								<option value="2">时间段任务计划</option>
-								<option value="3">相对时间任务计划</option>
+								<option value="1" {{#if equal Email.TaskType "1"}}selected {{/if}}>绝对时间任务计划</option>
+								<option value="2" {{#if equal Email.TaskType "2"}}selected {{/if}}>时间段任务计划</option>
+								<option value="3" {{#if equal Email.TaskType "3"}}selected {{/if}}>相对时间任务计划</option>
 							</select>
 						</div>
 					</div>
@@ -241,14 +252,16 @@
 						<label class="control-label">任务计划:</label>
 						<div class="controls">
 							<select name="Schedule" id="editemailSchedulelist">
-								
+							{{#each Tasks}}
+								<option value="{{this}}">{{this}}</option>
+							{{/each}}	
 							</select>
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">描述:</label>
 						<div class="controls">
-							<textarea class="input-xlarge" name="Des" rows="3">{{Des}}</textarea>
+							<textarea class="input-xlarge" name="Des" rows="3">{{Email.Des}}</textarea>
 						</div>
 					</div>
 				</fieldset>
@@ -256,8 +269,8 @@
 			{{/with}}
 		</div>
 		<div class="modal-footer" align="right">
-			<button class="btn btn-large" id="emailbasicsettingofaddresscancelbtnedit">取消</button>
-			<button class="btn btn-primary btn-large" id="emailbasicsettingofaddresssavebtnedit">保存</button>
+			<button class="btn" id="emailbasicsettingofaddresscancelbtnedit">取消</button>
+			<button class="btn btn-primary" id="emailbasicsettingofaddresssavebtnedit">保存</button>
 		</div>
 	</div>
 </Template>

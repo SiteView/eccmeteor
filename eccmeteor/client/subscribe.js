@@ -9,11 +9,12 @@ Object.defineProperty(Subscribe,"LOADSVSEENTITYTEMPLATE",{
 });
 
 Meteor.subscribe("svse_tree",function(){
-	SystemLogger("重新订阅");
+	Log4js.info("svse_tree订阅完成");
 	SessionManage.collectionCompleted(CONLLECTIONMAP.SVSETREE);
 
 });
 Meteor.subscribe("svse",function(){
+   Log4js.info("svse订阅完成");
 	SessionManage.collectionCompleted(CONLLECTIONMAP.SVSE);//客户端订阅数据完成
 });
 

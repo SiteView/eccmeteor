@@ -1,8 +1,11 @@
 SvseTopNDao = {
 	"AGENT":"SvseTopNDaoAgent",
 	//根据id获取topN报告
+	"getTopNById":function(id){
+		return SvseTopNresultlist.findOne({nIndex:id});
+	},
 	"getTopNresult" : function(id){
-	return SvseTopNresultlist.findOne({nIndex:id});
+		return SvseTopNresultlist.findOne({nIndex:id});
 	},
 	
 	"getTopNresultlist" : function(){
@@ -36,10 +39,6 @@ SvseTopNDao = {
 				fn(result);
 			}
 		});
-	},
-	
-	"getTopNById":function(id){
-	return SvseTopNresultlist.findOne({nIndex:id});
 	},
 	//根据title获取topN对象
 	"getTopNByName":function(title){

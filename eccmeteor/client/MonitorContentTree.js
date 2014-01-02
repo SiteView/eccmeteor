@@ -36,8 +36,13 @@ var drawSvseSettingTree = function(){
 			}
 		},
 	};
-	if($.fn.zTree)
-		$.fn.zTree.init($("#setting_tree"), setting, expandSimpleTreeNode(NavigationSettingTree.getTreeData(),SettingNodeRemenber.get()));
+	if(!$.fn.zTree){
+		return ;
+	}
+	var settingTreeNodes = NavigationSettingTree.getTreeData();
+	var rememberNodes = SettingNodeRemenber.get();
+	var expandNodes = expandSimpleTreeNode(settingTreeNodes,rememberNodes);
+	$.fn.zTree.init($("#setting_tree"), setting, expandNodes);
 }
 
 /*

@@ -9,6 +9,10 @@ SvseEntityTemplateDao= {
 	//	SyncFunction.SyncEmailList();
 	},
 	"addEntity":function(parentid,entity){
+		var isNetwork = SvseEntityTemplateDao.isNetwork(entity.property.sv_devicetype);
+		if(isNetwork){
+			entity.property.sv_network = "true";
+		}
 		var result = SvseMethodsOnServer.svSubmitEntity(entity,parentid);
 		if(!result){
 			var msg = "SvseEntityTemplateDao's addEntity  faild";
@@ -62,6 +66,10 @@ SvseEntityTemplateDao= {
 		return  SvseEntityTemplateDao.getReturn(true,null,{id:selfId})
 	},
 	"updateEntity":function(selfId,entity){
+		var isNetwork = this.isNetwork(entity.property.sv_devicetype);
+		if(isNetwork){
+			entity.property.sv_network = "true";
+		}
 		var result = SvseMethodsOnServer.svSubmitEntity(entity,false);
 		if(!result){
 			var msg = "SvseEntityTemplateDao's addEntity  faild";
@@ -121,5 +129,12 @@ Object.defineProperty(SvseEntityTemplateDao,"getEntityGroupAsync",{
 			array.push(newGroup);
 		}
 		return array;
+	}
+});
+
+Object.defineProperty(SvseEntityTemplateDao,"isNetwork",{
+	value:function(templateId){
+		var template = SvseEntityTemplet.findOne({"property.sv_id":templateId});
+		return template.property["network"] === "true" ? true :false;
 	}
 });

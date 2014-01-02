@@ -19,7 +19,7 @@ Template.sysLogQuery.events({
 		"click #selectsyslogbtn":function(){
 				// var syslogquerycondition = ClientUtils.formArrayToObject($("#syslogquerycondition").serializeArray());
 				 //var syslogquerycondition = ClientUtils.tableGetSelectedAll("syslogquerycondition");
-				 console.log(syslogquerycondition);
+				// console.log(syslogquerycondition);
 						 
 				//查询条件（正则表达式）		 
 				var expression = $("#expression").val();
@@ -91,7 +91,34 @@ Template.sysLogQuery.events({
 					}
 					console.log(resultData);
 					console.log("以上是正则表达式筛选");
-					
+					/*
+					    var expression=table.charAt(0);//开始字符
+					    var syslogmsg=table.length;//查找符串的长度
+					    var curCon;
+					    var isFind=false;//是否找到
+					    var resultIndex=-1//如果是的话的那个索引
+						for(var i=0;i<container.length;i++)
+					  {
+						  curCon=container[i];
+						  for(var j=0;j<curCon.length;j++)
+						  {
+							  if(curCon.charAt(j)==startChar)//如果匹配起始字符,开始查找
+							  {
+									if(curCon.substring(j).substring(0,strLen)==str)//如果从j开始的字符与str匹配，那ok
+									{
+										  isFind=true;
+										  return i;//匹配的那个下标
+									}   
+									else
+									{        
+									  isFind=false;
+									  return i;
+									}
+							  }
+						  }
+					  }
+					  return -1;
+					  */
 					//判断IP地址
 					if(SourceIp){
 						var resultData = [];
@@ -139,12 +166,13 @@ Template.sysLogQuery.events({
 					for(var i = 0;i < resultData.length;i++){
 						var data = resultData[i];
 						for(var j = 0; j < types.length;j++){
-							if(data["_Level"] == types[j]["name"]){
+							if(data["_Facility"] == types[j]["name"]){
+									data["_Facility"] = types[j]["type"];
+								}
+							if(data["_Level"] == types[j]["id"]){
 								data["_Level"] = types[j]["type"];
 							}
-							if(data["_Facility"] == types[j]["id"]){
-								data["_Facility"] = types[j]["type"];
-							}
+							
 						}
 						var tbody = "<tr><td>"+data["creat_time"]+"</td><td>"+data["_SourceIp"]+"</td><td>"+data["_Facility"]+"</td>"
 						+"<td>"+data["_Level"]+"</td><td>"+data["_SysLogMsg"]+"</td></tr>";
@@ -178,10 +206,12 @@ Template.sysLogQuery.rendered = function(){
 		var endDate = new Date();
 		var startDate = new Date();
 		startDate.setTime(startDate.getTime() - 1000*60*60*24);
+		
 		$(template.find("#syslogdatetimepickerStartDate")).datetimepicker({
 			format: 'yyyy-MM-dd hh:mm:ss',
 			language: 'zh-CN',
-			maskInput: false
+			maskInput: false,
+
 		});
 		$(template.find("#syslogdatetimepickerEndDate")).datetimepicker({
 			format: 'yyyy-MM-dd hh:mm:ss',
@@ -222,8 +252,8 @@ Template.sysLogQuery.rendered = function(){
 						var result = Entity["Facility"].split(",");
 						console.log(result);
 						for(var i = 0;i < result.length;i++){
-							$("#"+result[i]).attr("checked",true);
-							//$("#syslogquerycondition").find("input:checkbox[id='result[i]']").attr("checked",true);
+							//$("#"+result[i]).attr("checked",true);
+							$("#Fer").find("input:checkbox[name="+result[i]+"]").attr("checked",true);
 						}
 						
 					});
@@ -233,7 +263,9 @@ Template.sysLogQuery.rendered = function(){
 				var result = Rank["Severities"].split(",");
 				console.log(result);
 				 for(var j = 0;j < result.length;j++){
-					$("#syslogquerycondition").find("input:checkbox[name="+result[j]+"]").attr("checked",true);
+				 $("#liver"+result[j]).attr("checked",true);
+					$("#liver").find("input:checkbox[name="+result[j]+"]").attr("checked",true);
+					//$("#"+result[i]).attr("checked",true);
 				 }					
 
 			});

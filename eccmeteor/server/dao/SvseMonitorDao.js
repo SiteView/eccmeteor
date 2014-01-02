@@ -1,5 +1,9 @@
 SvseMonitorDaoOnServer = {
 	addMonitor : function(parentid,monitor){
+		var isAddPoint = SvseMonitorDaoOnServer.isCalculateMonitorPoint(parentid);
+		if(isAddPoint){
+			monitor.property.sv_intpos = 1;
+		}
 		var r_monitor = SvseMethodsOnServer.svSubmitMonitor(monitor,parentid);
 		if(!r_monitor)
 			throw new Meteor.Error(500,"SvseMonitorDaoOnServer.addMonitor");
@@ -33,6 +37,10 @@ SvseMonitorDaoOnServer = {
 		return r_monitor;
 	},
 	editMonitor : function(parentid,monitor){
+		var isAddPoint = SvseMonitorDaoOnServer.isCalculateMonitorPoint(parentid);
+		if(isAddPoint){
+			monitor.property.sv_intpos = 1;
+		}
 		var r_monitor =  SvseMethodsOnServer.svSubmitMonitor(monitor,parentid);
 		if(!r_monitor)
 			throw new Meteor.Error(500,"SvseMonitorDaoOnServer.editMonitor");
@@ -126,5 +134,21 @@ Object.defineProperty(SvseMonitorDaoOnServer,"getMonitorReportDataByfilter",{
 Object.defineProperty(SvseMonitorDaoOnServer,"getMonitorReportDataByCount",{
 	value:function(monitorId,count){
 		return SvseMethodsOnServer.svGetReportDataByCount(monitorId,count);
+	}
+});
+
+/*
+*设备监视统计点数
+*/
+Object.defineProperty(SvseMonitorDaoOnServer,"isCalculateMonitorPoint",{
+	value:function(parentid){
+		var license = SvseMethodsOnServer.svGetLicenselist();
+		console.log("license:====================");
+		console.log(license);
+		var entity  = SvseEntityInfo.findOne({"return.id":parentid});
+		if(entity && entity.property){
+			return entity.property.sv_network === "true" ? false : true;
+		}	
+		return true;
 	}
 });

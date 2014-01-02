@@ -198,12 +198,7 @@ SvseMethodsOnServer = {
 	"svWriteSMSTemplateSettingFilesection":svWriteSMSTemplateSettingFilesection,
 	"svDeleteSMSTemplateSettingFilesection":svDeleteSMSTemplateSettingFilesection,
 	"svUpdateSMSTemplateSettingFilesection":svUpdateSMSTemplateSettingFilesection,
-	/*
-	Type： add
-	Author：renjie
-	Date:2013-12-2 14:40
-	Content:增加 syslog 查询
-*/
+	"svGetLicenselist":svGetLicenselist
 }
 
 SvseSyncData = {

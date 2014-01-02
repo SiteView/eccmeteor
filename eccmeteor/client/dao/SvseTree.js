@@ -42,8 +42,9 @@ SvseTreeDao = {
 //获取符合记录的分页数目 对应getNodesByIds
 Object.defineProperty(SvseTreeDao,"getNodeCountsByIds",{
 	value:function(ids,status){
-		if(!status)
+		if(!status){
 			return SvseTree.find({sv_id:{$in:ids}}).count();
+		}
 		return SvseTree.find({sv_id:{$in:ids},status:status}).count();
 	}
 });

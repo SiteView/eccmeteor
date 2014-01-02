@@ -15,5 +15,6 @@ Template.UserPromission.rendered = function(){
 	UserPromissionAction.initPromissionData(this);
 	
 	//choose the profile's node own user  
-	UserPromissionAction.initChooseTreeNode(this)
+	UserPromissionAction.initChooseTreeNode(this);
+
 }
