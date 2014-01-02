@@ -3,49 +3,6 @@ SvseEntityTemplateDao = {
 	getEntityGroup:function(){//获取设备分组数据
 		return SvseEntityTempletGroup.find({},{sort:{sv_index:1}}).fetch();
 	},
-	//获取设备模板的属性  ,若第二个属性name存在,则获取模板的属性值
-	getEntityPropertyById:function(id,name){
-		var entityTemplate = SvseEntityTemplet.findOne({"return.id":id})
-		if(!entityTemplate)
-			return "";
-		var property = entityTemplate.property;
-		if(!name)
-			return property;
-		return property[name];
-	},
-	getEntityItemsById:function(id){ //获取设备需要编辑的字段
-		var template = SvseEntityTemplet.findOne({"return.id":id});
-		if(!template) return [];
-		var items = [];
-		for(item in template){
-			if(item.indexOf("EntityItem") === -1) continue;	
-			var temp = template[item];
-			temp["sv_allownull"] = (temp["sv_allownull"] === 'false' ? false:true);
-			if(temp["sv_type"] !== "combobox"){//非下拉列表类型
-				items.push(temp);
-				continue;
-			};
-			//组合下拉列表	
-			var selects = []; 
-			if(temp["selects"]){
-				items.push(temp);//如果selects已经存在 选择的设备 操作系统_unix
-				continue;
-			}
-			for(label in temp){
-				if(label.indexOf("sv_itemlabel") === -1)continue;
-				var select = {};
-				var sub = "sv_itemvalue"+label.replace("sv_itemlabel","");
-				select.key = temp[label];
-				select.value = temp[sub];
-				selects.push(select);
-			}
-			temp["selects"] = selects;
-			items.push(temp);
-		}
-		Log4js.info("items is :");
-		Log4js.info(items);
-		return items;
-	},
 	addEntity:function(entity,parentid,fn){//根据提交的信息和父节点添加设备
 		fn = Utils.checkReCallFunction(fn);
 

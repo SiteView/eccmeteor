@@ -1,7 +1,5 @@
 Template.EntitiesGroupByType.events({
 	"click tr":function(e,t){
-		//var id = e.currentTarget.id;//模板类型id
-		//Session.set(SessionManage.MAP.CHECKEDENTITYTEMPLATEID,id);
 		var id = this.sv_id;
 		//异步
 		if(SvseEntityTemplateDao.isEmpty()){
