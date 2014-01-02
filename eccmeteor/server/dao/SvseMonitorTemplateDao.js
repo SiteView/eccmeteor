@@ -34,7 +34,7 @@ SvseMonitorTemplateDaoOnServer = {
 }
 /*
 获取监视器模板中的画图主键
-*/
+
 Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getReportDataPrimaryKey",{
 	value:function(monitorId){
 		var monitor = SvseTree.findOne({sv_id:monitorId});//找到该监视器所依赖的监视器模板
@@ -63,5 +63,100 @@ Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getReportDataPrimaryKey",{
 		}
 		//如果没有找到画图主键，或者不能画图 ，返回。
 		return monitorForeignKeys.length ? {monitorForeignKeys:monitorForeignKeys,monitorPrimary:monitorPrimary,monitorDescript:monitorDescript}: undefined ;
+	}
+});
+*/
+
+Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getEntityMonitorByDevicetypeAsync",{
+	value:function(type,status){
+		template = SvseEntityTemplet.findOne({"return.id":type});
+		if(!template){
+			console.log("找不到设备"+type);
+			return [];
+		}
+		var monityIds = !status ? (template["submonitor"] || []):(template["property"]["sv_quickadd"] ? template["property"]["sv_quickadd"].split("\,"):[]);
+		if(monityIds.length === 0){
+			console.log("该设备"+type+"不存在监视器");
+			return [];
+		}
+		var monities = SvseMonitorTemplate.find({"return.id":{$in:monityIds}}).fetch();
+		return monities;
+	}
+});
+
+Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getQuickAddMonitorsAsync",{
+	value:function(entityDevicetype,addedEntityId){
+
+		template = SvseEntityTemplet.findOne({"return.id":entityDevicetype});
+		var monitors =  [];
+		if(!template){
+			console.log("找不到设备"+type);
+		}else{
+			monityIds = template["property"]["sv_quickadd"]  ? template["property"]["sv_quickadd"].split("\,"):[];
+			if(monityIds.length !== 0){
+				monitors = SvseMonitorTemplate.find({"return.id":{$in:monityIds}}).fetch();
+			}
+		}
+
+		var dynamicMonitorIds = [];
+		var mLength =  monitors.length;
+		//获取动态属性
+		for(var i = 0 ; i < mLength; i++){
+			if(!monitors[i]["property"]["sv_extradll"]){ //如果没有动态属性
+				continue;
+			}
+			dynamicMonitorIds.push(monitors[i]["return"]["id"]);
+			monitors[i]["isDynamicProperty"] = true ; //添加一个属性表明此监视器有动态属性 ####重要
+		}
+		if(!dynamicMonitorIds.length){ //如果动态属性不存在
+			return {monitors:monitors,addedEntityId:addedEntityId};
+		}
+		//查询相关的动态属性  结果返回一个动态属性数组
+		/*
+			格式为：
+			[{
+				temlpateId:temlpateId, //监视器模板id
+				DynamicProperties:DynamicProperties //动态属性数组：如[“C:”,“D:”]等
+			},...]
+		*/
+		var result = SvseMonitorTemplateDaoOnServer.getMonityDynamicPropertyDataArray(addedEntityId,dynamicMonitorIds);
+		for(rIndex in result){
+			for(var mIndex = 0; mIndex< mLength;mIndex++){
+				if(result[rIndex]["templateId"] === monitors[mIndex]["return"]["id"]){
+					monitors[mIndex]["DynamicProperties"] = result[rIndex]["DynamicProperties"];
+					break;
+				}
+			}
+		}
+		return {monitors:monitors,addedEntityId:addedEntityId};
+	}
+});
+
+
+
+
+//客户端异步获取编辑监视的信息
+Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getEditMonitorInfoAsync",{
+	value:function(monitorId){
+		var monitor = SvseTree.findOne({sv_id:monitorId});
+		if(!monitor){
+			return null;
+		}
+		
+	}
+});
+
+MonitorInfomation =  function(){};
+//编辑监视器时根据 监视器的id获取该监视器的模板类型
+/**
+	svid：监视器的id
+*/
+Object.defineProperty(MonitorInfomation,"getMonitorTemplateIdBySvid",{
+	value:function(svid){
+		var monitor = SvseTree.findOne({sv_id:svid});
+		if(!monitor){
+			return false;
+		}
+		return monitor.sv_monitortype;
 	}
 });

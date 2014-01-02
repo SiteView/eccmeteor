@@ -68,9 +68,18 @@ Template.operateNode.events ={
 		RenderTemplate.showParents("#ForbidEquipmentsModal","ForbidEquipments",context);
 	},
 	"click .btn#addEntity":function(){
-		//$("#entitiesGroupByTypeDiv").modal('show');
-		var group = SvseEntityTemplateDao.getEntityGroup();
-		RenderTemplate.showParents("#ChooseEntityTemplateForAddEntity","EntitiesGroupByType",{entityGroup:group});
+		if(SvseEntityTemplateDao.isEmpty()){
+			LoadingModal.loading();
+			SvseEntityTemplateDao.getEntityGroupAsync(function(group){
+				LoadingModal.loaded();
+				RenderTemplate.showParents("#ChooseEntityTemplateForAddEntity","EntitiesGroupByType",{entityGroup:group});
+			});
+		}else{
+			var group = SvseEntityTemplateDao.getEntityGroupSync();
+			RenderTemplate.showParents("#ChooseEntityTemplateForAddEntity","EntitiesGroupByType",{entityGroup:group});
+		}
+
+		
 	},
 	"click a#removeEquipments":function(){ //删除多个组和设备
 		//删除子节点
@@ -99,8 +108,17 @@ Template.operateNode.events ={
 		//$("#chooseMonitorTemplateDiv").modal('show');
 		var id = SessionManage.getCheckedTreeNode("id");
 		var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);
-		var monitorTemplates =  SvseEntityTemplateDao.getEntityMonitorByDevicetype(devicetype);
-		RenderTemplate.showParents("#ChooseeMonitorTemplateModal","ChooseeMonitorTemplateModal",{monities:monitorTemplates});
+		
+		if(SvseMonitorTemplateDao.isEmpty()){
+			LoadingModal.loading();
+			SvseMonitorTemplateDao.getEntityMonitorByDevicetypeAsync(devicetype,false,function(monitors){
+				LoadingModal.loaded();
+				RenderTemplate.showParents("#ChooseeMonitorTemplateModal","ChooseeMonitorTemplateModal",{monities:monitors});
+			});
+		}else{
+			var monitorTemplates = SvseMonitorTemplateDao.getEntityMonitorByDevicetypeSync(devicetype,false);
+			RenderTemplate.showParents("#ChooseeMonitorTemplateModal","ChooseeMonitorTemplateModal",{monities:monitorTemplates});
+		}
 	},
 	"click .btn#editMonitor" : function(){//编辑监视，应该先获取 监视器添加时的模板，然后填充数据
 		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;

@@ -20,3 +20,6 @@ Deps.autorun(function(c){
 //设置每页记录的默认条数
 Session.setDefault("PERPAGE",10);
 Session.setDefault("CURRENTPAGE",1);
+
+Session.setDefault(Subscribe.LOADSVSEENTITYTEMPLATEGROUP,false);
+Session.setDefault(Subscribe.LOADSVSEENTITYTEMPLATE,false);

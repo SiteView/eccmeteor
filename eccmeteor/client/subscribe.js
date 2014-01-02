@@ -1,16 +1,48 @@
+Subscribe = function(){};
+
+Object.defineProperty(Subscribe,"LOADSVSEENTITYTEMPLATEGROUP",{
+   value:"LOADSVSEENTITYTEMPLATEGROUP"
+});
+
+Object.defineProperty(Subscribe,"LOADSVSEENTITYTEMPLATE",{
+   value:"LOADSVSEENTITYTEMPLATE"
+});
+
+Object.defineProperty(Subscribe,"LOADSVSEMONITORTEMPLATE",{
+   value:"LOADSVSEMONITOREMPLATE"
+});
+
 Meteor.subscribe("svse_tree",function(){
 	Log4js.info("svse_tree订阅完成");
 	SessionManage.collectionCompleted(CONLLECTIONMAP.SVSETREE);
 
 });
+
 Meteor.subscribe("svse",function(){
    Log4js.info("svse订阅完成");
 	SessionManage.collectionCompleted(CONLLECTIONMAP.SVSE);//客户端订阅数据完成
 });
-Meteor.subscribe("svse_monitor_template");
-Meteor.subscribe("svse_entity_template_group");
-Meteor.subscribe("svse_entity_template");
-Meteor.subscribe("svse_entity_info");
+
+//延迟加载
+Deps.autorun(function(c){
+   if(Session.get(Subscribe.LOADSVSEENTITYTEMPLATEGROUP)){
+      Meteor.subscribe("svse_entity_template_group");
+   }
+});
+//延迟加载
+Deps.autorun(function(c){
+   if(Session.get(Subscribe.LOADSVSEENTITYTEMPLATE)){
+      Meteor.subscribe("svse_entity_template");
+   }
+});
+//延迟加载
+Deps.autorun(function(c){
+   if(Session.get(Subscribe.LOADSVSEMONITORTEMPLATE)){
+      Meteor.subscribe("svse_monitor_template");
+   }
+});
+
+//Meteor.subscribe("svse_entity_info");
 Meteor.subscribe("svse_task");
 Meteor.subscribe("svse_emaillist");
 Meteor.subscribe("svse_warnerrule");

@@ -25,12 +25,17 @@
 	0:清空集合并重新初始化数据
 	以下集合初始化一次就可以。增加meteor的启动速度
 	initSvseMonitorsTemplateAtStartUp,initSvseEntityTempletGroupAtStartUp
+
+	//初始化顺序不能随便改动。先初始化 设备模板和监视器模板在初始化其他
 */
 function initAllDateStartUp(status){
-	initDateAtStartUp["initTreeDataAtStartup"](status);
-	initDateAtStartUp["initSvseTreeStructureAtStartUp"](status);
+	
 	initDateAtStartUp["initSvseMonitorsTemplateAtStartUp"](status);
 	initDateAtStartUp["initSvseEntityTempletGroupAtStartUp"](status);
+
+	initDateAtStartUp["initTreeDataAtStartup"](status);
+	initDateAtStartUp["initSvseTreeStructureAtStartUp"](status);
+	
 	initDateAtStartUp["initSvseEntityInfoAtStartUp"](status);
 	initDateAtStartUp["initTaskAtStartUp"](status);
 	initDateAtStartUp["initEmailListAtStartUp"](status);
