@@ -93,64 +93,6 @@ SvseEntityTemplateDao = {
 		return monities;
 	}
 }
-//主用用于编辑设备
-//根据设备的id和类型 分别在SvseEntityInfo中获取设备的属性信息和需要编辑的属性字段。//变化的
-Object.defineProperty(SvseEntityTemplateDao,"getDynamicEntityItems",{
-	value:function(id,type){//根据设备的id和类型 分别在SvseEntityInfo中获取设备的属性信息和需要编辑的属性字段。
-		Log4js.info("SvseEntityTemplate.js 的方法getItemsAndDefaultValueBySvIdAndDevicetype打印：")
-		Log4js.info("获取设备的id是: "+id+"  设备的类型是："+type);
-		//获取node数据
-		var node = SvseEntityInfo.findOne({"return.id":id});
-		Log4js.info("获取设备的数据是：");
-		Log4js.info(node);
-		var template = SvseEntityTemplet.findOne({"return.id":type});
-		Log4js.info("获取设备的模板是：");
-		Log4js.info(template);
-		var property = node["property"];
-		if(!template) return [];
-		var items = [];
-		for(field in template){  //遍历对象获取模板的编辑字段
-			if(field.indexOf("EntityItem") === -1) continue;
-			var item = template[field]; //编辑字段的对象
-			item["sv_value"] = property[item["sv_name"]]  //获取字段item["sv_name"]在property中的值 并把该值赋值给该字段对象
-			item["sv_allownull"] = (item["sv_allownull"] === 'false' ? false:true);
-			if(item["sv_type"] !== "combobox"){
-				items.push(item);
-				continue;
-			}
-		   //组合下拉列表键值对
-		   if(item["selects"]){
-				items.push(item);//如果selects已经存在 选择的设备 操作系统_unix
-				continue;
-			}
-			var selects = []; 
-			for(label in item){
-				if(label.indexOf("sv_itemlabel") === -1)continue;
-				var select = {};
-				var sub = "sv_itemvalue"+label.replace("sv_itemlabel","");//这样写有bug
-				select.key = item[label];
-				select.value = item[sub];
-				selects.push(select);
-			}
-			item["selects"] = selects;
-			items.push(item);
-		}
-		Log4js.info("items is :");
-		Log4js.info(items);
-		return items;
-	}
-});
-
-//获取一般属性 //主用用于编辑设备
-Object.defineProperty(SvseEntityTemplateDao,"getStaticEntityItems",{
-	value:function(id){
-		var entity = SvseEntityInfo.findOne({"return.id":id});
-		if(entity){
-			return entity["property"];
-		}
-		return {};
-	}
-});
 
 //isEmpty  判断当前数据为空
 Object.defineProperty(SvseEntityTemplateDao,"isEmpty",{
@@ -259,5 +201,20 @@ Object.defineProperty(SvseEntityTemplateDao,"getEntityItemsByIdAsync",{
 				fn(result);
 			}
 		})
+	}
+});
+
+Object.defineProperty(SvseEntityTemplateDao,"getEditEntityModuleByIdAsync",{
+	value:function(id,fn){
+		//根据SvseTree中的sv_id获取获取设备类型（即SvseEntityTempalate中的return.id）;
+		var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);
+        //获取设备保存的信息
+        Meteor.call(SvseEntityTemplateDao.AGENT,"getEnityInfoAsyncById",[id,devicetype],function(error,entityInfo){
+        	if(error){
+        		console.log(error);
+        		return ;
+        	}
+        	fn(entityInfo)
+        });
 	}
 });

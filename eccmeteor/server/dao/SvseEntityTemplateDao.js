@@ -174,3 +174,50 @@ Object.defineProperty(SvseEntityTemplateDao,"getEntityItemsByIdAsync",{
 		return items;
 	}
 });
+
+
+//客户端异步加载
+//主用用于编辑设备
+//根据设备的id和类型 分别在SvseEntityInfo中获取设备的属性信息和需要编辑的属性字段。
+Object.defineProperty(SvseEntityTemplateDao,"getEnityInfoAsyncById",{
+	value:function(id,type){
+		var node = SvseEntityInfo.findOne({"return.id":id});
+		var template = SvseEntityTemplet.findOne({"return.id":type});
+		var property = node["property"];
+		if(!template) return [];
+		var items = [];
+		for(field in template){  //遍历对象获取模板的编辑字段
+			if(field.indexOf("EntityItem") === -1) continue;
+			var item = template[field]; //编辑字段的对象
+			item["sv_value"] = property[item["sv_name"]]  //获取字段item["sv_name"]在property中的值 并把该值赋值给该字段对象
+			item["sv_allownull"] = (item["sv_allownull"] === 'false' ? false:true);
+			if(item["sv_type"] !== "combobox"){
+				items.push(item);
+				continue;
+			}
+		   //组合下拉列表键值对
+		   if(item["selects"]){
+				items.push(item);//如果selects已经存在 选择的设备 操作系统_unix
+				continue;
+			}
+			var selects = []; 
+			for(label in item){
+				if(label.indexOf("sv_itemlabel") === -1)continue;
+				var select = {};
+				var sub = "sv_itemvalue"+label.replace("sv_itemlabel","");//这样写有bug
+				select.key = item[label];
+				select.value = item[sub];
+				selects.push(select);
+			}
+			item["selects"] = selects;
+			items.push(item);
+		}
+		//return items;
+		//获取一般属性 //主用用于编辑设备
+		var entity = SvseEntityInfo.findOne({"return.id":id});
+
+		var StaticEnitityItems = entity ? entity["property"] : {};
+
+		return {DynamicEntityItems:items,entityId:id,StaticEnitityItems:StaticEnitityItems};
+	}
+})
