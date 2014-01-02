@@ -35,7 +35,6 @@ SvseEntityTemplateDao = {
 		});
 	},
 	getEntityMonitorByDevicetype:function(type,status){ //获取设备的可以添加监视器 status控制是否为快速添加的监视器 true 快速添加，false为选择添加，默认为选择添加
-		Log4js.info("SeseEntityTemplate.js getEntityMonitorByDevicetype 打印：");
 		template = SvseEntityTemplet.findOne({"return.id":type});
 		if(!template){
 			Log4js.info("找不到设备"+type);
@@ -51,7 +50,7 @@ SvseEntityTemplateDao = {
 	}
 }
 
-//isEmpty  判断当前数据为空
+//isEmpty  判断设备模板当前数据为空
 Object.defineProperty(SvseEntityTemplateDao,"isEmpty",{
 	value:function(){
 		//如果当前数据为空，则缓存数据
@@ -113,7 +112,7 @@ Object.defineProperty(SvseEntityTemplateDao,"getEntityGroupAsync",{
 });
 
 
-////同步获取设备模板属性 //获取设备需要编辑的字段
+//同步获取设备模板属性 //获取设备需要编辑的字段
 Object.defineProperty(SvseEntityTemplateDao,"getEntityItemsByIdSync",{
 	value:function(id){
 		var template = SvseEntityTemplet.findOne({"return.id":id});
@@ -161,6 +160,7 @@ Object.defineProperty(SvseEntityTemplateDao,"getEntityItemsByIdAsync",{
 	}
 });
 
+//异步 获取需要编辑的设备 属性
 Object.defineProperty(SvseEntityTemplateDao,"getEditEntityModuleByIdAsync",{
 	value:function(id,fn){
 		//根据SvseTree中的sv_id获取获取设备类型（即SvseEntityTempalate中的return.id）;

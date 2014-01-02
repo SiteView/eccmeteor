@@ -187,3 +187,52 @@ Object.defineProperty(SvseMonitorTemplateDao,"getMonitorTemplateNameByTemplateId
 		return template.property.sv_label;
 	}
 });
+
+
+Object.defineProperty(SvseMonitorTemplateDao,"isEmpty",{
+	value:function(){
+		//如果当前数据为空，则缓存数据
+		if(SvseMonitorTemplate.findOne() == null){
+			Session.set(Subscribe.LOADSVSEENTITYTEMPLATE,true);//缓存entity template 数据
+			Session.set(Subscribe.LOADSVSEMONITORTEMPLATE,true);//monitor template 数据
+			return true;
+		}
+		return false;
+	}
+});
+
+//异步
+//通过设备类型获取模板类型
+//获取设备的可以添加监视器 status控制是否为快速添加的监视器 true 快速添加，false为选择添加，默认为选择添加
+Object.defineProperty(SvseMonitorTemplateDao,"getEntityMonitorByDevicetypeAsync",{
+	value:function(type,status,fn){
+
+		Meteor.call(SvseMonitorTemplateDao.AGENT,"getEntityMonitorByDevicetypeAsync",[type,status],function(error,result){
+			if(error){
+				console.log(error);
+				return;
+			}
+			fn(result);
+		});
+	}
+});
+
+//异步
+//通过设备类型获取模板类型
+//获取设备的可以添加监视器 status控制是否为快速添加的监视器 true 快速添加，false为选择添加，默认为选择添加
+Object.defineProperty(SvseMonitorTemplateDao,"getEntityMonitorByDevicetypeSync",{
+	value:function(type,status){
+		template = SvseEntityTemplet.findOne({"return.id":type});
+		if(!template){
+			Log4js.info("找不到设备"+type);
+			return [];
+		}
+		var monityIds = !status ? (template["submonitor"] || []):(template["property"]["sv_quickadd"] ? template["property"]["sv_quickadd"].split("\,"):[]);
+		if(monityIds.length === 0){
+			Log4js.info("该设备"+type+"不存在监视器");
+			return [];
+		}
+		var monities = SvseMonitorTemplate.find({"return.id":{$in:monityIds}}).fetch();
+		return monities;
+	}
+});

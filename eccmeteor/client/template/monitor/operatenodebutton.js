@@ -108,8 +108,17 @@ Template.operateNode.events ={
 		//$("#chooseMonitorTemplateDiv").modal('show');
 		var id = SessionManage.getCheckedTreeNode("id");
 		var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);
-		var monitorTemplates =  SvseEntityTemplateDao.getEntityMonitorByDevicetype(devicetype);
-		RenderTemplate.showParents("#ChooseeMonitorTemplateModal","ChooseeMonitorTemplateModal",{monities:monitorTemplates});
+		
+		if(SvseMonitorTemplateDao.isEmpty()){
+			LoadingModal.loading();
+			SvseMonitorTemplateDao.getEntityMonitorByDevicetypeAsync(devicetype,false,function(monitors){
+				LoadingModal.loaded();
+				RenderTemplate.showParents("#ChooseeMonitorTemplateModal","ChooseeMonitorTemplateModal",{monities:monitors});
+			});
+		}else{
+			var monitorTemplates = SvseMonitorTemplateDao.getEntityMonitorByDevicetypeSync(devicetype,false);
+			RenderTemplate.showParents("#ChooseeMonitorTemplateModal","ChooseeMonitorTemplateModal",{monities:monitorTemplates});
+		}
 	},
 	"click .btn#editMonitor" : function(){//编辑监视，应该先获取 监视器添加时的模板，然后填充数据
 		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;

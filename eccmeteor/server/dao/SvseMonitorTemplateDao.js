@@ -34,7 +34,7 @@ SvseMonitorTemplateDaoOnServer = {
 }
 /*
 获取监视器模板中的画图主键
-*/
+
 Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getReportDataPrimaryKey",{
 	value:function(monitorId){
 		var monitor = SvseTree.findOne({sv_id:monitorId});//找到该监视器所依赖的监视器模板
@@ -63,5 +63,23 @@ Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getReportDataPrimaryKey",{
 		}
 		//如果没有找到画图主键，或者不能画图 ，返回。
 		return monitorForeignKeys.length ? {monitorForeignKeys:monitorForeignKeys,monitorPrimary:monitorPrimary,monitorDescript:monitorDescript}: undefined ;
+	}
+});
+*/
+
+Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getEntityMonitorByDevicetypeAsync",{
+	value:function(type,status){
+		template = SvseEntityTemplet.findOne({"return.id":type});
+		if(!template){
+			console.log("找不到设备"+type);
+			return [];
+		}
+		var monityIds = !status ? (template["submonitor"] || []):(template["property"]["sv_quickadd"] ? template["property"]["sv_quickadd"].split("\,"):[]);
+		if(monityIds.length === 0){
+			console.log("该设备"+type+"不存在监视器");
+			return [];
+		}
+		var monities = SvseMonitorTemplate.find({"return.id":{$in:monityIds}}).fetch();
+		return monities;
 	}
 });
