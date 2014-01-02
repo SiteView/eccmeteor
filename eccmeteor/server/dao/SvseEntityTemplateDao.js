@@ -96,6 +96,14 @@ SvseEntityTemplateDao= {
 	}
 }
 
+//判断是否为网络设备
+Object.defineProperty(SvseEntityTemplateDao,"isNetwork",{
+	value:function(templateId){
+		var template = SvseEntityTemplet.findOne({"property.sv_id":templateId});
+		return template.property["network"] === "true" ? true :false;
+	}
+});
+
 //客户端异步加载
 Object.defineProperty(SvseEntityTemplateDao,"getEntityGroupAsync",{
 	value:function(){
@@ -132,9 +140,37 @@ Object.defineProperty(SvseEntityTemplateDao,"getEntityGroupAsync",{
 	}
 });
 
-Object.defineProperty(SvseEntityTemplateDao,"isNetwork",{
-	value:function(templateId){
-		var template = SvseEntityTemplet.findOne({"property.sv_id":templateId});
-		return template.property["network"] === "true" ? true :false;
+//客户端异步加载
+Object.defineProperty(SvseEntityTemplateDao,"getEntityItemsByIdAsync",{
+	value:function(id){
+		var template = SvseEntityTemplet.findOne({"return.id":id});
+		if(!template) return [];
+		var items = [];
+		for(item in template){
+			if(item.indexOf("EntityItem") === -1) continue;	
+			var temp = template[item];
+			temp["sv_allownull"] = (temp["sv_allownull"] === 'false' ? false:true);
+			if(temp["sv_type"] !== "combobox"){//非下拉列表类型
+				items.push(temp);
+				continue;
+			};
+			//组合下拉列表	
+			var selects = []; 
+			if(temp["selects"]){
+				items.push(temp);//如果selects已经存在 选择的设备 操作系统_unix
+				continue;
+			}
+			for(label in temp){
+				if(label.indexOf("sv_itemlabel") === -1)continue;
+				var select = {};
+				var sub = "sv_itemvalue"+label.replace("sv_itemlabel","");
+				select.key = temp[label];
+				select.value = temp[sub];
+				selects.push(select);
+			}
+			temp["selects"] = selects;
+			items.push(temp);
+		}
+		return items;
 	}
 });
