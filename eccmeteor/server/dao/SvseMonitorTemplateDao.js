@@ -83,3 +83,51 @@ Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getEntityMonitorByDevicety
 		return monities;
 	}
 });
+
+Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getQuickAddMonitorsAsync",{
+	value:function(entityDevicetype,addedEntityId){
+		
+		template = SvseEntityTemplet.findOne({"return.id":entityDevicetype});
+		var monitors =  [];
+		if(!template){
+			console.log("找不到设备"+type);
+		}else{
+			monityIds = template["property"]["sv_quickadd"]  ? template["property"]["sv_quickadd"].split("\,"):[];
+			if(monityIds.length !== 0){
+				monitors = SvseMonitorTemplate.find({"return.id":{$in:monityIds}}).fetch();
+			}
+		}
+
+		var dynamicMonitorIds = [];
+		var mLength =  monitors.length;
+		//获取动态属性
+		for(var i = 0 ; i < mLength; i++){
+			if(!monitors[i]["property"]["sv_extradll"]){ //如果没有动态属性
+				continue;
+			}
+			dynamicMonitorIds.push(monitors[i]["return"]["id"]);
+			monitors[i]["isDynamicProperty"] = true ; //添加一个属性表明此监视器有动态属性 ####重要
+		}
+		if(!dynamicMonitorIds.length){ //如果动态属性不存在
+			return {monitors:monitors,addedEntityId:addedEntityId};
+		}
+		//查询相关的动态属性  结果返回一个动态属性数组
+		/*
+			格式为：
+			[{
+				temlpateId:temlpateId, //监视器模板id
+				DynamicProperties:DynamicProperties //动态属性数组：如[“C:”,“D:”]等
+			},...]
+		*/
+		var result = SvseMonitorTemplateDaoOnServer.getMonityDynamicPropertyDataArray(addedEntityId,dynamicMonitorIds);
+		for(rIndex in result){
+			for(var mIndex = 0; mIndex< mLength;mIndex++){
+				if(result[rIndex]["templateId"] === monitors[mIndex]["return"]["id"]){
+					monitors[mIndex]["DynamicProperties"] = result[rIndex]["DynamicProperties"];
+					break;
+				}
+			}
+		}
+		return {monitors:monitors,addedEntityId:addedEntityId};
+	}
+});

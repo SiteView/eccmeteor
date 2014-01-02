@@ -206,18 +206,16 @@ Object.defineProperty(SvseMonitorTemplateDao,"isEmpty",{
 //获取设备的可以添加监视器 status控制是否为快速添加的监视器 true 快速添加，false为选择添加，默认为选择添加
 Object.defineProperty(SvseMonitorTemplateDao,"getEntityMonitorByDevicetypeAsync",{
 	value:function(type,status,fn){
-
 		Meteor.call(SvseMonitorTemplateDao.AGENT,"getEntityMonitorByDevicetypeAsync",[type,status],function(error,result){
 			if(error){
 				console.log(error);
-				return;
 			}
 			fn(result);
 		});
 	}
 });
 
-//异步
+//同步
 //通过设备类型获取模板类型
 //获取设备的可以添加监视器 status控制是否为快速添加的监视器 true 快速添加，false为选择添加，默认为选择添加
 Object.defineProperty(SvseMonitorTemplateDao,"getEntityMonitorByDevicetypeSync",{
@@ -234,5 +232,21 @@ Object.defineProperty(SvseMonitorTemplateDao,"getEntityMonitorByDevicetypeSync",
 		}
 		var monities = SvseMonitorTemplate.find({"return.id":{$in:monityIds}}).fetch();
 		return monities;
+	}
+});
+
+//异步
+//添加设备完成后的快速监视器添加 信息获取
+
+Object.defineProperty(SvseMonitorTemplateDao,"getQuickAddMonitorsAsync",{
+	value:function(entityDevicetype,addedEntityId,fn){
+		Meteor.call(SvseMonitorTemplateDao.AGENT,"getQuickAddMonitorsAsync",[entityDevicetype,addedEntityId],function(error,result){
+			if(error){
+				console.log(error);
+				fn({status:false})
+			}else{
+				fn({status:true,context:result});
+			}
+		});
 	}
 });
