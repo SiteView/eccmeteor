@@ -33,20 +33,6 @@ SvseEntityTemplateDao = {
 				}
 			}
 		});
-	},
-	getEntityMonitorByDevicetype:function(type,status){ //获取设备的可以添加监视器 status控制是否为快速添加的监视器 true 快速添加，false为选择添加，默认为选择添加
-		template = SvseEntityTemplet.findOne({"return.id":type});
-		if(!template){
-			Log4js.info("找不到设备"+type);
-			return [];
-		}
-		var monityIds = !status ? (template["submonitor"] || []):(template["property"]["sv_quickadd"] ? template["property"]["sv_quickadd"].split("\,"):[]);
-		if(monityIds.length === 0){
-			Log4js.info("该设备"+type+"不存在监视器");
-			return [];
-		}
-		var monities = SvseMonitorTemplate.find({"return.id":{$in:monityIds}}).fetch();
-		return monities;
 	}
 }
 
