@@ -1,8 +1,8 @@
 Template.warnerruleofmessage.events={
-	"click #warnerruleofmessagecancelbtn":function(){
-		$('#messagewarnerdiv').modal('toggle');
+	"click #warnerruleofmessagecancelbtn":function(e,t){
+		RenderTemplate.hideParents(t);
 	},
-	"click #warnerruleofmessagesavebtn":function(){
+	"click #warnerruleofmessagesavebtn":function(e,t){
 		var warnerruleofmessageform = ClientUtils.formArrayToObject($("#warnerruleofmessageform").serializeArray());
 		var warnerruleofmessageformsendconditions = ClientUtils.formArrayToObject($("#warnerruleofmessageformsendconditions").serializeArray());
 		for(param in warnerruleofmessageformsendconditions){
@@ -66,10 +66,9 @@ Template.warnerruleofmessage.events={
 		console.log(section);
 		SvseWarnerRuleDao.setWarnerRuleOfMesaage(nIndex,section,function(result){
 			if(result.status){
-				$('#messagewarnerdiv').modal('toggle');
-				//$("#messagewarnerdiv")[0].reset();//重置表单（待修改）
+				RenderTemplate.hideParents(t);
 			}else{
-				SystemLogger(result.msg);
+				Log4js.info(result.msg);
 			}
 			
 		});
@@ -147,20 +146,13 @@ Template.warnerruleofmessageform.rendered=function(){
 				}
 			}
 		});
-		//填充短信模板列表
-		SvseMessageDao.getWebMessageTemplates(function(err,result){
-			for(name in result){
-				console.log(name);
-				var option=$("<option value"+name+"></option>").html(name)
-				$("#messagetemplatelist").append(option);
-			}
-		});
+
 	});
 }
 
-Template.warnerruleofmessageform.messagelist = function(){
-	return SvseMessageDao.getMessageList();
-}
+// Template.warnerruleofmessageform.messagelist = function(){
+	// return SvseMessageDao.getMessageList();
+// }
 
 Template.messagewarnerformedit.messagelist = function(){
 	return SvseMessageDao.getMessageList();
@@ -169,14 +161,14 @@ Template.messagewarnerformedit.messagelist = function(){
 //编辑时的渲染
 Template.messagewarnerformedit.rendered=function(){
 	$(function(){
-		//填充报警接收手机号下拉列表
+		/* //填充报警接收手机号下拉列表
 		var messagelist = SvseMessageDao.getMessageList();
 		for(var l = 0 ; l < messagelist.length ; l++){
 			//console.log(messagelist[l]);
 			var name = messagelist[l].Name;
 			var option = $("<option value="+name+"></option>").html(name);
 			$("#warnersmsnumber").append(option);
-		}
+		} */
 		$('.messagemultiselectedit').multiselect({
 			buttonClass : 'btn',
 			buttonWidth : 'auto',
@@ -218,38 +210,34 @@ Template.messagewarnerformedit.rendered=function(){
 			}
 		};
 		$.fn.zTree.init($("#svse_tree_check_editsms"), setting, data);
-	});
-	
-	//填充短信模板列表
-	SvseMessageDao.getMessageTemplates(function(err,result){
-		for(name in result){
-			//console.log(name);
-			var option = $("<option value="+name+"></option>").html(name)
-			$("#messagetemplatelistedit").append(option);
+		
+		var nIndex = $("#getmessagewarnerid").val();
+		console.log("nIndex:"+nIndex);
+		var result = SvseWarnerRuleDao.getWarnerRule(nIndex);
+		var displayNodes = result.AlertTarget.split("\,");
+		console.log(displayNodes);
+		if(displayNodes && displayNodes.length){
+			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_editsms");
+			//节点勾选
+			for(var index  = 0; index < displayNodes.length ; index++){
+				if(displayNodes[index] == "") continue;
+				treeObj.checkNode(treeObj.getNodesByFilter(function(node){
+					return  node.id  === displayNodes[index];
+				},true),true);
+			}
 		}
 	});
+	
 }
-/* Template.messagewarnerformedit.smstemplate=function(){
-	SvseMessageDao.getMessageTemplates(function(err,result){
-		var smstemplate=[];
-		for(name in result){
-			//console.log(name);
-			smstemplate.push(name);
-		} 
-		//console.log(smstemplate);
-		Session.set("smstemplate",smstemplate);
-	});
-	//console.log(Session.get("smstemplate"));
-	return Session.get("smstemplate");
-} */
+
 
 //编辑时的事件
 Template.messagewarnerformedit.events({
-	"click #editwarnerruleofmessagecancelbtn":function(){
-		$("#messagewarnerdivedit").modal("hide");
+	"click #editwarnerruleofmessagecancelbtn":function(e,t){
+		RenderTemplate.hideParents(t);
 	},
 	//保存短信报警编辑
-	"click #editwarnerruleofmessagesavebtn":function(){
+	"click #editwarnerruleofmessagesavebtn":function(e,t){
 		var warnerruleofmessageformedit = ClientUtils.formArrayToObject($("#warnerruleofmessageformedit").serializeArray());
 		var warnerruleofmessageformsendconditionsedit = ClientUtils.formArrayToObject($("#warnerruleofmessageformsendconditionsedit").serializeArray());
 		for(param in warnerruleofmessageformsendconditionsedit){
@@ -311,7 +299,7 @@ Template.messagewarnerformedit.events({
 		section[warnerruleofmessageformedit["nIndex"]] = warnerruleofmessageformedit;
 		console.log(section);
 		SvseWarnerRuleDao.updateWarnerRule(warnerruleofmessageformedit["nIndex"],section,function(result){
-			$('#messagewarnerdivedit').modal('hide');
+			RenderTemplate.hideParents(t);
 		});
 	},
 	

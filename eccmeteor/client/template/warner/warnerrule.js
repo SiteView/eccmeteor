@@ -7,10 +7,31 @@ var page = new Pagination("alertPage",{currentPage:1,perPage:5});
 
 Template.warnerrule.events = {
 	"click #emailwarner":function(e){
-		$('#emailwarnerdiv').modal('toggle');
+		//邮件接收地址
+		var emaillist = SvseEmailDao.getEmailList();
+		//邮件模板列表
+		SvseEmailDao.getEmailTemplates(function(err,result){
+			var emailTemplate = [];
+			for(name in result){
+				emailTemplate.push(name);
+			}
+			var context = {EmailList:emaillist,EmailTemplate:emailTemplate};
+			RenderTemplate.showParents("#emailwarnerDiv","warnerruleofemail",context);
+		});
+		
 	},
 	"click #messagewarner":function(e){
-		$('#messagewarnerdiv').modal('show');
+		//报警接收手机号
+		var messagelist = SvseMessageDao.getMessageList();
+		//填充短信模板列表
+		SvseMessageDao.getWebMessageTemplates(function(err,result){
+			var messageTemplate = [];
+			for(name in result){
+				messageTemplate.push(name);
+			}
+			var context = {MessageList:messagelist,MessageTemplate:messageTemplate};
+			RenderTemplate.showParents("#messagewarnerDiv","warnerruleofmessage",context);
+		});
 	},
 	"click #scriptwarner":function(){
 		$("#scriptwarnerdiv").modal("show");
@@ -25,14 +46,14 @@ Template.warnerrule.events = {
 	"click #allowewarnerrule":function(){
 		SvseWarnerRuleDao.updateWarnerRulesStatus(getWarnerRuleListSelectAll(),"Enable",function(result){
 			if(result.status){
-				SystemLogger("改变状态"+result.option.count+"条");
+				Log4js.info("改变状态"+result.option.count+"条");
 			}
 		});
 	},
 	"click #forbidwarnerrule":function(){
 		SvseWarnerRuleDao.updateWarnerRulesStatus(getWarnerRuleListSelectAll(),"Disable",function(result){
 			if(result.status){
-				SystemLogger("改变状态"+result.option.count+"条");
+				Log4js.info("改变状态"+result.option.count+"条");
 			}
 		});
 	},
@@ -41,7 +62,7 @@ Template.warnerrule.events = {
 			if(result.status){
 				console.log("刷新完成");
 			}else{
-				SystemLogger(result);
+				Log4js.info(result);
 			}
 			
 		});
@@ -73,10 +94,10 @@ Template.warnerrule.rendered = function(){
 }
 
 Template.warnerruleofemail.events = {
-	"click #warnerruleofemailcancelbtn" : function(){
-		$('#emailwarnerdiv').modal('toggle');
+	"click #warnerruleofemailcancelbtn" : function(e,t){
+		RenderTemplate.hideParents(t);
 	},
-	"click #warnerruleofemailsavebtn":function(){
+	"click #warnerruleofemailsavebtn":function(e,t){
 		var warnerruleofemailform = ClientUtils.formArrayToObject($("#warnerruleofemailform").serializeArray());
 		var warnerruleofemailformsendconditions = ClientUtils.formArrayToObject($("#warnerruleofemailformsendconditions").serializeArray());
 		for(param in warnerruleofemailformsendconditions){
@@ -150,9 +171,9 @@ Template.warnerruleofemail.events = {
 		console.log(section);
 		SvseWarnerRuleDao.setWarnerRuleOfEmail(nIndex,section,function(result){
 			if(result.status){
-				$('#emailwarnerdiv').modal('toggle');
+				RenderTemplate.hideParents(t);
 			}else{
-				SystemLogger(result.msg);
+				Log4js.info(result.msg);
 			}
 			
 		});
@@ -205,20 +226,12 @@ Template.warnerruleofemailform.rendered = function(){
 				}
 			}
 		});
-		//邮件模板下拉列表
-		Meteor.call("svGetEmailTemplates",function(err,result){
-			for(name in result){
-				//console.log(name);
-				var option = $("<option value="+name+"></option>").html(name)
-				$("#emailtemplatelist").append(option);
-			}
-		});
 	});
 }
 
-Template.warnerruleofemailform.emaillist = function(){
-	return SvseEmailDao.getEmailList();
-}
+// Template.warnerruleofemailform.emaillist = function(){
+	// return SvseEmailDao.getEmailList();
+// }
 //获取报警列表
 Template.warnerrulelist.rulelist = function(){
 	console.log(SvseWarnerRuleDao.getWarnerRuleList());
@@ -254,133 +267,88 @@ Template.warnerrulelist.events = {
 		console.log(e.currentTarget.id);
 		var id = e.currentTarget.id;
 		var result = SvseWarnerRuleDao.getWarnerRule(e.currentTarget.id);
-		var alertType=result["AlertType"];
+		var alertType = result["AlertType"];
 		console.log("alerttype:"+alertType);
 		//邮件报警EmailAlert
 		if(alertType=="EmailAlert"){
 			console.log("EmailAlert");
-			//填充表单
-			$("#emailwarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
-			$("#emailwarnerdivedit").find(":text[name='OtherAdress']:first").val(result.OtherAdress);
-			$("#emailwarnerdivedit").find(":text[name='Upgrade']:first").val(result.Upgrade);
-			$("#emailwarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.UpgradeTo);
-			$("#emailwarnerdivedit").find(":text[name='Stop']:first").val(result.Stop);
-			$("#emailwarnerdivedit").find(":text[name='WatchSheet']:first").val(result.WatchSheet);
-			$("#emailwarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.Strategy);
-			$("#emailwarnerdivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
-			if(!result["EmailAdress"] || result["EmailAdress"]=="其他"){
-				result["EmailAdress"]="";
-			}
-			var checkedEmailAdress = result["EmailAdress"].split(",");
-			$(".emailmultiselectedit").attr("value","");
-			$(".emailmultiselectedit").multiselect("refresh");
-			
-			var checkedEmailTemplate = result["EmailTemplate"].split(",");
-			for(var etl = 0 ; etl < checkedEmailTemplate.length; etl ++){
-				$("#emailtemplatelistedit").find("option[value='"+checkedEmailTemplate[etl]+"']:first").attr("selected","selected").prop("selected",true);
-			}
-			var AlertCategory = result.AlertCategory;
-			$("#warnerruleofemailformsendconditionsedit").find(":radio[name='AlertCategory']").each(function(){
-				if($(this).val() === AlertCategory){
-					$(this).attr("checked",true);
+			var emaillist = SvseEmailDao.getEmailList();
+			SvseEmailDao.getEmailTemplates(function(err,emailresult){
+				var emailTemplate = [];
+				for(name in emailresult){
+					emailTemplate.push(name);
 				}
-			});
-			var AlertCond = result.AlertCond;
-			$("#warnerruleofemailformsendconditionsedit").find(":radio[name='AlertCond']").each(function(){
-				if($(this).val() === AlertCond){
-					$(this).attr("checked",true);
+				var emailwarnerinfo = {EmailWarner:result,EmailList:emaillist,EmailTemplate:emailTemplate}
+				var context = {EmailWarnerInfo:emailwarnerinfo};
+				RenderTemplate.showParents("#emailwarnereditDiv","warnerruleofemailedit",context);
+				
+				if(!result["EmailAdress"] || result["EmailAdress"]=="其他"){
+					result["EmailAdress"]="";
 				}
-			});
-			$("#emailwarnerdivedit").modal('toggle');
-			
-			//当邮件设置中的邮件数据被删除的时候，对邮件报警的邮件地址做些处理
-			for(var eal = 0 ; eal < checkedEmailAdress.length ; eal ++){
-				try{
-					console.log(checkedEmailAdress[eal]);
-					checkemail = SvseEmailDao.getEmailByName(checkedEmailAdress[eal]);
-					if(checkedEmailAdress[eal] !=="" ){
-						if(!checkemail){
-							//console.log(checkemail);
-							Message.info("这个邮件地址可能已经不存在了！请重新选择！");
-							continue;
+				//选中对应的邮件接收地址
+				var checkedEmailAdress = result["EmailAdress"].split(",");
+				//当邮件设置中的邮件数据被删除的时候，对邮件报警的邮件地址做些处理
+				 for(var eal = 0 ; eal < checkedEmailAdress.length ; eal ++){
+					try{
+						console.log(checkedEmailAdress[eal]);
+						checkemail = SvseEmailDao.getEmailByName(checkedEmailAdress[eal]);
+						if(checkedEmailAdress[eal] !=="" ){
+							if(!checkemail){
+								//console.log(checkemail);
+								Message.info("这个邮件地址可能已经不存在了！请重新选择！");
+								continue;
+							}
 						}
-					}
-					
-					$(".emailmultiselectedit").multiselect('select',checkedEmailAdress[eal]);
-				}catch(e){}
-			}
-			var checkednodes = result.AlertTarget.split("\,")
-			//左边树的勾选
-			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_edit");
-			//节点勾选
-			for(var index  = 0; index < checkednodes.length ; index++){
-				treeObj.checkNode(treeObj.getNodesByFilter(function(node){
-					return  node.id  === checkednodes[index];
-				}, true), true);
-			}
+						
+						$(".emailmultiselectedit").multiselect('select',checkedEmailAdress[eal]);
+					}catch(e){}
+				}
+				//选中对应的邮件模板
+				var checkedEmailTemplate = result["EmailTemplate"].split(",");
+				for(var etl = 0 ; etl < checkedEmailTemplate.length; etl ++){
+					$("#emailtemplatelistedit").find("option[value='"+checkedEmailTemplate[etl]+"']:first").prop("selected",true);
+				}
+			});
+
 		}else
 		//短信报警SmsAlert
 		if(alertType=="SmsAlert"){
 			console.log("SmsAlert");
 			console.log(result);
 			//填充表单
-			// var messagelist = SvseMessageDao.getMessageList();
-			// console.log(messagelist);
-			// var context = {SmsAlert:result};
-			// console.log(context);
-			// RenderTemplate.showParents("#EditWarnerruleModal","messagewarnerformedit",context);
-			
-			$("#messagewarnerdivedit").find(":text[name='AlertName']:first").val(result.AlertName);
-			$("#messagewarnerdivedit").find(":text[name='OtherNumber']:first").val(result.OtherNumber);
-			$("#messagewarnerdivedit").find(":text[name='Upgrade']:first").val(result.Upgrade);
-			$("#messagewarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.UpgradeTo);
-			$("#messagewarnerdivedit").find(":text[name='Stop']:first").val(result.Stop);
-			$("#messagewarnerdivedit").find(":text[name='WatchSheet']:first").val(result.WatchSheet);
-			$("#messagewarnerdivedit").find(":text[name='UpgradeTo']:first").val(result.Strategy);
-			$("#messagewarnerdivedit").find(":hidden[name='nIndex']:first").val(result.nIndex);
-			if(!result["SmsNumber"]){
-				result["SmsNumber"] = "";
-			}
-			if(!result["SmsSendMode"]){
-				result["SmsSendMode"] = "";
-			}
-			var checkedSmsNumber = result["SmsNumber"].split(",");
-			$(".messagemultiselectedit").attr("value","");
-			$(".messagemultiselectedit").multiselect("refresh");
-			for(var eal = 0 ; eal < checkedSmsNumber.length ; eal ++){
-				try{
-					console.log(checkedSmsNumber[eal]);
-					$(".messagemultiselectedit").multiselect('select',checkedSmsNumber[eal]);
-				}catch(e){}
-			}
-			var checkedSmsTemplate = result["SmsTemplate"].split(",");
-			//console.log(checkedSmsTemplate);
-			for(var etl = 0 ; etl < checkedSmsTemplate.length; etl ++){
-				$("#messagetemplatelistedit").find("option[value='"+checkedSmsTemplate[etl]+"']:first").attr("selected","selected").prop("selected",true);
-			}
-			var checkedSmsSendMode = result["SmsSendMode"].split(",");
-			//console.log(checkedSmsSendMode);
-			for(var etl = 0 ; etl < checkedSmsSendMode.length; etl ++){
-				$("#messageSendModelistedit").find("option[value='"+checkedSmsSendMode[etl]+"']:first").attr("selected","selected").prop("selected",true);
-			}
-			var AlertCategory = result.AlertCategory;
-			$("#warnerruleofmessageformsendconditionsedit").find(":radio[name='AlertCategory']").each(function(){
-				if($(this).val() === AlertCategory){
-					$(this).attr("checked",true);
+			//报警接收手机号
+			var messagelist = SvseMessageDao.getMessageList();
+			//填充短信模板列表
+			SvseMessageDao.getWebMessageTemplates(function(err,messageresult){
+				var messageTemplate = [];
+				for(name in messageresult){
+					messageTemplate.push(name);
+				}
+				var messagewarnerinfo = {MessageWarner:result,MessageList:messagelist,MessageTemplate:messageTemplate};
+				var context = {MessageWarnerInfo:messagewarnerinfo};
+				RenderTemplate.showParents("#messagewarnereditDiv","messagewarnerformedit",context);
+				
+				if(!result["SmsNumber"]){
+					result["SmsNumber"] = "";
+				}
+				if(!result["SmsSendMode"]){
+					result["SmsSendMode"] = "";
+				}
+				var checkedSmsNumber = result["SmsNumber"].split(",");
+				for(var eal = 0 ; eal < checkedSmsNumber.length ; eal ++){
+					try{
+						console.log(checkedSmsNumber[eal]);
+						$(".messagemultiselectedit").multiselect('select',checkedSmsNumber[eal]);
+					}catch(e){}
+				}
+				var checkedSmsTemplate = result["SmsTemplate"].split(",");
+				console.log(checkedSmsTemplate);
+				for(var etl = 0 ; etl < checkedSmsTemplate.length; etl ++){
+					$("#messagetemplatelistedit").find("option[value='"+checkedSmsTemplate[etl]+"']:first").prop("selected",true);
 				}
 			});
-			$("#messagewarnerdivedit").modal('show');
-			
-			var checkednodes = result.AlertTarget.split("\,")
-			//左边树的勾选
-			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_editsms");
-			treeObj.checkAllNodes(false);//清空上一个用户状态
-			//节点勾选
-			for(var index  = 0; index < checkednodes.length ; index++){
-				treeObj.checkNode(treeObj.getNodesByFilter(function(node){
-					return  node.id  === checkednodes[index];
-				}, true), true);
-			}
+
+
 		}
 		//脚本报警ScriptAlert
 		if(alertType=="ScriptAlert"){
@@ -503,9 +471,7 @@ Template.warnerrulelist.events = {
 						data["_AlertType"] = types[j]["type"];
 					}
 				}
-				// var tbody = "<tr><td>"+data["_AlertTime"]+"</td><td>"+data["_AlertRuleName"]+"</td><td>"+data["_DeviceName"]+"</td>"
-				// +"<td>"+data["_MonitorName"]+"</td><td>"+data["_AlertType"]+"</td><td>"+data["_AlertReceive"]+"</td><td>"+data["_AlertStatus"]+"</td></tr>";
-				// $("#warnerruleloglist").append(tbody);
+
 			}
 			var context = {QueryWarnData:resultData};
 			RenderTemplate.renderIn("#warnerloglistDiv","warnerloglist",context);
@@ -516,15 +482,15 @@ Template.warnerrulelist.events = {
 
 Template.warnerruleofemailedit.rendered = function(){
 	$(function(){
-		//填充邮件地址下拉列表
+		/* //填充邮件地址下拉列表
 		var emaillist = SvseEmailDao.getEmailList();
 		var emailaddressselect = $("#emailwarnerdivedit").find(".emailmultiselectedit:first");
 		for(var l = 0 ; l < emaillist.length ; l++){
-			//console.log(emaillist[l]);
+			// console.log(emaillist[l]);
 			var name = emaillist[l].Name;
 			var option = $("<option value="+name+"></option>").html(name);
 			emailaddressselect.append(option);
-		}
+		} */
 		$('.emailmultiselectedit').multiselect({
 			buttonClass : 'btn',
 			buttonWidth : 'auto',
@@ -566,25 +532,34 @@ Template.warnerruleofemailedit.rendered = function(){
 				}
 			}
 		};
+		
 		$.fn.zTree.init($("#svse_tree_check_edit"), setting, data);
-	});
-	
-	//填充邮件模板列表
-	Meteor.call("svGetEmailTemplates",function(err,result){
-		for(name in result){
-			//console.log(name);
-			var option = $("<option value="+name+"></option>").html(name)
-			$("#emailtemplatelistedit").append(option);
+		
+		var nIndex = $("#getemailwarnerid").val();
+		console.log("nIndex:"+nIndex);
+		var result = SvseWarnerRuleDao.getWarnerRule(nIndex);
+		var displayNodes = result.AlertTarget.split("\,");
+		console.log(displayNodes);
+		if(displayNodes && displayNodes.length){
+			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_edit");
+			//节点勾选
+			for(var index  = 0; index < displayNodes.length ; index++){
+				if(displayNodes[index] == "") continue;
+				treeObj.checkNode(treeObj.getNodesByFilter(function(node){
+					return  node.id  === displayNodes[index];
+				},true),true);
+			}
 		}
 	});
+
 }
 
 
 Template.warnerruleofemailedit.events = {
-	"click #warnerruleofemailcancelbtnedit":function(){
-		$("#emailwarnerdivedit").modal('toggle');
+	"click #warnerruleofemailcancelbtnedit":function(e,t){
+		RenderTemplate.hideParents(t);
 	},
-	"click #warnerruleofemailsavebtnedit" : function(){
+	"click #warnerruleofemailsavebtnedit" : function(e,t){
 		var warnerruleofemailformedit = ClientUtils.formArrayToObject($("#warnerruleofemailformedit").serializeArray());
 		var warnerruleofemailformsendconditionsedit = ClientUtils.formArrayToObject($("#warnerruleofemailformsendconditionsedit").serializeArray());
 		for(param in warnerruleofemailformsendconditionsedit){
@@ -646,7 +621,7 @@ Template.warnerruleofemailedit.events = {
 		section[warnerruleofemailformedit["nIndex"]] = warnerruleofemailformedit;
 		console.log(section);
 		SvseWarnerRuleDao.updateWarnerRule(warnerruleofemailformedit["nIndex"],section,function(result){
-			$('#emailwarnerdivedit').modal('toggle');
+			RenderTemplate.hideParents(t);
 		});
 	}
 }

@@ -5,10 +5,10 @@
 <br/>
 <div id="warnerloglistDiv"></div>
 
-{{> warnerruleofemail}}
-{{> warnerruleofemailedit}}
-{{> warnerruleofmessage}}
-{{> messagewarnerformedit}}
+<div id="emailwarnerDiv"></div>
+<div id="emailwarnereditDiv"></div>
+<div id="messagewarnerDiv"></div>
+<div id="messagewarnereditDiv"></div>
 {{> warnerruleofscript}}
 {{> editwarnerruleofscript}}
 {{> warnerruleofsound}}
@@ -92,7 +92,7 @@
 </Template>
 
 <Template name="warnerruleofemail">
-	<div id="emailwarnerdiv" class="modal hide fade"
+	<div class="modal hide fade"
 		data-backdrop="true" data-keyboard="true" data-show="false" 
 		data-width="800" data-height="600" data-maxHeight="500" data-modalOverflow="true"
 	>
@@ -131,7 +131,7 @@
 				<label class="control-label">邮件接收地址:</label>
 				<div class="controls">
 					<select class="emailmultiselect" multiple="multiple" name="EmailAdress">
-						{{#each emaillist}}
+						{{#each EmailList}}
 							 <option value="{{Name}}">{{Name}}</option>
 						{{/each}}
 					</select>
@@ -147,6 +147,9 @@
 				<label class="control-label">Email模板:</label>
 				<div class="controls">
 					<select id="emailtemplatelist" name="EmailTemplate">
+					{{#each EmailTemplate}}
+						<option value="{{this}}">{{this}}</option>
+					{{/each}}
 					</select>
 				</div>
 			</div>
@@ -243,7 +246,7 @@
 
 
 <Template name="warnerruleofemailedit">
-	<div id="emailwarnerdivedit" class="modal hide fade"
+	<div class="modal hide fade"
 		data-backdrop="true" data-keyboard="true" data-show="false" 
 		data-width="800" data-height="600" data-maxHeight="500" data-modalOverflow="true"
 	>
@@ -257,52 +260,59 @@
 					<ul id="svse_tree_check_edit" class="ztree"></ul>
 				</div>
 				<div class="span8">
+					{{#with EmailWarnerInfo}}
 					<form id="warnerruleofemailformedit" class="well form-horizontal form-inline">
-						<input type="hidden" name="nIndex" >
+						<input type="hidden" id="getemailwarnerid" name="nIndex" value="{{EmailWarner.nIndex}}">
 						<fieldset>
 							<label class="label label-info" align="left">设置Email报警</label>
 							<div class="control-group">
 								<label class="control-label">报警名称:</label>
 								<div class="controls">
-									<input type="text" name="AlertName">
+									<input type="text" name="AlertName" value="{{EmailWarner.AlertName}}">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">邮件接收地址:</label>
 								<div class="controls">
 									<select class="emailmultiselectedit" multiple="multiple" name="EmailAdress">
+										{{#each EmailList}}
+											 <option value="{{Name}}">{{Name}}</option>
+										{{/each}}
 									</select>
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">其他邮件地址:</label>
 								<div class="controls">
-									<input type="text" name="OtherAdress">
+									<input type="text" name="OtherAdress" value="{{EmailWarner.OtherAdress}}">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">Email模板:</label>
 								<div class="controls">
 									<select id="emailtemplatelistedit" name="EmailTemplate">
+									{{#each EmailTemplate}}
+										<option value="{{this}}">{{this}}</option>
+									{{/each}}
 									</select>
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >升级次数:</label>
 								<div class="controls">
-									<input type="text" name="Upgrade">
+									<input type="text" name="Upgrade" value="{{EmailWarner.Upgrade}}">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >升级接收人地址:</label>
 								<div class="controls">
-									<input type="text" name="UpgradeTo">
+									<input type="text" name="UpgradeTo" value="{{EmailWarner.UpgradeTo}}">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >停止次数:</label>
 								<div class="controls">
-									<input type="text" name="Stop">
+									<input type="text" name="Stop" value="{{EmailWarner.Stop}}">
 								</div>
 							</div>
 							<div class="control-group">
@@ -330,50 +340,50 @@
 							<div class="control-group">
 								<label class="control-label" >报警事件:</label>
 								<div class="controls">
-									<input type="radio" name="AlertCategory" value="危险" />危险
-									<input type="radio" name="AlertCategory" value="错误" />错误
+									<input type="radio" name="AlertCategory" value="危险" {{#if equal EmailWarner.AlertCategory "危险"}}checked="checked"{{/if}}/>危险
+									<input type="radio" name="AlertCategory" value="错误" {{#if equal EmailWarner.AlertCategory "错误"}}checked="checked"{{/if}}/>错误
 								</div>
 							</div>
 							
 							<div class="row">
 								<div class="control-group" style="padding-left:10px;margin:5px">
 									<span>
-										<input type="radio" name="AlertCond" value="1">
+										<input type="radio" name="AlertCond" value="1" {{#if equal EmailWarner.AlertCond "1"}}checked="checked"{{/if}}>
 									</span>
 									<label>连续不断发送警告</label>
 								</div>
 								<div class="control-group">
 									<span style="padding:20px">
-										总是发送，从第<input type="text" name="AlwaysTimes" style="width:28px;height:12px" value="1">次符合报警发送条件开始发送报警
+										总是发送，从第<input type="text" name="AlwaysTimes" style="width:28px;height:12px" value="{{EmailWarner.AlwaysTimes}}">次符合报警发送条件开始发送报警
 									</span>
 								</div>
 								<div class="control-group" style="padding-left:10px;margin:5px">
 									<span>
-										<input type="radio" name="AlertCond" value="2">
+										<input type="radio" name="AlertCond" value="2" {{#if equal EmailWarner.AlertCond "2"}}checked="checked"{{/if}}>
 									</span>
 									<label>报警只发送一次</label>
 								</div>
 								<div class="control-group">
 									<span style="padding:20px">
-										发送一次，当第<input type="text" name="OnlyTimes" style="width:28px;height:12px" value="1">次符合报警发送条件发送报警
+										发送一次，当第<input type="text" name="OnlyTimes" style="width:28px;height:12px" value="{{EmailWarner.OnlyTimes}}">次符合报警发送条件发送报警
 									</span>
 								</div>
 								<div class="control-group" style="padding-left:10px;margin:5px">
 									<span class="input-group-addon">
-										<input type="radio" name="AlertCond" value="3" checked>
+										<input type="radio" name="AlertCond" value="3" {{#if equal EmailWarner.AlertCond "3"}}checked="checked"{{/if}}>
 									</span>
 									<label>选择性发送报警</label>
 								</div>
 								<div class="control-group">
 									<span style="padding:20px">
-										当第<input type="text" style="width:28px;height:12px" name="SelTime1" value="2">次符合报警发送条件时及其以后每重复
-										<input type="text" style="width:28px;height:12px" name="SelTime2" value="3">次时发送报警
+										当第<input type="text" style="width:28px;height:12px" name="SelTime1" value="{{EmailWarner.SelTime1}}">次符合报警发送条件时及其以后每重复
+										<input type="text" style="width:28px;height:12px" name="SelTime2" value="{{EmailWarner.SelTime2}}">次时发送报警
 									</span>
 								</div>
 							</div>
 						</fieldset>
 					</form>
-					
+					{{/with}}
 				</div>
 			</div>
 		</div>
