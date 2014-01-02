@@ -86,7 +86,7 @@ Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getEntityMonitorByDevicety
 
 Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getQuickAddMonitorsAsync",{
 	value:function(entityDevicetype,addedEntityId){
-		
+
 		template = SvseEntityTemplet.findOne({"return.id":entityDevicetype});
 		var monitors =  [];
 		if(!template){
@@ -129,5 +129,34 @@ Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getQuickAddMonitorsAsync",
 			}
 		}
 		return {monitors:monitors,addedEntityId:addedEntityId};
+	}
+});
+
+
+
+
+//客户端异步获取编辑监视的信息
+Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getEditMonitorInfoAsync",{
+	value:function(monitorId){
+		var monitor = SvseTree.findOne({sv_id:monitorId});
+		if(!monitor){
+			return null;
+		}
+		
+	}
+});
+
+MonitorInfomation =  function(){};
+//编辑监视器时根据 监视器的id获取该监视器的模板类型
+/**
+	svid：监视器的id
+*/
+Object.defineProperty(MonitorInfomation,"getMonitorTemplateIdBySvid",{
+	value:function(svid){
+		var monitor = SvseTree.findOne({sv_id:svid});
+		if(!monitor){
+			return false;
+		}
+		return monitor.sv_monitortype;
 	}
 });

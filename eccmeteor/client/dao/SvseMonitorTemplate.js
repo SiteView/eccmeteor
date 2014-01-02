@@ -250,3 +250,18 @@ Object.defineProperty(SvseMonitorTemplateDao,"getQuickAddMonitorsAsync",{
 		});
 	}
 });
+
+//异步
+//编辑监视器 信息获取
+Object.defineProperty(SvseMonitorTemplateDao,"getEditMonitorInfoAsync",{
+	value:function(monitorId,fn){
+		Meteor.call(SvseMonitorTemplateDao.AGENT,"getEditMonitorInfoAsync",[entityDevicetype,addedEntityId],function(error,result){
+			if(error){
+				console.log(error);
+				fn({status:false})
+			}else{
+				fn({status:true,context:result});
+			}
+		});
+	}
+})
