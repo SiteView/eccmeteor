@@ -75,7 +75,7 @@ Template.sysLogQuery.events({
 					}
 					//console.log(table);
 					//判断正则表达式
-					if(expression){
+					/*if(expression){
 						var resultData = [];
 						for(var i = 0;i< table.length;i++){
 							expression = new RegExp("([ftph]+://[a-zA-Z0-9\._-]+)","img");
@@ -90,13 +90,15 @@ Template.sysLogQuery.events({
 						}
 					}
 					console.log(resultData);
-					console.log("以上是正则表达式筛选");
-					/*
-					    var expression=table.charAt(0);//开始字符
+					console.log("以上是正则表达式筛选");*/
+					
+					   /* var expression=table.charAt(0);//开始字符
 					    var syslogmsg=table.length;//查找符串的长度
 					    var curCon;
 					    var isFind=false;//是否找到
 					    var resultIndex=-1//如果是的话的那个索引
+						if(expression){
+						var resultData = [];
 						for(var i=0;i<container.length;i++)
 					  {
 						  curCon=container[i];
@@ -118,7 +120,7 @@ Template.sysLogQuery.events({
 						  }
 					  }
 					  return -1;
-					  */
+					  }*/
 					//判断IP地址
 					if(SourceIp){
 						var resultData = [];
