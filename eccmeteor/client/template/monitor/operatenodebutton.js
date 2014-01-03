@@ -78,8 +78,6 @@ Template.operateNode.events ={
 			var group = SvseEntityTemplateDao.getEntityGroupSync();
 			RenderTemplate.showParents("#ChooseEntityTemplateForAddEntity","EntitiesGroupByType",{entityGroup:group});
 		}
-
-		
 	},
 	"click a#removeEquipments":function(){ //删除多个组和设备
 		//删除子节点
