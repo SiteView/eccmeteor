@@ -153,11 +153,11 @@
 					  </tr>
 					</thead>
 					</table>
-							<div class="control-group" style="padding-left:88px">
-								<button class="btn" id="SysLogsettingEntityapplybtn"><img src="imag/setting/save_bt.gif">{{language.syslogsettingmodel.applybtn}}</button>
-								<button class="btn" id="SysLogsettingEntityrecoverbtn"><img src="imag/setting/reload_bt.gif">{{language.syslogsettingmodel.recoverbtn}}</button>
-								<button class="btn" id="SysLogsettinghelpbtn"><img src="imag/setting/help.gif">{{language.helpmessagebtn}}</button>
-							</div>
+					<div class="control-group" style="padding-left:88px">
+						<button class="btn" id="SysLogsettingEntityapplybtn"><img src="imag/setting/save_bt.gif">{{language.syslogsettingmodel.applybtn}}</button>
+						<button class="btn" id="SysLogsettingEntityrecoverbtn"><img src="imag/setting/reload_bt.gif">{{language.syslogsettingmodel.recoverbtn}}</button>
+						<button class="btn" id="SysLogsettinghelpbtn"><img src="imag/setting/help.gif">{{language.helpmessagebtn}}</button>
+					</div>
 				</form>
 			</div>
 			<!--
@@ -311,121 +311,55 @@
 					
 			<div class="tab-pane" id="home2">
 				<form id="RankSet" name="frm" onsubmit="return false;">
-					<table class="table table-condensed" width="200" border="0">
+					<table class="table table-striped table-condensed table-hover" width="200" border="0">
 					<thead>
-						
-						  <tr>
-								<td>
-									<input id="cb2_0" type="checkbox" name="0" value="0"/>
-											 Emergency
-								</td>
-									<td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;</td>
-								<td>
-									<input id="cb2_1" type="checkbox" name="1" value="1"/>
-											Alert
-								</td>
-						  </tr>
-						  <tr>
-								<td>
-									<input id="cb2_2" type="checkbox" name="2" value="2"/>
-											 Critical
-								</td>
-									<td></td>
-								<td>
-									<input id="cb2_3" type="checkbox" name="3" value="3"/>
-											 Error
-								</td>
-						  </tr>
-						  <tr>
-								<td>
-									<input id="cb2_4" type="checkbox" name="4" value="4">
-											 Warning
-								</td>
-									<td></td>
-								<td>
-									<input id="cb2_5" type="checkbox" name="5" value="5"/>
-											 Notice
-								</td>
-						  </tr>
-						  <tr>
-								<td>
-									<input id="cb2_6" type="checkbox" name="6" value="6"/>
-											 Informational
-								</td>
-									<td></td>
-								<td>
-									<input id="cb2_7" type="checkbox" name="7" value="7"/>
-											 Debug
-								</td>
-						  </tr>
-			  
-						</thead>
-						</table>
-							<div class="controls" style="padding-left:88px">
-								<button class="btn" id="SysLogsettingRankapplybtn"><img src="imag/setting/save_bt.gif">{{language.syslogsettingmodel.applybtn}}</button>
-								<button class="btn" id="SysLogsettingRankrecoverbtn"><img src="imag/setting/reload_bt.gif">{{language.syslogsettingmodel.recoverbtn}}</button>
-							</div>
-				</form>
-		</div>
-	<!--<div class="tab-pane" id="home2">
-			<form id="RankSet" name="frm" onsubmit="return false;">
-				<table class="table table-condensed" width="200" border="0">
-				<thead>
-					
-					  <tr>
+						<tr>
 							<td>
-								<input id="0" type="checkbox" name="0" value="0"/>
-										 Emergency
+								<input id="cb2_0" type="checkbox" name="0" value="0"/>Emergency
 							</td>
 								<td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;</td>
 							<td>
-								<input id="1" type="checkbox" name="1" value="1"/>
-										Alert
+								<input id="cb2_1" type="checkbox" name="1" value="1"/>Alert
 							</td>
-					  </tr>
-					  <tr>
+						</tr>
+						<tr>
 							<td>
-								<input id="2" type="checkbox" name="2" value="2"/>
-										 Critical
+								<input id="cb2_2" type="checkbox" name="2" value="2"/>Critical
 							</td>
 								<td></td>
 							<td>
-								<input id="3" type="checkbox" name="3" value="3"/>
-										 Error
+								<input id="cb2_3" type="checkbox" name="3" value="3"/> Error
 							</td>
-					  </tr>
-					  <tr>
+						</tr>
+						<tr>
 							<td>
-								<input id="4" type="checkbox" name="4" value="4">
-										 Warning
+								<input id="cb2_4" type="checkbox" name="4" value="4">Warning
 							</td>
 								<td></td>
 							<td>
-								<input id="5" type="checkbox" name="5" value="5"/>
-										 Notice
+								<input id="cb2_5" type="checkbox" name="5" value="5"/>Notice
 							</td>
-					  </tr>
-					  <tr>
+						</tr>
+						 <tr>
 							<td>
-								<input id="6" type="checkbox" name="6" value="6"/>
-										 Informational
+								<input id="cb2_6" type="checkbox" name="6" value="6"/>Informational
 							</td>
 								<td></td>
 							<td>
-								<input id="7" type="checkbox" name="7" value="7"/>
-										 Debug
+								<input id="cb2_7" type="checkbox" name="7" value="7"/> Debug
 							</td>
-					  </tr>
-		  
-					</thead>
-					</table>
+						</tr>
+			  
+						</thead>
+						</table>
 						<div class="controls" style="padding-left:88px">
-							<button class="btn" id="SysLogsettingRankapplybtn">{{language.syslogsettingmodel.applybtn}}</button>
-							<button class="btn" id="SysLogsettingRankrecoverbtn">{{language.syslogsettingmodel.recoverbtn}}</button>
+							<button class="btn" id="SysLogsettingRankapplybtn"><img src="imag/setting/save_bt.gif">{{language.syslogsettingmodel.applybtn}}</button>
+							<button class="btn" id="SysLogsettingRankrecoverbtn"><img src="imag/setting/reload_bt.gif">{{language.syslogsettingmodel.recoverbtn}}</button>
 						</div>
-			</form>
-	</div>
-	-->
+				</form>
+			</div>
+		</div>
+	
 		<div class="tab-pane" id="home3">
 			<div id="Dellog">
 				<div class="well form-horizontal form-inline">
@@ -450,7 +384,7 @@
 								<input type="text" name="KeepDay" value=""  autocomplete="on" onkeyup="this.value=this.value.replace(/[^\d]/g,'') " onafterpaste="this.value=this.value.replace(/[^\d]/g,'') " style="width:196px"/>
 								<button class="btn" id="SysLogsettinKeepDaygapplybtn">&nbsp&nbsp&nbsp&nbsp;<img src="imag/setting/save_bt.gif">{{language.syslogsettingmodel.applybtn}}&nbsp&nbsp&nbsp;</button>
 							 </div>
-					</form
+					</form>
 				</div>
 			</div>
 		</div>
