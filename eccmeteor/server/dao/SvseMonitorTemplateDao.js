@@ -155,6 +155,46 @@ Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getEditMonitorInfoAsync",{
 	}
 });
 
+
+//客户端同步获取编辑监视的信息
+Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getAddMonitorInfoAsync",{
+	value:function(monitorTemplateId,entityId){
+		monitorTemplate =  SvseMonitorTemplate.findOne({"return.id" : monitorTemplateId});
+		if(!monitorTemplate){
+			return null;
+		}
+		var context = MonitorInfomation.getMonitorInfoContext(monitorTemplate);
+
+		var monityTemplateParameters = context.MonityTemplateParameters;
+		
+		var mParametersLength = monityTemplateParameters.length;
+		var DynamicParameters = null;
+		for(var pi = 0 ; pi < mParametersLength ; pi++){
+			if(monityTemplateParameters[pi]["sv_dll"]){
+				DynamicParameters = {index:pi,parameter:monityTemplateParameters[pi]};
+				break;
+			}
+		}
+		//监视器不具备动态属性。直接渲染弹窗
+		if(!DynamicParameters){
+			return context;
+		}
+		//具备动态属性 && 获取动态属性
+		var monitorData =  SvseMethodsOnServer.svGetEntityDynamicPropertyData(entityId,monitorTemplateId);
+		if(!monitorData) {
+			return null;
+		}
+		var optionObj = monitorData["DynamicData"];
+		var DynamicDataList = [];
+		for(name in optionObj){
+			DynamicDataList.push({key:name,value:optionObj[name]});
+		}
+		//给对应的设备赋值
+		context.MonityTemplateParameters[DynamicParameters.index]["selects"] = DynamicDataList;
+		return context;
+	}
+});
+
 var MonitorInfomation =  function(){};
 
 Object.defineProperty(MonitorInfomation,"getMonitorInfoContext",{
@@ -162,7 +202,6 @@ Object.defineProperty(MonitorInfomation,"getMonitorInfoContext",{
 		var monitorTemplateId = monitorTemplate["return"]["id"]
 		var monitorTemplateName = monitorTemplate.property.sv_label;
 		var allTemplateParameters = this.parseMonityTemplateAllParameters(monitorTemplate);
-		var ActionType = "编辑";//添加或编辑。用于标题栏
 		var MonityTemplateParameters = this.parseMonityTemplateParameters(allTemplateParameters);
 		var MonityTemplateAdvanceParameters = this.parseMonityTemplateAdvanceParameters(monitorTemplate);
 		var MonityTemplateReturnItems = this.parseMonityTemplateReturnItems(monitorTemplate);
@@ -171,7 +210,6 @@ Object.defineProperty(MonitorInfomation,"getMonitorInfoContext",{
 		var MonityFrequencyDom =  this.parseMonityTemplateFrequencyParameters(allTemplateParameters);
 		return {
 			monitorTemplateId:monitorTemplateId,
-			ActionType:ActionType,
 			monitorType:monitorTemplateName,
 			MonityTemplateParameters:MonityTemplateParameters,
 			MonityTemplateAdvanceParameters:MonityTemplateAdvanceParameters,

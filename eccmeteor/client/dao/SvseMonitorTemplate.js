@@ -4,10 +4,6 @@ SvseMonitorTemplateDao ={
 	getTemplateById:function(id){//根据id获取模板
 		return SvseMonitorTemplate.findOne({"return.id" : id});
 	},
-	//获取监视器模板名称 如：CPU ，ping等
-	getTemplateTypeById:function(id){
-		return SvseMonitorTemplate.findOne({"return.id" : id}).property.sv_label;
-	},
 	getMonityTemplateParameters:function(id){//根据id获取监视器模板参数
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});
 		var parameters = [];
@@ -265,3 +261,19 @@ Object.defineProperty(SvseMonitorTemplateDao,"getEditMonitorInfoAsync",{
 		});
 	}
 })
+
+
+//异步
+//编辑监视器 信息获取
+Object.defineProperty(SvseMonitorTemplateDao,"getAddMonitorInfoAsync",{
+	value:function(monitorTemplateId,entityId,fn){
+		Meteor.call(SvseMonitorTemplateDao.AGENT,"getAddMonitorInfoAsync",[monitorTemplateId,entityId],function(error,result){
+			if(error){
+				console.log(error);
+				fn({status:false})
+			}else{
+				fn({status:true,context:result});
+			}
+		});
+	}
+});
