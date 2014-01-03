@@ -1,6 +1,7 @@
 initAdminAccount = function(){
-	if(Meteor.users.findOne({username:"admin"}))
+	if(Meteor.users.findOne({username:"admin"})){
 		return;
+	}	
 	var admin = {
 		username:"admin",
 		password:"system",

@@ -78,8 +78,6 @@ Template.operateNode.events ={
 			var group = SvseEntityTemplateDao.getEntityGroupSync();
 			RenderTemplate.showParents("#ChooseEntityTemplateForAddEntity","EntitiesGroupByType",{entityGroup:group});
 		}
-
-		
 	},
 	"click a#removeEquipments":function(){ //删除多个组和设备
 		//删除子节点
@@ -119,13 +117,6 @@ Template.operateNode.events ={
 			var monitorTemplates = SvseMonitorTemplateDao.getEntityMonitorByDevicetypeSync(devicetype,false);
 			RenderTemplate.showParents("#ChooseeMonitorTemplateModal","ChooseeMonitorTemplateModal",{monities:monitorTemplates});
 		}
-	},
-	"click .btn#editMonitor" : function(){//编辑监视，应该先获取 监视器添加时的模板，然后填充数据
-		if(!Session.get("checkedMonitorId")||Session.get("checkedMonitorId")["type"] !== "monitor") return;
-		var monitorid = Session.get("checkedMonitorId")["id"];
-		var templateMonitoryId = SvseTreeDao.getMonitorTypeById(monitorid); //获取需编辑监视器的模板id
-		Session.set("monityTemplateId",templateMonitoryId);//设置模板id
-		SwithcView.view(MONITORVIEW.MONITOREDIT);
 	},
 	"click a#deleteMonitor" : function(){
 		var monitorIds =  ClientUtils.tableGetSelectedAll("showMonitorList");
