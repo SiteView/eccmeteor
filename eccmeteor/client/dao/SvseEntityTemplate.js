@@ -43,6 +43,7 @@ Object.defineProperty(SvseEntityTemplateDao,"isEmpty",{
 		if(SvseEntityTempletGroup.findOne() == null){
 			Session.set(Subscribe.LOADSVSEENTITYTEMPLATEGROUP,true);
 			Session.set(Subscribe.LOADSVSEENTITYTEMPLATE,true);
+			Session.set(Subscribe.LOADSVSEMONITORTEMPLATE,true);
 			return true;
 		}
 		return false;
