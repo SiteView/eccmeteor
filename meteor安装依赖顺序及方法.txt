@@ -1,0 +1,5 @@
+﻿一，删除工程目录中package 中npm
+二  在工程目录下（ C:\Users\xuqiang\Documents\GitHub\eccmeteor\eccmeteor）  运行meteor-npm ；
+三 ，运行meteor;等待自动安装依赖包；
+ 查看报错信息 sv_init未定义；结束运行；
+四，找到meteor安装目录 备份原来node.exe并且替换成自己编译的node.exe及.dll 文件 
