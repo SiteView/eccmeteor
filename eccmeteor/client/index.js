@@ -1,5 +1,8 @@
 Meteor.Router.add({
-    '/': 'Login',
+    '/': function(){
+      Meteor.logout();
+      return 'Login';
+    },
     '/index':'Login',
     '/login':'Login',
     '/home': 'body',

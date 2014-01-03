@@ -12,7 +12,9 @@ var sublitLoginform = function(t){
       errorMsg.empty();
       SvseUserDao.login(username,password,function(err,status){
         if(err){
-          Log4js.error(err)
+          Log4js.error(err);
+          console.log("login fail");
+          Meteor.logout();
           errorMsg.html(status ? err : "*登陆名不存在或密码错误");
         }else{
             $("body").css("background-color","white");
