@@ -26,7 +26,8 @@ SETTINGVIEW = {
 	Content:增加"软件许可"License
 */ 
 	SYSLOGSETTING:"SysLogsetting",	//SysLog设置
-	LICENSE:"License"//软件许可
+	LICENSE:"License",//软件许可
+	ABOUT:"About"    //产品介绍
 }
 //报警试图
 ALERTVIEW = {

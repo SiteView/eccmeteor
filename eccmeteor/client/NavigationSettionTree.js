@@ -92,7 +92,11 @@ var NavigationSettingTreeEvents = {
 	*/ 
 	"License":function(){
        SwithcView.view(SETTINGVIEW.LICENSE);
-    }
+    },
+	"About":function(){
+       SwithcView.view(SETTINGVIEW.ABOUT);
+    },
+	
 }
 NavigationSettingTree = {
 	getTreeData:function(){

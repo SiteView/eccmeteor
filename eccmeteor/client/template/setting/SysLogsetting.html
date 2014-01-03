@@ -7,354 +7,412 @@
 </Template>
 		
 <Template name="SysLogsetting_status">
-<ul id="myTab" class="nav nav-tabs">
-		<li class="active"><a href="#home1" data-toggle="tab">设备参数设置</a></li>
-		<li><a href="#home2" data-toggle="tab">级别参数设置</a></li>
-		<li><a href="#home3" data-toggle="tab">系统日志删除设置</a></li>
-	</ul>
-	
-	<div id="mytabcontent" class="tab-content" style="border:none;">
-		<div class="tab-pane active" id="home1">
-			<form id="EntitySet" onsubmit="return false;">
-				<table class="table table-condensed" width="200" border="0">
-				<thead>
-			
-				  <tr>
-						<td>
-							<input id="c0" type="checkbox" name="0" value="0"/>
-									 Kernel
-						</td>
-							<td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;</td>
-						<td>
-							<input id="c1" type="checkbox" name="1" value="1">
-									 User
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="c2" type="checkbox" name="2" value="2"/>
-									 Mail
-						</td>
-							<td></td>
-						<td>
-							<input id="c3" type="checkbox" name="3" value="3"/>
-									 Daemon
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="c4" type="checkbox" name="4" value="4"/>
-									 Auth
-						</td>
-							<td></td>
-						<td>
-							<input id="c5" type="checkbox" name="5" value="5"/>
-									 Syslog
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="c6" type="checkbox" name="6" value="6"/>
-									 Lpr
-						</td>
-							<td></td>
-						<td>
-							<input id="c7" type="checkbox" name="7" value="7"/>
-									 News
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="c8" type="checkbox" name="8" value="8"/>
-									 UUCP
-						</td>
-							<td></td>
-						<td>
-							<input id="c9" type="checkbox" name="9" value="9"/>
-									 Cron
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="c10" type="checkbox" name="10" value="10"/>
-									 Security
-						</td>
-							<td></td>
-						<td>
-							<input id="c11" type="checkbox" name="11" value="11">
-									 FTP Daemon
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="c12" type="checkbox" name="12" value="12"/>
-									 NIP
-						</td>
-							<td></td>
-						<td>
-							<input id="c13" type="checkbox" name="13" value="13"/>
-									 Log audit
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="c14" type="checkbox" name="14" value="14"/>
-									 Log alert
-						</td>
-							<td></td>
-						<td>
-							<input id="c15" type="checkbox" name="15" value="15"/>
-									 Clock Daemon
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="c16" type="checkbox" name="16" value="16"/>
-									 local0
-						</td>
-							<td></td>
-						<td>
-							<input id="c17" type="checkbox" name="17" value="17"/>
-									 local1
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="c18" type="checkbox" name="18" value="18"/>
-									 local2
-						</td>
-							<td></td>
-						<td>
-							<input id="c19" type="checkbox" name="19" value="19"/>
-									 local3
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="c20" type="checkbox" name="20" value="20"/>
-									 local4
-						</td>
-							<td></td>
-						<td>
-							<input id="c21" type="checkbox" name="21" value="21"/>
-									 local5
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="c22" type="checkbox" name="22" value="22"/>
-									 local6
-						</td>
-							<td></td>
-						<td>
-							<input id="c23" type="checkbox" name="23" value="23"/>
-									 local7
-						</td>
-				  </tr>
-				</thead>
-				</table>
-						<div class="control-group" style="padding-left:88px">
-							<button class="btn" id="SysLogsettingEntityapplybtn"><img src="imag/setting/save_bt.gif">{{language.syslogsettingmodel.applybtn}}</button>
-							<button class="btn" id="SysLogsettingEntityrecoverbtn"><img src="imag/setting/reload_bt.gif">{{language.syslogsettingmodel.recoverbtn}}</button>
-							<button class="btn" id="SysLogsettinghelpbtn"><img src="imag/setting/help.gif">{{language.helpmessagebtn}}</button>
-						</div>
-			</form>
-		</div>
-	<!--
-	<div id="mytabcontent" class="tab-content" style="border:none;">
-	<div class="tab-pane active" id="home1">
-		<form id="EntitySet" onsubmit="return false;">
-			<table class="table table-condensed" width="200" border="0">
-			<thead>
+	<ul id="myTab" class="nav nav-tabs">
+			<li class="active"><a href="#home1" data-toggle="tab">设备参数设置</a></li>
+			<li><a href="#home2" data-toggle="tab">级别参数设置</a></li>
+			<li><a href="#home3" data-toggle="tab">系统日志删除设置</a></li>
+		</ul>
 		
-			  <tr>
-					<td>
-						<input id="0" type="checkbox" />
-								 Kernel
-					</td>
-						<td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;</td>
-					<td>
-						<input id="1" type="checkbox" />
-								 User
-					</td>
-			  </tr>
-			  <tr>
-					<td>
-						<input id="2" type="checkbox"  />
-								 Mail
-					</td>
-						<td></td>
-					<td>
-						<input id="3" type="checkbox" />
-								 Daemon
-					</td>
-			  </tr>
-			  <tr>
-					<td>
-						<input id="4" type="checkbox" />
-								 Auth
-					</td>
-						<td></td>
-					<td>
-						<input id="5" type="checkbox" />
-								 Syslog
-					</td>
-			  </tr>
-			  <tr>
-					<td>
-						<input id="6" type="checkbox" name="Facility/>
-								 Lpr
-					</td>
-						<td></td>
-					<td>
-						<input id="7" type="checkbox" />
-								 News
-					</td>
-			  </tr>
-			  <tr>
-					<td>
-						<input id="8" type="checkbox" />
-								 UUCP
-					</td>
-						<td></td>
-					<td>
-						<input id="9" type="checkbox" />
-								 Cron
-					</td>
-			  </tr>
-			  <tr>
-					<td>
-						<input id="10" type="checkbox" />
-								 Security
-					</td>
-						<td></td>
-					<td>
-						<input id="11" type="checkbox" />
-								 FTP Daemon
-					</td>
-			  </tr>
-			  <tr>
-					<td>
-						<input id="12" type="checkbox" />
-								 NIP
-					</td>
-						<td></td>
-					<td>
-						<input id="13" type="checkbox" />
-								 Log audit
-					</td>
-			  </tr>
-			  <tr>
-					<td>
-						<input id="14" type="checkbox" />
-								 Log alert
-					</td>
-						<td></td>
-					<td>
-						<input id="15" type="checkbox" />
-								 Clock Daemon
-					</td>
-			  </tr>
-			  <tr>
-					<td>
-						<input id="16" type="checkbox" />
-								 local0
-					</td>
-						<td></td>
-					<td>
-						<input id="17" type="checkbox" />
-								 local1
-					</td>
-			  </tr>
-			  <tr>
-					<td>
-						<input id="18" type="checkbox" />
-								 local2
-					</td>
-						<td></td>
-					<td>
-						<input id="19" type="checkbox" />
-								 local3
-					</td>
-			  </tr>
-			  <tr>
-					<td>
-						<input id="20" type="checkbox" />
-								 local4
-					</td>
-						<td></td>
-					<td>
-						<input id="21" type="checkbox" />
-								 local5
-					</td>
-			  </tr>
-			  <tr>
-					<td>
-						<input id="22" type="checkbox" name="Facility/>
-								 local6
-					</td>
-						<td></td>
-					<td>
-						<input id="23" type="checkbox" />
-								 local7
-					</td>
-			  </tr>
-			</thead>
-			</table>
-					<div class="control-group" style="padding-left:88px">
-						<button class="btn" id="SysLogsettingEntityapplybtn">{{language.syslogsettingmodel.applybtn}}</button>
-						<button class="btn" id="SysLogsettingEntityrecoverbtn">{{language.syslogsettingmodel.recoverbtn}}</button>
-						<button class="btn" id="SysLogsettinghelpbtn">{{language.helpmessagebtn}}</button>
-					</div>
-		</form>
-	</div>-->
+		<div id="mytabcontent" class="tab-content" style="border:none;">
+			<div class="tab-pane active" id="home1">
+				<form id="EntitySet" onsubmit="return false;">
+					<table class="table table-condensed" width="200" border="0">
+					<thead>
 				
-		<div class="tab-pane" id="home2">
+					  <tr>
+							<td>
+								<input id="c0" type="checkbox" name="0" value="0"/>
+										 Kernel
+							</td>
+								<td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;</td>
+							<td>
+								<input id="c1" type="checkbox" name="1" value="1">
+										 User
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="c2" type="checkbox" name="2" value="2"/>
+										 Mail
+							</td>
+								<td></td>
+							<td>
+								<input id="c3" type="checkbox" name="3" value="3"/>
+										 Daemon
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="c4" type="checkbox" name="4" value="4"/>
+										 Auth
+							</td>
+								<td></td>
+							<td>
+								<input id="c5" type="checkbox" name="5" value="5"/>
+										 Syslog
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="c6" type="checkbox" name="6" value="6"/>
+										 Lpr
+							</td>
+								<td></td>
+							<td>
+								<input id="c7" type="checkbox" name="7" value="7"/>
+										 News
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="c8" type="checkbox" name="8" value="8"/>
+										 UUCP
+							</td>
+								<td></td>
+							<td>
+								<input id="c9" type="checkbox" name="9" value="9"/>
+										 Cron
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="c10" type="checkbox" name="10" value="10"/>
+										 Security
+							</td>
+								<td></td>
+							<td>
+								<input id="c11" type="checkbox" name="11" value="11">
+										 FTP Daemon
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="c12" type="checkbox" name="12" value="12"/>
+										 NIP
+							</td>
+								<td></td>
+							<td>
+								<input id="c13" type="checkbox" name="13" value="13"/>
+										 Log audit
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="c14" type="checkbox" name="14" value="14"/>
+										 Log alert
+							</td>
+								<td></td>
+							<td>
+								<input id="c15" type="checkbox" name="15" value="15"/>
+										 Clock Daemon
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="c16" type="checkbox" name="16" value="16"/>
+										 local0
+							</td>
+								<td></td>
+							<td>
+								<input id="c17" type="checkbox" name="17" value="17"/>
+										 local1
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="c18" type="checkbox" name="18" value="18"/>
+										 local2
+							</td>
+								<td></td>
+							<td>
+								<input id="c19" type="checkbox" name="19" value="19"/>
+										 local3
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="c20" type="checkbox" name="20" value="20"/>
+										 local4
+							</td>
+								<td></td>
+							<td>
+								<input id="c21" type="checkbox" name="21" value="21"/>
+										 local5
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="c22" type="checkbox" name="22" value="22"/>
+										 local6
+							</td>
+								<td></td>
+							<td>
+								<input id="c23" type="checkbox" name="23" value="23"/>
+										 local7
+							</td>
+					  </tr>
+					</thead>
+					</table>
+							<div class="control-group" style="padding-left:88px">
+								<button class="btn" id="SysLogsettingEntityapplybtn"><img src="imag/setting/save_bt.gif">{{language.syslogsettingmodel.applybtn}}</button>
+								<button class="btn" id="SysLogsettingEntityrecoverbtn"><img src="imag/setting/reload_bt.gif">{{language.syslogsettingmodel.recoverbtn}}</button>
+								<button class="btn" id="SysLogsettinghelpbtn"><img src="imag/setting/help.gif">{{language.helpmessagebtn}}</button>
+							</div>
+				</form>
+			</div>
+			<!--
+			<div id="mytabcontent" class="tab-content" style="border:none;">
+			<div class="tab-pane active" id="home1">
+				<form id="EntitySet" onsubmit="return false;">
+					<table class="table table-condensed" width="200" border="0">
+					<thead>
+				
+					  <tr>
+							<td>
+								<input id="0" type="checkbox" />
+										 Kernel
+							</td>
+								<td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;</td>
+							<td>
+								<input id="1" type="checkbox" />
+										 User
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="2" type="checkbox"  />
+										 Mail
+							</td>
+								<td></td>
+							<td>
+								<input id="3" type="checkbox" />
+										 Daemon
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="4" type="checkbox" />
+										 Auth
+							</td>
+								<td></td>
+							<td>
+								<input id="5" type="checkbox" />
+										 Syslog
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="6" type="checkbox" name="Facility/>
+										 Lpr
+							</td>
+								<td></td>
+							<td>
+								<input id="7" type="checkbox" />
+										 News
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="8" type="checkbox" />
+										 UUCP
+							</td>
+								<td></td>
+							<td>
+								<input id="9" type="checkbox" />
+										 Cron
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="10" type="checkbox" />
+										 Security
+							</td>
+								<td></td>
+							<td>
+								<input id="11" type="checkbox" />
+										 FTP Daemon
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="12" type="checkbox" />
+										 NIP
+							</td>
+								<td></td>
+							<td>
+								<input id="13" type="checkbox" />
+										 Log audit
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="14" type="checkbox" />
+										 Log alert
+							</td>
+								<td></td>
+							<td>
+								<input id="15" type="checkbox" />
+										 Clock Daemon
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="16" type="checkbox" />
+										 local0
+							</td>
+								<td></td>
+							<td>
+								<input id="17" type="checkbox" />
+										 local1
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="18" type="checkbox" />
+										 local2
+							</td>
+								<td></td>
+							<td>
+								<input id="19" type="checkbox" />
+										 local3
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="20" type="checkbox" />
+										 local4
+							</td>
+								<td></td>
+							<td>
+								<input id="21" type="checkbox" />
+										 local5
+							</td>
+					  </tr>
+					  <tr>
+							<td>
+								<input id="22" type="checkbox" name="Facility/>
+										 local6
+							</td>
+								<td></td>
+							<td>
+								<input id="23" type="checkbox" />
+										 local7
+							</td>
+					  </tr>
+					</thead>
+					</table>
+							<div class="control-group" style="padding-left:88px">
+								<button class="btn" id="SysLogsettingEntityapplybtn">{{language.syslogsettingmodel.applybtn}}</button>
+								<button class="btn" id="SysLogsettingEntityrecoverbtn">{{language.syslogsettingmodel.recoverbtn}}</button>
+								<button class="btn" id="SysLogsettinghelpbtn">{{language.helpmessagebtn}}</button>
+							</div>
+				</form>
+			</div>-->
+					
+			<div class="tab-pane" id="home2">
+				<form id="RankSet" name="frm" onsubmit="return false;">
+					<table class="table table-condensed" width="200" border="0">
+					<thead>
+						
+						  <tr>
+								<td>
+									<input id="cb2_0" type="checkbox" name="0" value="0"/>
+											 Emergency
+								</td>
+									<td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;</td>
+								<td>
+									<input id="cb2_1" type="checkbox" name="1" value="1"/>
+											Alert
+								</td>
+						  </tr>
+						  <tr>
+								<td>
+									<input id="cb2_2" type="checkbox" name="2" value="2"/>
+											 Critical
+								</td>
+									<td></td>
+								<td>
+									<input id="cb2_3" type="checkbox" name="3" value="3"/>
+											 Error
+								</td>
+						  </tr>
+						  <tr>
+								<td>
+									<input id="cb2_4" type="checkbox" name="4" value="4">
+											 Warning
+								</td>
+									<td></td>
+								<td>
+									<input id="cb2_5" type="checkbox" name="5" value="5"/>
+											 Notice
+								</td>
+						  </tr>
+						  <tr>
+								<td>
+									<input id="cb2_6" type="checkbox" name="6" value="6"/>
+											 Informational
+								</td>
+									<td></td>
+								<td>
+									<input id="cb2_7" type="checkbox" name="7" value="7"/>
+											 Debug
+								</td>
+						  </tr>
+			  
+						</thead>
+						</table>
+							<div class="controls" style="padding-left:88px">
+								<button class="btn" id="SysLogsettingRankapplybtn"><img src="imag/setting/save_bt.gif">{{language.syslogsettingmodel.applybtn}}</button>
+								<button class="btn" id="SysLogsettingRankrecoverbtn"><img src="imag/setting/reload_bt.gif">{{language.syslogsettingmodel.recoverbtn}}</button>
+							</div>
+				</form>
+		</div>
+	<!--<div class="tab-pane" id="home2">
 			<form id="RankSet" name="frm" onsubmit="return false;">
 				<table class="table table-condensed" width="200" border="0">
 				<thead>
 					
 					  <tr>
 							<td>
-								<input id="cb2_0" type="checkbox" name="0" value="0"/>
+								<input id="0" type="checkbox" name="0" value="0"/>
 										 Emergency
 							</td>
 								<td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;</td>
 							<td>
-								<input id="cb2_1" type="checkbox" name="1" value="1"/>
+								<input id="1" type="checkbox" name="1" value="1"/>
 										Alert
 							</td>
 					  </tr>
 					  <tr>
 							<td>
-								<input id="cb2_2" type="checkbox" name="2" value="2"/>
+								<input id="2" type="checkbox" name="2" value="2"/>
 										 Critical
 							</td>
 								<td></td>
 							<td>
-								<input id="cb2_3" type="checkbox" name="3" value="3"/>
+								<input id="3" type="checkbox" name="3" value="3"/>
 										 Error
 							</td>
 					  </tr>
 					  <tr>
 							<td>
-								<input id="cb2_4" type="checkbox" name="4" value="4">
+								<input id="4" type="checkbox" name="4" value="4">
 										 Warning
 							</td>
 								<td></td>
 							<td>
-								<input id="cb2_5" type="checkbox" name="5" value="5"/>
+								<input id="5" type="checkbox" name="5" value="5"/>
 										 Notice
 							</td>
 					  </tr>
 					  <tr>
 							<td>
-								<input id="cb2_6" type="checkbox" name="6" value="6"/>
+								<input id="6" type="checkbox" name="6" value="6"/>
 										 Informational
 							</td>
 								<td></td>
 							<td>
-								<input id="cb2_7" type="checkbox" name="7" value="7"/>
+								<input id="7" type="checkbox" name="7" value="7"/>
 										 Debug
 							</td>
 					  </tr>
@@ -362,98 +420,40 @@
 					</thead>
 					</table>
 						<div class="controls" style="padding-left:88px">
-							<button class="btn" id="SysLogsettingRankapplybtn"><img src="imag/setting/save_bt.gif">{{language.syslogsettingmodel.applybtn}}</button>
-							<button class="btn" id="SysLogsettingRankrecoverbtn"><img src="imag/setting/reload_bt.gif">{{language.syslogsettingmodel.recoverbtn}}</button>
+							<button class="btn" id="SysLogsettingRankapplybtn">{{language.syslogsettingmodel.applybtn}}</button>
+							<button class="btn" id="SysLogsettingRankrecoverbtn">{{language.syslogsettingmodel.recoverbtn}}</button>
 						</div>
 			</form>
 	</div>
-<!--<div class="tab-pane" id="home2">
-		<form id="RankSet" name="frm" onsubmit="return false;">
-			<table class="table table-condensed" width="200" border="0">
-			<thead>
-				
-				  <tr>
-						<td>
-							<input id="0" type="checkbox" name="0" value="0"/>
-									 Emergency
-						</td>
-							<td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;</td>
-						<td>
-							<input id="1" type="checkbox" name="1" value="1"/>
-									Alert
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="2" type="checkbox" name="2" value="2"/>
-									 Critical
-						</td>
-							<td></td>
-						<td>
-							<input id="3" type="checkbox" name="3" value="3"/>
-									 Error
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="4" type="checkbox" name="4" value="4">
-									 Warning
-						</td>
-							<td></td>
-						<td>
-							<input id="5" type="checkbox" name="5" value="5"/>
-									 Notice
-						</td>
-				  </tr>
-				  <tr>
-						<td>
-							<input id="6" type="checkbox" name="6" value="6"/>
-									 Informational
-						</td>
-							<td></td>
-						<td>
-							<input id="7" type="checkbox" name="7" value="7"/>
-									 Debug
-						</td>
-				  </tr>
-	  
-				</thead>
-				</table>
-					<div class="controls" style="padding-left:88px">
-						<button class="btn" id="SysLogsettingRankapplybtn">{{language.syslogsettingmodel.applybtn}}</button>
-						<button class="btn" id="SysLogsettingRankrecoverbtn">{{language.syslogsettingmodel.recoverbtn}}</button>
-					</div>
-		</form>
-</div>
--->
-	<div class="tab-pane" id="home3">
-		<div id="Dellog">
-			<div class="well form-horizontal form-inline">
-				
-				<div class="controls">
-					<div class="form-inline" id="form_datetime">
-								<label class="control-label">删除此时间以前的记录:&nbsp&nbsp</label>
-								<div id="delDatebox" class="input-append date form_datetime">
-									<input type="text" style="width:170px"/>
-									<span class="add-on">
-										<i class="icon-th"></i>
-									</span>
-								</div>
-								<button class="btn" id="delsyslogbtn"><img src="imag/setting/del.bmp">{{language.syslogsettingmodel.dellogbtn}}</button>
-				    </div>
-				</div>
+	-->
+		<div class="tab-pane" id="home3">
+			<div id="Dellog">
+				<div class="well form-horizontal form-inline">
 					
-				<form id="keepforday" method="POST" onsubmit="return false;">
-						<div class="controls">
+					<div class="controls">
+						<div class="form-inline" id="form_datetime">
+									<label class="control-label">删除此时间以前的记录:&nbsp&nbsp</label>
+									<div id="delDatebox" class="input-append date form_datetime">
+										<input type="text" style="width:170px"/>
+										<span class="add-on">
+											<i class="icon-th"></i>
+										</span>
+									</div>
+									<button class="btn" id="delsyslogbtn"><img src="imag/setting/del.bmp">{{language.syslogsettingmodel.dellogbtn}}</button>
+						</div>
+					</div>
 						
-						<label class="control-label">记录保持天数&nbsp&nbsp&nbsp&nbsp&nbsp; *&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;:&nbsp&nbsp</label>
-							<input type="text" name="KeepDay" value=""  autocomplete="on" onkeyup="this.value=this.value.replace(/[^\d]/g,'') " onafterpaste="this.value=this.value.replace(/[^\d]/g,'') " style="width:196px"/>
-							<button class="btn" id="SysLogsettinKeepDaygapplybtn">&nbsp&nbsp&nbsp&nbsp;<img src="imag/setting/save_bt.gif">{{language.syslogsettingmodel.applybtn}}&nbsp&nbsp&nbsp;</button>
-						 </div>
-				</form
+					<form id="keepforday" method="POST" onsubmit="return false;">
+							<div class="controls">
+							
+							<label class="control-label">记录保持天数&nbsp&nbsp&nbsp&nbsp&nbsp; *&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;:&nbsp&nbsp</label>
+								<input type="text" name="KeepDay" value=""  autocomplete="on" onkeyup="this.value=this.value.replace(/[^\d]/g,'') " onafterpaste="this.value=this.value.replace(/[^\d]/g,'') " style="width:196px"/>
+								<button class="btn" id="SysLogsettinKeepDaygapplybtn">&nbsp&nbsp&nbsp&nbsp;<img src="imag/setting/save_bt.gif">{{language.syslogsettingmodel.applybtn}}&nbsp&nbsp&nbsp;</button>
+							 </div>
+					</form
+				</div>
 			</div>
 		</div>
-	</div>
 </Template>
 <!-- helpmessage(帮助信息)demo --> 
 <Template name="sysloghelpmessage">
