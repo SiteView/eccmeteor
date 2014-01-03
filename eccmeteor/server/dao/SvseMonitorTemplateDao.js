@@ -133,30 +133,287 @@ Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getQuickAddMonitorsAsync",
 });
 
 
-
-
 //客户端异步获取编辑监视的信息
 Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getEditMonitorInfoAsync",{
-	value:function(monitorId){
+	value:function(monitorId,entityId){
+		//编辑监视器时根据 监视器的id获取该监视器的模板类型
 		var monitor = SvseTree.findOne({sv_id:monitorId});
 		if(!monitor){
 			return null;
 		}
-		
+		var monitorTemplateId =  monitor.sv_monitortype;
+		// 监视器模板id获取该监视器的模板类型名称
+		var monitorTemplate = SvseMonitorTemplate.findOne({"return.id":monitorTemplateId});
+		if(!monitorTemplate){
+			return null;
+		}
+		var context = MonitorInfomation.getMonitorInfoContext(monitorTemplate);
+		context["monitorId"] = monitorId;
+		result = MonitorInfomation.megerDynamicParameters(context,entityId);
+		return result;
+
 	}
 });
 
-MonitorInfomation =  function(){};
-//编辑监视器时根据 监视器的id获取该监视器的模板类型
-/**
-	svid：监视器的id
-*/
-Object.defineProperty(MonitorInfomation,"getMonitorTemplateIdBySvid",{
-	value:function(svid){
-		var monitor = SvseTree.findOne({sv_id:svid});
-		if(!monitor){
-			return false;
+var MonitorInfomation =  function(){};
+
+Object.defineProperty(MonitorInfomation,"getMonitorInfoContext",{
+	value:function(monitorTemplate){
+		var monitorTemplateId = monitorTemplate["return"]["id"]
+		var monitorTemplateName = monitorTemplate.property.sv_label;
+		var allTemplateParameters = this.parseMonityTemplateAllParameters(monitorTemplate);
+		var ActionType = "编辑";//添加或编辑。用于标题栏
+		var MonityTemplateParameters = this.parseMonityTemplateParameters(allTemplateParameters);
+		var MonityTemplateAdvanceParameters = this.parseMonityTemplateAdvanceParameters(monitorTemplate);
+		var MonityTemplateReturnItems = this.parseMonityTemplateReturnItems(monitorTemplate);
+		var MonityTemplateStates = this.parseMonityTemplateStates(monitorTemplate);
+		var MonityFrequencyLabel = this.parseMonityTemplateParameterByName(allTemplateParameters,"_frequency").sv_label;
+		var MonityFrequencyDom =  this.parseMonityTemplateFrequencyParameters(allTemplateParameters);
+		return {
+			monitorTemplateId:monitorTemplateId,
+			ActionType:ActionType,
+			monitorType:monitorTemplateName,
+			MonityTemplateParameters:MonityTemplateParameters,
+			MonityTemplateAdvanceParameters:MonityTemplateAdvanceParameters,
+			MonityTemplateReturnItems:MonityTemplateReturnItems,
+			Error:MonityTemplateStates.Error,
+			Warning:MonityTemplateStates.Warning,
+			Good:MonityTemplateStates.Good,
+			MonityFrequencyLabel:MonityFrequencyLabel,
+			MonityFrequencyDom:MonityFrequencyDom
 		}
-		return monitor.sv_monitortype;
+	}
+});
+
+Object.defineProperty(MonitorInfomation,"megerDynamicParameters",{
+	value:function(context,entityId){
+		var monityTemplateParameters = context.MonityTemplateParameters;
+		var monitorId = context["monitorId"];
+		var monitorTemplateId = context["monitorTemplateId"];
+		var mParametersLength = monityTemplateParameters.length;
+		var DynamicParameters = null;
+		for(var pi = 0 ; pi < mParametersLength ; pi++){
+			if(monityTemplateParameters[pi]["sv_dll"]){
+				DynamicParameters = {index:pi,parameter:monityTemplateParameters[pi]};
+				break;
+			}
+		}
+
+		var r_monitor = SvseMethodsOnServer.svGetMonitor(monitorId);
+		console.log(r_monitor)
+		if(!r_monitor) {
+			null;
+		}
+		//监视器不具备动态属性。直接渲染弹窗
+		if(!DynamicParameters){
+			context = this.megerTemplateAndFactData(context,r_monitor);//合并模板数据和实际数据
+			return context;
+		}
+		//具备动态属性 && 获取动态属性
+		var monitorData =  SvseMethodsOnServer.svGetEntityDynamicPropertyData(entityId,monitorTemplateId);
+		if(!monitorData) {
+			return null;
+		}
+
+		var optionObj = monitorData["DynamicData"];
+		var DynamicDataList = [];
+		for(name in optionObj){
+			DynamicDataList.push({key:name,value:optionObj[name]});
+		}
+		//给对应的设备赋值
+		context.MonityTemplateParameters[DynamicParameters.index]["selects"] = DynamicDataList;
+		context = this.megerTemplateAndFactData(context,r_monitor);//合并模板数据和实际数据
+		return context;
+	}
+});
+
+/*
+合并模板数据和实际数据
+*/
+Object.defineProperty(MonitorInfomation,"megerTemplateAndFactData",{
+	value:function(MTempalte,MInstance){
+		//合并advanceParameter
+		var advanceMT = MTempalte.MonityTemplateAdvanceParameters;
+		var advanceMI =  MInstance.advance_parameter;
+		if(advanceMT.length && advanceMI){
+			for(ap in advanceMI){
+				for(apIndex = 0 ; apIndex < advanceMT.length ; apIndex ++){
+					if(ap == advanceMT[apIndex].sv_name){
+						advanceMT[apIndex].sv_value = advanceMI[ap];
+						break;
+					}
+				}
+			}
+			MTempalte.MonityTemplateAdvanceParameters = advanceMT;
+		}
+		//合并状态
+		MTempalte.Error = this.mergeTemplateStatus(MTempalte.Error,MInstance.error);
+		MTempalte.Good = this.mergeTemplateStatus(MTempalte.Good,MInstance.good);
+		MTempalte.Warning = this.mergeTemplateStatus(MTempalte.Warning,MInstance.warning);
+
+		//基础频率
+		var MonityFrequency = MTempalte.MonityFrequencyDom;
+		MonityFrequency[0]["sv_value"] = MInstance.parameter[MonityFrequency[0]["sv_name"]];
+		MonityFrequency[1]["sv_value"] = MInstance.parameter[MonityFrequency[1]["sv_name"]];
+		MTempalte.MonityFrequencyDom = MonityFrequency;
+
+		//普通参数
+		MTempalte["CommonParameter"] = MInstance.parameter;
+		//MTempalte["CommonParameter"].AllTaskNames = MTempalte["AllTaskNames"];
+
+		//普通属性
+		MTempalte["CommonProperty"] = MInstance.property;
+		//动态监视器属性
+		var MTDynamicProperty = MTempalte["MonityTemplateParameters"];
+		for(var dl = 0; dl < MTDynamicProperty.length; dl++){
+			if(MTDynamicProperty[dl]["sv_name"]){
+				MTDynamicProperty[dl]["sv_value"] =  MInstance.parameter[MTDynamicProperty[dl]["sv_name"]]
+			}
+		}
+		MTempalte["MonityTemplateParameters"] = MTDynamicProperty;
+		return MTempalte;
+	}
+});
+
+//合并状态
+Object.defineProperty(MonitorInfomation,"mergeTemplateStatus",{
+	value:function(MTStatus,MIStatus){
+		MTStatus.sv_conditioncount = MIStatus.sv_conditioncount;
+		MTStatus.sv_expression = MIStatus.sv_expression;
+		var selects = [];
+		for(property in MIStatus){
+			if(property.indexOf("sv_paramname") != -1){
+				var index = property.replace("sv_paramname","");
+				var rid = +index;
+				selects.push({
+					"sid":index,
+					"paramenameKey":property,
+					"paramenameValue":MIStatus[property],
+					"operateKey":("sv_operate"+index),
+					"operateValue":MIStatus[("sv_operate"+index)],
+					"sv_paramvalueKey":("sv_paramvalue"+index),
+					"sv_paramvalueValue":MIStatus[("sv_paramvalue"+index)],
+					"sv_relationKey":("sv_relation"+index),
+					"sv_relationValue":MIStatus[("sv_relation"+(rid-1))] ? MIStatus[("sv_relation"+(rid-1))] :""
+				})
+			}
+		}
+		MTStatus["selects"] = selects;
+		return MTStatus;
+	}
+});
+
+Object.defineProperty(MonitorInfomation,"parseMonityTemplateAllParameters",{
+	value:function(template){//根据id获取监视器模板参数
+		var parameters = [];
+		for(item in template){
+			if(item.indexOf("ParameterItem") == -1 || item.indexOf("AdvanceParameterItem") != -1) continue;
+			var temp = template[item];
+			temp["sv_allownull"] = (temp["sv_allownull"] === 'false' ? false:true);
+			if(temp["sv_type"] !== "combobox"){//非下拉列表类型
+				parameters.push(temp);
+				continue;
+			}
+			//组合下拉列表	
+			var selects = []; 
+			for(label in temp){
+				if(label.indexOf("sv_itemlabel") === -1) continue;
+				var select = {};
+				var sub = "sv_itemvalue"+label.substr(-1);
+				select.key = temp[label];
+				select.value = temp[sub];
+				selects.push(select);
+			}
+			temp["selects"] = selects;
+			parameters.push(temp);
+		}
+		return parameters;
+	}
+});
+
+Object.defineProperty(MonitorInfomation,"parseMonityTemplateParameters",{
+	value:function(parameters){//根据id获取监视器模板参数 (除了 监视频率和监视单位以外)
+		var newparameters = [];
+		for(index in parameters){
+			if(!!parameters[index].sv_name.match(/^(_frequency|_frequencyUnit)$/)){
+				continue;
+			}
+			newparameters.push(parameters[index]);
+		}
+		return newparameters;
+	}
+});
+
+Object.defineProperty(MonitorInfomation,"parseMonityTemplateAdvanceParameters",{
+	value: function(template){
+		var advanceParameters = [];
+		for(item in template){
+			if(item.indexOf("AdvanceParameterItem") == -1){
+				continue;
+			} 
+			var temp = template[item];
+			temp["sv_allownull"] = (temp["sv_allownull"] === 'false' ? false:true);
+			if(temp["sv_type"] !== "combobox"){//非下拉列表类型
+				advanceParameters.push(temp);
+				continue;
+			}
+			//组合下拉列表	
+			var selects = []; 
+			for(label in temp){
+				if(label.indexOf("sv_itemlabel") === -1) continue;
+				var select = {};
+				var sub = "sv_itemvalue"+label.substr(-1);
+				select.key = temp[label];
+				select.value = temp[sub];
+				selects.push(select);
+			}
+			temp["selects"] = selects;
+			advanceParameters.push(temp);
+		}
+		return advanceParameters;
+	}
+});
+
+Object.defineProperty(MonitorInfomation,"parseMonityTemplateReturnItems",{
+	value:function(template){//根据id获取返回参数
+		var returnItems = [];
+		for(item in template){
+			if(item.indexOf("ReturnItem") == -1) continue;
+			returnItems.push(template[item]);
+		}
+		return returnItems;
+	}
+});
+
+Object.defineProperty(MonitorInfomation,"parseMonityTemplateStates",{
+	value:function(template){//根据id获取监视器模板参数
+		var states = {
+			Error : template["error"],
+			Warning: template["warning"],
+			Good : template["good"]
+		};
+		return states;
+	}
+});
+
+Object.defineProperty(MonitorInfomation,"parseMonityTemplateParameterByName",{
+	value:function(parameters,name){
+		for(index in parameters){
+			if(parameters[index].sv_name === name){
+				return parameters[index]
+			}
+		}
+	}
+});
+
+Object.defineProperty(MonitorInfomation,"parseMonityTemplateFrequencyParameters",{
+	value: function(parameters){
+		var arr = [];
+		for(index in parameters){
+			if(!!parameters[index].sv_name.match(/^(_frequency|_frequencyUnit)$/)){
+				arr.push(parameters[index]);
+			}
+		}
+		return arr;
 	}
 });

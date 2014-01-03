@@ -28,7 +28,27 @@ Template.MonitorList.events={
  	"click #showMonitorList button[name='edit']":function(e){
       //  var id = e.currentTarget.id;
       	var monitorId = this.sv_id;
+      	var entityId = SessionManage.getCheckedTreeNode("id");
+      	LoadingModal.loading();
+      	
         console.log("编辑监视器id:"+monitorId);
+        SvseMonitorTemplateDao.getEditMonitorInfoAsync(monitorId,entityId,function(result){
+        	LoadingModal.loaded();
+        	if(!result.status){
+        		Message.error("服务器错误");
+        	}else{
+        		var context = result.context;
+        		if(context == null){
+        			Message.warn("监视器已被删除");
+        		}else{
+        			var devicename = SessionManage.getCheckedTreeNode("name");
+        			context["devicename"] = devicename;
+        			RenderTemplate.showParents("#EditMoniorFormModal","EditMoniorFormModal",context);
+        		}
+        	}
+        });
+
+        /*
        // SessionManage.setCheckedMonitorId(id);
         var monitorTemplateId = SvseMonitorTemplateDao.getMonitorTemplateIdBySvid(monitorId);
         var monitorTemplateName = SvseMonitorTemplateDao.getMonitorTemplateNameByTemplateId(monitorTemplateId);
@@ -88,6 +108,7 @@ Template.MonitorList.events={
 			});
 
 		});
+		*/
     },
     "mouseenter #showMonitorList img":function(e){
     	$(e.currentTarget).popover('show');

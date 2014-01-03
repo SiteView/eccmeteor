@@ -174,7 +174,7 @@ Object.defineProperty(SvseMonitorTemplateDao,"getMonitorTemplateIdBySvid",{
 	}
 });
 
-//编辑监视器时根据 监视器的id获取该监视器的模板类型名称
+//编辑监视器时根据 监视器模板id获取该监视器的模板类型名称
 /**
 	templateId:监视器模板id
 */
@@ -254,8 +254,8 @@ Object.defineProperty(SvseMonitorTemplateDao,"getQuickAddMonitorsAsync",{
 //异步
 //编辑监视器 信息获取
 Object.defineProperty(SvseMonitorTemplateDao,"getEditMonitorInfoAsync",{
-	value:function(monitorId,fn){
-		Meteor.call(SvseMonitorTemplateDao.AGENT,"getEditMonitorInfoAsync",[entityDevicetype,addedEntityId],function(error,result){
+	value:function(monitorId,entityId,fn){
+		Meteor.call(SvseMonitorTemplateDao.AGENT,"getEditMonitorInfoAsync",[monitorId,entityId],function(error,result){
 			if(error){
 				console.log(error);
 				fn({status:false})
