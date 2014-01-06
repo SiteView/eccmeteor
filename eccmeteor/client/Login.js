@@ -5,6 +5,8 @@ Object.defineProperty(UserLogin,"logout",{
     if(value){
       Meteor.logout(function(){alert(value);});
     }
+    Meteor.logout();
+    Session.set("USERLOGINSUCCESS",false);
     Meteor.Router.to("/");
   }
 });
@@ -119,7 +121,6 @@ Deps.autorun(function(){
   if(!Meteor.user()){
       return;
   }
-    
   if(!Meteor.user().profile.accountstatus){
     UserLogin.logout('你的账户已被禁止，请联系系统管理员');
   }
