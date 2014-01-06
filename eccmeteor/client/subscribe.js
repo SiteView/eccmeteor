@@ -12,6 +12,22 @@ Object.defineProperty(Subscribe,"LOADSVSEMONITORTEMPLATE",{
    value:"LOADSVSEMONITOREMPLATE"
 });
 
+Object.defineProperty(Subscribe,"loadSvseEntityTemplateGroup",{
+   value:function(){
+      Session.set(Subscribe.LOADSVSEENTITYTEMPLATEGROUP,true);
+   }
+});
+Object.defineProperty(Subscribe,"loadSvseEntityTemplate",{
+   value:function(){
+      Session.set(Subscribe.LOADSVSEENTITYTEMPLATE,true);
+   }
+});
+Object.defineProperty(Subscribe,"loadSvseSvseMonitorTemplate",{
+   value:function(){
+      Session.set(Subscribe.LOADSVSEMONITORTEMPLATE,true);
+   }
+});
+
 Meteor.subscribe("svse_tree",function(){
 	Log4js.info("svse_tree订阅完成");
 	SessionManage.collectionCompleted(CONLLECTIONMAP.SVSETREE);

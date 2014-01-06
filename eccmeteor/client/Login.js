@@ -38,8 +38,9 @@ Template.Login.events({
 });
 var remeberMe = function(username,password){
   if($("#login-remeber")[0].checked){
-      if(UserUtils.gotUser())
+      if(UserUtils.gotUser()){
         return;
+      }
       UserUtils.remberUser(username,password);
   }else{
     UserUtils.forgotUser();
