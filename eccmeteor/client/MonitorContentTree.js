@@ -1,10 +1,11 @@
-//树的渲染
-Template.moitorContentTree.rendered = function(){
-	Session.set("MoitorContentTreeRendered",true);
-}
+MoitorContentTree = function(){};
 
-var MoitorContentTree = function(){};
-
+Object.defineProperty(MoitorContentTree,"initTree",{
+	value:function(){
+		MoitorContentTree.drawSvseSimpleTree("1");
+		MoitorContentTree.drawSvseSettingTree();
+	}
+});
 /*
 *构建设置树
 */
@@ -202,17 +203,6 @@ Deps.autorun(function(){
 	}
 });
 
-
-/**
-*构建树
-
-Deps.autorun(function(c){
-	if(SessionManage.isCollectionCompleted(CONLLECTIONMAP.SVSE)&&Session.get("MoitorContentTreeRendered")){
-		MoitorContentTree.drawSvseSimpleTree(SessionManage.getCheckedTreeNode("id"));
-		MoitorContentTree.drawSvseSettingTree();
-	}
-});
-**/
 Deps.autorun(function(c){
 	var language = Session.get("language");
 	if(language){
