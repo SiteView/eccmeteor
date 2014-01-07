@@ -70,7 +70,7 @@ Type： add
 Author：xuqiang
 Date:2013-10-15 
 Content:增加统计报告订阅数据
-*/ 
+*/
 Meteor.subscribe("Svse_Statisticalresultlist");
 
 
