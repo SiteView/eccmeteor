@@ -23,6 +23,16 @@ Meteor.subscribe("svse",function(){
 	SessionManage.collectionCompleted(CONLLECTIONMAP.SVSE);//客户端订阅数据完成
 });
 
+//邮件订阅
+Object.defineProperty(Subscribe,"LOADSVSEEMAILLIST",{
+   value:"LOADSVSEEMAILLIST"
+});
+
+//短信订阅
+Object.defineProperty(Subscribe,"LOADSVSEMESSAGELIST",{
+   value:"LOADSVSEMESSAGELIST"
+});
+
 //延迟加载
 Deps.autorun(function(c){
    if(Session.get(Subscribe.LOADSVSEENTITYTEMPLATEGROUP)){
@@ -41,13 +51,25 @@ Deps.autorun(function(c){
       Meteor.subscribe("svse_monitor_template");
    }
 });
+//延迟加载--邮件列表
+Deps.autorun(function(c){
+   if(Session.get(Subscribe.LOADSVSEEMAILLIST)){
+      Meteor.subscribe("svse_emaillist");
+   }
+});
+//延迟加载--短信列表
+Deps.autorun(function(c){
+   if(Session.get(Subscribe.LOADSVSEMESSAGELIST)){
+      Meteor.subscribe("svse_messagelist");
+   }
+});
 
 //Meteor.subscribe("svse_entity_info");
 Meteor.subscribe("svse_task");
-Meteor.subscribe("svse_emaillist");
+//Meteor.subscribe("svse_emaillist");
 Meteor.subscribe("svse_warnerrule");
 Meteor.subscribe("userData");
-Meteor.subscribe("svse_messagelist");
+//Meteor.subscribe("svse_messagelist");
 Meteor.subscribe("svse_TopNresultlist");
 /*
 Type： add 

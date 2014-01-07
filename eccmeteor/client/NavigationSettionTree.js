@@ -14,9 +14,29 @@ var NavigationSettingTreeEvents = {
 		SwithcView.view(SETTINGVIEW.BASICSETTING);
 	},
 	"EmailSetting":function(){
+		if(SvseEmailDao.isEmpty()){
+			LoadingModal.loading();
+			SvseEmailDao.getEmailListAsync(function(emaillist){
+				LoadingModal.loaded();
+				//console.log(emaillist);
+			});
+		}else{
+			SvseEmailDao.getEmailListSync();
+			//console.log(emaillist);
+		}
 		SwithcView.view(SETTINGVIEW.EMAILSETTING);
 	},
 	"MessageSetting":function(){
+		if(SvseMessageDao.isEmpty()){
+			LoadingModal.loading();
+			SvseMessageDao.getMessageListAsync(function(messagelist){
+				LoadingModal.loaded();
+				console.log(messagelist);
+			});
+		}else{
+			var messagelist = SvseMessageDao.getMessageListSync();
+			console.log(messagelist);
+		}
 		SwithcView.view(SETTINGVIEW.MESSAGESETTING);
 	},
 	"UserSetting":function(){

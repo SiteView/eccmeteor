@@ -147,3 +147,10 @@ SvseMessageDaoOnServer = {
 		return SvseMessageDaoOnServer.getReturn(true);
 	} */
 }
+
+//客户端异步加载
+Object.defineProperty(SvseMessageDaoOnServer,"getMessageListAsync",{
+	value:function(){
+		return SvseMessageList.find().fetch();
+	}
+});

@@ -36,7 +36,7 @@ Meteor.methods({
   "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
   "meteorSvForest":meteorSvForest,
   "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
-  "svGetSendEmailSetting":svGetSendEmailSetting,
+  //"svGetSendEmailSetting":svGetSendEmailSetting,
   //"svEmailTest":svEmailTest,
   "syncTreeData":SyncFunction.sync, //同步数据
   "userDaoAgent":UserDaoAgent.agent,
@@ -198,7 +198,8 @@ SvseMethodsOnServer = {
 	"svWriteSMSTemplateSettingFilesection":svWriteSMSTemplateSettingFilesection,
 	"svDeleteSMSTemplateSettingFilesection":svDeleteSMSTemplateSettingFilesection,
 	"svUpdateSMSTemplateSettingFilesection":svUpdateSMSTemplateSettingFilesection,
-	"svGetLicenselist":svGetLicenselist
+	"svGetLicenselist":svGetLicenselist,
+	"svGetSendEmailSetting":svGetSendEmailSetting,
 }
 
 SvseSyncData = {
