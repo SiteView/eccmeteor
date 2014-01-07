@@ -1,8 +1,8 @@
 SvseEmailDao = {
 	"AGENT":"svseEmailDaoAgent",
-	"getEmailList" : function(){
-		return SvseEmailList.find({nIndex:{$exists:true}}).fetch()
-	},
+	// "getEmailList" : function(){
+		// return SvseEmailList.find({nIndex:{$exists:true}}).fetch()
+	// },
 	"addEmailAddress":function(addressname,address,fn){
 		Meteor.call(SvseEmailDao.AGENT,'addEmailAddress',[addressname,address],function(err,result){
 			if(err){
@@ -103,5 +103,48 @@ SvseEmailDao = {
 				fn(result);
 			}
 		});
-	}
+	},
+	//获取发送邮件的设置
+	"getSendEmailSetting":function(fn){
+		Meteor.call(SvseEmailDao.AGENT,"getSendEmailSetting",function(err,result){
+			if(err){
+				Log4js.info(err);
+				fn({status:false,msg:err})
+			}else{
+				console.log(result);
+				fn(result);
+			}
+		});
+	},
 }
+
+	//isEmpty  判断邮件列表当前数据为空
+Object.defineProperty(SvseEmailDao,"isEmpty",{
+	value:function(){
+		//如果当前数据为空，则缓存数据
+		if(SvseEmailList.findOne() == null){
+			Session.set(Subscribe.LOADSVSEEMAILLIST,true);
+			return true;
+		}
+		return false;
+	}
+});
+
+//同步获取
+Object.defineProperty(SvseEmailDao,"getEmailListSync",{
+	value:function(){
+		return SvseEmailList.find({nIndex:{$exists:true}}).fetch();
+	}
+});
+
+Object.defineProperty(SvseEmailDao,"getEmailListAsync",{
+	value:function(fn){
+		Meteor.call(SvseEmailDao.AGENT,"getEmailListAsync",function(error,result){
+			if(error){
+				Log4js.info(error);
+			}else{
+				fn(result);
+			}
+		})
+	}
+});

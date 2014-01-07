@@ -17,16 +17,9 @@ Template.emailsetting.events  = {
 			var context = {Tasks:tasks,EmailTemplate:emailTemplate};
 			RenderTemplate.showParents("#emailaddresssettingDiv","emailbasicsettingofaddress",context);
 		});
-		
+
 	},
-	// "click #delemailsetting" : function(){
-		// var ids = getEmailSelectAll();
-		// SvseEmailDao.checkEmailSelect(ids);
-		// if(ids.length)
-			// SvseEmailDao.deleteEmailAddressByIds(ids,function(result){
-				// Log4js.info(result);
-			// });
-	// },
+	
 	"click #allowemailsetting" : function(){  //启用邮件地址
 		var ids = getEmailSelectAll();
 		SvseEmailDao.checkEmailSelect(ids);
@@ -75,12 +68,25 @@ Template.emailsetting.events  = {
 	},
 	"click #emailhelpmessage" : function(){
  
-	}
+	},
+	"click #emailbasicsettingapplybtn" : function(){
+		var emailbasicsetting = ClientUtils.formArrayToObject($("#emailbasicsetting").serializeArray());
+		console.log(emailbasicsetting);
+		SvseEmailDao.setEmailBasicSetting(emailbasicsetting,function(result){
+			console.log(result);
+			console.log("成功！");
+		});
+	},
+	"click #emailbasicsettingtestbtn" : function(){
+		$("#emailtestform")[0].reset();//重置表单
+		MessageTip.close("a1");
+		$("#emailTestDiv").modal("show");
+	},
 }
 
 Template.emailsetting.rendered = function(){
-	Meteor.call("svGetSendEmailSetting",function(err,setting){
-		//console.log(setting);
+	SvseEmailDao.getSendEmailSetting(function(setting){
+		console.log(setting);
 		if(!setting) return;
 		var context = {BasicSetting:setting};
 		RenderTemplate.renderIn("#emailbasicsettingFormDiv","emailbasicsettingForm",context);
@@ -321,7 +327,7 @@ Template.emailsettingList.events({
 			for(name in result){
 				emailTemplate.push(name);
 			}
-			var emailinfo = {Email:editresult,Tasks:tasks,EmailTemplate:emailTemplate}
+			var emailinfo = {Email:editresult,Tasks:tasks,EmailTemplate:emailTemplate};
 			var context = {EmailInfo:emailinfo};
 			RenderTemplate.showParents("#emailaddresssettingeditDiv","emailbasicsettingofaddressedit",context);
 			$("#editemailSchedulelist").find("option[value='"+editresult["Schedule"]+"']:first").prop("selected",true);
@@ -346,7 +352,7 @@ Template.emailsettingList.events({
 
 //获取email的集合
 Template.emailsettingList.emaillist = function(){
-	console.log(SvseEmailDao.getEmailList());
+	console.log(SvseEmailList.find().fetch());
 	//return SvseEmailDao.getEmailList();
 	return SvseEmailList.find({},page.skip());
 }
@@ -359,7 +365,7 @@ Template.emailsettingList.paper = function(){
 	// page.destroy();
 // }
 
-Template.emailbasicsettingForm.events({
+/* Template.emailbasicsettingForm.events({
 	"click #emailbasicsettingapplybtn" : function(){
 		var emailbasicsetting = ClientUtils.formArrayToObject($("#emailbasicsetting").serializeArray());
 		console.log(emailbasicsetting);
@@ -375,7 +381,7 @@ Template.emailbasicsettingForm.events({
 		$("#emailTestDiv").modal("show");
 		
 	},
-});
+}); */
 
 Template.emailtest.events({
 	"click #cancelsendemail":function(){
@@ -400,9 +406,9 @@ Template.emailtest.events({
 			emailSetting[i] = emailinfo[i];
 		}
 		//console.log(emailSetting);
-		Meteor.call("svGetSendEmailSetting",function(err,setting){
+		SvseEmailDao.getSendEmailSetting(function(err,setting){
 			if(!setting) return;
-			//console.log(setting);
+			console.log(setting);
 			
 			emailSetting["mailServer"] = setting["server"];
 			emailSetting["mailFrom"] = setting["from"];
@@ -427,4 +433,3 @@ Template.emailtest.events({
 		//$("#emailTestDiv").modal("hide");
 	}
 });
-

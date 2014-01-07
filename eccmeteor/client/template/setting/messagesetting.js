@@ -156,7 +156,7 @@ Template.messagesettingList.rendered = function(){
 
 //获取messagelist的集合
 Template.messagesettingList.messagelist = function(){
-	console.log(SvseMessageDao.getMessageList());
+	//console.log(SvseMessageDao.getMessageList());
 	//return SvseMessageDao.getMessageList();
 	return SvseMessageList.find({},page.skip());
 }
