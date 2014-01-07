@@ -15,7 +15,7 @@ Object.defineProperty(LanguageModel,"getLanaguage",{
 	value:function(modul,key){
 		var language =  SvseLanguage.findOne({name:Session.get("language")});
 		if(!language){
-			return "";
+			return "null";
 		}
 		if(!modul)
 			return language["value"];
@@ -26,22 +26,9 @@ Object.defineProperty(LanguageModel,"getLanaguage",{
 });
 /*
 	获取所有的语言种类,
-	参数status：
-		如果参数为true，则返回语言的种类类型对象数组，否则返回所有的语言json数组对象
 */
-Object.defineProperty(LanguageModel,"getLanguages",{
-	value:function(status){
-		var languages = SvseLanguage.find().fetch();
-		if(!status){
-			return languages;
-		}
-		var types = [];
-		for(index in languages){
-			var obj = {};
-			obj.name = languages[index]["name"];
-			obj.value = languages[index]["value"]._language
-			types.push(obj);
-		}
-		return types;
+Object.defineProperty(LanguageModel,"getLanguageKinds",{
+	value:function(){
+		return SvseLanguage.findOne({name:"All"}).value;
 	}
 })

@@ -87,7 +87,11 @@ Meteor.subscribe("svse_settingnodes");
    Date:2013-11-04 13:55 星期一
    Content: 增加设置语言集合集合
 */
-Meteor.subscribe("svse_language");
+
+Deps.autorun(function(c){
+   Meteor.subscribe("svse_language",Session.get(SessionManage.MAP.language));
+});
+
 /*
 Type： add 
 Author：xuqiang

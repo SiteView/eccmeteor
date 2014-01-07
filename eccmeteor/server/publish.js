@@ -151,6 +151,7 @@ Meteor.publish("svse_settingnodes",function(){
    Date:2013-11-04 13:55 星期一
    Content: 增加设置语言集合集合
 */
-Meteor.publish("svse_language",function(){
-	return SvseLanguage.find({});
+Meteor.publish("svse_language",function(language){
+	language = language || "ZH-CN";
+	return SvseLanguage.find({name:{$in:[language,"All"]}});
 });
