@@ -1,0 +1,11 @@
+
+PROJECT(addonsv)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+AUX_SOURCE_DIRECTORY(. DIR_SRCS)
+
+SET(LIBRARY_OUTPUT_PATH "../bin")
+ADD_LIBRARY(addonsv ${DIR_SRCS})
+
+ADD_DEFINITIONS( -D_USE_32BIT_TIME_T )
+SET(CMAKE_BUILD_TYPE Release)
+INCLUDE_DIRECTORIES("../node-v0.10.24/src" "../node-v0.10.24/deps/uv/include" "../node-v0.10.24/deps/v8/include" "../addon")

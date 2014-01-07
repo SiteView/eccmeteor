@@ -1,13 +1,10 @@
 
-#cd libutil;pwd;cmake .;cd ..;
-#cd addon;pwd;cmake .;cd ..;
-#cd sv_addon;pwd;cmake .;cd ..;
-#cd node-v0.8.22;pwd;./configure;cd ..;
 
-#make -C libutil;
-#make -C addon;
-#make -C sv_addon;
-make -C node-v0.8.22;
+cd addonsv;pwd;cmake .;cd ..;
+cd node-v0.10.24;pwd;./configure;cd ..;
 
-cp ./node-v0.8.22/out/Release/node ./meteor_runtime
+make -C addonsv;
+make -C node-v0.10.24;
+
+cp ./node-v0.10.24/out/Release/node ./bin
 

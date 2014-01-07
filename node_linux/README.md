@@ -2,6 +2,18 @@
 本工程编译出的 node 在此下载 https://github.com/SiteView/eccmeteor/tree/master/node_linux/meteor_runtime
 推荐 linux 平台为 centos6.2-32bit，需要的编译环境有：Python 2.6 or 2.7，GNU Make 3.81 or newer，CMake, gcc-c++
 
+node 只改了一个文件
+https://github.com/SiteView/eccmeteor/blob/master/node_windows/node-v0.10.21/src/node.cc
+2427-2433行，94行
+
+node.js官网跟新后， 去下载源代码， 然后在2427行位置添加这几行代码，在把4个.lib放到指定位置  就能编译出我们自己的node.exe  
+
+node 的linux 版本，修改  node.gyp 以设置引用目录和引用的库 
+https://github.com/SiteView/eccmeteor/blob/master/node_linux/node-v0.10.21/node.gyp 
+77行， 82-85行 
+
+修改这个 node.gyp 等同与修改 vc studio 中的 引用目录
+
 
 * linux 下编译 node 方法
   1.	下载目录 https://github.com/SiteView/eccmeteor/tree/master/node_linux 到/root下，进入/root/node_linux，运行 ./build.sh

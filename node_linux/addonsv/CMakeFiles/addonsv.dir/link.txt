@@ -1,0 +1,2 @@
+/usr/bin/ar cr /root/node_linux1024/bin/libaddonsv.a  CMakeFiles/addonsv.dir/V8MapInMap.cpp.o CMakeFiles/addonsv.dir/addonsv.cpp.o CMakeFiles/addonsv.dir/addonfunc.cpp.o
+/usr/bin/ranlib /root/node_linux1024/bin/libaddonsv.a
