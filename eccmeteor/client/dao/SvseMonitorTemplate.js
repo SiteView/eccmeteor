@@ -43,10 +43,10 @@ Object.defineProperty(SvseMonitorTemplateDao,"getMonitorTemplateNameByTemplateId
 Object.defineProperty(SvseMonitorTemplateDao,"isEmpty",{
 	value:function(){
 		//如果当前数据为空，则缓存数据
-		if(SvseMonitorTemplate.findOne() == null){
-			//Session.set(Subscribe.LOADSVSEENTITYTEMPLATE,true);//缓存entity template 数据
+		if(SvseMonitorTemplate.findOne() == null
+			&& !Subscribe.isLoadSvseEntityTemplate()
+			&& !Subscribe.isLoadSvseSvseMonitorTemplate()){
 			Subscribe.loadSvseEntityTemplate();
-		//	Session.set(Subscribe.LOADSVSEMONITORTEMPLATE,true);//monitor template 数据
 			Subscribe.loadSvseSvseMonitorTemplate();
 			return true;
 		}

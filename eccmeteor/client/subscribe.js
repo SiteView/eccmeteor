@@ -17,9 +17,19 @@ Object.defineProperty(Subscribe,"loadSvseEntityTemplateGroup",{
       Session.set(Subscribe.LOADSVSEENTITYTEMPLATEGROUP,true);
    }
 });
+Object.defineProperty(Subscribe,"isLoadSvseEntityTemplateGroup",{
+   value:function(){
+      return Session.get(Subscribe.LOADSVSEENTITYTEMPLATEGROUP);
+   }
+});
 Object.defineProperty(Subscribe,"loadSvseEntityTemplate",{
    value:function(){
       Session.set(Subscribe.LOADSVSEENTITYTEMPLATE,true);
+   }
+});
+Object.defineProperty(Subscribe,"isLoadSvseEntityTemplate",{
+   value:function(){
+      return Session.get(Subscribe.LOADSVSEENTITYTEMPLATE);
    }
 });
 Object.defineProperty(Subscribe,"loadSvseSvseMonitorTemplate",{
@@ -27,7 +37,11 @@ Object.defineProperty(Subscribe,"loadSvseSvseMonitorTemplate",{
       Session.set(Subscribe.LOADSVSEMONITORTEMPLATE,true);
    }
 });
-
+Object.defineProperty(Subscribe,"isLoadSvseSvseMonitorTemplate",{
+   value:function(){
+      return Session.get(Subscribe.LOADSVSEMONITORTEMPLATE);
+   }
+});
 Meteor.subscribe("svse_tree",function(){
 	Log4js.info("svse_tree订阅完成");
 	SessionManage.collectionCompleted(CONLLECTIONMAP.SVSETREE);

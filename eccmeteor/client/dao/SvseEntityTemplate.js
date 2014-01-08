@@ -40,12 +40,13 @@ SvseEntityTemplateDao = {
 Object.defineProperty(SvseEntityTemplateDao,"isEmpty",{
 	value:function(){
 		//如果当前数据为空，则缓存数据
-		if(SvseEntityTempletGroup.findOne() == null){
-		//	Session.set(Subscribe.LOADSVSEENTITYTEMPLATEGROUP,true);
+		if(SvseEntityTempletGroup.findOne() == null 
+			&& !Subscribe.isLoadSvseEntityTemplateGroup()
+			&& !Subscribe.isLoadSvseEntityTemplate()
+			&& !Subscribe.isLoadSvseSvseMonitorTemplate){
+
 			Subscribe.loadSvseEntityTemplateGroup();
-		//	Session.set(Subscribe.LOADSVSEENTITYTEMPLATE,true);
 			Subscribe.loadSvseEntityTemplate();
-		//	Session.set(Subscribe.LOADSVSEMONITORTEMPLATE,true);
 			Subscribe.loadSvseSvseMonitorTemplate();
 			return true;
 		}
