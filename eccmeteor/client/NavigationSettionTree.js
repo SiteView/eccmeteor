@@ -116,7 +116,9 @@ var NavigationSettingTreeEvents = {
 	"About":function(){
        SwithcView.view(SETTINGVIEW.ABOUT);
     },
-	
+	"monitorInfo":function(){
+       SwithcView.view(REPORT.MONITORINFO);
+    },
 }
 NavigationSettingTree = {
 	getTreeData:function(){

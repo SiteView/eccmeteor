@@ -28,9 +28,37 @@ Object.defineProperty(Subscribe,"LOADSVSEEMAILLIST",{
    value:"LOADSVSEEMAILLIST"
 });
 
+//邮件订阅
+Object.defineProperty(Subscribe,"loadSvseEmailList",{
+   value:function(){
+	  Session.set(Subscribe.LOADSVSEEMAILLIST,true);
+   }
+});
+
+//邮件是否订阅过
+Object.defineProperty(Subscribe,"isLoadSvseEmailList",{
+   value:function(){
+	  return Session.get(Subscribe.LOADSVSEEMAILLIST);
+   }
+});
+
 //短信订阅
 Object.defineProperty(Subscribe,"LOADSVSEMESSAGELIST",{
    value:"LOADSVSEMESSAGELIST"
+});
+
+//短信订阅
+Object.defineProperty(Subscribe,"loadSvseMessageList",{
+   value:function(){
+	  Session.set(Subscribe.LOADSVSEMESSAGELIST,true);
+   }
+});
+
+//短信是否订阅过
+Object.defineProperty(Subscribe,"isLoadSvseMessageList",{
+   value:function(){
+	  return Session.get(Subscribe.LOADSVSEMESSAGELIST);
+   }
 });
 
 //延迟加载

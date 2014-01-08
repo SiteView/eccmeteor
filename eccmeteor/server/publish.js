@@ -154,3 +154,8 @@ Meteor.publish("svse_settingnodes",function(){
 Meteor.publish("svse_language",function(){
 	return SvseLanguage.find({});
 });
+
+// Meteor.publish("selected_template", function(selected_template) {
+	// var returns = SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("selected_template"));	
+	// return returns;	
+// })

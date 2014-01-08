@@ -122,8 +122,8 @@ SvseEmailDao = {
 Object.defineProperty(SvseEmailDao,"isEmpty",{
 	value:function(){
 		//如果当前数据为空，则缓存数据
-		if(SvseEmailList.findOne() == null){
-			Session.set(Subscribe.LOADSVSEEMAILLIST,true);
+		if(SvseEmailList.findOne() == null && !Subscribe.isLoadSvseEmailList()){
+			Subscribe.loadSvseEmailList();
 			return true;
 		}
 		return false;

@@ -180,8 +180,8 @@ SvseMessageDao = {
 Object.defineProperty(SvseMessageDao,"isEmpty",{
 	value:function(){
 		//如果当前数据为空，则缓存数据
-		if(SvseMessageList.findOne() == null){
-			Session.set(Subscribe.LOADSVSEMESSAGELIST,true);
+		if(SvseMessageList.findOne() == null && !Subscribe.isLoadSvseMessageList()){
+			Subscribe.loadSvseMessageList();
 			return true;
 		}
 		return false;
