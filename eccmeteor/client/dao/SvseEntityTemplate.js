@@ -41,13 +41,13 @@ Object.defineProperty(SvseEntityTemplateDao,"isEmpty",{
 	value:function(){
 		//如果当前数据为空，则缓存数据
 		if(SvseEntityTempletGroup.findOne() == null 
-			&& !Subscribe.isLoadSvseEntityTemplateGroup()
-			&& !Subscribe.isLoadSvseEntityTemplate()
-			&& !Subscribe.isLoadSvseSvseMonitorTemplate){
+			&& (!Subscribe.isLoadSvseEntityTemplateGroup()
+				|| !Subscribe.isLoadSvseEntityTemplate()
+				|| !Subscribe.isLoadSvseSvseMonitorTemplate())){
 
-			Subscribe.loadSvseEntityTemplateGroup();
-			Subscribe.loadSvseEntityTemplate();
-			Subscribe.loadSvseSvseMonitorTemplate();
+			Subscribe.isLoadSvseEntityTemplateGroup() || Subscribe.loadSvseEntityTemplateGroup();
+			Subscribe.isLoadSvseEntityTemplate() || Subscribe.loadSvseEntityTemplate();
+			Subscribe.isLoadSvseSvseMonitorTemplate() || Subscribe.loadSvseSvseMonitorTemplate();
 			return true;
 		}
 		return false;

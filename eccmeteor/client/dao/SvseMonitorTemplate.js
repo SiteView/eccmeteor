@@ -44,10 +44,10 @@ Object.defineProperty(SvseMonitorTemplateDao,"isEmpty",{
 	value:function(){
 		//如果当前数据为空，则缓存数据
 		if(SvseMonitorTemplate.findOne() == null
-			&& !Subscribe.isLoadSvseEntityTemplate()
-			&& !Subscribe.isLoadSvseSvseMonitorTemplate()){
-			Subscribe.loadSvseEntityTemplate();
-			Subscribe.loadSvseSvseMonitorTemplate();
+			&& (!Subscribe.isLoadSvseEntityTemplate()
+				|| !Subscribe.isLoadSvseSvseMonitorTemplate())){
+			Subscribe.isLoadSvseEntityTemplate() || Subscribe.loadSvseEntityTemplate();
+			Subscribe.isLoadSvseSvseMonitorTemplate() || Subscribe.loadSvseSvseMonitorTemplate();
 			return true;
 		}
 		return false;
