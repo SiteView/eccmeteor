@@ -12,6 +12,36 @@ Object.defineProperty(Subscribe,"LOADSVSEMONITORTEMPLATE",{
    value:"LOADSVSEMONITOREMPLATE"
 });
 
+Object.defineProperty(Subscribe,"loadSvseEntityTemplateGroup",{
+   value:function(){
+      Session.set(Subscribe.LOADSVSEENTITYTEMPLATEGROUP,true);
+   }
+});
+Object.defineProperty(Subscribe,"isLoadSvseEntityTemplateGroup",{
+   value:function(){
+      return Session.get(Subscribe.LOADSVSEENTITYTEMPLATEGROUP);
+   }
+});
+Object.defineProperty(Subscribe,"loadSvseEntityTemplate",{
+   value:function(){
+      Session.set(Subscribe.LOADSVSEENTITYTEMPLATE,true);
+   }
+});
+Object.defineProperty(Subscribe,"isLoadSvseEntityTemplate",{
+   value:function(){
+      return Session.get(Subscribe.LOADSVSEENTITYTEMPLATE);
+   }
+});
+Object.defineProperty(Subscribe,"loadSvseSvseMonitorTemplate",{
+   value:function(){
+      Session.set(Subscribe.LOADSVSEMONITORTEMPLATE,true);
+   }
+});
+Object.defineProperty(Subscribe,"isLoadSvseSvseMonitorTemplate",{
+   value:function(){
+      return Session.get(Subscribe.LOADSVSEMONITORTEMPLATE);
+   }
+});
 Meteor.subscribe("svse_tree",function(){
 	Log4js.info("svse_tree订阅完成");
 	SessionManage.collectionCompleted(CONLLECTIONMAP.SVSETREE);
@@ -104,7 +134,7 @@ Type： add
 Author：xuqiang
 Date:2013-10-15 
 Content:增加统计报告订阅数据
-*/ 
+*/
 Meteor.subscribe("Svse_Statisticalresultlist");
 
 
@@ -121,7 +151,11 @@ Meteor.subscribe("svse_settingnodes");
    Date:2013-11-04 13:55 星期一
    Content: 增加设置语言集合集合
 */
-Meteor.subscribe("svse_language");
+
+Deps.autorun(function(c){
+   Meteor.subscribe("svse_language",Session.get(SessionManage.MAP.language));
+});
+
 /*
 Type： add 
 Author：xuqiang

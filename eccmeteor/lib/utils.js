@@ -112,4 +112,4 @@ Object.defineProperty(Utils,"clone",{
 	    }
 	    return o;
 	}
-})
+});

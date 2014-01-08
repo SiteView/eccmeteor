@@ -251,12 +251,15 @@ svGetReportData = function(monitorId,beginDate,endDate,compress){
 };
 
 //状态统计的数据 （之获取主键和可画图的数据）
-svGetReportDataByFilter = function(monitorId,beginDate,endDate,filter){
+svGetReportDataByFilter = function(monitorId,beginDate,endDate,filter,dstrNeed){
+	if(typeof dstrNeed === "undefined"){
+		dstrNeed = true;
+	}
 	var robj = process.sv_univ({
 		'dowhat':'QueryReportData',
 		id:monitorId,
 		dstrStatusNoNeed:null,
-		dstrNeed:true,
+		dstrNeed:dstrNeed,
 		return_value_filter:filter,
 		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
 		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]

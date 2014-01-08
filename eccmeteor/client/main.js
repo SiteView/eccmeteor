@@ -23,3 +23,6 @@ Session.setDefault("CURRENTPAGE",1);
 
 Session.setDefault(Subscribe.LOADSVSEENTITYTEMPLATEGROUP,false);
 Session.setDefault(Subscribe.LOADSVSEENTITYTEMPLATE,false);
+Session.set(Subscribe.LOADSVSEMONITORTEMPLATE,false);
+
+Session.setDefault("USERLOGINSUCCESS",false);
