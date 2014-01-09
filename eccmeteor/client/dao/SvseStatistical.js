@@ -26,6 +26,13 @@ SvseStatisticalDao = {
 			}
 		});
 	},
+	//检查操作时是否勾选对象
+   "checkStatisticallistSelect":function(ids){
+     if(ids == ""){
+       Message.info("检查操作时是否勾选对象");
+       return;
+     }
+    },
 	//批量删除统计报告list
 	"deleteStatisticalByIds":function(ids,fn){
 		Meteor.call(SvseStatisticalDao.AGENT,"deleteStatisticalByIds",[ids],function(err,result){

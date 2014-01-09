@@ -60,7 +60,7 @@
 		$(function() { //初始化日期选择器
 			var endDate = new Date();
 			var startDate = new Date();
-			startDate.setTime(startDate.getTime() - 1000*60*60*24);
+			startDate.setTime(startDate.getTime() - 1000*60*60*16);
 			$(template.find("#datetimepickerStartDate")).datetimepicker({
 				format: 'yyyy-MM-dd hh:mm:ss',
 				language: 'zh-CN',
@@ -117,26 +117,30 @@ var draw_trend = function(monitorId){
 			console.log(result);
 			var records = result;//获取监视器原始数据
 		//	Log4js.info(records);
-			var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
-			
+			var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用			
 			var tableData = dataProcess.getTableData();
 			var imageData = dataProcess.getImageData();
 			var baseData = dataProcess.getBaseData();
 			var nstartTime =  Date.str2Date(DrawTrend.buildTime(startTime),"yyyy-MM-dd hh-mm-ss");
 			var nendTime =  Date.str2Date(DrawTrend.buildTime(endTime),"yyyy-MM-dd hh-mm-ss");
 			//var keysData = dataProcess.getKeysData();
-			//console.log(baseData);
+			// console.log(tableData);
+			// console.log(imageData);
+			// console.log(baseData);
 			var renderObj = {
 				baseDate:baseData,
 				startTime:DrawTrend.buildTime(startTime),
 				endTime:DrawTrend.buildTime(endTime),
 				tableData:tableData
-			}		
+			}	
+			console.log(baseData);
+			console.log("*********");			
+			console.log(tableData);			
 			RenderTemplate.renderIn("#TrendResultDiv","trend_date",renderObj);
-			console.log(nstartTime);
-			console.log(nendTime);
+			//console.log(nstartTime);
+			//console.log(nendTime);
 			//console.log(JSON.stringify(imageData));
-			//console.log(imageData);
+			
 			DrawTrend.draw(imageData,nstartTime,nendTime);
 			});
 }
@@ -172,6 +176,9 @@ Template.trend_status.events({
 	//	Log4js.info(baseData);
 		//var keysData = dataProcess.getKeysData();
 		//console.log(baseData);
+		console.log("1111111");
+		console.log(imageData);
+		console.log("11111111");
 		var renderObj = {
 			baseDate:baseData,
 			startTime:DrawTrend.buildTime(startTime),
@@ -180,8 +187,6 @@ Template.trend_status.events({
 		}
 		
 		RenderTemplate.renderIn("#TrendResultDiv","trend_date",renderObj);
-		console.log(nstartTime);
-		console.log(nendTime);
 		//console.log(JSON.stringify(imageData));
 		//console.log(imageData);
 		DrawTrend.draw(imageData,nstartTime,nendTime);
