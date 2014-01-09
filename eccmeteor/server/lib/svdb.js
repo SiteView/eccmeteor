@@ -6,12 +6,12 @@
 */
 var checkErrorOnServer = function(robj){
 	if(typeof robj === "string"){
-		console.log("传入参数错误，请在相关日志中搜索具体信息");
+	//	console.log("传入参数错误，请在相关日志中搜索具体信息");
 		return robj;
 	}
 	if(!robj.isok(0) &&robj.estr(0) !== ""){
 	//	throw new Error("传入参数错误，请在相关日志中搜索具体信息");
-		console.log("robj.isok 传入参数错误，请在相关日志中搜索具体信息");
+	//	console.log("robj.isok 传入参数错误，请在相关日志中搜索具体信息");
 		return robj.estr(0);
 	}
 	return false;
@@ -57,6 +57,7 @@ svGetAllMonitorTempletInfo = function(){
 }
 
 svGetTreeData = function(parentid){
+	console.log(new Date() + " svGetTreeData");
 	if(typeof parentid === "undefined")
 		parentid = "default";
 	var dowhat = {
@@ -83,6 +84,7 @@ svGetTreeDataChildrenNodes = function(id,type){
 	} else if (type == "se") {
 		what = 'GetSVSE';
 	}
+	console.log(new Date() +" svGetTreeDataChildrenNodes "+ what);
 	var dowhat = {
 		'dowhat' : what,
 		'id' : id
@@ -100,6 +102,7 @@ svGetTreeDataChildrenNodes = function(id,type){
 //===========以上为0.6.4修改添加方法==============//
 
 svGetDefaultTreeData = function(parentid,onlySon){
+	console.log(new Date() +" svGetDefaultTreeData ");
 	if(typeof onlySon === "undefined") onlySon = true;
 	var dowhat = {
 		'dowhat' : 'GetTreeData',
@@ -116,6 +119,7 @@ svGetDefaultTreeData = function(parentid,onlySon){
 }
 
 svGetSVSE = function (id){
+	console.log(new Date() +" svGetSVSE ");
 	var dowhat = {
 		'dowhat' : 'GetSVSE',
 		'id':id
@@ -130,6 +134,7 @@ svGetSVSE = function (id){
 }
 
 svGetGroup = function (id){
+	console.log(new Date() +" svGetGroup ");
 	var dowhat = {
 		'dowhat' : 'GetGroup',
 		'id':id
@@ -143,6 +148,7 @@ svGetGroup = function (id){
 	return robj.fmap(0);
 }
 svGetEntity = function (id){
+	console.log(new Date() +" svGetEntity ");
 	var dowhat = {
 		'dowhat' : 'GetEntity',
 		'id':id
