@@ -30,29 +30,19 @@ Template.timeconstrastform.events = {
 		var tableData = dataProcess.getTableData();
 		var imageData = dataProcess.getImageData();
 		var baseData = dataProcess.getBaseData();
-		for (var i= 0; i<tableData.length;i++){
-			for(var j = 0; j<tableData[i].TableData.length ; j++){
-			  var ReturnName = [];
-			  var TabelDat = [];
-			  ReturnName[j] = tableData[i].TableData[ReturnName];
-			  TabelDat[j] = tableData[i].TableData[j];
-			}
-			//var tableDa =[];
-			//tableDa[i]= 
-		}
-		var nstartTime1 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[0]),"yyyy-MM-dd hh-mm-ss");
+		var nstartTime1 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[0]),"yyyy-MM-dd hh-mm-ss");		
 		var nendTime1 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[1]),"yyyy-MM-dd hh-mm-ss");
 		var nstartTime2 = Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[2]),"yyyy-MM-dd hh-mm-ss");
-		var nendTime2 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[3]),"yyyy-MM-dd hh-mm-ss");
-		
+		var nendTime2 =  Date.str2Date(DrawTimeContrastReport.buildTime(timeArr[3]),"yyyy-MM-dd hh-mm-ss");		
 		var newDate = [nstartTime1,nendTime1,nstartTime2,nendTime2];
 		var renderObj = {
 			baseDate:baseData,
 			tableData:tableData
 		}
 		console.log(tableData);
-		console.log(baseData);
-		
+		console.log("11111111");
+		console.log(nstartTime1);
+		console.log(baseData);		
 		RenderTemplate.renderIn("#timeconstrastDiv","timeconstrast_date",renderObj);
 		//console.log(nstartTime);
 		//console.log(nendTime);
@@ -62,6 +52,45 @@ Template.timeconstrastform.events = {
 		});
 		
 	}
+/*
+	"click #output_timeconstrast_report":function(){
+		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_time");
+		var nodes = treeObj.getSelectedNodes();
+		if(!nodes || nodes == ""){
+			Message.info("请选择监测器");
+			return;
+		}
+		var nodeid = nodes[0].id;
+		console.log(nodeid); 		
+		var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+		var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+		var startTime = ClientUtils.dateToObject(startPicker.getDate());
+		var endTime = ClientUtils.dateToObject(endPicker.getDate());
+		// console.log(endTime);
+		//var nstartTime =  Date.str2Date(DrawTimeContrastReport.buildTime(startTime),"yyyy-MM-dd hh-mm-ss");
+		//var nendTime =  Date.str2Date(DrawTimeContrastReport.buildTime(endTime),"yyyy-MM-dd hh-mm-ss"); 		 
+		var timeArr = [];
+		timeArr[0] = startTime;
+		timeArr[1] = endTime;
+		timeArr[2] = startTime;
+		timeArr[3] = endTime;
+		console.log("#############################");
+		console.log(startTime);
+		console.log(endTime);
+		console.log("#######################");
+		var st = coverTime(startTime);
+		var et = coverTime(endTime);
+		console.log(st);
+		console.log(et);
+		//window.location.href="/TrendReport?mid="+nodeid+"&st="+st+"&et="+et+"";	
+		window.location.href="/TimeContrastReport?mid="+nodeid+"&t1="+t1+"&t2="+t2+"&type="+type+"";	
+//时段对比报告
+//time1 :the first time, split start time and end time wiht ','  
+//Day对比报告 				TimeContrastReport?mid=1.23.4.1&t1=20131215000000,20131215235959&t2=20131216000000,20131216235959&type=day
+//Month  http://localhost:3000/TimeContrastReport?mid=1.23.4.1&t1=20131101000000,20131130235959&t2=20131201000000,20131230235959&type=month
+//weeks  http://localhost:3000/TimeContrastReport?mid=1.23.4.1&t1=20131201000000,20131207000000&t2=20131215000000,20131221000000&type=weeks
+	}
+*/
 }
 //画时间段报告的方法
 var draw_timeconstrast = function(monitorId){
@@ -97,6 +126,10 @@ var draw_timeconstrast = function(monitorId){
 			baseDate:baseData,
 			tableData:tableData
 		}
+		console.log(baseData);
+		console.log("上面是baseData的数据，下面是tableData的数据！@");
+		console.log(tableData);
+		console.log(imageData);
 		RenderTemplate.renderIn("#timeconstrastDiv","timeconstrast_date",renderObj);
 	//console.log(nstartTime);
 	//console.log(nendTime);

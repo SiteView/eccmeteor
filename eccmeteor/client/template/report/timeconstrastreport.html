@@ -33,7 +33,7 @@
 				查询条件
 				</a>
 			</div>
-			<div id="showGroupAndEntityTableGroupListCollapseOne" class="accordion-body collapse in">
+			<div id="showGroupAndEntityTableGroupListCollapseOne" class="accordion-body collapse in" style="overflow-x: auto;">
 					<div id="contrastListCollapseOne" class="panel-collapse collapse in">
 						<form class="well form-horizontal form-inline" onsubmit="return false;">
 							<fieldset>
@@ -66,12 +66,14 @@
 										
 										<div class="control-group" style="padding-left:68px">
 											
-											<button class="btn" id="timeselectbtn">查询</button>
-											<button id="sel2" class="btn">
-												<a href="#">{{language.exportreport}}</a>
+											<button class="btn" id="timeselectbtn">
+												<img src="imag/setting/query_bt.gif">&nbsp查询
+											</button>
+											<button id="output_timeconstrast_report" class="btn">
+												<img src="imag/setting/bakRestore.gif">&nbsp导出报表
 											</button>
 											<button id="helpmessagebtn" class="btn">
-												<a href="#">{{language.helpmessagebtn}}</a>
+												<img src="imag/setting/help_bt.gif">&nbsp{{language.helpmessagebtn}}
 											</button>
 										</div>
 									</div>
@@ -94,13 +96,14 @@
 			  图表
 			</a>
 		</div>
-		<div id="showGroupAndEntityTableEntityListCollapseThree" class="accordion-body collapse in">
+		<div id="showGroupAndEntityTableEntityListCollapseThree" class="accordion-body collapse in" style="overflow-x: auto;">
 			<table class="table table-striped table-condensed table-hover">
 				<thead>
 					<tr></tr>
 					<tr>
 						
 						<th>名称</th>
+						<th>时间段</th>
 						<th>最大值</th>
 						<th>平均值</th>
 						<th>最小值</th>
@@ -108,19 +111,24 @@
 						
 					</tr>
 				</thead>
-				<tbody>
-					{{#each tableData}}
-						<tr>
-							
-							<td>{{MonitorName}}</td>
-							<td>{{max}}</td>
-							<td>{{average}}</td>
-							<td>{{min}}</td>
-							<td>{{when_max}}</td>
-						
-						</tr>
-					{{/each}}
 
+				<tbody>
+				{{#each tableData}}
+						<tr>						
+							<td rowspan="2">{{ReturnName}}</td>
+							<td>
+							{{#each TableData}}							
+								<tr>
+									<td>{{time}}</td>
+									<td>{{max}}</td>
+									<td>{{average}}</td>
+									<td>{{min}}</td>
+									<td>{{when_max}}</td>
+								</tr>	
+							{{/each}}
+							</td>						
+						</tr>
+				{{/each}}
 				</tbody>
 			</table>
 			<div id="drawtimeconstrast">
