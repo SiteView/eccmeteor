@@ -15,20 +15,20 @@ Object.defineProperty(TaskTest,"create",{
 			start1: "09:00",start2: "09:00",
 			start3: "09:00",start4: "09:00",
 			start5: "09:00",start6: "00:00",
-			sv_name: "5x8"
+			sv_name: "5x10"
 		}
-		var robj= process.sv_univ({'dowhat':'CreateTask',id:"ABCD123"},0); //增加
+		var robj= process.sv_univ({'dowhat':'CreateTask',id:"qqq"},0); //增加
 		if(!robj.isok(0)){
 			console.log(robj.estr(0));
 		}
 		var fmap = robj.fmap(0);
 		console.log(fmap);
 		var newObj = {
-			return :{id:"ABCD123",return:true},
+			return :{id:"qqq",return:true},
 			property :task
 		}
 
-		var robj2= process.sv_submit(newObj,{'dowhat':'SubmitTask','del_supplement':true},0); //修改
+		var robj2= process.sv_submit(newObj,{'dowhat':'SubmitTask','del_supplement':false},0); //修改
 
 		if(!robj2.isok(0)){
 			console.log(robj2.estr(0));
