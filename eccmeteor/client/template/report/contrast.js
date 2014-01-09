@@ -59,8 +59,7 @@ Template.contrast.events = {
 			var tableData = dataProcess.getTableData();
 			var imageData = dataProcess.getImageData();
 			var baseData = dataProcess.getBaseData();
-			var nstartTime =  Date.str2Date(DrawContrastReport.buildTime(startTime),"yyyy-MM-dd hh-mm-ss");
-			var nendTime =  Date.str2Date(DrawContrastReport.buildTime(endTime),"yyyy-MM-dd hh-mm-ss");
+			
 			console.log(tableData);
 			console.log(baseData);
 			var renderObj = {
@@ -72,7 +71,7 @@ Template.contrast.events = {
 			var target = Session.get("selectnode");	
 			RenderTemplate.renderIn("#ContrastDetailData","Contrastlist2",renderObj,false);
 			
-			DrawContrastReport.draw(imageData,nstartTime,nendTime);
+			DrawContrastReport.draw(imageData,beginDate,endDate);
 			
 			});
 		 }
