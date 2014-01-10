@@ -8,7 +8,7 @@ var page = new Pagination("alertPage",{currentPage:1,perPage:5});
 Template.warnerrule.events = {
 	"click #emailwarner":function(e){
 		//邮件接收地址
-		var emaillist = SvseEmailDao.getEmailList();
+		var emaillist = SvseEmailDao.getEmailListSync();
 		//邮件模板列表
 		SvseEmailDao.getEmailTemplates(function(err,result){
 			var emailTemplate = [];
@@ -22,7 +22,8 @@ Template.warnerrule.events = {
 	},
 	"click #messagewarner":function(e){
 		//报警接收手机号
-		var messagelist = SvseMessageDao.getMessageList();
+		var messagelist = SvseMessageDao.getMessageListSync();
+		console.log(messagelist);
 		//填充短信模板列表
 		SvseMessageDao.getWebMessageTemplates(function(err,result){
 			var messageTemplate = [];
@@ -152,7 +153,7 @@ Template.warnerrulelist.events = {
 		//邮件报警EmailAlert
 		if(alertType=="EmailAlert"){
 			console.log("EmailAlert");
-			var emaillist = SvseEmailDao.getEmailList();
+			var emaillist = SvseEmailDao.getEmailListSync();
 			SvseEmailDao.getEmailTemplates(function(err,emailresult){
 				var emailTemplate = [];
 				for(name in emailresult){
@@ -198,7 +199,7 @@ Template.warnerrulelist.events = {
 			//console.log(result["SmsSendMode"]);
 			//填充表单
 			//报警接收手机号
-			var messagelist = SvseMessageDao.getMessageList();
+			var messagelist = SvseMessageDao.getMessageListSync();
 			//填充短信模板列表
 			if(result["SmsSendMode"] == "Web"){
 				SvseMessageDao.getWebMessageTemplates(function(err,messageresult){

@@ -2,9 +2,13 @@ var NavigationSettingTreeEvents = {
 	"alert":function(){},
 	"setting":function(){},
 	"AlertRule":function(){
+		NavigationSettingTreeEvents.getEmailList();
+		NavigationSettingTreeEvents.getMessageList();
 		SwithcView.view(ALERTVIEW.WARNERRULE);
 	},
 	"AlertLog":function(){
+		NavigationSettingTreeEvents.getEmailList();
+		NavigationSettingTreeEvents.getMessageList();
 		SwithcView.view(ALERTVIEW.ALERTLOG);
 	},
 	"AlertPlan":function(){
@@ -14,29 +18,11 @@ var NavigationSettingTreeEvents = {
 		SwithcView.view(SETTINGVIEW.BASICSETTING);
 	},
 	"EmailSetting":function(){
-		if(SvseEmailDao.isEmpty()){
-			LoadingModal.loading();
-			SvseEmailDao.getEmailListAsync(function(emaillist){
-				LoadingModal.loaded();
-				//console.log(emaillist);
-			});
-		}else{
-			SvseEmailDao.getEmailListSync();
-			//console.log(emaillist);
-		}
+		NavigationSettingTreeEvents.getEmailList();
 		SwithcView.view(SETTINGVIEW.EMAILSETTING);
 	},
 	"MessageSetting":function(){
-		if(SvseMessageDao.isEmpty()){
-			LoadingModal.loading();
-			SvseMessageDao.getMessageListAsync(function(messagelist){
-				LoadingModal.loaded();
-				console.log(messagelist);
-			});
-		}else{
-			var messagelist = SvseMessageDao.getMessageListSync();
-			console.log(messagelist);
-		}
+		NavigationSettingTreeEvents.getMessageList();
 		SwithcView.view(SETTINGVIEW.MESSAGESETTING);
 	},
 	"UserSetting":function(){
@@ -120,6 +106,7 @@ var NavigationSettingTreeEvents = {
        SwithcView.view(REPORT.MONITORINFO);
     },
 }
+
 NavigationSettingTree = {
 	getTreeData:function(){
 		var nodes = [];
@@ -156,3 +143,34 @@ Object.defineProperty(NavigationSettingTree,"isOwnSettingNode",{
 		return false;
 	}
 });
+
+Object.defineProperty(NavigationSettingTreeEvents,"getEmailList",{
+	value:function(){
+		if(SvseEmailDao.isEmpty()){
+			LoadingModal.loading();
+			SvseEmailDao.getEmailListAsync(function(emaillist){
+				LoadingModal.loaded();
+				//console.log(emaillist);
+			});
+		}else{
+			SvseEmailDao.getEmailListSync();
+			//console.log(emaillist);
+		}
+	}
+});
+
+Object.defineProperty(NavigationSettingTreeEvents,"getMessageList",{
+	value:function(){
+		if(SvseMessageDao.isEmpty()){
+			LoadingModal.loading();
+			SvseMessageDao.getMessageListAsync(function(messagelist){
+				LoadingModal.loaded();
+				console.log(messagelist);
+			});
+		}else{
+			var messagelist = SvseMessageDao.getMessageListSync();
+			console.log(messagelist);
+		}
+	}
+});
+
