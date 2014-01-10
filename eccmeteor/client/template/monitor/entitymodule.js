@@ -29,6 +29,8 @@ Template.MonitorList.events={
       //  var id = e.currentTarget.id;
       	var monitorId = this.sv_id;
       	var entityId = SessionManage.getCheckedTreeNode("id");
+		console.log(monitorId);
+		console.log(entityId);
       	LoadingModal.loading();
         SvseMonitorTemplateDao.getEditMonitorInfoAsync(monitorId,entityId,function(result){
         	LoadingModal.loaded();

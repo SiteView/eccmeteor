@@ -426,10 +426,18 @@ Template.monitorInfo.rendered = function()
 */
 Template.monitorInfo.monitortemplates = function()
 {
-	
-	var nodes = SvseMonitorTemplate.find().fetch();
-	console.log(nodes);
-	return nodes;		
+	SvseMonitorTemplateDao.getMonitorInfoByIdAsync("1.27.1.1",function(result){
+		var context = result.context;
+		console.log(context);
+		console.log(context.monitorType);
+		var returnItems = context.MonityTemplateReturnItems;
+		for(i in returnItems){
+			console.log(returnItems[i].sv_label);
+		}
+	});
+	// var nodes = SvseMonitorTemplate.find().fetch();
+	// console.log(nodes);
+	// return nodes;		
 }
 
 /*

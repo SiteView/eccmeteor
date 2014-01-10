@@ -5,7 +5,7 @@ Session.setDefault('query', {sv_id:"", QueryObj:"", QueryOpr:"", QueryValue:""})
 /*
 *点击查询按钮开始查询
 */
-Template.monitorInfo.events = 
+Template.monitorInfoReport.events = 
 {
 	"click #searchBtn":function(e)
 	{
@@ -38,7 +38,7 @@ Template.monitorInfo.events =
 /*
 *查询结果数据列表
 */
-Template.monitorInfolist.monitorInforesultlist = function()
+Template.monitorInfoReportlist.monitorInforesultlist = function()
 {
 	//var obj = new RegExp(queryobj);
 	//var obj = new RegExp("^"+txt+"$"); 
@@ -347,7 +347,7 @@ var drawSvseSettingTree = function()
 	$.fn.zTree.init($("#seach_setting_tree"), setting, data);		
 }
 
-Template.monitorInfo.rendered = function()
+Template.monitorInfoReport.rendered = function()
 {	
 	//绘制监视器树视图
 	drawMonitorTree();
