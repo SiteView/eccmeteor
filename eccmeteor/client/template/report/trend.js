@@ -1,6 +1,6 @@
 ﻿Template.trend.rendered = function () {
 	TrendAction.initTree(this);
-	TrendAction.initDatetimepicker();
+	TrendAction.initDatePicker(this);
 }
 
 Template.trend_status.events({
@@ -71,7 +71,7 @@ Object.defineProperty(TrendAction,"initTree",{
 	}
 });
 //初始化日期选择器
-Object.defineProperty(TrendAction,"initDatetimepicker",{
+Object.defineProperty(TrendAction,"initDatePicker",{
 	value:function(template){
 		var endDate = new Date();
 		var startDate = new Date();

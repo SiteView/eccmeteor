@@ -3,13 +3,15 @@ StatisticsReportFactory = function(reportConfigureId){
 	this.monitorIds = [];
 	this.extentDate = [];
 	this.fileType = [];
+	this._options = {
+		NoGraphicReportMnotoring:"StatisticsReportNoGraphicMonitoring"
+	}
 	this.init(reportConfigureId);
 };
 
 StatisticsReportFactory.prototype.init = function(reportConfigureId){
 	this.setting = SvseStatisticalresultlist.findOne(reportConfigureId);
 };
-
 
 StatisticsReportFactory.prototype.getReportConfigure = function(){};
 
@@ -103,14 +105,21 @@ StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
 	*/
 	var monitoringRecords = SvseMonitorDaoOnServer.getMonitorReportDataByfilter(monitorIds,dateExtent[0],dateExtent[1],filter,false);
 	var statisticalRecords = [];
-	for(x in records){
+	for(x in monitoringRecords){
 		if(x.indexOf("Return") !== -1 || x.indexOf("return") !== -1){
-			statisticalRecords.push(records[x]);
-			delete records[x];
+			statisticalRecords.push(monitoringRecords[x]);
+			delete monitoringRecords[x];
 		}
 	}
+	var baseData = this.buildNoGraphicReportOtherSetting();
 	var monitoringContext = {
+		baseData:baseData,
+		records:monitoringRecords
 	}
+	var monitoringTemplate = this._option.NoGraphicReportMnotoring;
+	var uuid = Meteor.uuid();
+	var monitoring = HtmlTemplate.render(monitoringTemplate,monitoringContext);
+
 }
 
 StatisticsReportFactory.prototype.buildNoGraphicReportOtherSetting=function(){
@@ -127,3 +136,6 @@ StatisticsReportFactory.prototype.buildNoGraphicReportOtherSetting=function(){
 	}
 }
 
+StatisticsReportFactory.prototype.write = function(string){
+	
+}
