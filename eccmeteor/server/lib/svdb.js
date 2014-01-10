@@ -764,7 +764,7 @@ svGetMessageTemplates = function(){
 	var fmap = meteorSvUniv({'dowhat':'GetSvIniFileBySections',"filename":"TXTtemplate.ini",
 			"user":"default","sections":"SMS"}, 0);
 
-	return fmap["SMS"];
+	return fmap && fmap["SMS"];
 }
 
 //获取发送web短信模板--by zhuqing add
@@ -775,7 +775,7 @@ svGetWebMessageTemplates=function(){
 		'user':'default',
 		'sections':'WebSmsConfige'
 	},0);
-	return fmap["WebSmsConfige"];
+	return fmap && fmap["WebSmsConfige"];
 }
 
 //更改短信状态

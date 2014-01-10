@@ -3,19 +3,36 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
+		<div> 
+			<a href="<%= baseData.theFirstPage%>.html">首页</a>	
+			<a href="<%= baseData.theBeforePage%>.html">前一页</a>
+			<a href="<%= baseData.theAfterPage%>.html">后一页</a>
+			<a href="<%= baseData.theLastPage%>.html">末页</a>
+			共 :<%= baseData.theTotalPage%>页
+			当前是第:<%= baseData.theCurrentPage + 1 %>页
+		</div>
 		<div id="content">
 			<lable>统计</lable>
 			<table class="table table-striped table-bordered table-hover">
 				<thead>
 					<tr>
 						<th>名称</th>
-						<th>返回值名称</th>
+						<th>返回值</th>
 						<th>最大值</th>
 						<th>平均值</th>
-						<th>最近一次</th>
+						<th>最新值</th>
 					</tr>
 				</thead>
 				<tbody>
+					<%for(i in records){%>
+					<tr>
+						<td><%= records[i].MonitorName%></td>
+						<td><%= records[i].ReturnName%></td>
+						<td><%= records[i].max%></td>
+						<td><%= records[i].average%></td>
+						<td><%= records[i].latest%></td>
+					</tr>
+					<%}%>
 				</tbody>
 			</table>
 		</div>

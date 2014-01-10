@@ -1,7 +1,7 @@
 StatisticsReportFactoryTest = function(){};
 Object.defineProperty(StatisticsReportFactoryTest,"getRecords",{
 	value:function(){
-		var factory = new StatisticsReportFactory("5qSjY2kbgb655MRaD");
+		var factory = new StatisticsReportFactory("w8rGbu9BKPMbSMkB7");
 		factory.genaritionReport();
 
 	}
@@ -10,6 +10,9 @@ Object.defineProperty(StatisticsReportFactoryTest,"getRecords",{
 Object.defineProperty(StatisticsReportFactoryTest,"test",{
 	value:function(){
 		StatisticsReportFactoryTest.getRecords();
+		//console.log(SvseStatisticalresultlist.find().fetch());{nIndex:reportConfigureId}
+		//console.log(SvseStatisticalresultlist.findOne("w8rGbu9BKPMbSMkB7"));
+
 	}
 });
 /*
