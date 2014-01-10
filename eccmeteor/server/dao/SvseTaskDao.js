@@ -38,9 +38,10 @@
 			console.log("vvvvv");
 		//return SvseTaskDaoOnServer.getReturn(true);
 				console.log("aaaaaaaaa");
-		 var addressresult = result[address];
+		 var addressresult = result;
+			console.log(result);
+			console.log("*****");
 			console.log(addressresult);
-		 	console.log("*****");
 			console.log(address.sv_name);
 		 SvseTask.update(address.sv_name,{$set:addressresult},function(err){
 		 console.log("44444444");
