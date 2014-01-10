@@ -1,10 +1,12 @@
+var fs = Npm.require('fs');
 StatisticsReportFactory = function(reportConfigureId){
 	this.setting = {};
 	this.monitorIds = [];
 	this.extentDate = [];
 	this.fileType = [];
 	this._options = {
-		NoGraphicReportMnotoring:"StatisticsReportNoGraphicMonitoring"
+		NoGraphicReportMnotoringHtmlTemplate:"StatisticsReportNoGraphicMonitoring.html",
+		NoGraphicStatisticalHtmlTemplate:"StatisticsReportNoGraphicStatistical.html"
 	}
 	this.init(reportConfigureId);
 };
@@ -55,7 +57,12 @@ StatisticsReportFactory.prototype.getExtentDate = function(){
 
 //拼接时间
 StatisticsReportFactory.prototype.joinTime = function(obj){
-	return obj.year + "-" + obj.month + "-" +  obj.day+ " " +obj.hour + ":" +obj.minute+":"+obj.second;
+	return obj.year 
+			+ "-" + (obj.month < 10 ? ("0" + obj.month):obj.month )
+			+ "-" + (obj.day < 10 ? ("0" + obj.day) :obj.day )
+			+ " " + obj.hour 
+			+ ":" + obj.minute
+			+ ":" + obj.second;
 }
 
 StatisticsReportFactory.prototype.buildTime = function(extent){
@@ -111,15 +118,23 @@ StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
 			delete monitoringRecords[x];
 		}
 	}
+	//console.log(monitoringRecords);
 	var baseData = this.buildNoGraphicReportOtherSetting();
 	var monitoringContext = {
 		baseData:baseData,
 		records:monitoringRecords
 	}
-	var monitoringTemplate = this._option.NoGraphicReportMnotoring;
+	var statisticalContext = {
+		baseData:baseData,
+		records:statisticalRecords
+	}
+	var monitoringTemplate = this._options.NoGraphicReportMnotoringHtmlTemplate;
+	var statisticalTemplate = this._options.NoGraphicStatisticalHtmlTemplate;
 	var uuid = Meteor.uuid();
 	var monitoring = HtmlTemplate.render(monitoringTemplate,monitoringContext);
-
+	var statistical = HtmlTemplate.render(statisticalTemplate,statisticalContext);
+	_self.writeToHtml(monitoring,"/home/ec/a.html");
+	_self.writeToHtml(statistical,"/home/ec/b.html");
 }
 
 StatisticsReportFactory.prototype.buildNoGraphicReportOtherSetting=function(){
@@ -136,6 +151,6 @@ StatisticsReportFactory.prototype.buildNoGraphicReportOtherSetting=function(){
 	}
 }
 
-StatisticsReportFactory.prototype.write = function(string){
-	
+StatisticsReportFactory.prototype.writeToHtml = function(htmlContent,fileName){
+	fs.writeFileSync(fileName,new Buffer(htmlContent));
 }

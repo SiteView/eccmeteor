@@ -9,13 +9,22 @@
 				<thead>
 					<tr>
 						<th>名称</th>
-						<th>返回值名称</th>
+						<th>返回值</th>
 						<th>最大值</th>
 						<th>平均值</th>
-						<th>最近一次</th>
+						<th>最新值</th>
 					</tr>
 				</thead>
 				<tbody>
+					<%for(i in records){%>
+					<tr>
+						<td><%= records[i].MonitorName%></td>
+						<td><%= records[i].ReturnName%></td>
+						<td><%= records[i].max%></td>
+						<td><%= records[i].average%></td>
+						<td><%= records[i].latest%></td>
+					</tr>
+					<%}%>
 				</tbody>
 			</table>
 		</div>
