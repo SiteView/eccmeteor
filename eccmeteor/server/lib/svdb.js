@@ -317,6 +317,27 @@ svWriteTaskIniFileSectionString = function(address){
 	console.log(fmap2);
 	return fmap2;
 }
+//编辑一条计划任务
+svUpdateTaskIniFileSection = function (address){
+	console.log(address["sv_name"]);
+	//var name = String(address["sv_name"]);
+	var robj= process.sv_univ({'dowhat':'CreateTask','id':address["sv_name"]},0); //增加
+		if(!robj.isok(0)){
+			console.log(robj.estr(0));
+		}
+		var fmap = robj.fmap(0);
+		//console.log(fmap);
+		var newObj = {
+			return :{id:address["sv_name"],return:true},
+			property :address
+		}
+	var robj2= process.sv_submit(newObj,{'dowhat':'SubmitTask','del_supplement':false},0); //修改	
+	if(!robj2.isok(0)){
+		console.log(robj2.estr(0));
+	}
+	var fmap2 = robj2.fmap(0);
+	return fmap2;
+}
 
 //删除一条任务计划
 svDeleteTaskIniFileSection = function(address){

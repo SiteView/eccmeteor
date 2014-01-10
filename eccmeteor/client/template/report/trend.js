@@ -1,21 +1,103 @@
 ﻿Template.trend.rendered = function () {
 	TrendAction.initTree(this);
-	TrendAction.initDatePicker(this);
-}
 
+}
+Template.trend_status.rendered = function(){
+	TrendAction.initDatePicker(this);
+	TrendAction.render(this);
+}
 Template.trend_status.events({
 	"click #search" : function(e,t){
 		TrendAction.query(e,t,this);
 	},
 	"click #output_trend_report":function(e,t){
 		TrendAction.outputReport(e,t,this);
-	//	window.location.href="/StatusReport?mid="+nodes+"&st="+st+"&et="+et+"";
-	//	window.open("http://localhost:3000/TrendReport?mid=1.27.3.3&st=20131219145000&et=20131220145000","_blank");
-	//  window.location.href ="/TrendReport?mid=1.27.3.3&st=20131219145000&et=20131220145000";
+	},
+	"click ul li a":function(e,t){
+		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_trend");
+		var nodes = treeObj.getSelectedNodes();
+		console.log(nodes); 		
+			if(!nodes || nodes == ""){
+				Message.info("请选择监测器!");
+				return;
+			}else{
+			var monitorId = nodes[0].id;
+			TrendAction.timeclick(e,t,monitorId,this);			
+			}
+
 	}
 });
 
 var TrendAction = function(){};
+
+Object.defineProperty(TrendAction,"render",{
+	value:function(template){
+		var endDate = new Date();
+		var startDate = new Date();
+		startDate.setTime(startDate.getTime() - 1000*60*60*24);
+		$(template.find("#datetimepickerStartDate")).datetimepicker({
+			format: 'yyyy-MM-dd hh:mm:ss',
+			language: 'zh-CN',
+			maskInput: false
+		});
+		$(template.find("#datetimepickerEndDate")).datetimepicker({
+			format: 'yyyy-MM-dd hh:mm:ss',
+			language: 'zh-CN',
+			endDate : endDate,
+			maskInput: false,
+		});
+		var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
+		var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
+		startPicker.setDate(startDate);
+		endPicker.setDate(endDate);
+		// var monitorId  = template.find("input:hidden").value;
+		// this.draw(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate),monitorId,template);
+	}
+});
+
+Object.defineProperty(TrendAction,"timeclick",{
+	value:function(e,template,monitorId,context){
+		/**deal with css*/
+		var target = $(e.currentTarget);
+		target.parents("ul").find("a").removeClass();
+		target.addClass("label label-success");
+		var str = e.currentTarget.name;
+		var startDate;
+		var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
+		var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
+		var today = endPicker.getDate();	
+			if(str.indexOf(":") === -1){
+				switch(str){
+					case "today": startDate = Date.today();break;
+					case "week" : startDate = today.add({days:1-today.getDay()});break;
+					default		: startDate = today;
+				}
+			}else{
+				startDate = today.add(JSON.parse(str));
+			}
+		startPicker.setDate(startDate);
+		var endDate = endPicker.getDate();				
+		var startPickerDate = startPicker.getDate();
+		var endPickerDate = endPicker.getDate();
+		var startTime = ClientUtils.dateToObject(startPickerDate);
+		var endTime = ClientUtils.dateToObject(endPickerDate);
+		DrawTrend.drawTrend(monitorId,startTime,endTime,function (result){
+		console.log(result);
+		var dataProcess = new ReportDataProcess(result);//原始数据的基本处理 //客户端服务端通用			
+		var tableData = dataProcess.getTableData();
+		var imageData = dataProcess.getImageData();
+		var baseData = dataProcess.getBaseData();
+		var renderObj = {
+			baseDate:baseData,
+			startTime:DrawTrend.buildTime(startTime),
+			endTime:DrawTrend.buildTime(endTime),
+			tableData:tableData
+		}			
+		RenderTemplate.renderIn("#TrendResultDiv","trend_date",renderObj);
+		DrawTrend.draw(imageData,startPickerDate,endPickerDate);
+		});
+	}
+});
 
 Object.defineProperty(TrendAction,"initTree",{
 	value:function(template){
@@ -81,16 +163,20 @@ Object.defineProperty(TrendAction,"initDatePicker",{
 			language: 'zh-CN',
 			maskInput: false
 		});
+
 		$("#datetimepickerEndDate").datetimepicker({
 			format: 'yyyy-MM-dd hh:mm:ss',
 			language: 'zh-CN',
 			endDate : endDate,
 			maskInput: false,
+
 		});
 		var startPicker = $("#datetimepickerStartDate").data('datetimepicker');
 		var endPicker = $("#datetimepickerEndDate").data('datetimepicker');
 		startPicker.setDate(startDate);
 		endPicker.setDate(endDate);
+		console.log(startDate);
+		console.log("xuxuxu");
 	}
 });
 
@@ -117,32 +203,37 @@ Object.defineProperty(TrendAction,"drawReport",{
 		var endPickerDate = endPicker.getDate();
 		var startTime = ClientUtils.dateToObject(startPickerDate);
 		var endTime = ClientUtils.dateToObject(endPickerDate);
-
 		DrawTrend.drawTrend(monitorId,startTime,endTime,function (result){
 			console.log(result);
 			var records = result;//获取监视器原始数据
 		//	Log4js.info(records);
-			var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
-			
+			var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用			
 			var tableData = dataProcess.getTableData();
 			var imageData = dataProcess.getImageData();
 			var baseData = dataProcess.getBaseData();
 			
 			//var keysData = dataProcess.getKeysData();
-			//console.log(baseData);
+			// console.log(tableData);
+			// console.log(imageData);
+			// console.log(baseData);
 			var renderObj = {
 				baseDate:baseData,
 				startTime:DrawTrend.buildTime(startTime),
 				endTime:DrawTrend.buildTime(endTime),
 				tableData:tableData
-			}		
+			}	
+			console.log(baseData);
+			console.log("*********");			
+			console.log(tableData);			
 			RenderTemplate.renderIn("#TrendResultDiv","trend_date",renderObj);
+
 			//console.log(JSON.stringify(imageData));
 			//console.log(imageData);
 			DrawTrend.draw(imageData,startPickerDate,endPickerDate);
 		});
 	}
 });
+
 
 Object.defineProperty(TrendAction,"outputReport",{
 	value:function(e,t,context){

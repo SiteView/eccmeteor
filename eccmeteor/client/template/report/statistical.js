@@ -26,6 +26,7 @@ Template.statistical.events = {
 	 ModalDrag.draggable("#statisticalofadddiv");		
 	},
 	//删除单行，多行记录
+/*
 	"click #statisticalofdel" : function () {
 		var checks = $("#statisticallist :checkbox[checked]");
 		var ids = [];
@@ -37,6 +38,7 @@ Template.statistical.events = {
 				SystemLogger(result);
 			});
 	},
+*/
 	//允许操作
 	"click #allowestatistical" : function () {
 		var checks = $("#statisticallist :checkbox[checked]");
@@ -76,6 +78,29 @@ Template.statistical.events = {
 		console.log("这里是帮助信息...");
 	}
 }
+var getstatisticalSelectAll = function(){
+	return ClientUtils.tableGetSelectedAll("statisticallist");
+}
+Template.statistical.rendered = function(){
+	 $(function(){
+					//在点击删除操作时弹出提示框实现进一步提示
+					$("#statisticalofdel").confirm({
+							'message':"确定删除操作？",
+							'action':function(){
+									var ids = getstatisticalSelectAll();
+									SvseStatisticalDao.checkStatisticallistSelect(ids);
+									if(ids.length){
+											SvseStatisticalDao.deleteStatisticalByIds(ids,function(result){
+													Log4js.info(result);
+											});
+											//console.log("确定");
+									}
+									$("#statisticalofdel").confirm("hide");
+							}
+					});
+			});
+}
+
 Template.statisticallist.rendered = function () {
 	$(function () {
 		//隐藏所有操作按钮

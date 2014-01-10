@@ -27,6 +27,30 @@
 		 })
 		 console.log("3333333");
 	},
+	"updatetask":function(address){
+		console.log("aaaaaaaaa");
+		var result = SvseMethodsOnServer.svUpdateTaskIniFileSection(address);	
+		if(!result){
+			var msg = "SvseTaskDaoOnServer's addtaskabsolute  add faild";
+			Log4js.info(msg,-1);
+			throw new Meteor.Error(500,msg);
+		}
+			console.log("vvvvv");
+		//return SvseTaskDaoOnServer.getReturn(true);
+				console.log("aaaaaaaaa");
+		 var addressresult = result;
+			console.log(result);
+			console.log("*****");
+			console.log(addressresult);
+			console.log(address.sv_name);
+		 SvseTask.update(address.sv_name,{$set:addressresult},function(err){
+		 console.log("44444444");
+			if(err){
+				 SystemLogger(err,-1);
+				 throw new Meteor.Error(500,err);
+			 }
+		 })
+	},
 	"deleteTaskByIds" : function(ids){
 		var address = ids.join();
 		console.log("********");

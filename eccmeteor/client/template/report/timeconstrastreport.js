@@ -1,6 +1,11 @@
 Template.timeconstrastreport.events = {
 	"click #timeselectbtn":function(e,t){
 		TimeConstrastReportAction.query(e,t,this);
+
+	},
+
+	"click #output_timeconstrast_report":function(e,t){
+		TimeConstrastReportAction.outputReport(e,t,this);
 	}
 }
 
@@ -10,6 +15,41 @@ Template.timeconstrastreport.rendered = function(){
 }
 
 var TimeConstrastReportAction = function(){};
+
+//导出报表函数
+Object.defineProperty(TimeConstrastReportAction,"outputReport",{
+	value:function(e,template,context){
+		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_time");
+		var nodes = treeObj.getSelectedNodes();
+		console.log(nodes); 		
+		if(!nodes || nodes == ""){
+			Message.info("请选择监测器");
+			return;
+		}
+		var nodeid = nodes[0];		
+		var firstPicker = $(template.find('#datetimepickerFirstDate')).data('datetimepicker');
+		var secondPicker = $(template.find('#datetimepickerSecondDate')).data('datetimepicker');
+		var firstDate = firstPicker.getDate();
+		var secondDate = secondPicker.getDate();
+		var dateType = template.find("#timeconstrast").value;
+		var firstCurrentDate = ReportDateUtils.getCurrentDate(firstDate,dateType);
+		var secondCurrentDate = ReportDateUtils.getCurrentDate(secondDate,dateType);
+		var currentDate = firstCurrentDate.concat(secondCurrentDate);
+		var timeArr = [];
+			currentDate.forEach(function(d){
+				timeArr.push(ClientUtils.dateToObject(d))
+			});	
+		var t1 = TimeConstrastReportAction.coverTime(timeArr[0])+","+TimeConstrastReportAction.coverTime(timeArr[1]);
+		var t2 = TimeConstrastReportAction.coverTime(timeArr[2])+","+TimeConstrastReportAction.coverTime(timeArr[3]);
+		window.location.href="/TimeContrastReport?mid="+nodeid+"&t1="+t1+"&t2="+t2+"&type="+dateType+"";	
+	//时段对比报告
+	//time1 :the first time, split start time and end time wiht ','  
+	//Day对比报告 				   TimeContrastReport?mid=1.23.4.1&t1=20131215000000,20131215235959&t2=20131216000000,20131216235959&type=day
+	//Month  http://localhost:3000/TimeContrastReport?mid=1.23.4.1&t1=20131101000000,20131130235959&t2=20131201000000,20131230235959&type=month
+	//weeks  http://localhost:3000/TimeContrastReport?mid=1.23.4.1&t1=20131201000000,20131207000000&t2=20131215000000,20131221000000&type=weeks
+	}
+});
+
 
 Object.defineProperty(TimeConstrastReportAction,"initTree",{
 	value:function(t){
@@ -30,6 +70,10 @@ Object.defineProperty(TimeConstrastReportAction,"initTree",{
 			},
 			callback:{
 				onClick:function(event,treeId,treeNode){
+					if(treeNode.type !== "monitor"){
+						Message.warn("请选择监测器！");
+						return;
+					}						
 					TimeConstrastReportAction.treeNodeClick(treeId,treeNode,t)
 				},
 				/*
@@ -115,7 +159,15 @@ Object.defineProperty(TimeConstrastReportAction,"drawReport",{
 		currentDate.forEach(function(d){
 			timeArr.push(ClientUtils.dateToObject(d))
 		});
-
+		var t1 = TimeConstrastReportAction.coverTime(timeArr[0])+","+TimeConstrastReportAction.coverTime(timeArr[1]);
+		var t2 = TimeConstrastReportAction.coverTime(timeArr[2])+","+TimeConstrastReportAction.coverTime(timeArr[3]);
+		console.log("***");
+		console.log(dateType);
+		console.log(t1);		
+		console.log(t2);
+		console.log("***");
+		// console.log(timeArr);
+		// console.log(currentDate);
 		DrawTimeContrastReport.getData(monitorId,timeArr,function(result){
 			var records = result;//获取监视器原始数据
 			//原始数据的基本处理 //客户端服务端通用
@@ -161,8 +213,26 @@ Object.defineProperty(TimeConstrastReportAction,"initDatePicker",{
 });
 
 Object.defineProperty(TimeConstrastReportAction,"query",{
-	value:function(e,t,context){
-		var monitorId ="1.27.7.2" ;
-		TimeConstrastReportAction.drawReport(monitorId,t);
+	value:function(e,template,context){
+		var treeobj = $.fn.zTree.getZTreeObj("svse_tree_check_time");
+		var monitorId = treeobj.getSelectedNodes();
+		if(!monitorId || monitorId == ""){
+			Message.info("请选择监测器");
+			return;
+		}
+		//var monitorId ="1.27.7.2" ;
+		TimeConstrastReportAction.drawReport(monitorId,template);
+	}
+});
+//将时间对象转换成字符串
+Object.defineProperty(TimeConstrastReportAction,"coverTime",{
+	value:function(obj){
+		var year = obj.year;
+		var month = (obj.month < 10 ? "0" + obj.month : obj.month);
+		var day = (obj.day < 10 ? "0" + obj.day : obj.day);
+		var hour = (obj.hour < 10 ? "0" + obj.hour : obj.hour);
+		var minute = (obj.minute < 10 ? "0" + obj.minute : obj.minute);
+		var second = (obj.second < 10 ? "0" + obj.second : obj.second);
+		return "" + year + month + day + hour + minute + second;
 	}
 });
