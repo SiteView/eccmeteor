@@ -3,6 +3,14 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
+		<div> 
+			<a href="<%= baseData.theFirstPage%>.html">首页</a>	
+			<a href="<%= baseData.theBeforePage%>.html">前一页</a>
+			<a href="<%= baseData.theAfterPage%>.html">后一页</a>
+			<a href="<%= baseData.theLastPage%>.html">末页</a>
+			共 :<%= baseData.theTotalPage%>页
+			当前是第:<%= baseData.theCurrentPage + 1 %>页
+		</div>
 		<div id="content">
 			<h3 align="center"><%=  baseData.reportTitle%></h3>
 			<h4 align="center"><%= baseData.startTime%> ~ <%= baseData.endTime%></h4>

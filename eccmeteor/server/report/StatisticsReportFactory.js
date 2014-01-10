@@ -6,7 +6,8 @@ StatisticsReportFactory = function(reportConfigureId){
 	this.fileType = [];
 	this._options = {
 		NoGraphicReportMnotoringHtmlTemplate:"StatisticsReportNoGraphicMonitoring.html",
-		NoGraphicStatisticalHtmlTemplate:"StatisticsReportNoGraphicStatistical.html"
+		NoGraphicStatisticalHtmlTemplate:"StatisticsReportNoGraphicStatistical.html",
+		_perPage:24,
 	}
 	this.init(reportConfigureId);
 };
@@ -112,45 +113,93 @@ StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
 	*/
 	var monitoringRecords = SvseMonitorDaoOnServer.getMonitorReportDataByfilter(monitorIds,dateExtent[0],dateExtent[1],filter,false);
 	var statisticalRecords = [];
+
+	var perPage = this._options._perPage;
+
+	var pagerMonitoringRecords = [];
+	var totalMonitoringRecords = [];
+
+	var pagerStatisticalRecords = [];
+	var totalStatisticalRecords = [];
+
+
 	for(x in monitoringRecords){
 		if(x.indexOf("Return") !== -1 || x.indexOf("return") !== -1){
-			statisticalRecords.push(monitoringRecords[x]);
-			delete monitoringRecords[x];
+			pagerStatisticalRecords.push(monitoringRecords[x]);
+			if(pagerStatisticalRecords.length == perPage){
+				totalStatisticalRecords.push(pagerStatisticalRecords);
+				pagerStatisticalRecords = new Array();
+			}
+			continue;
+		}
+		pagerMonitoringRecords.push(monitoringRecords[x]);
+		if(pagerMonitoringRecords.length == perPage){
+			totalMonitoringRecords.push(pagerMonitoringRecords);
+			pagerMonitoringRecords = new Array();
 		}
 	}
-	//console.log(monitoringRecords);
-	var baseData = this.buildNoGraphicReportOtherSetting();
-	var monitoringContext = {
-		baseData:baseData,
-		records:monitoringRecords
+
+	if(pagerStatisticalRecords.length){
+		totalStatisticalRecords.push(pagerStatisticalRecords);
 	}
-	var statisticalContext = {
-		baseData:baseData,
-		records:statisticalRecords
+
+	if(pagerMonitoringRecords.length){
+		totalMonitoringRecords.push(pagerMonitoringRecords);
 	}
-	var monitoringTemplate = this._options.NoGraphicReportMnotoringHtmlTemplate;
-	var statisticalTemplate = this._options.NoGraphicStatisticalHtmlTemplate;
+	
 	var uuid = Meteor.uuid();
-	var monitoring = HtmlTemplate.render(monitoringTemplate,monitoringContext);
-	var statistical = HtmlTemplate.render(statisticalTemplate,statisticalContext);
-	_self.writeToHtml(monitoring,"/home/ec/a.html");
-	_self.writeToHtml(statistical,"/home/ec/b.html");
+
+	var totalPage = totalMonitoringRecords.length + totalStatisticalRecords.length;
+
+	var monitoringTemplate = this._options.NoGraphicReportMnotoringHtmlTemplate;
+
+	for(var i = 0 ; i < totalMonitoringRecords.length ; i++){
+		var baseData = this.buildNoGraphicReportOtherSetting(i,totalPage);
+		var monitoringContext = {
+			baseData:baseData,
+			records:totalMonitoringRecords[i]
+		}
+		var monitoring = HtmlTemplate.render(monitoringTemplate,monitoringContext);
+		_self.writeToHtml(monitoring,"/home/ec/testReportWritefile/"+i+".html");
+	}
+
+	var statisticalTemplate = this._options.NoGraphicStatisticalHtmlTemplate;
+	for(var j = 0 ; j < totalStatisticalRecords.length ; j++){
+		var baseData = this.buildNoGraphicReportOtherSetting(i+j,totalPage);
+		var statisticalContext = {
+			baseData:baseData,
+			records:totalStatisticalRecords[j]
+		}
+		var statistical = HtmlTemplate.render(statisticalTemplate,statisticalContext);
+		_self.writeToHtml(statistical,"/home/ec/testReportWritefile/"+(i+j)+".html");
+	}
 }
 
-StatisticsReportFactory.prototype.buildNoGraphicReportOtherSetting=function(){
+StatisticsReportFactory.prototype.buildNoGraphicReportOtherSetting=function(currentPage,totalPage){
 	var self = this;
 	var dateExtent = this.getExtentDate();
+	var  theLastPage = totalPage-1;
 	return {
 		reportTitle: self.setting.Title.split("\|")[0],
 		startTime:self.joinTime(dateExtent[0]),
 		endTime:self.joinTime(dateExtent[0]),
-		theLastPage:0,
-		theBeforePage:0,
-		theBeforePage:0,
-		theAfterPage:0
+		theFirstPage:0,
+		theLastPage:theLastPage,
+		theCurrentPage:currentPage,
+		theBeforePage:currentPage == 0 ? 0 : (currentPage - 1),
+		theAfterPage:currentPage == theLastPage ? currentPage : (currentPage + 1),
+		theTotalPage:totalPage
 	}
 }
 
 StatisticsReportFactory.prototype.writeToHtml = function(htmlContent,fileName){
 	fs.writeFileSync(fileName,new Buffer(htmlContent));
+}
+
+
+StatisticsReportFactory.prototype.getReportSvaePath = function(uuid){
+	var path = "/home/ec/testReportWritefile";
+	path = EccSystem.joinPath(path,uuid);
+	EccSystem.mkdir(path);
+	return path;
 }
