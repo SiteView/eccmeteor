@@ -54,12 +54,18 @@
 											
 											<div class="control-group" style="padding-left:68px">
 												
-												<button class="btn" id="timeselectbtn">查询</button>
+												<button class="btn" id="timeselectbtn">
+													<img src="imag/setting/query_bt.gif">&nbsp查询
+												</button>
 												<button id="output_timeconstrast_report" class="btn">
-													<a href="#">{{language.exportreport}}</a>
+													<a href="#">
+														<img src="imag/setting/bakRestore.gif">&nbsp{{language.exportreport}}
+													</a>
 												</button>
 												<button id="helpmessagebtn" class="btn">
-													<a href="#">{{language.helpmessagebtn}}</a>
+													<a href="#">
+														<img src="imag/setting/help_bt.gif">&nbsp {{language.helpmessagebtn}}
+													</a>
 												</button>
 											</div>
 
@@ -104,14 +110,20 @@
 				</thead>
 
 				<tbody>
-
-					{{#each tableData}}
-						<tr>
-							<td>{{MonitorName}}</td>
-							<td>{{max}}</td>
-							<td>{{average}}</td>
-							<td>{{min}}</td>
-							<td>{{when_max}}</td>
+				{{#each tableData}}
+						<tr>						
+							<td rowspan="2">{{ReturnName}}</td>
+							<td>
+							{{#each TableData}}							
+								<tr>
+									<td>{{time}}</td>
+									<td>{{max}}</td>
+									<td>{{average}}</td>
+									<td>{{min}}</td>
+									<td>{{when_max}}</td>
+								</tr>	
+							{{/each}}
+							</td>						
 
 						</tr>
 				{{/each}}

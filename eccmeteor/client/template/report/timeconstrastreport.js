@@ -1,4 +1,3 @@
-
 Template.timeconstrastreport.events = {
 	"click #timeselectbtn":function(e,t){
 		TimeConstrastReportAction.query(e,t,this);
@@ -10,26 +9,24 @@ Template.timeconstrastreport.events = {
 	}
 }
 
-
-
 Template.timeconstrastreport.rendered = function(){
 	TimeConstrastReportAction.initTree(this);
 	TimeConstrastReportAction.initDatePicker(this);
 }
 
 var TimeConstrastReportAction = function(){};
-//导出报表函数
 
+//导出报表函数
 Object.defineProperty(TimeConstrastReportAction,"outputReport",{
 	value:function(e,template,context){
 		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_time");
 		var nodes = treeObj.getSelectedNodes();
+		console.log(nodes); 		
 		if(!nodes || nodes == ""){
 			Message.info("请选择监测器");
 			return;
 		}
-		var nodeid = nodes[0].id;
-		console.log(nodeid); 		
+		var nodeid = nodes[0];		
 		var firstPicker = $(template.find('#datetimepickerFirstDate')).data('datetimepicker');
 		var secondPicker = $(template.find('#datetimepickerSecondDate')).data('datetimepicker');
 		var firstDate = firstPicker.getDate();
@@ -44,18 +41,12 @@ Object.defineProperty(TimeConstrastReportAction,"outputReport",{
 			});	
 		var t1 = TimeConstrastReportAction.coverTime(timeArr[0])+","+TimeConstrastReportAction.coverTime(timeArr[1]);
 		var t2 = TimeConstrastReportAction.coverTime(timeArr[2])+","+TimeConstrastReportAction.coverTime(timeArr[3]);
-			console.log("#######################");
-			console.log(dateType);
-			console.log(t1);
-			console.log(t2);
-			console.log("#############################");
 		window.location.href="/TimeContrastReport?mid="+nodeid+"&t1="+t1+"&t2="+t2+"&type="+dateType+"";	
 	//时段对比报告
 	//time1 :the first time, split start time and end time wiht ','  
-	//Day对比报告 				TimeContrastReport?mid=1.23.4.1&t1=20131215000000,20131215235959&t2=20131216000000,20131216235959&type=day
+	//Day对比报告 				   TimeContrastReport?mid=1.23.4.1&t1=20131215000000,20131215235959&t2=20131216000000,20131216235959&type=day
 	//Month  http://localhost:3000/TimeContrastReport?mid=1.23.4.1&t1=20131101000000,20131130235959&t2=20131201000000,20131230235959&type=month
 	//weeks  http://localhost:3000/TimeContrastReport?mid=1.23.4.1&t1=20131201000000,20131207000000&t2=20131215000000,20131221000000&type=weeks
-
 	}
 });
 
@@ -79,8 +70,6 @@ Object.defineProperty(TimeConstrastReportAction,"initTree",{
 			},
 			callback:{
 				onClick:function(event,treeId,treeNode){
-					// var monitorId= treeNode.id;
-					Session.set("selectnode",treeNode.id);
 					if(treeNode.type !== "monitor"){
 						Message.warn("请选择监测器！");
 						return;
@@ -104,10 +93,8 @@ Object.defineProperty(TimeConstrastReportAction,"initTree",{
 		if(!$.fn.zTree){
 			return ;
 		}
-		var selectnode = Session.get("selectnode");
 		var expendNodes = TimeConstrastReportAction.expandSimpleTreeNode(data,TreeNodeRemenber.get());
 		var tree = $.fn.zTree.init($("#svse_tree_check_time"), setting,expendNodes);
-		tree.selectNode(selectnode);
 	}
 });
 
