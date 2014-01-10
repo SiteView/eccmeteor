@@ -199,7 +199,7 @@ SvseMethodsOnServer = {
 	"svDeleteSMSTemplateSettingFilesection":svDeleteSMSTemplateSettingFilesection,
 	"svUpdateSMSTemplateSettingFilesection":svUpdateSMSTemplateSettingFilesection,
 	"svGetLicenselist":svGetLicenselist,
-<<<<<<< HEAD
+
 /*
 	Type： add
 	Author：xuqiang
@@ -207,9 +207,9 @@ SvseMethodsOnServer = {
 	Content:任务计划接口调用的声明
 */
 	"svUpdateTaskIniFileSection":svUpdateTaskIniFileSection,
-=======
+
 	"svGetSendEmailSetting":svGetSendEmailSetting,
->>>>>>> origin/meteorite
+
 }
 
 SvseSyncData = {

@@ -28,8 +28,8 @@ Object.defineProperty(Date,"str2Date",{
     var minute = +str.substr(format.indexOf("mm"),2).replace(/(\D)/g,"");//minute
     var second = +str.substr(format.indexOf("ss"),2).replace(/(\D)/g,"");//hour
     var d = new Date(year,month-1,day,hour,minute,second);
-    console.log(year+"="+month+"="+day+"="+hour+"="+minute);
-    console.log(d);
+    // console.log(year+"="+month+"="+day+"="+hour+"="+minute);
+    // console.log(d);
     return d;
   }
 })
