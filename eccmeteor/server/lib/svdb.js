@@ -16,44 +16,35 @@ var checkErrorOnServer = function(robj){
 	}
 	return false;
 }
-meteorSvUniv = function(dowhat){
+var meteorSvUniv = function(dowhat){
+	console.log(new Date());
+	console.log(dowhat);
 	var robj = process.sv_univ(dowhat, 0);	
-	if(!robj.isok(0)){
-		throw new Meteor.Error(500,robj.estr(0));
+	var flag = checkErrorOnServer(robj);
+	if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
 }
-meteorSvForest = function(dowhat){
+var meteorSvForest = function(dowhat){
     var robj = process.sv_forest(dowhat, 0);
-	if(!robj.isok(0)){
-		throw new Meteor.Error(500,robj.estr(0));
+    if(typeof flag === "string"){
+		Log4js.error(flag);
+		return null;
 	}
 	var fmap = robj.fmap(0);
 	return fmap;
 }
 
 svForest = function(dowhat){
-    var robj = process.sv_forest(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
+    return meteorSvForest(dowhat, 0);
 }
 
 svGetAllMonitorTempletInfo = function(){
 	var dowhat ={'dowhat':'GetAllMonitorTempletInfo'};
-	var robj = process.sv_univ(dowhat, 0);	
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
+	return meteorSvUniv(dowhat, 0);	
 }
 
 svGetTreeData = function(parentid){
@@ -64,15 +55,7 @@ svGetTreeData = function(parentid){
 		'parentid' : parentid,
 		'onlySon':false
 	}
-	var robj = process.sv_forest(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
-	
+	return meteorSvForest(dowhat, 0);
 }
 
 svGetTreeDataChildrenNodes = function(id,type){
@@ -87,14 +70,8 @@ svGetTreeDataChildrenNodes = function(id,type){
 		'dowhat' : what,
 		'id' : id
 	};
-	var robj = process.sv_univ(dowhat, 0);	
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
+	return meteorSvUniv(dowhat, 0);	
+	
 }
 //=====================注意！！！！==============//
 //===========以上为0.6.4修改添加方法==============//
@@ -106,13 +83,7 @@ svGetDefaultTreeData = function(parentid,onlySon){
 		'parentid' : parentid,
 		'onlySon'  : onlySon
 	}
-	var robj = process.sv_forest(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	return robj.fmap(0);
+	return meteorSvForest(dowhat, 0);
 }
 
 svGetSVSE = function (id){
@@ -120,13 +91,7 @@ svGetSVSE = function (id){
 		'dowhat' : 'GetSVSE',
 		'id':id
 	}
-	var robj = process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	return robj.fmap(0);
+	return meteorSvUniv(dowhat, 0);
 }
 
 svGetGroup = function (id){
@@ -134,35 +99,19 @@ svGetGroup = function (id){
 		'dowhat' : 'GetGroup',
 		'id':id
 	}
-	var robj = process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	return robj.fmap(0);
+	return meteorSvUniv(dowhat, 0);
 }
 svGetEntity = function (id){
 	var dowhat = {
 		'dowhat' : 'GetEntity',
 		'id':id
 	}
-	var robj = process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	return robj.fmap(0);
+	return meteorSvUniv(dowhat, 0);
 }
 //获取监视器一段时间内的状态记录
 svGetMonitorRuntimeRecords = function(id,count){
 	var dowhat ={'dowhat':'QueryRecordsByCount','id':id,'count':count};
-	var robj = process.sv_forest(dowhat, 0);
-	if(!robj.isok(0)){
-		throw new Meteor.Error(500,robj.estr(0));
-	}
-	var fmap = robj.fmap(0);
+	var fmap = meteorSvForest(dowhat, 0);
 	var runtiomeRecords = [];
 	for(r in fmap){
 		runtiomeRecords.push(fmap[r]);
@@ -172,18 +121,12 @@ svGetMonitorRuntimeRecords = function(id,count){
 
 //通过时间段获取记录数据
 svGetMonitorRuntimeRecordsByTime = function(id,beginDate,endDate){
-	var robj = process.sv_forest({
+	var fmap = meteorSvForest({
 		'dowhat':'QueryRecordsByTime',
 		id:id, 
 		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
 		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
 	}, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		throw new Meteor.Error(500,flag);
-	}
-	var fmap = robj.fmap(0);
 	var runtiomeRecords = [];
 	for(r in fmap){
 		runtiomeRecords.push(fmap[r]);
@@ -231,7 +174,7 @@ svGetReportData = function(monitorId,beginDate,endDate,compress){
 		compress = true;
 	}
 	console.log(beginDate);
-	var robj = process.sv_univ({
+	return meteorSvUniv({
 		'dowhat':'QueryReportData',
 		id:monitorId,
 	//	dstrNeed:true,
@@ -241,13 +184,6 @@ svGetReportData = function(monitorId,beginDate,endDate,compress){
 		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
 		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
 	}, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
 };
 
 //状态统计的数据 （之获取主键和可画图的数据）
@@ -255,7 +191,7 @@ svGetReportDataByFilter = function(monitorId,beginDate,endDate,filter,dstrNeed){
 	if(typeof dstrNeed === "undefined"){
 		dstrNeed = true;
 	}
-	var robj = process.sv_univ({
+	return meteorSvUniv({
 		'dowhat':'QueryReportData',
 		id:monitorId,
 		dstrStatusNoNeed:null,
@@ -264,96 +200,47 @@ svGetReportDataByFilter = function(monitorId,beginDate,endDate,filter,dstrNeed){
 		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
 		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
 	}, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
 };
 
 //小报告的数据
 svGetReportDataByCount = function(monitorId,byCount){
-	var robj = process.sv_univ({
+	return meteorSvUniv({
 		'dowhat':'QueryReportData',
 		id:monitorId,
 		dstrNeed:true,
 		dstrStatusNoNeed:null,
 		byCount:byCount
 	}, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
 };
 
 
 //获取监视器模板
 svGetMonitorTemplet = function(id){
 	var dowhat ={'dowhat':'GetMonitorTemplet',id:id};
-	var robj= process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
+	return meteorSvUniv(dowhat, 0);
 }
 
 //获取设备模板集
 GetAllEntityGroups = function(){
 	var dowhat ={'dowhat':'GetAllEntityGroups'};
-	var robj= process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
+	return meteorSvUniv(dowhat, 0);
 }
 
 GetEntityTemplet = function(id){
 	var dowhat ={'dowhat':'GetEntityTemplet',id:id};
-	var robj= process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
+	return meteorSvUniv(dowhat, 0);
 }
 
 //获取设备详细信息
 svGetEntity =  function(id){
 	var dowhat ={'dowhat':'GetEntity','id':id,'sv_depends':true};
-	var robj= process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
+	return meteorSvUniv(dowhat, 0);
 }
 
 //获取计划任务
 svGetAllTask = function(){
 	var dowhat ={'dowhat':'GetAllTask'};
-	var robj= process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
+	return meteorSvUniv(dowhat, 0);
 }
 
 
@@ -365,26 +252,14 @@ svRefreshMonitors = function (id,pid,instantReturn){
 	}
 	Log4js.info("=============instantReturn is " + instantReturn)
 	var dowhat ={'dowhat':'RefreshMonitors',id:id,parentid:pid,instantReturn:instantReturn};
-	var robj= process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	return fmap;
+	return meteorSvUniv(dowhat, 0);
 }
 //获取刷新监视器结果
 svGetRefreshed = function (queueName,pid){
 	var dowhat ={'dowhat':'GetRefreshed',queueName:queueName,parentid:pid};
-	var robj= process.sv_univ(dowhat, 0);
-	//var robj = process.sv_forest(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
+	var fmap= meteorSvUniv(dowhat, 0);
+	//var robj = meteorSvForest(dowhat, 0);
+	
 	Log4js.info("获取svGetRefreshed");
 	Log4js.info(fmap);
 	return fmap;
@@ -396,27 +271,13 @@ svGetRefreshed = function (queueName,pid){
 //获取设备动态属性数据
 
 svGetEntityDynamicPropertyData = function(entityId,monitorTplId){
-	var robj = process.sv_univ({'dowhat':'GetDynamicData','entityId':entityId,'monitorTplId':monitorTplId}, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap= robj.fmap(0);
-	return fmap;	
+	return meteorSvUniv({'dowhat':'GetDynamicData','entityId':entityId,'monitorTplId':monitorTplId}, 0);	
 }
 
 //获取邮件列表
 svGetEmailList = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"emailAdress.ini",
+	return meteorSvUniv({'dowhat':'GetSvIniFileBySections',"filename":"emailAdress.ini",
 		"user":"default","sections":"default"}, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap= robj.fmap(0);
-	return fmap;
 }
 
 //获取统计报告列表
@@ -427,12 +288,8 @@ Date:2013-10-18 09:40
 Content:增加svGetStatisticalList的操作，获取统计报告列表
 */ 
 svGetStatisticalList = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"reportset.ini",
+	return meteorSvUniv({'dowhat':'GetSvIniFileBySections',"filename":"reportset.ini",
 		"user":"default","sections":"default"}, 0);
-	if(!robj.isok(0)){
-	}
-	var fmap= robj.fmap(0);
-	return fmap;
 }
 	/*
 	Type: add
@@ -444,16 +301,12 @@ svGetStatisticalList = function(){
 svWriteTaskIniFileSectionString = function(address){
 	console.log(address["sv_name"]);
 	//var name = String(address["sv_name"]);
-	var robj= process.sv_univ({'dowhat':'CreateTask','id':address["sv_name"]},0); //增加
-		if(!robj.isok(0)){
-			console.log(robj.estr(0));
-		}
-		var fmap = robj.fmap(0);
-		//console.log(fmap);
-		var newObj = {
-			return :{id:address["sv_name"],return:true},
-			property :address
-		}
+	var fmap = meteorSvUniv({'dowhat':'CreateTask','id':address["sv_name"]},0); //增加
+
+	var newObj = {
+		return :{id:address["sv_name"],return:true},
+		property :address
+	}
 	var robj2= process.sv_submit(newObj,{'dowhat':'SubmitTask','del_supplement':true},0); //修改	
 	console.log("gooddd");
 	if(!robj2.isok(0)){
@@ -467,21 +320,14 @@ svWriteTaskIniFileSectionString = function(address){
 
 //删除一条任务计划
 svDeleteTaskIniFileSection = function(address){
-
-	var robj =process.sv_univ(
-	{'dowhat':'DeleteTask',id:address},0);
-	var fmap = robj.fmap(0);
+	var fmap  = meteorSvUniv({'dowhat':'DeleteTask',id:address},0);;
 	return fmap;
 }
 
 //获取发送邮件的设置
 svGetSendEmailSetting = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",
+	var fmap= meteorSvUniv({'dowhat':'GetSvIniFileBySections',"filename":"email.ini",
 		"user":"default","sections":"default"}, 0);
-	if(!robj.isok(0)){
-		return;
-	}
-	var fmap= robj.fmap(0);
 	if(!fmap || !fmap["email_config"]) return ;
 	fmap["email_config"]["password"] = svDecryptOne(fmap["email_config"]["password"]);
 	return fmap["email_config"];
@@ -494,10 +340,9 @@ svDecryptOne =  function (password){
 		'dowhat':'decrypt'
 	}
 	dowhat[password]="";
-	var robj = process.sv_univ(dowhat,0);
-	var fmap= robj.fmap(0);
+	var fmap= meteorSvUniv(dowhat,0);
 //	console.log(fmap)
-	return fmap.return[password];
+	return fmap && fmap.return[password];
 }
 
 //加密
@@ -506,25 +351,22 @@ svEncryptOne = function(password){
 		'dowhat':'encrypt'
 	}
 	dowhat[password]="";
-	var robj = process.sv_univ(dowhat,0);
-	var fmap= robj.fmap(0);
+	var fmap = meteorSvUniv(dowhat,0);
 //	console.log(fmap)
-	return fmap.return[password];
+	return fmap && fmap.return[password];
 }
 
 //获取发送邮件模板
 svGetEmailTemplates = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"TXTtemplate.ini",
+	var fmap = meteorSvUniv({'dowhat':'GetSvIniFileBySections',"filename":"TXTtemplate.ini",
 			"user":"default","sections":"Email"}, 0);
-	var fmap= robj.fmap(0);
-	return fmap["Email"];
+	return fmap && fmap["Email"];
 }
 
 //获取报警规则列表
 svGetWarnerRule = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"alert.ini",
+	return meteorSvUniv({'dowhat':'GetSvIniFileBySections',"filename":"alert.ini",
 			"user":"default","sections":"default"}, 0);
-	return robj.fmap(0);;
 }
 //获取TopN报告列表(2013/10/16)
 /*
@@ -534,17 +376,14 @@ Date:2013-10-18 13:40
 Content:增加svGetTopNList的操作，获取统计报告列表
 */ 
 svGetTopNList = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"topnreportset.ini",
+	var fmap= meteorSvUniv({'dowhat':'GetSvIniFileBySections',"filename":"topnreportset.ini",
 			"user":"default","sections":"default"}, 0);
-	if(!robj.isok(0)){
-		}
-		var fmap= robj.fmap(0);
-		return fmap;
+	return fmap;
 }
 //邮件测试
 svEmailTest = function(emailSetting){
 	emailSetting["dowhat"]="EmailTest";
-	// var robj = process.sv_univ({
+	// var robj = meteorSvUniv({
 		// "dowhat":"EmailTest",
 		// "mailServer":emailSetting.mailServer,
 		// "mailFrom":emailSetting.mailFrom,
@@ -554,13 +393,7 @@ svEmailTest = function(emailSetting){
 		// "subject":emailSetting.subject,
 		// "content":emailSetting.content
 	// },0);
-	var robj = process.sv_univ(emailSetting,0);
-	if(!robj.isok(0)){
-		//console.log(robj.estr(0));
-		Log4js.error(robj.estr(0),-1);
-		return false;
-	}
-	var fmap = robj.fmap(0);
+	var fmap = meteorSvUniv(emailSetting,0);
 	return fmap;
 }
 
@@ -568,14 +401,7 @@ svEmailTest = function(emailSetting){
 
 //节点删除
 svDelChildren = function(id){  //删除该节点以及其子节点
-	var robj = process.sv_univ({'dowhat':'DelChildren','parentid':id}, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	Log4js.error(robj.fmap(0));
-	return true;
+	return meteorSvUniv({'dowhat':'DelChildren','parentid':id}, 0);
 }
 
 //添加，修改组
@@ -600,11 +426,6 @@ svSubmitGroup = function(group,parentid){
 	}else{
 		var robj= process.sv_submit(group,{'dowhat':'SubmitGroup'},0); //修改
 	}	
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
 	var fmap= robj.fmap(0);
 	//Log4js.error(fmap);
 	return fmap;
@@ -616,13 +437,7 @@ svGetNodeByParentidAndSelfId = function(parentid,selfId){
 		'parentid' : parentid,
 		'onlySon'  : true
 	}
-	var robj = process.sv_forest(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
+	var fmap =  meteorSvForest(dowhat, 0);
 	var node = {};
 	for(index in fmap){
 		if(fmap[index]["sv_id"] === selfId){
@@ -645,13 +460,7 @@ svForbidNodeTemporary = function(ids,starttime,endtime){
 	
 	Log4js.info("执行临时禁止：");
 	Log4js.info(dowhat);
-	var robj = process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap= robj.fmap(0);
+	var fmap = meteorSvUniv(dowhat, 0);
 	return fmap;
 }
 
@@ -667,13 +476,7 @@ svForbidNodeForever = function (ids){
 	}
 	Log4js.info("执行禁止：");
 	Log4js.info(dowhat);
-	var robj = process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap= robj.fmap(0);
+	var fmap = meteorSvUniv(dowhat, 0);
 	return fmap;	
 }
 
@@ -689,27 +492,14 @@ svAllowNode = function (ids) {
 	}
 	Log4js.info("执行启用：");
 	Log4js.info(dowhat);
-	var robj = process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap= robj.fmap(0);
-	console.log(fmap);
+	var fmap = meteorSvUniv(dowhat, 0);
 	return fmap;
 }
 /* ==========================SvseMonitor 使用部分 ============================ */
 
 //删除监视器
 svDeleteMonitor = function (id){
-	var robj = process.sv_univ({'dowhat':'DelChildren','parentid':id}, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap= robj.fmap(0);
+	var fmap = meteorSvUniv({'dowhat':'DelChildren','parentid':id}, 0);
 	return fmap; 
 }
 
@@ -718,11 +508,6 @@ svDeleteMonitor = function (id){
 //emailAdress.ini写入
 svWriteEmailAddressIniFileSectionString = function(addressname,address){
 	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"emailAdress.ini",'user':"default",'section':addressname},0); 
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
 	return robj.fmap(0);
 }
 
@@ -735,10 +520,6 @@ Content:统计报告 Statistical.ini写入
 */ 
 svWriteStatisticalIniFileSectionString =  function(addressname,address){
 	var robj = process.sv_submit(address,{'dowhat': 'WriteIniFileSection','filename':"reportset.ini",'user':"default",'section':addressname},0);
-	if(!robj.isok(0)){
-	Log4js.error(robj.estr(0),-1);
-	return false;
-	}
 	return robj.fmap(0);
 }
 //email.ini写入
@@ -747,11 +528,6 @@ svWriteEmailIniFileSectionString = function(section){
 	section["password"] = svEncryptOne(section["password"]);
 	var ini = {"email_config":section};
 	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"email.ini",'user':"default",'section':"email_config"},0); 
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
 	Log4js.error(robj.fmap(0));
 	return robj.fmap(0);
 }
@@ -764,8 +540,8 @@ svDeleteEmailAddressIniFileSection = function(ids){
 		'user' : "default",
 		"sections" : ids
 	};
-	var robj = process.sv_univ(dowhat,0);
-	return robj.fmap(0);
+	var fmap = meteorSvUniv(dowhat,0);
+	return fmap;
 }
 
 
@@ -782,8 +558,8 @@ svDeleteStatisticalIniFileSection = function(ids){
 		'user' : "default",
 		"sections" : ids
 	};
-	var robj = process.sv_univ(dowhat,0);
-	return robj.fmap(0);
+	var fmap = meteorSvUniv(dowhat,0);
+	return fmap;
 }
 
 /*
@@ -793,7 +569,7 @@ Date:2013-10-24 17：20
 Content:增加统计报表允许，禁止状态的改变
 */ 
 svWriteStatisticalStatusInitFilesection = function(sectionName,status){
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 		'dowhat' : 'WriteIniFileString',
 		'filename' : "reportset.ini",
 		'user' : "default",
@@ -801,16 +577,12 @@ svWriteStatisticalStatusInitFilesection = function(sectionName,status){
 		"key" : "bCheck",
 		"value" : status
 	},0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	return robj.fmap(0);
+	
+	return fmap;
 }
 //更改邮件状态
 svWriteEmailAddressStatusInitFilesection = function(sectionName,status){
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 		'dowhat' : 'WriteIniFileString',
 		'filename' : "emailAdress.ini",
 		'user' : "default",
@@ -818,11 +590,8 @@ svWriteEmailAddressStatusInitFilesection = function(sectionName,status){
 		"key" : "bCheck",
 		"value" : status
 	}, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
-	}
-	return robj.fmap(0);
+	
+	return fmap;
 }
 
 
@@ -835,11 +604,6 @@ svSubmitEntity = function(entity,parentid){
 	}else{
 		var robj= process.sv_submit(entity,{'dowhat':'SubmitEntity'},0); //修改
 	}	
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
 	var fmap= robj.fmap(0);
 	return fmap;
 }
@@ -852,11 +616,6 @@ svSubmitMonitor = function(monitor,parentid){
 	}else{
 		var robj= process.sv_submit(monitor,{'dowhat':'SubmitMonitor',del_supplement:false},0); //修改
 	}
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
 	var fmap= robj.fmap(0);
 	return fmap;
 }
@@ -864,13 +623,7 @@ svSubmitMonitor = function(monitor,parentid){
 //获取监视器
 svGetMonitor = function(id){
 	var dowhat ={'dowhat':'GetMonitor','id':id};
-	var robj= process.sv_univ(dowhat, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
+	var fmap = meteorSvUniv(dowhat, 0);
 	return fmap;
 }
 
@@ -891,19 +644,14 @@ svDeleteAlertInitFileSection = function(ids){
 		'user' : "default",
 		"sections" : ids
 	};
-	var robj = process.sv_univ(dowhat,0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	return robj.fmap(0);
+	var fmap = meteorSvUniv(dowhat,0);
+	return fmap;
 	
 }
 
 //改变报警规则状态
 svWriteAlertStatusInitFileSection = function(sectionName,status){
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 		'dowhat' : 'WriteIniFileString',
 		'filename' : "alert.ini",
 		'user' : "default",
@@ -911,7 +659,7 @@ svWriteAlertStatusInitFileSection = function(sectionName,status){
 		"key" : "AlertState",
 		"value" : status
 	}, 0);
-	return robj.fmap(0);
+	return fmap;
 }
 /*====================SvseTopN==============*/
 
@@ -925,11 +673,6 @@ Content:统计报告 topn.ini写入
 svWriteTopNIniFileSectionString = function(addressname,address){
 	var robj= process.sv_submit(address,{'dowhat':'WriteIniFileSection','filename':"topnreportset.ini",'user':"default",'section':addressname},0); 
 //	console.log(robj.fmap(0));
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
 	return robj.fmap(0);
 }
 
@@ -941,9 +684,7 @@ svDeleteTopNIniFileSection = function(ids){
 		'user' : "default",
 		"sections" : ids
 	};
-	var robj = process.sv_univ(dowhat,0);
-	return robj.fmap(0);
-	
+	return meteorSvUniv(dowhat,0);
 }
 /*
 Type：  modify
@@ -954,7 +695,7 @@ Content: 删除 svWriteTopNreportStatusInitFileSection 改成 svWriteTopNStatusI
 
 //改变TopN状态
 svWriteTopNStatusInitFilesection = function(sectionName,status){
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 		'dowhat' : 'WriteIniFileString',
 		'filename' : "topnreportset.ini",
 		'user' : "default",
@@ -962,7 +703,7 @@ svWriteTopNStatusInitFilesection = function(sectionName,status){
 		"key" : "Deny",
 		"value" : status
 	}, 0);
-	return robj.fmap(0);
+	return fmap;
 }
 
 
@@ -976,22 +717,14 @@ svWriteTopNStatusInitFilesection = function(sectionName,status){
 //smsphoneset.ini文件写入
 svWriteMessageIniFileSectionString = function(messagename,message){
 	var robj= process.sv_submit(message,{'dowhat':'WriteIniFileSection','filename':"smsphoneset.ini",'user':"default",'section':messagename},0); 
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
-	}
+	
 	return robj.fmap(0);
 }
 //获取短信列表
 svGetMessageList = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"smsphoneset.ini",
+	var fmap = meteorSvUniv({'dowhat':'GetSvIniFileBySections',"filename":"smsphoneset.ini",
 		"user":"default","sections":"default"}, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap= robj.fmap(0);
+	
 	return fmap;
 }
 //删除短信Message的section
@@ -1002,49 +735,31 @@ svDeleteMessageIniFileSection = function(ids){
 		'user' : "default",
 		"sections" : ids
 	};
-	var robj = process.sv_univ(dowhat,0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	return robj.fmap(0);
+	var fmap = meteorSvUniv(dowhat,0);
+	return fmap;
 }
 //获取发送com短信模板
 svGetMessageTemplates = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"TXTtemplate.ini",
+	var fmap = meteorSvUniv({'dowhat':'GetSvIniFileBySections',"filename":"TXTtemplate.ini",
 			"user":"default","sections":"SMS"}, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
-	// console.log(fmap);
-	// console.log(fmap["SMS"]);
+
 	return fmap["SMS"];
 }
 
 //获取发送web短信模板--by zhuqing add
 svGetWebMessageTemplates=function(){
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 		'dowhat':'GetSvIniFileBySections',
 		'filename':'TXTTemplate.ini',
 		'user':'default',
 		'sections':'WebSmsConfige'
 	},0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
 	return fmap["WebSmsConfige"];
 }
 
 //更改短信状态
 svWriteMessageStatusInitFilesection = function(sectionName,status){
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 		'dowhat' : 'WriteIniFileString',
 		'filename' : "smsphoneset.ini",
 		'user' : "default",
@@ -1052,12 +767,8 @@ svWriteMessageStatusInitFilesection = function(sectionName,status){
 		"key" : "Status",
 		"value" : status
 	}, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	return robj.fmap(0);
+	
+	return fmap;
 }
 
 /*
@@ -1072,12 +783,6 @@ svWriteSMSWebConfigIniFileSectionString = function(section){
 	section["Pwd"] = svEncryptOne(section["Pwd"]);
 	var ini = {"SMSWebConfig":section}; 
 	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"smsconfig.ini",'user':"default",'section':"SMSWebConfig"},0); 
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	Log4js.error(robj.fmap(0));
 	return robj.fmap(0);
 }
 //(com方式)短信发送方式smsconfig.ini(section:SMSCommConfig)写入
@@ -1085,22 +790,12 @@ svWriteSMSCommConfigIniFileSectionString = function(section){
 	console.log(section);
 	var ini = {"SMSCommConfig":section};
 	var robj= process.sv_submit(ini,{'dowhat':'WriteIniFileSection','filename':"smsconfig.ini",'user':"default",'section':"SMSCommConfig"},0); 
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	Log4js.error(robj.fmap(0));
 	return robj.fmap(0);
 }
 //获取以web方式发送短信的设置
 svGetSMSWebConfigSetting = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections','filename':'smsconfig.ini',
+	var fmap = meteorSvUniv({'dowhat':'GetSvIniFileBySections','filename':'smsconfig.ini',
 		"user":"default","section":"SMSWebConfig"}, 0);
-	if(!robj.isok(0)){
-		return;
-	}
-	var fmap= robj.fmap(0);
 	if(!fmap || !fmap["SMSWebConfig"]) return ;
 	if(fmap["SMSWebConfig"]["Pwd"] != ""){
 		fmap["SMSWebConfig"]["Pwd"] = svDecryptOne(fmap["SMSWebConfig"]["Pwd"]);
@@ -1111,12 +806,8 @@ svGetSMSWebConfigSetting = function(){
 }
 //获取以com方式发送短信的设置
 svGetSMSComConfigSetting = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"smsconfig.ini",
+	var fmap = meteorSvUniv({'dowhat':'GetSvIniFileBySections',"filename":"smsconfig.ini",
 		"user":"default","section":"SMSCommConfig"}, 0);
-	if(!robj.isok(0)){
-		return;
-	}
-	var fmap= robj.fmap(0);
 	if(!fmap || !fmap["SMSCommConfig"]) return ;
 	return fmap["SMSCommConfig"];
 }
@@ -1124,7 +815,7 @@ svGetSMSComConfigSetting = function(){
  //获取短信设置的发送短信方式中的调用动态库的动态库名称(有问题-待修改)
 /* svGetSmsDllName = function(){
 	var dowhat = {'dowhat':'GetSmsDllName'};
-	var robj = process.sv_univ(dowhat,0);
+	var robj = meteorSvUniv(dowhat,0);
 	Log4js.info("11");
 	if(!robj.isok(0)){
 		Log4js.error(robj.estr(0),-1);
@@ -1144,14 +835,13 @@ svGetSMSComConfigSetting = function(){
 */
 //获取脚本报警中的ScriptFile脚本
 svGetScriptFileofScriptAlert=function(){
-	var robj=process.sv_univ({
+	var fmap=meteorSvUniv({
 		'dowhat':'GetSvIniFileBySections',
 		'filename':'TXTTemplate.ini',
 		'user':'default',
 		'section':'Scripts'
 	},0);
-	var fmap= robj.fmap(0);
-	return fmap["Scripts"];
+	return fmap && fmap["Scripts"];
 }
 
 /*
@@ -1162,7 +852,7 @@ svGetScriptFileofScriptAlert=function(){
 */
 //查询报警规则的日志记录
 svGetQueryAlertLog = function(beginDate,endDate,alertQueryCondition){
-	var robj = process.sv_forest({
+	var fmap = meteorSvForest({
 		'dowhat':'QueryAlertLog',
 		alertName:alertQueryCondition.AlertName,
 		alertReceive:alertQueryCondition.AlertReceiver,
@@ -1170,11 +860,7 @@ svGetQueryAlertLog = function(beginDate,endDate,alertQueryCondition){
 		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
 		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
 	}, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
-	}
-	var fmap = robj.fmap(0);
+	
 	var alertLogRecords = [];
 	for(r in fmap){
 		alertLogRecords.push(fmap[r]);
@@ -1196,108 +882,75 @@ svWriteDelContConfigIniFileSectionString = function(section){
 	console.log(section);
 	var ini = {"DelCond":section};
 	var robj= process.sv_submit(ini,{
-	'dowhat':'WriteIniFileSection',
-	'filename':"syslog.ini",
-	'user':"default",
-	'section':"DelCond"
+		'dowhat':'WriteIniFileSection',
+		'filename':"syslog.ini",
+		'user':"default",
+		'section':"DelCond"
 	},0); 
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	Log4js.info(robj.fmap(0));
 	return robj.fmap(0);
 }
 //获取设置
 svGetSysLogDelCondConfigSetting = function(){
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 	'dowhat':'GetSvIniFileBySections',
 	"filename":"syslog.ini",
 	"user":"default",
 	"section":"DelCond"
 	}, 0);
-	if(!robj.isok(0)){
-		return;
-	}
-	var fmap= robj.fmap(0);
-	if(!fmap || !fmap["DelCond"]) return ;
-	return fmap["DelCond"];
+	
+	return fmap && fmap["DelCond"];
 }
 
 svWriteQueryContEntityConfigIniFileSectionString = function(section){
 	console.log(section);
-	var robj= process.sv_univ({
-	'dowhat':'WriteIniFileString',
-	'filename':"syslog.ini",
-	'user':"default",
-	'section':"QueryCond",
-	"key" : "Facility",
-	"value" : section
-	
+	var fmap = meteorSvUniv({
+		'dowhat':'WriteIniFileString',
+		'filename':"syslog.ini",
+		'user':"default",
+		'section':"QueryCond",
+		"key" : "Facility",
+		"value" : section
 	},0); 
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	Log4js.info(robj.fmap(0));
-	return robj.fmap(0);
+	
+	return fmap;
 }
 
 //获取Entity参数设置
 svGetSysLogQueryContEntityConfigSetting = function(){
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 		'dowhat':'GetSvIniFileBySections',
 		"filename":"syslog.ini",
 		"user":"default",
 		"section":"QueryCond"
 		}, 0);
-	if(!robj.isok(0)){
-		return;
-	}
-	var fmap= robj.fmap(0);
-	if(!fmap || !fmap["QueryCond"]) return ;
-	return fmap["QueryCond"];
+	return fmap && fmap["QueryCond"];
 }
 
 svWriteQueryContRankConfigIniFileSectionString = function(section){
 	console.log(section);
-	var robj= process.sv_univ({
-	'dowhat':'WriteIniFileString',
-	'filename':"syslog.ini",
-	'user':"default",
-	'section':"QueryCond",
-	"key" : "Severities",
-	"value" : section
-	
+	var fmap = meteorSvUniv({
+		'dowhat':'WriteIniFileString',
+		'filename':"syslog.ini",
+		'user':"default",
+		'section':"QueryCond",
+		"key" : "Severities",
+		"value" : section
 	},0); 
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	Log4js.info(robj.fmap(0));
-	return robj.fmap(0);
+	return fmap;
 }
 //获取Rank参数设置
 svGetSysLogQueryContRankConfigSetting = function(){
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 		'dowhat':'GetSvIniFileBySections',
 		"filename":"syslog.ini",
 		"user":"default",
 		"section":"QueryCond"
 		}, 0);
-	if(!robj.isok(0)){
-		return;
-	}
-	var fmap= robj.fmap(0);
-	if(!fmap || !fmap["QueryCond"]) return ;
-	return fmap["QueryCond"];
+	return fmap && fmap["QueryCond"];
 }
 //删除某个表中的指定时间以前的记录
 svDeleteSysLogInitFilesection = function (id){
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 	    'dowhat':'DeleteRecords',
 		 'id':'syslog',
 		 year:Date["year"],
@@ -1307,12 +960,8 @@ svDeleteSysLogInitFilesection = function (id){
 		 minute:Date["Minute"],  
 		 second:Date["Second"],
 	 }, 0);
-	var flag = checkErrorOnServer(robj);
-		if(typeof flag === "string"){
-			Log4js.error(flag);
-			return null;
-		}
-		return robj.fmap(0);
+	
+	return fmap;
 }
 /*
 	Type:查询syslog
@@ -1322,7 +971,7 @@ svDeleteSysLogInitFilesection = function (id){
 */
 //查询syslog记录
 svGetQuerySysLog = function(beginDate,endDate){
-	var robj = process.sv_forest({
+	var fmap = meteorSvForest({
 		'dowhat':'QueryRecordsByTime',
 		'id':'syslog',
 		// expression:syslogQueryCondition.Expression,
@@ -1330,11 +979,6 @@ svGetQuerySysLog = function(beginDate,endDate){
 		begin_year:beginDate["year"], begin_month:beginDate["month"], begin_day: beginDate["day"],  begin_hour: beginDate["hour"],  begin_minute:beginDate["minute"],  begin_second:beginDate["second"],  
 		end_year: endDate["year"],  end_month:endDate["month"],  end_day: endDate["day"],  end_hour:endDate["hour"],  end_minute:endDate["minute"],  end_second: endDate["second"]
 	}, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
-	}
-	var fmap = robj.fmap(0);
 	var sysLogRecords = [];
 	for(r in fmap){
 		sysLogRecords.push(fmap[r]);
@@ -1347,7 +991,7 @@ svGetQuerySysLog = function(beginDate,endDate){
 svWriteSMSTemplateSettingFilesection = function(name,content){
 	console.log(name);
 	console.log(content);
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 		'dowhat' : 'WriteIniFileString',
 		'filename' : "TXTTemplate.ini",
 		'user' : "default",
@@ -1364,39 +1008,27 @@ svWriteSMSTemplateSettingFilesection = function(name,content){
 	console.log("11");
 	Log4js.info("111");
 	//传入的请求包含异常字符(可能是中文字符引起的)
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return false;
-	}
-	console.log("22");
-	var fmap = robj.fmap(0);
+	
 	//console.log(fmap);
 	return fmap; 
 }
 
 //删除SMS短信模板-根据key
 svDeleteSMSTemplateSettingFilesection = function(key,section){
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 		'dowhat' : 'DeleteIniFileKeys',
 		'filename' : "TXTTemplate.ini",
 		'user' : "default",
 		'section' : section,
 		"keys" : key
 	}, 0);
-
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	var fmap = robj.fmap(0);
 	console.log(fmap);
 	return fmap; 
 }
 
 //更新短信模板的value值
 svUpdateSMSTemplateSettingFilesection = function(key,value){
-	var robj = process.sv_univ({
+	var fmap = meteorSvUniv({
 		'dowhat' : 'WriteIniFileString',
 		'filename' : "smsphoneset.ini",
 		'user' : "default",
@@ -1404,12 +1036,8 @@ svUpdateSMSTemplateSettingFilesection = function(key,value){
 		"key" : key,
 		"value" : value
 	}, 0);
-	var flag = checkErrorOnServer(robj);
-	if(typeof flag === "string"){
-		Log4js.error(flag);
-		return null;
-	}
-	return robj.fmap(0);
+	
+	return fmap;
 }
 /*
 	Type:add 软件许可
@@ -1419,13 +1047,9 @@ svUpdateSMSTemplateSettingFilesection = function(key,value){
 */
 //获取软件许可列表模板
 svGetLicenselist = function(){
-	var robj = process.sv_univ({'dowhat':'GetSvIniFileBySections',"filename":"general.ini",
+	var fmap = meteorSvUniv({'dowhat':'GetSvIniFileBySections',"filename":"general.ini",
 			"user":"default","section":"license"}, 0);
-	if(!robj.isok(0)){
-		Log4js.error(robj.estr(0),-1);
-		return;
-	}
-	var fmap= robj.fmap(0);
+	
 	if(!fmap || !fmap["license"]){
 		return ;
 	} 

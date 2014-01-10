@@ -19,10 +19,13 @@
 				</div>
 			</div>
 		</div>
-		<div id="div3" class="span9">{{> trend_status}}</div>
+		<div id="div3" class="span9">
+			{{> trend_status}}
+		</div>
 	</div>
 </div>
-</Template>	
+</Template>
+
 <Template name="trend_status">
 	<ul id="myTab" class="nav nav-tabs">
 		<li class="active">
@@ -32,49 +35,70 @@
 			<a href="#home2" data-toggle="tab">数据</a>
 		</li>
 	</ul>
-	
 	<div id="mytabcontent" class="tab-content">
 		<div class="tab-pane active" id="home1">
-			<div class="accordion">         			
+			<div class="accordion">
 				<div class="accordion-group">
 					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse" href="#showGroupAndEntityTableGroupListCollapseOne">
-						查询条件
-						</a>
+						<a class="accordion-toggle" data-toggle="collapse" href="#showGroupAndEntityTableGroupListCollapseOne">查询条件</a>
 					</div>
 					<div id="showGroupAndEntityTableGroupListCollapseOne" class="accordion-body collapse in">
 						<div class="well">
 							<ul class="breadcrumb">
-							  <li><a href="###" name='{"hours":-2}'>2小时</a><span class="divider"></span></li>
-							  <li><a href="###" name='{"hours":-4}'>4小时</a><span class="divider"></span></li>
-							  <li><a href="###" name='{"hours":-8}'>8小时</a></li>
-							  <li><a href="###" name='{"days":-1}'>1天</a></li>
-							  <li><a href="###" name='{"days":-2}'>2天</a></li>
-							  <li><a href="###" name='{"days":-3}'>3天</a></li>
-							  <li><a href="###" name='week'>本周</a></li>
-							  <li><a href="###" name='{"days":-7}'>一周</a></li>
-							  <li><a href="###" name='{"months":-1}'>1个月</a></li>
-							  <li><a href="###" name='{"months":-2}'>2个月</a></li>
-							  <li><a href="###" name='{"months":-6}'>6个月</a></li>
-							  <li><a href="###" name='today'>当天</a></li>
+								<li>
+									<a href="###" name='{"hours":-2}'>2小时</a>
+									<span class="divider"></span>
+								</li>
+								<li>
+									<a href="###" name='{"hours":-4}'>4小时</a>
+									<span class="divider"></span>
+								</li>
+								<li>
+									<a href="###" name='{"hours":-8}'>8小时</a>
+								</li>
+								<li>
+									<a href="###" name='{"days":-1}'>1天</a>
+								</li>
+								<li>
+									<a href="###" name='{"days":-2}'>2天</a>
+								</li>
+								<li>
+									<a href="###" name='{"days":-3}'>3天</a>
+								</li>
+								<li>
+									<a href="###" name='week'>本周</a>
+								</li>
+								<li>
+									<a href="###" name='{"days":-7}'>一周</a>
+								</li>
+								<li>
+									<a href="###" name='{"months":-1}'>1个月</a>
+								</li>
+								<li>
+									<a href="###" name='{"months":-2}'>2个月</a>
+								</li>
+								<li>
+									<a href="###" name='{"months":-6}'>6个月</a>
+								</li>
+								<li>
+									<a href="###" name='today'>当天</a>
+								</li>
 							</ul>
 							<div class="form-inline" id="form_datetime">
 								<label class="control-label">开始时间:</label>
 								<div id="datetimepickerStartDate" class="input-append date" style = "padding-bottom :10px">
-									<input type="text" name="startTime" readOnly="readonly">
-									<span class="add-on">
-										<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+									<input type="text" name="startTime" readOnly="readonly">	
+									<span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
 									</span>
 								</div>
-								<br/>
+								<br/>	
 								<label class="control-label">结束时间:</label>
 								<div id="datetimepickerEndDate" class="input-append date" style = "padding-bottom :10px">
-									<input type="text" name="endTime" readOnly="readonly">
-									<span class="add-on">
-										<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+									<input type="text" name="endTime" readOnly="readonly">	
+									<span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
 									</span>
 								</div>
-							</div>						
+							</div>
 							<div></div>
 							<div class="form-inline" style = "padding-left :70px">
 								<div class="btn-group">
@@ -90,27 +114,25 @@
 						</div>
 					</div>
 				</div>
-			
-				<div id="TrendResultDiv">
-
-				</div>
-
-
-
+				<div id="TrendResultDiv"></div>
 			</div>
 		</div>
 		<div class="tab-pane" id="home2">
-				222
+			222
 			<form class="form-horizontal">
 				<fieldset>
 					<legend style="font-size:14px">数据状态</legend>
-						<div>
-							<label class="label label-primary"><input type="radio"  name="InsertWay" value="nomal" checked>全部</label>
-							<label class="label label-danger"><input type="radio"  name="InsertWay" value="procedure">错误</label>
-							<label class="label label-warning"><input type="radio"  name="InsertWay" value="procedure">危险</label>
-							<label class="label label-success"><input type="radio"  name="InsertWay" value="procedure">正常</label>
-							<button class="btn">生成EXCEL</button>
-						</div>  
+					<div>
+						<label class="label label-primary">
+							<input type="radio"  name="InsertWay" value="nomal" checked>全部</label>
+						<label class="label label-danger">
+							<input type="radio"  name="InsertWay" value="procedure">错误</label>
+						<label class="label label-warning">
+							<input type="radio"  name="InsertWay" value="procedure">危险</label>
+						<label class="label label-success">
+							<input type="radio"  name="InsertWay" value="procedure">正常</label>
+						<button class="btn">生成EXCEL</button>
+					</div>
 				</fieldset>
 			</form>
 		</div>

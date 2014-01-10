@@ -67,3 +67,15 @@ Object.defineProperty(ReportDateUtils,"getCurrentMonth",{
 		return [monthStartDate,monthEndDate];
 	}
 });
+
+//根据不同时间类型 获取不同的时间段
+Object.defineProperty(ReportDateUtils,"getCurrentDate",{
+	value:function(time,type){
+		switch(type){
+			case "month" : return ReportDateUtils.getCurrentMonth(time);
+			case "weeks"  : return ReportDateUtils.getCurrentWeek(time);
+			case "day"	 : return ReportDateUtils.getCurrentDay(time);
+			default : return ReportDateUtils.getCurrentDay(time);
+		}
+	}
+});
