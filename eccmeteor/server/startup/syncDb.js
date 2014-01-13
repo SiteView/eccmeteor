@@ -148,3 +148,27 @@ SysncDb =  {
 		return Svse.find({"type":"entity"},{fields:{sv_id:1,submonitor:1}}).fetch();
 	}
 }
+
+Object.defineProperty(SysncDb,"getDefaultTreeData",{
+	value:function(svid,isGetSonNode){
+		return svGetDefaultTreeData(svid,isGetSonNode);
+	}
+});
+
+Object.defineProperty(SysncDb,"getSVSE",{
+	value:function(svid){
+		return svGetSVSE(svid);
+	}
+});
+
+Object.defineProperty(SysncDb,"getGroup",{
+	value:function(svid){
+		return svGetGroup(svid);
+	}
+});
+
+Object.defineProperty(SysncDb,"getEntity",{
+	value:function(svid){
+		return svGetEntity(svid);
+	}
+});

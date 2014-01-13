@@ -2,11 +2,11 @@ SyncFunction = {
 	'findTreeNodes' : function (id,parentid,type) {
 		var fmap;
 		if(type === "group"){
-			fmap = SvseSyncData.svGetGroup(id);
+			fmap = SysncDb.getGroup(id);
 		}else if(type === "entity"){
-			fmap = SvseSyncData.svGetEntity(id);
+			fmap = SysncDb.getEntity(id);
 		}else if(type === "se"){
-			fmap = SvseSyncData.svGetSVSE(id);
+			fmap = SysncDb.getSVSE(id);
 		}
 		if(!fmap) {
 			Log4js.info("SyncFunction findTreeNodes fmap不存在");
@@ -114,7 +114,7 @@ SyncFunction = {
 	},
 	'SyncTreeStructure' : function () { //更新树结构
 		Log4js.info("检查SyncTreeStructure变动开始。。");
-		var fmap = SvseSyncData.svGetDefaultTreeData('default',true);
+		var fmap = SysncDb.getDefaultTreeData('default',true);
 		if(!fmap){
 			Log4js.info("SyncTreeStructure fmap不存在");
 			return;
@@ -128,7 +128,7 @@ SyncFunction = {
 		//更新监视器节点
 		var  entities = SysncDb.getEntityBranchs();
 		for(index in entities){
-			var entityFmap =  SvseSyncData.svGetDefaultTreeData(entities[index]["sv_id"],true);
+			var entityFmap =  SysncDb.getDefaultTreeData(entities[index]["sv_id"],true);
 			for(son2  in entityFmap){
 				SysncDb.updateNode(entityFmap[son2]);
 			}
@@ -138,7 +138,7 @@ SyncFunction = {
 	'SyncTreeNodeData' : function(){ 
 		Log4js.info("扫描 SyncTreeNodeData 变动开始。。");
 		//更新树节点。监视器节点除外，监视器节点更新应在树节点更新后进行
-		var fmap = SvseSyncData.svGetDefaultTreeData('default',false);
+		var fmap = SysncDb.getDefaultTreeData('default',false);
 		for(son in fmap){
 			var node = fmap[son];
 			if(node["type"] === "monitor")
