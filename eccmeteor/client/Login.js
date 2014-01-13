@@ -1,26 +1,96 @@
-var sublitLoginform = function(t){
-    //  var username = $("#loginForm :input[name='username']").val();
-    //  var password = $("#loginForm :input[name='password']").val();
+UserLogin = function(){};
+
+Object.defineProperty(UserLogin,"logout",{
+  value:function(value){
+    if(value){
+      Meteor.logout(function(){alert(value);});
+    }
+    Meteor.logout();
+    Session.set("USERLOGINSUCCESS",false);
+    Meteor.Router.to("/");
+  }
+});
+
+Object.defineProperty(UserLogin,"loginFail",{
+  value:function(err){
+    Log4js.error(err);
+    console.log("login fail");
+    Meteor.logout();
+    Session.set("USERLOGINSUCCESS",false);
+  }
+});
+
+Object.defineProperty(UserLogin,"loginSuccess",{
+  value:function(username,password){
+    var _self = this;
+    $("body").css("background-color","white");
+    _self.remeberMe(username,password);
+    Session.set("USERLOGINSUCCESS",true);
+  }
+});
+
+
+Object.defineProperty(UserLogin,"submitLoginform",{
+  value:function(t){
+      var _self = this;
       var username = t.find("input:text[name='username']").value;
       var password = t.find("input:password[name='password']").value;
-    //  var errorMsg = $("#loginErrorDiv div:first");
       var errorMsg = $(t.find("div#loginErrorDiv div"));
       if(!password || password.replace(/" "/g,"").length === 0){
           errorMsg.html("*密码不能为空");
           return;
       }
       errorMsg.empty();
+      LoadingModal.loading();
+
       SvseUserDao.login(username,password,function(err,status){
         if(err){
-          Log4js.error(err)
+          _self.loginFail(err);
           errorMsg.html(status ? err : "*登陆名不存在或密码错误");
         }else{
-            $("body").css("background-color","white");
-            remeberMe(username,password);
-            errorMsg.empty();
-            Meteor.Router.to("/home");    
+          errorMsg.empty(); 
+          _self.loginSuccess(username,password); 
         }
       });
+  }
+});
+
+Object.defineProperty(UserLogin,"remeberMe",{
+  value:function(username,password){
+    if($("#login-remeber")[0].checked){
+      if(UserUtils.gotUser()){
+        return;
+      }
+      UserUtils.remberUser(username,password);
+    }else{
+      UserUtils.forgotUser();
+    }
+  }
+});
+
+Object.defineProperty(UserLogin,"autoCompleteLoginForm",{
+  value:function(){
+    $("body").css("background-color","#e7f6fd");
+    var user = UserUtils.gotUser();
+    if(user){
+      $("#loginForm :input[name='username']").val(user.a);
+      $("#loginForm :input[name='password']").val(user.b);
+      $("#login-remeber")[0].checked = true;
+    }
+  }
+});
+
+Object.defineProperty(UserLogin,"init",{
+  value:function(){
+    var _self  = this;
+      _self.autoCompleteLoginForm(); 
+      Meteor.logout();
+      Session.set("USERLOGINSUCCESS",false);
+  }
+});
+
+Template.Login.rendered = function(){
+    UserLogin.init();
 }
 
 Template.Login.events({
@@ -28,35 +98,30 @@ Template.Login.events({
       if(e.keyCode !== 0 && e.keyCode !== 13){
         return;
       }
-      sublitLoginform(t);
+      UserLogin.submitLoginform(t);
     },
     "click #loginFormLoginBtn":function(e,t){
-      sublitLoginform(t);
+      UserLogin.submitLoginform(t);
     }
 });
-var remeberMe = function(username,password){
-  if($("#login-remeber")[0].checked){
-      if(UserUtils.gotUser())
-        return;
-      UserUtils.remberUser(username,password);
-  }else{
-    UserUtils.forgotUser();
-  }
-}
+
+/*自动跳转到首页*/
 Deps.autorun(function(){
-  if(!Meteor.user())
-    return;
-  if(!Meteor.user().profile.accountstatus){
-    Meteor.logout(function(){alert('你的账户已被禁止，请联系系统管理员');});    
-  }
+    if(Session.get("USERLOGINSUCCESS") 
+        && SessionManage.isCollectionCompleted(CONLLECTIONMAP.SVSE)
+        &&SessionManage.isCollectionCompleted(CONLLECTIONMAP.SVSETREE)
+      )
+    {
+      LoadingModal.loaded();
+      Meteor.Router.to("/home");
+    }
 });
 
-Template.Login.rendered = function(){
-  $("body").css("background-color","#e7f6fd");
-  var user = UserUtils.gotUser();
-  if(user){
-    $("#loginForm :input[name='username']").val(user.a);
-    $("#loginForm :input[name='password']").val(user.b);
-    $("#login-remeber")[0].checked = true;
+Deps.autorun(function(){
+  if(!Meteor.user()){
+      return;
   }
-}
+  if(!Meteor.user().profile.accountstatus){
+    UserLogin.logout('你的账户已被禁止，请联系系统管理员');
+  }
+});

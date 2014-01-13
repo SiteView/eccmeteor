@@ -12,8 +12,10 @@ initTopNListAtStartUp = function(debug){
 	}
 	//console.log(list)
 	for(itemname in list){
+	 var obj =list[itemname];
+	 obj["nIndex"]=itemname;
 		if(itemname.indexOf("return") !== -1) continue;
-		SvseTopNresultlist.insert(list[itemname],function(err,r_id){
+		SvseTopNresultlist.insert(obj,function(err,r_id){
 			if(err){
 				Log4js.info("插入TopN报告"+itemname+"失败",-1);
 				Log4js.info(err,-1);

@@ -4,7 +4,7 @@
 	Date:2013-11-04 14:43
 	Content:增加获取应用根目录的方法  getRootPath
 */
-EccSystem = {};
+EccSystem = function(){};
 Object.defineProperty(EccSystem,"require",{
 	value:function(modulname){
 		return Npm.require(modulname);
@@ -34,4 +34,32 @@ Object.defineProperty(EccSystem,"joinPath",{
 		var path = EccSystem.require("path");
 		return path.join.apply(null,arguments);
 	}
-})
+});
+
+
+Object.defineProperty(EccSystem,"mkdir",{
+  value:function(dirpath,dirname){
+    var fs = Npm.require("fs");
+    var path = Npm.require('path');
+    //判断是否是第一次调用
+    if(typeof dirname === "undefined"){ 
+      if(fs.existsSync(dirpath)){
+        return;
+      }else{
+        arguments.callee(dirpath,path.dirname(dirpath));
+      }
+    }else{
+      //判断第二个参数是否正常，避免调用时传入错误参数
+      if(dirname !== path.dirname(dirpath)){ 
+        arguments.callee(dirpath);
+        return;
+      }
+      if(fs.existsSync(dirname)){
+        fs.mkdirSync(dirpath)
+      }else{
+        arguments.callee(dirname,path.dirname(dirname));
+        fs.mkdirSync(dirpath);
+      }
+    }
+  }
+});

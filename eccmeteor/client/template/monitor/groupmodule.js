@@ -41,8 +41,9 @@ Template.showGroupAndEntity.subentity = function(){
 
 Template.showGroupAndEntity.events({
      "click #showGroupAndEntityTableGroupList button[name='trash']":function(e){
-		var id = e.currentTarget.id;
-		console.log("删除组id:"+id);
+		//var id = e.currentTarget.id;
+        var id = this.sv_id;
+		console.log("删除组id:"+id);  
 		SvseDao.removeNodesById(id,function(result){
 			if(!result.status){
 				console.log(result.msg);
@@ -50,12 +51,14 @@ Template.showGroupAndEntity.events({
 		});
     },
     "click #showGroupAndEntityTableGroupList button[name='edit']":function(e){
-        var id = e.currentTarget.id;
+        //var id = e.currentTarget.id;
+        var id = this.sv_id;
         var context = {Group:SvseDao.getGroup(id),id:id};
         RenderTemplate.showParents("#EditGroupModal","GroupEdit",context);
     },
     "click #showGroupAndEntityTableEntityList button[name='trash']":function(e){
-		var id = e.currentTarget.id;
+		//var id = e.currentTarget.id;
+        var id = this.sv_id;
         LoadingModal.loading();
         SvseDao.deletEquipment(id,function(result){
             LoadingModal.loaded();
@@ -67,13 +70,13 @@ Template.showGroupAndEntity.events({
         });
     },
     "click #showGroupAndEntityTableEntityList button[name='edit']":function(e){
-        var id = e.currentTarget.id;
-        var devicetype = SvseEntityTemplateDao.getSvseEntityDevicetypeBySvseTreeId(id);//根据SvseTree中的sv_id获取获取设备类型（即SvseEntityTempalate中的return.id）;
-        var DynamicEntityItems = SvseEntityTemplateDao.getDynamicEntityItems(id,devicetype);
-        var StaticEnitityItems = SvseEntityTemplateDao.getStaticEntityItems(id);
-        var context = {DynamicEntityItems:DynamicEntityItems,entityId:id,StaticEnitityItems:StaticEnitityItems};
-        Log4js.info(StaticEnitityItems);
-        RenderTemplate.showParents("#EditEntityModal","EditEntity",context);
+        //var id = e.currentTarget.id;
+        var id = this.sv_id;
+        LoadingModal.loading();
+        SvseEntityTemplateDao.getEditEntityModuleByIdAsync(id,function(context){
+            LoadingModal.loaded();
+            RenderTemplate.showParents("#EditEntityModal","EditEntity",context);
+        });
     },
     "click tbody tr td a":function(e){ //dblclick tbody tr, 
         e.stopPropagation();

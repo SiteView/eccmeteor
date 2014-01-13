@@ -1,5 +1,5 @@
 <Template name="warnerruleofsound">
-	<div id="soundwarnerdiv" class="modal hide fade" 
+	<div class="modal hide fade" 
 	data-backdrop="true" data-keyboard="true" data-show="false" 
 	data-width="800" data-modalOverflow="true">
 		<div class="modal-header">
@@ -117,7 +117,7 @@
 
 <!--编辑声音报警 -->
 <Template name="editwarnerruleofsound">
-	<div id="soundwarnerdivedit" class="modal hide fade" 
+	<div class="modal hide fade" 
 	data-backdrop="true" data-keyboard="true" data-show="false" 
 	data-width="800" data-modalOverflow="true">
 		<div class="modal-header">
@@ -130,32 +130,33 @@
 					<ul id="svse_tree_check_editsound" class="ztree"></ul>
 				</div>
 				<div class="span8">
+					{{#with SoundWarner}}
 					<form id="warnerruleofsoundformedit" class="well form-horizontal form-inline">
-						<input type="hidden" name="nIndex" >
+						<input type="hidden" id="getsoundwarnerid" name="nIndex" value="{{nIndex}}">
 						<fieldset>
 							<label class="label label-info" align="left">设置声音报警</label>
 							<div class="control-group">
 								<label class="control-label">报警名称*:</label>
 								<div class="controls">
-									<input type="text" name="AlertName">
+									<input type="text" name="AlertName" value="{{AlertName}}">
 								 </div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">服务器名*:</label>
 								<div class="controls">
-									<input type="text" name="Server">
+									<input type="text" name="Server" value="{{Server}}">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">登录名*:</label>
 								<div class="controls">
-									<input type="text" name="LoginName">
+									<input type="text" name="LoginName" value="{{LoginName}}">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >登陆密码:</label>
 								<div class="controls">
-									<input type="password" name="LoginPwd">
+									<input type="password" name="LoginPwd" value="{{LoginPwd}}">
 								</div>
 							</div>
 							<div class="control-group">
@@ -175,49 +176,49 @@
 							<div class="control-group">
 								<label class="control-label" >报警事件:</label>
 								<div class="controls">
-									<input type="radio" name="AlertCategory" value="危险" />危险
-									<input type="radio" name="AlertCategory" value="错误" checked />错误
+									<input type="radio" name="AlertCategory" value="危险" {{#if equal AlertCategory "危险"}} checked {{/if}}/>危险
+									<input type="radio" name="AlertCategory" value="错误" {{#if equal AlertCategory "错误"}} checked {{/if}} />错误
 								</div>
 							</div>
 							<div class="row">
 								<div class="control-group" style="padding-left:10px;margin:5px">
 									<span>
-										<input type="radio" name="AlertCond">
+										<input type="radio" name="AlertCond" value="1" {{#if equal AlertCond "1"}}checked="checked"{{/if}}>
 									</span>
 									<label>连续不断发送警告</label>
 								</div>
 								<div class="control-group">
 									<span style="padding:20px">
-										总是发送，从第<input type="text" name="AlwaysTimes" style="width:28px;height:12px" value="1">次符合报警发送条件开始发送报警
+										总是发送，从第<input type="text" name="AlwaysTimes" style="width:28px;height:12px" value="{{AlwaysTimes}}">次符合报警发送条件开始发送报警
 									</span>
 								</div>
 								<div class="control-group" style="padding-left:10px;margin:5px">
 									<span>
-										<input type="radio" name="AlertCond">
+										<input type="radio" name="AlertCond" value="2" {{#if equal AlertCond "2"}}checked="checked"{{/if}}>
 									</span>
 									<label>报警只发送一次</label>
 								</div>
 								<div class="control-group">
 									<span style="padding:20px">
-										发送一次，当第<input type="text" name="OnlyTimes" style="width:28px;height:12px" value="1">次符合报警发送条件发送报警
+										发送一次，当第<input type="text" name="OnlyTimes" style="width:28px;height:12px" value="{{OnlyTimes}}">次符合报警发送条件发送报警
 									</span>
 								</div>
 								<div class="control-group" style="padding-left:10px;margin:5px">
 									<span class="input-group-addon">
-										<input type="radio" name="AlertCond" checked>
+										<input type="radio" name="AlertCond" value="3" {{#if equal AlertCond "3"}}checked="checked"{{/if}}>
 									</span>
 									<label>选择性发送报警</label>
 								</div>
 								<div class="control-group">
 									<span style="padding:20px">
-										当第<input type="text" style="width:28px;height:12px" name="SelTime1" value="2">次符合报警发送条件时及其以后每重复
-										<input type="text" style="width:28px;height:12px" name="SelTime2" value="3">次时发送报警
+										当第<input type="text" style="width:28px;height:12px" name="SelTime1" value="{{SelTime1}}">次符合报警发送条件时及其以后每重复
+										<input type="text" style="width:28px;height:12px" name="SelTime2" value="{{SelTime2}}">次时发送报警
 									</span>
 								</div>
 							</div>
 						</fieldset>
 					</form>
-				
+					{{/with}}
 				</div>
 		  	</div>
 		</div>

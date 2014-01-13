@@ -14,6 +14,15 @@ SvseTaskDao = {
 			}
 		});
 	},
+	"updatetask":function(address,fn){
+		Meteor.call(SvseTaskDao.AGENT,'updatetask',[address],function(err,result){
+			if(err){
+				fn({status:false,msg:err});
+			}else{
+				fn(result);
+				}
+		});
+	},
 	"deleteTaskByIds":function(ids,fn){
 		Meteor.call(SvseTaskDao.AGENT,"deleteTaskByIds",[ids],function(err,result){
 			if(err){

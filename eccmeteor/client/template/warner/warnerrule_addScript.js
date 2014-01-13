@@ -1,8 +1,8 @@
 Template.warnerruleofscript.events({
-	"click #warnerruleofscriptcancelbtn":function(){
-		$('#scriptwarnerdiv').modal('hide');
+	"click #warnerruleofscriptcancelbtn":function(e,t){
+		RenderTemplate.hideParents(t);
 	},
-	"click #warnerruleofscriptsavebtn":function(){
+	"click #warnerruleofscriptsavebtn":function(e,t){
 		var warnerruleofscriptform = ClientUtils.formArrayToObject($("#warnerruleofscriptform").serializeArray());
 		var warnerruleofscriptformsendconditions = ClientUtils.formArrayToObject($("#warnerruleofscriptformsendconditions").serializeArray());
 		for(param in warnerruleofscriptformsendconditions){
@@ -45,9 +45,9 @@ Template.warnerruleofscript.events({
 		console.log(section);
 		SvseWarnerRuleDao.setWarnerRuleOfMesaage(nIndex,section,function(result){
 			if(result.status){
-				$('#scriptwarnerdiv').modal('hide');
+				RenderTemplate.hideParents(t);
 			}else{
-				SystemLogger(result.msg);
+				Log4js.info(result.msg);
 			}
 			
 		});
@@ -75,14 +75,7 @@ Template.warnerruleofscript.rendered=function(){
 		};
 		$.fn.zTree.init($("#svse_tree_check_addscript"), setting, data);
 	});
-	//获取脚本
-	SvseWarnerRuleDao.getScriptFiles(function(err,result){
-		for(file in result){
-			//console.log(file);
-			var option = $("<option value="+file+"></option>").html(file)
-			$("#scriptfilelist").append(option);
-		}
-	});
+	
 }
 
 //脚本编辑时的渲染
@@ -106,36 +99,45 @@ Template.editwarnerruleofscript.rendered=function(){
 			}
 		};
 		$.fn.zTree.init($("#svse_tree_check_editscript"), setting, data);
-	});
-	//获取脚本
-	SvseWarnerRuleDao.getScriptFiles(function(err,result){
-		for(file in result){
-			//console.log(file);
-			var option = $("<option value="+file+"></option>").html(file)
-			$("#selectscriptfile").append(option);
+		
+		var nIndex = $("#getscriptwarnerid").val();
+		console.log("nIndex:"+nIndex);
+		var result = SvseWarnerRuleDao.getWarnerRule(nIndex);
+		var displayNodes = result.AlertTarget.split("\,");
+		console.log(displayNodes);
+		if(displayNodes && displayNodes.length){
+			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_editscript");
+			//节点勾选
+			for(var index  = 0; index < displayNodes.length ; index++){
+				if(displayNodes[index] == "") continue;
+				treeObj.checkNode(treeObj.getNodesByFilter(function(node){
+					return  node.id  === displayNodes[index];
+				},true),true);
+			}
 		}
 	});
+
 }
 
 //脚本编辑时的事件
 Template.editwarnerruleofscript.events({
-	"click #editwarnerruleofscriptcancelbtn":function(){
-		$("#scriptwarnerdivedit").modal("hide");
+	"click #editwarnerruleofscriptcancelbtn":function(e,t){
+		RenderTemplate.hideParents(t);
 	},
 	//保存编辑
-	"click #editwarnerruleofscriptsavebtn":function(){
+	"click #editwarnerruleofscriptsavebtn":function(e,t){
 		var warnerruleofscriptformedit = ClientUtils.formArrayToObject($("#warnerruleofscriptformedit").serializeArray());
 		var warnerruleofscriptformsendconditionsedit = ClientUtils.formArrayToObject($("#warnerruleofscriptformsendconditionsedit").serializeArray());
 		for(param in warnerruleofscriptformsendconditionsedit){
 			warnerruleofscriptformedit[param] = warnerruleofscriptformsendconditionsedit[param];
 		}
-		warnerruleofscriptformedit["AlertCond"] = 3;
-		warnerruleofscriptformedit["SelTime1"] = 2;
-		warnerruleofscriptformedit["SelTime2"] = 3;
+		//warnerruleofscriptformedit["AlertCond"] = 3;
+		//warnerruleofscriptformedit["SelTime1"] = 2;
+		//warnerruleofscriptformedit["SelTime2"] = 3;
 		warnerruleofscriptformedit["AlertState"] = "Enable";
 		warnerruleofscriptformedit["AlertType"] = "ScriptAlert";
-		warnerruleofscriptformedit["AlwaysTimes"] = 1;
-		warnerruleofscriptformedit["OnlyTimes"] = 1;
+		//warnerruleofscriptformedit["AlwaysTimes"] = 1;
+		//warnerruleofscriptformedit["OnlyTimes"] = 1;
 		//check
 		var alertName=warnerruleofscriptformedit["AlertName"];
 		if(!alertName){
@@ -167,7 +169,7 @@ Template.editwarnerruleofscript.events({
 		section[warnerruleofscriptformedit["nIndex"]] = warnerruleofscriptformedit;
 		console.log(section);
 		SvseWarnerRuleDao.updateWarnerRule(warnerruleofscriptformedit["nIndex"],section,function(result){
-			$('#scriptwarnerdivedit').modal('hide');
+			RenderTemplate.hideParents(t);
 		});
 	},
 });

@@ -1,7 +1,5 @@
 Meteor.Router.add({
-    '/': 'Login',
-    '/index':'Login',
-    '/login':'Login',
+    '/':'Login',
     '/home': 'body',
     '*':"NoFound"
 });
@@ -11,6 +9,7 @@ Meteor.Router.filters({
       if (Meteor.user()) {
         return page;
       }else {
+        Session.set("USERLOGINSUCCESS",false);
         return 'Login';
       }
     }

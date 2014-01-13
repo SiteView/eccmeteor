@@ -33,10 +33,8 @@
 	Content:增加 软件许可
 */ 
 Meteor.methods({
-  "meteorSvUniv":meteorSvUniv,//调用 /lib/svdb.js中定义的方法
-  "meteorSvForest":meteorSvForest,
   "entityEditMonitor":SvseMonitorDaoOnServer.editMonitor,
-  "svGetSendEmailSetting":svGetSendEmailSetting,
+  //"svGetSendEmailSetting":svGetSendEmailSetting,
   //"svEmailTest":svEmailTest,
   "syncTreeData":SyncFunction.sync, //同步数据
   "userDaoAgent":UserDaoAgent.agent,
@@ -198,7 +196,18 @@ SvseMethodsOnServer = {
 	"svWriteSMSTemplateSettingFilesection":svWriteSMSTemplateSettingFilesection,
 	"svDeleteSMSTemplateSettingFilesection":svDeleteSMSTemplateSettingFilesection,
 	"svUpdateSMSTemplateSettingFilesection":svUpdateSMSTemplateSettingFilesection,
-	"svGetLicenselist":svGetLicenselist
+	"svGetLicenselist":svGetLicenselist,
+
+/*
+	Type： add
+	Author：xuqiang
+	Date:2014-1-7 15:40
+	Content:任务计划接口调用的声明
+*/
+	"svUpdateTaskIniFileSection":svUpdateTaskIniFileSection,
+
+	"svGetSendEmailSetting":svGetSendEmailSetting,
+
 }
 
 SvseSyncData = {

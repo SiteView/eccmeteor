@@ -11,7 +11,10 @@ Object.defineProperties(LoadingModal,{
   "loading":{
     "value":function(){
       	console.log("==================================正在加载...==================================");
-		$(LoadingModal.selector).modal('show');
+        var show = function(){
+          $(LoadingModal.selector).modal('show');
+        };
+        show();
     },
     "writable": false,
     "enumerable": false,
@@ -20,7 +23,7 @@ Object.defineProperties(LoadingModal,{
   "loaded":{
     "value":function(){
     	console.log("==================================加载完毕...==================================");
-		$(LoadingModal.selector).modal('hide');
+      $(LoadingModal.selector).modal('hide');
     }
   }
 });

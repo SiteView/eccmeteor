@@ -80,4 +80,11 @@ Meteor.Router.add("/TimeContrastReport",'GET',function(){
        		'Content-type': 'text/html',
        		'Content-Disposition': "attachment; filename=timecontrast_report.html"
     	},new Buffer(DrawTimeContrastReport.export(mid,[st1,et1,st2,et2],type))];
+});
+
+
+Meteor.Router.add("/StatisticsReport/:_reportId",'GET',function(){
+	console.log(_reportId);
+	var  _reportPage = this.request.query.page;
+	var  isDownLoad = this.request.query.isDownLoad;
 })

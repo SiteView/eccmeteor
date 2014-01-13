@@ -10,8 +10,12 @@ initStatisticalAtStartUp = function(debug){
 	}
 	//console.log(list)
 	for(itemname in list){
+	 var obj =list[itemname];
+	 obj["nIndex"]=itemname;
+		// console.log(itemname);
+		// console.log("123333");
 		if(itemname.indexOf("return") !== -1) continue;
-		SvseStatisticalresultlist.insert(list[itemname],function(err,r_id){
+		SvseStatisticalresultlist.insert(obj,function(err,r_id){
 			if(err){
 				Log4js.info("插入统计报告"+itemname+"失败",-1);
 				Log4js.info(err,-1);

@@ -5,22 +5,46 @@
     	<label class="label label-info">编辑组</label>
     </div>
 	<div class="modal-body">
-		<input type="hidden" value="{{id}}">
-        <form id="showGroupEditForm">
-	        {{#with Group}}
-	        <label>*组名称</label>
-	        <input type="text" name="sv_name" value="{{sv_name}}"/>
-	        <br />======================<br />
-	        <label>描述</label>
-	        <textarea name="sv_description">{{sv_description}}</textarea>
-	        <label>依赖</label>
-	        <input type="text" readonly="readonly" name="sv_dependson" value="{{sv_dependson}}"/><input type="button" value="..."/>
-	        <label>依靠条件:</label>
-	        <input type="radio" name="sv_dependscondition" value="1" {{#if equal sv_dependscondition "1"}}checked="checked"{{/if}}><span>正常</span>
-	        <input type="radio" name="sv_dependscondition" value="2" {{#if equal sv_dependscondition "2"}}checked="checked"{{/if}}><span>危险</span>
-	        <input type="radio" name="sv_dependscondition" value="3" {{#if equal sv_dependscondition "3"}}checked="checked"{{/if}}><span>错误</span>
-	        {{/with}}
-        </form>
+		<input type="hidden" value="{{id}}" />
+        <form class="well form-horizontal" id="showGroupEditForm">
+        	{{#with Group}}
+			<div class="control-group">
+				<label class="control-label">*组名称</label>
+				<div class="controls">
+				  <input type="text" name="sv_name" value="{{sv_name}}"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">描述</label>
+				<div class="controls">
+					<textarea name="sv_description">{{sv_description}}</textarea>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">依赖</label>
+				<div class="controls">
+				   <input type="text" readonly="readonly" name="sv_dependson" value="{{sv_dependson}}"/><button class="btn">...</button>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">依靠条件:</label>
+				<div class="controls">
+					<label class="radio">
+						<input type="radio" name="sv_dependscondition" value="1" {{#if equal sv_dependscondition "1"}}checked="checked"{{/if}}>
+					  	正常
+					</label>
+					<label class="radio">
+					  	<input type="radio" name="sv_dependscondition" value="2" {{#if equal sv_dependscondition "2"}}checked="checked"{{/if}}>
+					 	危险
+					</label>
+					<label class="radio">
+					  	<input type="radio" name="sv_dependscondition" value="3" {{#if equal sv_dependscondition "2"}}checked="checked"{{/if}}>
+					 	错误
+					</label>
+				</div>
+			</div>
+			{{/with}}
+		</form>
     </div>
      <div class="modal-footer" align="right">
 		<input type="button" class="btn btn-primary" value="保存" id="showGroupEditFormSaveBtn"/>

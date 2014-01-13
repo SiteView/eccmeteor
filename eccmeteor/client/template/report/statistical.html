@@ -4,24 +4,46 @@
 			{{ide "statistical"}}
         <div class="btn-toolbar">
 			<div class="btn-group">
+
 					<button class="btn" id="statisticalofadd">{{language.addbtn}}</button>
 					<button class="btn" id="statisticalofdel">{{language.delbtn}}</button>
 			</div>
 			<div class="btn-group">
-					<button class="btn" id="allowestatistical">{{language.allowbtn}}</button>
-					<button class="btn" id="forbidstatistical">{{language.forbidbtn}}</button>
-					<button class="btn" id="generateReport">生成报告</button>
-					<button class="btn">更多</button>
-					<button class="btn dropdown-toggle" data-toggle="dropdown">
-							<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu pull-right">        
-							<li><a href="#" id="refreshstatistical">{{language.refreshbtn}}</a></li>
-							<li><a href="#" id="statisticalhelpmessage">{{language.helpmessagebtn}}</a></li>
-							<li class="divider"></li>
-							<li><a href="#" id="helpmessage">{{language.helpmessagebtn}}</a></li>
-					</ul>
+				<button class="btn" id="allowestatistical">{{language.allowbtn}}</button>
+				<button class="btn" id="forbidstatistical">{{language.forbidbtn}}</button>
+				<button class="btn" id="generateReport">生成报告</button>
+				<button class="btn">更多</button>
+				<button class="btn dropdown-toggle" data-toggle="dropdown">
+						<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu pull-right">        
+					<li><a href="#" id="refreshstatistical">{{language.refreshbtn}}</a></li>
+					<li><a href="#" id="statisticalhelpmessage">{{language.helpmessagebtn}}</a></li>
+					<li class="divider"></li>
+					<li><a href="#" id="helpmessage">{{language.helpmessagebtn}}</a></li>
+				</ul>
+
 			</div>
+<!--
+					<button class="btn" id="statisticalofdel">
+						<img src="imag/setting/delete_bt.gif">&nbsp批量删除
+					</button>
+					<button class="btn" id="allowestatistical">
+						<img src="imag/setting/enable_bt.gif">&nbsp批量允许
+					</button>
+					<button class="btn" id="forbidstatistical">
+						<img src="imag/setting/disable_bt.gif">&nbsp批量禁止
+					</button>	
+					<button class="btn" id="refreshstatistical">
+						<img src="imag/setting/ref_bt.gif">&nbsp{{language.refreshbtn}}
+					</button>
+					<button class="btn" id="generateReport">
+						<img src="imag/setting/bakRestore.gif">&nbsp生成报告
+					</button>
+					<button class="btn" id="statisticalhelpmessage">
+						<img src="imag/setting/help_bt.gif">&nbsp{{language.helpmessagebtn}}
+					</button>	
+-->					
         </div>
 	</div>
 	{{> statisticallist}}
@@ -29,7 +51,6 @@
 	<div id="statisticalofadddiv"></div>
 	<div id="statisticalofeditdiv"></div>
 </Template>
-
 <template name="statisticallist">
         <!--统计报告列表表格展示-->
 	<table class="table table-striped table-condensed table-hover">

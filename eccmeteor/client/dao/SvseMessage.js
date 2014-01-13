@@ -11,9 +11,9 @@ SvseMessageDao = {
 		});
 	},
 	//获取短信集合列表
-	"getMessageList": function(){
-		return SvseMessageList.find().fetch();
-	},
+	// "getMessageList": function(){
+		// return SvseMessageList.find().fetch();
+	// },
 	//添加短信信息
 	"addMessage":function(messagename,message,fn){
 		Meteor.call(SvseMessageDao.AGENT,'addMessage',[messagename,message],function(err,result){
@@ -175,3 +175,35 @@ SvseMessageDao = {
 		});
 	} */
 }
+
+	//isEmpty  判断邮件列表当前数据为空
+Object.defineProperty(SvseMessageDao,"isEmpty",{
+	value:function(){
+		//如果当前数据为空，则缓存数据
+		if(SvseMessageList.findOne() == null && !Subscribe.isLoadSvseMessageList()){
+			Subscribe.loadSvseMessageList();
+			return true;
+		}
+		return false;
+	}
+});
+
+//同步获取短信列表
+Object.defineProperty(SvseMessageDao,"getMessageListSync",{
+	value:function(){
+		return SvseMessageList.find().fetch();
+	}
+});
+
+//异步获取短信列表
+Object.defineProperty(SvseMessageDao,"getMessageListAsync",{
+	value:function(fn){
+		Meteor.call(SvseMessageDao.AGENT,"getMessageListAsync",function(error,result){
+			if(error){
+				Log4js.info(error);
+			}else{
+				fn(result);
+			}
+		})
+	}
+});

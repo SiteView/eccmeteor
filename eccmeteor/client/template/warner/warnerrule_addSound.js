@@ -1,8 +1,8 @@
 Template.warnerruleofsound.events({
-	"click #warnerruleofsoundcancelbtn":function(){
-		$("#soundwarnerdiv").modal("hide");
+	"click #warnerruleofsoundcancelbtn":function(e,t){
+		RenderTemplate.hideParents(t);
 	},
-	"click #warnerruleofsoundsavebtn":function(){
+	"click #warnerruleofsoundsavebtn":function(e,t){
 		var warnerruleofsoundform = ClientUtils.formArrayToObject($("#warnerruleofsoundform").serializeArray());
 		var warnerruleofsoundformsendconditions = ClientUtils.formArrayToObject($("#warnerruleofsoundformsendconditions").serializeArray());
 		for(param in warnerruleofsoundformsendconditions){
@@ -45,9 +45,9 @@ Template.warnerruleofsound.events({
 		console.log(section);
 		SvseWarnerRuleDao.setWarnerRuleOfMesaage(nIndex,section,function(result){
 			if(result.status){
-				$('#soundwarnerdiv').modal('hide');
+				RenderTemplate.hideParents(t);
 			}else{
-				SystemLogger(result.msg);
+				Log4js.info(result.msg);
 			}
 			
 		});
@@ -98,28 +98,44 @@ Template.editwarnerruleofsound.rendered=function(){
 			}
 		};
 		$.fn.zTree.init($("#svse_tree_check_editsound"), setting, data);
+		
+		var nIndex = $("#getsoundwarnerid").val();
+		console.log("nIndex:"+nIndex);
+		var result = SvseWarnerRuleDao.getWarnerRule(nIndex);
+		var displayNodes = result.AlertTarget.split("\,");
+		console.log(displayNodes);
+		if(displayNodes && displayNodes.length){
+			var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_editsound");
+			//节点勾选
+			for(var index  = 0; index < displayNodes.length ; index++){
+				if(displayNodes[index] == "") continue;
+				treeObj.checkNode(treeObj.getNodesByFilter(function(node){
+					return  node.id  === displayNodes[index];
+				},true),true);
+			}
+		}
 	});
 }
 
 //编辑声音报警时的事件
 Template.editwarnerruleofsound.events({
-	"click #editwarnerruleofscriptcancelbtn":function(){
-		$("#soundwarnerdivedit").modal("hide");
+	"click #editwarnerruleofscriptcancelbtn":function(e,t){
+		RenderTemplate.hideParents(t);
 	},
 	//保存编辑
-	"click #editwarnerruleofscriptsavebtn":function(){
+	"click #editwarnerruleofscriptsavebtn":function(e,t){
 		var warnerruleofsoundformedit = ClientUtils.formArrayToObject($("#warnerruleofsoundformedit").serializeArray());
 		var warnerruleofsoundformsendconditionsedit = ClientUtils.formArrayToObject($("#warnerruleofsoundformsendconditionsedit").serializeArray());
 		for(param in warnerruleofsoundformsendconditionsedit){
 			warnerruleofsoundformedit[param] = warnerruleofsoundformsendconditionsedit[param];
 		}
-		warnerruleofsoundformedit["AlertCond"] = 3;
-		warnerruleofsoundformedit["SelTime1"] = 2;
-		warnerruleofsoundformedit["SelTime2"] = 3;
+		// warnerruleofsoundformedit["AlertCond"] = 3;
+		// warnerruleofsoundformedit["SelTime1"] = 2;
+		// warnerruleofsoundformedit["SelTime2"] = 3;
 		warnerruleofsoundformedit["AlertState"] = "Enable";
 		warnerruleofsoundformedit["AlertType"] = "SoundAlert";
-		warnerruleofsoundformedit["AlwaysTimes"] = 1;
-		warnerruleofsoundformedit["OnlyTimes"] = 1;
+		// warnerruleofsoundformedit["AlwaysTimes"] = 1;
+		// warnerruleofsoundformedit["OnlyTimes"] = 1;
 		//check
 		var alertName=warnerruleofsoundformedit["AlertName"];
 		if(!alertName){
@@ -151,7 +167,7 @@ Template.editwarnerruleofsound.events({
 		section[warnerruleofsoundformedit["nIndex"]] = warnerruleofsoundformedit;
 		console.log(section);
 		SvseWarnerRuleDao.updateWarnerRule(warnerruleofsoundformedit["nIndex"],section,function(result){
-			$('#soundwarnerdivedit').modal('hide');
+			RenderTemplate.hideParents(t);
 		});
 	},
 });

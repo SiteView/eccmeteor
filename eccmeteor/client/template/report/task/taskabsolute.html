@@ -4,26 +4,31 @@
 			
 		<div class="btn-toolbar">
 			<div class="btn-group">
-					<button class="btn" id="taskabsoluteofadd">{{language.addbtn}}</button>
+				<button class="btn" id="taskabsoluteofadd">
+					<img src="imag/setting/add_bt.gif">&nbsp{{language.addbtn}}
+				</button>
 					
 			</div>
 			<div class="btn-group">
-					
-					<button class="btn" id="taskabsoluteofdel">{{language.delbtn}}</button>
+				<button class="btn" id="taskabsoluteofdel">
+					<img src="imag/setting/delete_bt.gif">&nbsp{{language.delbtn}}
+				</button>
 			</div>
-			<div class="btn-group">
-					
-					<button class="btn" id="taskabsoluteofref">{{language.refreshbtn}}</button>
+			<div class="btn-group">					
+				<button class="btn" id="taskabsoluteofref">
+					<img src="imag/setting/ref_bt.gif">&nbsp{{language.refreshbtn}}
+				</button>
 			</div>
-			<div class="btn-group">
-					
-					<button class="btn" id="statisticalofhelp">{{language.helpmessagebtn}}</button>
+			<div class="btn-group">					
+				<button class="btn" id="statisticalofhelp">
+					<img src="imag/setting/help_bt.gif">&nbsp{{language.helpmessagebtn}}
+				</button>
 			</div>
 		</div>
 	</div>
 	{{> taskabsolutelist}}
-	{{> taskabsoluteadd}}
-	{{> taskabsoluteedit}}
+	<div id="taskabsoluteadd"></div>
+	<div id="taskabsoluteeditdiv"></div>
 </Template>
 <template name="taskabsolutelist">
 	<!--列表表格展示-->
@@ -57,207 +62,3 @@
 <!--这里是分页显示的部分-->
 	{{{pager}}}
 </template>
-<Template name="taskabsoluteadd">
-
-	<div id="taskabsoluteadddiv" class="modal hide fade"
-		data-backdrop="true" data-keyboard="true" data-show="false" 
-		data-width="800" data-modalOverflow="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<label class="label label-info">添加绝对时间任务计划</label>
-		</div>
-		<div class="modal-body">
-			<ul id="myTab" class="nav nav-tabs">
-				<li class="active"><a href="#home1" data-toggle="tab">基本</a></li>
-				<li><a href="#home2" data-toggle="tab">描述</a></li>
-			</ul>
-			<form class="well form-horizontal form-inline" id="taskabsoluteaddofbasciinfo">
-				<div id="mytabcontent" class="tab-content">
-					<div class="tab-pane active" id="home1">
-						
-						<fieldset>
-							<input type="text" name="Type" value="1" style="display: none;">
-							<div class="control-group">								
-								<label class="control-label">任务计划名称*:</label>
-								<div class="controls">
-									<input type="text"  name="sv_name" id="name">
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期日:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow0"/>允许
-									<input type="time" name="start0"/>                       
-								</div>              
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期一:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow1"/>允许
-									<input type="time" name="start1"/>                       
-								</div>              
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期二:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow2"/>允许
-									<input type="time" name="start2"/>                       
-								</div>              
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期三:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow3"/>允许
-									<input type="time" name="start3"/>                       
-								</div>              
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期四:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow4"/>允许
-									<input type="time" name="start4"/>                       
-								</div>              
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期五:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow5"/>允许
-									<input type="time" name="start5"/>                       
-								</div>              
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期六:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow6"/>允许
-									<input type="time" name="start6"/>                       
-								</div>              
-							</div>
-						</fieldset>
-						
-					</div>
-					<div class="tab-pane" id="home2">
-						<div class="row-fluid">
-							<div id="div1" class="span1" >
-
-									<label class="control-label">描述:</label>
-
-
-							</div>
-							<div id="div3" class="span11">
-								<textarea class="form-control" rows="12" name="Description"></textarea>
-							</div>
-
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
-		<div class="modal-footer" align="right">
-			<button class="btn btn-primary" id="taskabsoluteaddofsavebtn">保存</button>
-			<button class="btn" id="taskabsoluteaddcancelbtn">取消</button>
-		</div>
-	</div>
-</Template>
-
-<Template name="taskabsoluteedit">
-	<div id="taskabsoluteeditdiv" class = "modal hide fade">
-	</div>
-</Template>
-<Template name="taskabsolute_editform">
-<div class="modal hide fade"
-	data-backdrop="static" data-keyboard="true" data-show="false" >
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<label class="label label-info">编辑绝对时间任务计划</label>
-		</div>
-		<div class="modal-body">
-			<ul id="myTab" class="nav nav-tabs">
-				<li class="active"><a href="#home3" data-toggle="tab">基本</a></li>
-				<li><a href="#home4" data-toggle="tab">描述</a></li>
-			</ul>
-			<form class="well form-horizontal form-inline" id="taskabsoluteeditofbasciinfo">
-				<div id="mytabcontent" class="tab-content">
-					<div class="tab-pane active" id="home3">
-						<fieldset>
-						{{#with result}}
-							<input type="text" name="Type" value="1" style="display: none;">
-							<div class="control-group">								
-								<label class="control-label">任务计划名称*:</label>
-								<div class="controls">
-									<input type="text"  name="sv_name" id="name" value="{{sv_name}}"/>
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期日:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow0" {{#if equal Allow0 "on"}}checked="checked"{{/if}}/>允许
-									<input type="time" name="start0" value="{{start0}}"/>                       
-								</div>              
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期一:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow1" {{#if equal Allow1 "on"}}checked="checked"{{/if}}/>允许
-									<input type="time" name="start1" value="{{start1}}"/>                       
-								</div>              
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期二:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow2" {{#if equal Allow2 "on"}}checked="checked"{{/if}}/>允许
-									<input type="time" name="start2"value="{{start2}}"/>                       
-								</div>              
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期三:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow3" {{#if equal Allow3 "on"}}checked="checked"{{/if}}/>允许
-									<input type="time" name="start3" value="{{start3}}"/>                       
-								</div>              
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期四:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow4" {{#if equal Allow4 "on"}}checked="checked"{{/if}}/>允许
-									<input type="time" name="start4" value="{{start4}}"/>                       
-								</div>              
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期五:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow5" {{#if equal Allow5 "on"}}checked="checked"{{/if}}/>允许
-									<input type="time" name="start5" value="{{start5}}"/>                       
-								</div>              
-							</div>
-							<div class="control-group">
-								<label class="control-label">星期六:</label>
-								<div class="controls">
-									<input type="checkbox" name="Allow6" {{#if equal Allow6 "on"}}checked="checked"{{/if}}/>允许
-									<input type="time" name="start6" value="{{start6}}"/>                       
-								</div>              
-							</div>
-						{{/with}}
-						</fieldset>						
-					</div>
-					<div class="tab-pane" id="home4">
-						{{#with result}}
-						<div class="row-fluid">
-							<div id="div1" class="span1" >
-								<label class="control-label">描述:</label>
-							</div>
-							<div id="div3" class="span11">
-								<textarea class="form-control" rows="12" name="Description">{{Description}}</textarea>
-							</div>
-
-						</div>
-						{{/with}}
-					</div>
-				</div>
-			</form>
-		</div>
-		<div class="modal-footer" align="right">
-			<button class="btn btn-primary" id="taskabsoluteeditofsavebtn">保存</button>
-			<button class="btn" id="taskabsoluteeditcancelbtn">取消</button>
-		</div>
-</div>
-</Template>

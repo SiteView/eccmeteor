@@ -91,5 +91,22 @@ SvseEmailDaoOnServer = {
 			throw new Meteor.Error(500,msg);
 		}
 		return SvseEmailDaoOnServer.getReturn(true);
+	},
+	//获取发送邮件的设置
+	"getSendEmailSetting":function(){
+		var result = SvseMethodsOnServer.svGetSendEmailSetting();
+		if(!result){
+			var msg = "SvseEmailDaoOnServer's svGetSendEmailSetting faild";
+			Log4js.error(msg);
+			throw new Meteor.Error(500,msg);
+		}
+		return result;
 	}
 }
+
+//异步
+Object.defineProperty(SvseEmailDaoOnServer,"getEmailListAsync",{
+	value:function(){
+		return SvseEmailList.find({nIndex:{$exists:true}}).fetch();
+	}
+});

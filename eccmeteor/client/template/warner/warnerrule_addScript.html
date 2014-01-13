@@ -1,5 +1,5 @@
 <Template name="warnerruleofscript">
-	<div id="scriptwarnerdiv" class="modal hide fade" 
+	<div class="modal hide fade" 
 	data-backdrop="true" data-keyboard="true" data-show="false" 
 	data-width="800" data-modalOverflow="true">
 		<div class="modal-header">
@@ -37,8 +37,11 @@
 			<div class="control-group">
 				<label class="control-label">选择服务器*:</label>
 				<div class="controls">
-					<select id="" name="ScriptServer">
+					<select name="ScriptServer">
 						<option value="127.0.0.1" selected>127.0.0.1</option>
+						{{#each ScriptServer}}
+							<option value="{{this}}">{{this}}</option>
+						{{/each}}
 					</select>
 				</div>
 			</div>
@@ -46,7 +49,9 @@
 				<label class="control-label">选择脚本*:</label>
 				<div class="controls">
 					<select id="scriptfilelist" name="ScriptFile">
-						
+						{{#each ScriptTemplate}}
+							<option value="{{this}}">{{this}}</option>
+						{{/each}}
 					</select>
 				</div>
 			</div>
@@ -121,7 +126,7 @@
 
 <!--编辑脚本报警 -->
 <Template name="editwarnerruleofscript">
-	<div id="scriptwarnerdivedit" class="modal hide fade" 
+	<div class="modal hide fade" 
 	data-backdrop="true" data-keyboard="true" data-show="false" 
 	data-width="800" data-modalOverflow="true">
 		<div class="modal-header">
@@ -134,21 +139,25 @@
 					<ul id="svse_tree_check_editscript" class="ztree"></ul>
 				</div>
 				<div class="span8">
+					{{#with Scriptwarnerinfo}}
 					<form id="warnerruleofscriptformedit" class="well form-horizontal form-inline">
-						<input type="hidden" name="nIndex" >
+						<input type="hidden" name="nIndex" id="getscriptwarnerid" value="{{ScriptWarner.nIndex}}">
 						<fieldset>
 							<label class="label label-info" align="left">设置脚本报警</label>
 							<div class="control-group">
 								<label class="control-label">报警名称*:</label>
 								<div class="controls">
-									<input type="text" name="AlertName">
+									<input type="text" name="AlertName" value="{{ScriptWarner.AlertName}}">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label">选择服务器*:</label>
 								<div class="controls">
-									<select id="" name="ScriptServer">
-										 <option value="127.0.0.1">127.0.0.1</option>
+									<select id="selectscriptserver" name="ScriptServer">
+										 <option value="127.0.0.1" {{#if equal ScriptWarner.ScriptServer "127.0.0.1"}} selected{{/if}}>127.0.0.1</option>
+										 {{#each ScriptServer}}
+											<option value="{{this}}">{{this}}</option>
+										 {{/each}}
 									</select>
 								</div>
 							</div>
@@ -156,14 +165,16 @@
 								<label class="control-label">选择脚本*:</label>
 								<div class="controls">
 									<select id="selectscriptfile" name="ScriptFile">
-										<option value="Reboot" selected>Reboot</option>
+										{{#each ScriptTemplate}}
+											<option value="{{this}}">{{this}}</option>
+										{{/each}}
 									</select>
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" >附加参数:</label>
 								<div class="controls">
-									<input type="text" name="ScriptParam">
+									<input type="text" name="ScriptParam" value="{{ScriptWarner.ScriptParam}}">
 								</div>
 							</div>
 							<div class="control-group">
@@ -183,49 +194,49 @@
 							<div class="control-group">
 								<label class="control-label" >报警事件:</label>
 								<div class="controls">
-									<input type="radio" name="AlertCategory" value="危险" />危险
-									<input type="radio" name="AlertCategory" value="错误" checked />错误
+									<input type="radio" name="AlertCategory" value="危险" {{#if equal ScriptWarner.AlertCategory "危险"}} checked {{/if}} />危险
+									<input type="radio" name="AlertCategory" value="错误" {{#if equal ScriptWarner.AlertCategory "错误"}} checked {{/if}} />错误
 								</div>
 							</div>
 							<div class="row">
 								<div class="control-group" style="padding-left:10px;margin:5px">
 									<span>
-										<input type="radio" name="AlertCond">
+										<input type="radio" name="AlertCond" value="1" {{#if equal ScriptWarner.AlertCond "1"}}checked="checked"{{/if}}>
 									</span>
 									<label>连续不断发送警告</label>
 								</div>
 								<div class="control-group">
 									<span style="padding:20px">
-										总是发送，从第<input type="text" name="AlwaysTimes" style="width:28px;height:12px" value="1">次符合报警发送条件开始发送报警
+										总是发送，从第<input type="text" name="AlwaysTimes" style="width:28px;height:12px" value="{{ScriptWarner.AlwaysTimes}}">次符合报警发送条件开始发送报警
 									</span>
 								</div>
 								<div class="control-group" style="padding-left:10px;margin:5px">
 									<span>
-										<input type="radio" name="AlertCond">
+										<input type="radio" name="AlertCond" value="2" {{#if equal ScriptWarner.AlertCond "2"}}checked="checked"{{/if}}>
 									</span>
 									<label>报警只发送一次</label>
 								</div>
 								<div class="control-group">
 									<span style="padding:20px">
-										发送一次，当第<input type="text" name="OnlyTimes" style="width:28px;height:12px" value="1">次符合报警发送条件发送报警
+										发送一次，当第<input type="text" name="OnlyTimes" style="width:28px;height:12px" value="{{ScriptWarner.OnlyTimes}}">次符合报警发送条件发送报警
 									</span>
 								</div>
 								<div class="control-group" style="padding-left:10px;margin:5px">
 									<span class="input-group-addon">
-										<input type="radio" name="AlertCond" checked>
+										<input type="radio" name="AlertCond" value="3" {{#if equal ScriptWarner.AlertCond "3"}}checked="checked"{{/if}}>
 									</span>
 									<label>选择性发送报警</label>
 								</div>
 								<div class="control-group">
 									<span style="padding:20px">
-										当第<input type="text" style="width:28px;height:12px" name="SelTime1" value="2">次符合报警发送条件时及其以后每重复
-										<input type="text" style="width:28px;height:12px" name="SelTime2" value="3">次时发送报警
+										当第<input type="text" style="width:28px;height:12px" name="SelTime1" value="{{ScriptWarner.SelTime1}}">次符合报警发送条件时及其以后每重复
+										<input type="text" style="width:28px;height:12px" name="SelTime2" value="{{ScriptWarner.SelTime2}}">次时发送报警
 									</span>
 								</div>
 							</div>
 						</fieldset>
 					</form>
-					
+					{{/with}}
 				</div>
 		  	</div>
 		</div>
