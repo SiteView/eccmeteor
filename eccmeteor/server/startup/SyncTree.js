@@ -10,7 +10,7 @@ Object.defineProperty(SyncTree,"sync",{
 //获取整棵数的信息
 Object.defineProperty(SyncTree,"getWholeTreeNode",{
 	value:function(){
-		return SysncDb.getDefaultTreeData('default',false);
+		return this.getDefaultTreeData('default',false);
 	}
 });
 
@@ -48,48 +48,147 @@ Object.defineProperty(SyncTree,"getNewTreeStructure",{
 		var monitorBranch = [];
 		for(nodeName in newNodes){
 			var node = newNodes[nodeName];
-			_self.contrastNodeAndUpdate(node);//更新节点信息减少一次单独的循环
+		//	_self.contrastNodeAndUpdate(node);//更新节点信息减少一次单独的循环
 			switch(node.type){
 				case "se" : seBranch.push(node);break;
 				case "group" : groupBranch.push(node);break;
 				case "entity" : entityBranch.push(node);break;
-				case "monitor" : monitorBranch.push();break;
+				case "monitor" : monitorBranch.push(node);break;
 			}
 		}
-
-		return newTreeStructure;
+		var newSeAndGroupBranches = this.spanningSeAndSeBranches(seBranch,groupBranch);
+		var newEntityBranch = this.spanningEntityAndMonitorBranches(entityBranch,monitorBranch);
+		var newGroupAndEntityBranch = this.spanningGroupAndEntityBranches(groupBranch,entityBranch,newSeAndGroupBranches);
+		newGroupAndEntityBranch = this.spanningGroupAndGroupBranches(newGroupAndEntityBranch,groupBranch);
+		console.log(newEntityBranch);
+		console.log("=========")
+		console.log(newGroupAndEntityBranch);
+		console.log("=========")
+		console.log(newSeAndGroupBranches)
 	}
 });
-//生成设备树的分支
-Object.defineProperty(SyncTree,"spanningEntityBranches",{
+//生成设备和监视器树的分支
+Object.defineProperty(SyncTree,"spanningEntityAndMonitorBranches",{
 	value:function(entityBranch,monitorBranch){
 		var _self = this;
 		var newEntityBranch = {};
-		for(entity in entityBranch){
+		for(var i = 0; i < entityBranch.length; i++){
+			var entity = entityBranch[i];
 			var sv_id = entity.sv_id;
 			var obj = {
 				sv_id:sv_id,
 				parentid:_self.getParentId(sv_id),
 				type:"entity",
-				submonitor:[];
+				submonitor:[]
 			}
 			newEntityBranch[sv_id] = obj;
 		}
-		for(monitor in monitorBranch){
+		for(var j = 0; j < monitorBranch.length; j++){
+			monitor = monitorBranch[j];
 			var monitorId = monitor.sv_id;
-			var monitorParentId = _self.getParentId(monitorId),
+			var monitorParentId = _self.getParentId(monitorId);
 			newEntityBranch[monitorParentId].has_son = true;
 			newEntityBranch[monitorParentId].submonitor.push(monitorId);
 		}
 		return newEntityBranch;
 	}
 });
+//生成组和设备分支树的分支
+Object.defineProperty(SyncTree,"spanningGroupAndEntityBranches",{
+	value:function(groupBranch,entityBranch,newSeAndSeBranches){
+		var _self = this;
+		var newGroupBranch = {};
+		for(var i = 0; i < groupBranch.length; i++){
+			var group = groupBranch[i];
+			var sv_id = group.sv_id;
+			var obj = {
+				sv_id:sv_id,
+				parentid:_self.getParentId(sv_id),
+				type:"group",
+				subentity:[],
+				subgroup:[]
+				//,property:{} //这个属性的作用？
+			}
+			newGroupBranch[sv_id] = obj;
+		}
+		for(var j = 0; j < entityBranch.length; j++){
+			var entity = entityBranch[j];
+			var entityId = entity.sv_id;
+			
+			var entityParentId = _self.getParentId(entityId);
+			//非法数据
+			if(!newGroupBranch[entityParentId]){
+				if(newSeAndSeBranches[entityParentId]){
+					newSeAndSeBranches[entityParentId].subentity.push(entityId);
+				}
+				continue;
+			}
+			newGroupBranch[entityParentId].has_son = true;
+			newGroupBranch[entityParentId].subentity.push(entityId);
+		}
+		return newGroupBranch;
+	}
+});
+//生成组和组分支树的分支
+Object.defineProperty(SyncTree,"spanningGroupAndGroupBranches",{
+	value:function(newGroupAndEntityBranch,groupBranch){
+		var _self = this;
+		for(var j = 0 ; j < groupBranch.length; j++ ){
+			var group = groupBranch[j];
+			var groupId =  group.sv_id;
+			var groupParentId = _self.getParentId(groupId);
+			if(groupParentId == "1"){
+				continue;
+			}
+			//非法数据
+			if(!newGroupAndEntityBranch[groupParentId]){
+				continue;
+			}
+			newGroupAndEntityBranch[groupParentId].has_son = true;
+			newGroupAndEntityBranch[groupParentId].subgroup.push(groupId);
+		}
+		return newGroupAndEntityBranch;
+	}
+});
+//生成Se和组分支树的分支
+Object.defineProperty(SyncTree,"spanningSeAndSeBranches",{
+	value:function(seBranch,groupBranch){
+		var _self = this;
+		var newSeBranch = {};
+		for(var i = 0; i < seBranch.length; i++){
+			var se = seBranch[i];
+			var sv_id = se.sv_id;
+			var obj = {
+				sv_id:sv_id,
+				parentid:_self.getParentId(sv_id),
+				type:"se",
+				subentity:[],
+				subgroup:[]
+			}
+			newSeBranch[sv_id] = obj;
+		}
 
+		for(var j = 0 ; j < groupBranch.length; j++ ){
+			var group = groupBranch[j];
+			var groupId =  group.sv_id;
+			var groupParentId = _self.getParentId(groupId);
+			//非法数据
+			if(!newSeBranch[groupParentId]){
+				continue;
+			}
+			newSeBranch[groupParentId].has_son = true;
+			newSeBranch[groupParentId].subgroup.push(groupId);
+		}
+		return newSeBranch;
+	}
+});
 
-//合并新旧树的结构
-Object.defineProperty(SyncTree,"mergeTreeBetweenOldAndNew",{
-	value:function(){
-		
+//合并新旧树的Se结构
+Object.defineProperty(SyncTree,"mergeSeBranch",{
+	value:function(newSeAndGroupBranches){
+		for(seid  in newSeAndGroupBranches){
+			
+		}
 	}
 });
 
@@ -108,13 +207,19 @@ Object.defineProperty(SyncTree,"compareObject",{
 		}
 		return true;
 	}
-}
+});
 
 Object.defineProperty(SyncTree,"getParentId",{
 	value:function(id){
 		if(id == "1"){
 			return "0";
 		}
-		return id.substr(id,sv_id.lastIndexOf("\.");
-	};
+		return id.substr(0,id.lastIndexOf("\."));
+	}
+});
+
+Object.defineProperty(SyncTree,"getDefaultTreeData",{
+	value:function(svid,isGetSonNode){
+		return svGetDefaultTreeData(svid,isGetSonNode);
+	}
 });
