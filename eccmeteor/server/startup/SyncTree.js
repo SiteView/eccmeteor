@@ -23,7 +23,10 @@ Object.defineProperty(SyncTree,"contrastNodeAndUpdate",{
 		if(!target){
 			Log4js.info("插入节点"+id);
 			SvseTree.insert(node,function(err){
-				Log4js.error("SyncTree.contrastNodeAndUpdate  SvseTree.insert 错误！");
+				if(err){
+					Log4js.error("SyncTree.contrastNodeAndUpdate  SvseTree.insert 错误！");
+				}
+			
 			});
 			return;
 		}
@@ -31,7 +34,10 @@ Object.defineProperty(SyncTree,"contrastNodeAndUpdate",{
 			return;
 		}
 		SvseTree.update({sv_id:id},node,function(err){
-			Log4js.error("自动更新， SyncTree  contrastNodeAndUpdate SvseTree.update 错误！");
+			if(err){
+				Log4js.error("自动更新， SyncTree  contrastNodeAndUpdate SvseTree.update 错误！");
+			}
+			
 		});
 	}
 });
@@ -247,6 +253,9 @@ Object.defineProperty(SyncTree,"compareSeOrGroupBranch",{
 					$set:{has_son : true} 
 				},
 				function(err){
+					if(!err){
+						return;
+					}
 					Log4js.error("SyncTree  compareSeOrGroupBranch");
 					Log4js.error(err);
 					_self.testBeforeAfter(sv_id,"Before");
@@ -262,6 +271,9 @@ Object.defineProperty(SyncTree,"compareSeOrGroupBranch",{
 					$set:{has_son : true} 
 				},
 				function(err){
+					if(!err){
+						return;
+					}
 					Log4js.error("SyncTree  compareSeOrGroupBranch");
 					Log4js.error(err);
 					_self.testBeforeAfter(sv_id,"Before");
@@ -300,6 +312,9 @@ Object.defineProperty(SyncTree,"compareEntityBranch",{
 					$set:{has_son : true} 
 				},
 				function(err){
+					if(!err){
+						return;
+					}
 					Log4js.error("SyncTree  compareEntityBranch");
 					Log4js.error(err);
 					_self.testBeforeAfter(sv_id,"After");
@@ -313,6 +328,9 @@ Object.defineProperty(SyncTree,"compareEntityBranch",{
 					}
 				},
 				function(err){
+					if(!err){
+						return;
+					}
 					Log4js.error("SyncTree  compareEntityBranch");
 					Log4js.error(err);
 					_self.testBeforeAfter(sv_id,"After");
@@ -416,6 +434,7 @@ Object.defineProperty(SyncTree,"getDefaultTreeData",{
 Object.defineProperty(SyncTree,"removeTreeNodesByArray",{
 	value:function(arr){
 		SvseTree.remove({sv_id:{$in:arr}});
+		Svse.remove({sv_id:{$in:arr}});
 	}
 });
 Object.defineProperty(SyncTree,"isEmptyArray",{

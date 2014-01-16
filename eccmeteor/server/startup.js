@@ -33,8 +33,7 @@ function initAllDateStartUp(status){
 	initDateAtStartUp["initSvseMonitorsTemplateAtStartUp"](status);
 	initDateAtStartUp["initSvseEntityTempletGroupAtStartUp"](status);
 
-	initDateAtStartUp["initTreeDataAtStartup"](status);
-	initDateAtStartUp["initSvseTreeStructureAtStartUp"](status);
+	initTreeDataAtStartup.newTreeStructure(status);
 	
 	initDateAtStartUp["initSvseEntityInfoAtStartUp"](status);
 	initDateAtStartUp["initTaskAtStartUp"](status);
@@ -47,9 +46,12 @@ function initAllDateStartUp(status){
 	initDateAtStartUp["initSettingNodes"]();
 	initDateAtStartUp["initLanguageAtStartUp"]();
 	Log4js.info("全部数据初始化完毕");
+	var sync = function(){
+		SyncTree.sync();
+	}
 	if(AssetsUtils.getDevConfig("runtimesync")){ //不会为0时实时同步
 		Log4js.info("实时同步");
-		var timeloop = new UnrealThread(SyncFunction.syncEquipments,70*1000);
+		var timeloop = new UnrealThread(sync,70*1000);
 		timeloop.start();
 	}
 }
@@ -74,7 +76,7 @@ var SetSvdbAddr = function(){
 Meteor.startup(function(){
 	process.sv_init();
 	SetSvdbAddr();
-	if(!TestUnit.test(0)){
+	if(!TestUnit.test(1)){
 		return;
 	}
 	var status = AssetsUtils.getDevConfig("initDatabase");
