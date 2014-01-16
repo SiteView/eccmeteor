@@ -15,15 +15,6 @@ Template.topN.events = {
 		RenderTemplate.showParents("#topNofadddiv","topNofadd",content);
 		//console.log(t.find("div[id=topNofadddiv]"));
 	},
-	/*"click #topNofdel":function(){
-	    var ids = getTopNListSelectAll();
-        SvseTopNDao.checkTopNresultlistSelect(ids);
-			if(ids.length)
-				SvseTopNDao.deleteTopNByIds(ids,function(result){
-				SystemLogger(result);
-					});
-	  
-	},*/
 	 //启用TopN地址
 	"click #allowetopN" : function(){ 
 		SvseTopNDao.checkTopNresultlistSelect(getTopNListSelectAll());
@@ -88,42 +79,16 @@ Template.topN.rendered = function(){
 			});
 }
 
-
-    /*   Template.topNofedit.topNofaddsavebtneditform = function(){
-	return Session.get("topNofaddsavebtneditform");
-   }*/
-   /*
-Template.topNofaddform.marklist = function(parent){
-  Marklists.find({typelist: Session.get("selected_typelist")});
-};
-// Client
-Meteor.autosubscribe(function () {
-  Meteor.typelist("Marklists",Session.get("selected_typelist"));
-}
-
-// Server
-Meteor.publish("Marklists", function(selectedTypelist) {
-  Marklists.find({typelist: selectedTypelist})  
-});*/
-
-/*Template.topNofaddform.rendered = function(){
-	//检测器下拉列表
-		Meteor.call("svGetMonitorTemplate",function(err,result){
-			for(name in result){
-				//console.log(name);
-				var option = $("<option value="+name+"></option>").html(name)
-				$("#typelist").append(option);
-			}
-		});
-		
-	}*/
 //获取topNlist的集合
 Template.topNlist.topNresultlist = function(){
 	console.log(SvseTopNDao.getTopNresultlist());
+	
 	//return SvseTopNDao.getTopNresultlist();
 	return SvseTopNresultlist.find({},page.skip());
-	
+	//console.log("............");
 }
+
+
 //获取日志的集合列表
 /*Template.topN_detail.topN_detaillist = function(){
 	console.log(SvseTopNDao.getTopNresultlist());
@@ -142,6 +107,8 @@ Template.topN_detail.svseTopNresultlist = function(){
 Template.topN_detail.pager = function(){
   return page.create(SvseTopNresultlist.find().count());
 }*/
+
+
 //分页列表
 var page = new Pagination("topNPagination",{perPage:2});
 

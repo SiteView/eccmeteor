@@ -458,22 +458,27 @@ Object.defineProperty(MonitorInfomation,"parseMonityTemplateFrequencyParameters"
 
 //客户端异步获取监视器的信息---by zhuqing
 Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getMonitorInfoByIdAsync",{
-	value:function(monitorId){
+	value:function(monitorIds){
 		//根据 监视器的id获取该监视器的模板类型
-		var monitor = SvseTree.findOne({sv_id:monitorId});
-		if(!monitor){
-			return null;
+		var contexts = [];
+		console.log(monitorIds);
+		for(i in monitorIds){
+			var monitor = SvseTree.findOne({sv_id:monitorIds[i]});
+			if(!monitor){
+				return null;
+			}
+			var monitorTemplateId =  monitor.sv_monitortype;
+			// 监视器模板id获取该监视器的模板类型名称
+			var monitorTemplate = SvseMonitorTemplate.findOne({"return.id":monitorTemplateId});
+			if(!monitorTemplate){
+				return null;
+			}
+			var context = MonitorInfomation.getMonitorInfoContext(monitorTemplate);
+			context["monitorId"] = monitorIds[i];
+			contexts.push(context);
 		}
-		var monitorTemplateId =  monitor.sv_monitortype;
-		// 监视器模板id获取该监视器的模板类型名称
-		var monitorTemplate = SvseMonitorTemplate.findOne({"return.id":monitorTemplateId});
-		if(!monitorTemplate){
-			return null;
-		}
-		var context = MonitorInfomation.getMonitorInfoContext(monitorTemplate);
-		context["monitorId"] = monitorId;
 		//result = MonitorInfomation.megerDynamicParameters(context,entityId);
-		return context;
+		return contexts;
 
 	}
 });

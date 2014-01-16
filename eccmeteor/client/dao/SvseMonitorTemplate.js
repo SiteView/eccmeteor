@@ -138,8 +138,8 @@ Object.defineProperty(SvseMonitorTemplateDao,"getAddMonitorInfoAsync",{
 //异步
 //监视器 信息获取
 Object.defineProperty(SvseMonitorTemplateDao,"getMonitorInfoByIdAsync",{
-	value:function(monitorId,fn){
-		Meteor.call(SvseMonitorTemplateDao.AGENT,"getMonitorInfoByIdAsync",[monitorId],function(error,result){
+	value:function(monitorIds,fn){
+		Meteor.call(SvseMonitorTemplateDao.AGENT,"getMonitorInfoByIdAsync",[monitorIds],function(error,result){
 			if(error){
 				console.log(error);
 				fn({status:false});
