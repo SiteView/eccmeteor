@@ -91,6 +91,25 @@ Object.defineProperty(Subscribe,"isLoadSvseMessageList",{
    }
 });
 
+//报警规则
+Object.defineProperty(Subscribe,"LOADSVSEWARNERRULE",{
+   value:"LOADSVSEWARNERRULE"
+});
+
+//报警规则
+Object.defineProperty(Subscribe,"loadSvseWarnerRule",{
+   value:function(){
+	  Session.set(Subscribe.LOADSVSEWARNERRULE,true);
+   }
+});
+
+//报警规则是否订阅过
+Object.defineProperty(Subscribe,"isLoadSvseWarnerRule",{
+   value:function(){
+	  return Session.get(Subscribe.LOADSVSEWARNERRULE);
+   }
+});
+
 //延迟加载
 Deps.autorun(function(c){
    if(Session.get(Subscribe.LOADSVSEENTITYTEMPLATEGROUP)){
@@ -141,8 +160,6 @@ Object.defineProperty(Subscribe,"isLoadSvseTopNresultlist",{
    }
 });
 
-
-
 //延迟加载--topN列表
 Deps.autorun(function(c){
    if(Session.get(Subscribe.LOADSVSETOPNRESULTLIST)){
@@ -150,10 +167,15 @@ Deps.autorun(function(c){
    }
 });
 
+Deps.autorun(function(c){
+   if(Session.get(Subscribe.LOADSVSEWARNERRULE)){
+      Meteor.subscribe("svse_warnerrule");
+   }
+});
 //Meteor.subscribe("svse_entity_info");
 Meteor.subscribe("svse_task");
 //Meteor.subscribe("svse_emaillist");
-Meteor.subscribe("svse_warnerrule");
+//Meteor.subscribe("svse_warnerrule");
 Meteor.subscribe("userData");
 //Meteor.subscribe("svse_messagelist");
 //Meteor.subscribe("svse_TopNresultlist");

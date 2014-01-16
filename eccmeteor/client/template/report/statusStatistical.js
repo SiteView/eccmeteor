@@ -115,8 +115,9 @@ var drawTableAndChart = function(monitorId){
 	console.log(startTime);
 	console.log(endTime);
 	console.log("#######################");
-	
+	LoadingModal.loading();
 	DrawStatusReport.getData(monitorId,startTime,endTime,function(result){
+		LoadingModal.loaded();
 		var records = result.content;
 		console.log(records);
 		var dataProcess = new StatusReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用

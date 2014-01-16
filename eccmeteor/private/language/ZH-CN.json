@@ -143,8 +143,8 @@
 			"SystemDiagnosis":"系统诊断",
 			"License":"软件许可",
 			"About":"产品介绍",
-			"SysLogsetting":"SysLog设置"
-
+			"SysLogsetting":"SysLog设置",
+			"TreeView":"树状视图"
 		}
 	}
 }
