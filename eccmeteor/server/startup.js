@@ -35,7 +35,7 @@ function initAllDateStartUp(status){
 
 	initTreeDataAtStartup.newTreeStructure(status);
 	
-	initDateAtStartUp["initSvseEntityInfoAtStartUp"](status);
+//	initDateAtStartUp["initSvseEntityInfoAtStartUp"](status);
 	initDateAtStartUp["initTaskAtStartUp"](status);
 	initDateAtStartUp["initEmailListAtStartUp"](status);
 	initDateAtStartUp["initWarnerRuleAtStartUp"](status);

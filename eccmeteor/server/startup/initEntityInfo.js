@@ -1,4 +1,5 @@
 //初始化设备详细信息 //需要在SvseTree初始化完成后进行
+/*
 initSvseEntityInfoAtStartUp = function(debug){
 	Log4js.info("设备详细信息初始化开始...");
 	if(debug === -1){
@@ -25,3 +26,4 @@ initSvseEntityInfoAtStartUp = function(debug){
 	Log4js.info("实际插入设备信息"+SvseEntityInfo.find().count()+"条");
 	Log4js.info("设备详细信息初始化完成");
 }
+*/

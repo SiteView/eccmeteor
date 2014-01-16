@@ -28,7 +28,7 @@
 initDateAtStartUp = {
 	"initSvseMonitorsTemplateAtStartUp":initSvseMonitorsTemplateAtStartUp, //初始化监视器模板信息
 	"initSvseEntityTempletGroupAtStartUp":initSvseEntityTempletGroupAtStartUp, //初始化设备模板信息
-	"initSvseEntityInfoAtStartUp":initSvseEntityInfoAtStartUp, //初始化设备详细信息
+//	"initSvseEntityInfoAtStartUp":initSvseEntityInfoAtStartUp, //初始化设备详细信息
 	"initTaskAtStartUp":initTaskAtStartUp,
 	"initEmailListAtStartUp":initEmailListAtStartUp,
 	"initWarnerRuleAtStartUp":initWarnerRuleAtStartUp,

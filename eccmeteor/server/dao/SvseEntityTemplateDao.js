@@ -21,13 +21,7 @@ SvseEntityTemplateDao= {
 		}
 		Log4js.info("后台添加成功,返回值是：");
 		Log4js.info(result);
-		SvseEntityInfo.insert(result,function(err,e_id){
-			if(err){
-				var msg = "SvseEntityTemplateDao's SvseEntityInfo.insert faild";
-				Log4js.error(msg);
-				throw new Meteor.Error(500,msg);
-			}
-		});
+
 		var selfId = result["return"]["id"];
 		var nodeSelf = SvseMethodsOnServer.svGetNodeByParentidAndSelfId(parentid,selfId);
 		if(!nodeSelf){
@@ -66,7 +60,7 @@ SvseEntityTemplateDao= {
 		return  SvseEntityTemplateDao.getReturn(true,null,{id:selfId})
 	},
 	"updateEntity":function(selfId,entity){
-		var isNetwork = this.isNetwork(entity.property.sv_devicetype);
+		var isNetwork = SvseEntityTemplateDao.isNetwork(entity.property.sv_devicetype);
 		if(isNetwork){
 			entity.property.sv_network = "true";
 		}
@@ -84,14 +78,6 @@ SvseEntityTemplateDao= {
 				var msg = "SvseEntityTemplateDao's updateEntity SvseTree.update  faild";
 				throw new Meteor.Error(500,msg);
 			}
-			var r_info = SvseEntityInfo.findOne({"return.id":r_id}); //获取SvseEntityInfo原来节点数据
-			SvseEntityInfo.update(r_info._id,{$set:{property:entity["property"],return:entity["return"]}},function(err){ //更新SvseEntityInfo
-				if(err){
-					Log4js.error(err);
-					var msg = "SvseEntityTemplateDao's updateEntity SvseEntityInfo.update  faild";
-					throw new Meteor.Error(500,msg);
-				}
-			});
 		})
 	}
 }
@@ -178,12 +164,15 @@ Object.defineProperty(SvseEntityTemplateDao,"getEntityItemsByIdAsync",{
 
 //客户端异步加载
 //主用用于编辑设备
-//根据设备的id和类型 分别在SvseEntityInfo中获取设备的属性信息和需要编辑的属性字段。
+//根据设备的id和类型 获取设备的属性信息和需要编辑的属性字段。
 Object.defineProperty(SvseEntityTemplateDao,"getEnityInfoAsyncById",{
 	value:function(id,type){
-		var node = SvseEntityInfo.findOne({"return.id":id});
-		var template = SvseEntityTemplet.findOne({"return.id":type});
+		var node = SvseMethodsOnServer.svGetEntity(id);
+		if(!node || !node["property"]){
+			return false;
+		}
 		var property = node["property"];
+		var template = SvseEntityTemplet.findOne({"return.id":type});
 		if(!template) return [];
 		var items = [];
 		for(field in template){  //遍历对象获取模板的编辑字段
@@ -212,12 +201,7 @@ Object.defineProperty(SvseEntityTemplateDao,"getEnityInfoAsyncById",{
 			item["selects"] = selects;
 			items.push(item);
 		}
-		//return items;
-		//获取一般属性 //主用用于编辑设备
-		var entity = SvseEntityInfo.findOne({"return.id":id});
-
-		var StaticEnitityItems = entity ? entity["property"] : {};
-
-		return {DynamicEntityItems:items,entityId:id,StaticEnitityItems:StaticEnitityItems};
+		return {DynamicEntityItems:items,entityId:id,StaticEnitityItems:property};
 	}
-})
+});
+
