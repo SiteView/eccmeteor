@@ -172,7 +172,7 @@ Deps.autorun(function(c){
       Meteor.subscribe("svse_warnerrule");
    }
 });
-//Meteor.subscribe("svse_entity_info");
+
 Meteor.subscribe("svse_task");
 //Meteor.subscribe("svse_emaillist");
 //Meteor.subscribe("svse_warnerrule");

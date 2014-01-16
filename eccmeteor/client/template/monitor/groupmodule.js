@@ -75,7 +75,11 @@ Template.showGroupAndEntity.events({
         LoadingModal.loading();
         SvseEntityTemplateDao.getEditEntityModuleByIdAsync(id,function(context){
             LoadingModal.loaded();
-            RenderTemplate.showParents("#EditEntityModal","EditEntity",context);
+            if(context){
+                RenderTemplate.showParents("#EditEntityModal","EditEntity",context);
+            }else{
+                Message.error("编辑的设备已被删除");
+            }
         });
     },
     "click tbody tr td a":function(e){ //dblclick tbody tr, 
