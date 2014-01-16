@@ -1,0 +1,27 @@
+<Template name="TreeView">
+	<div id="showTreeView" class="row-fluid" style="height:350px">
+		<ul id="svse_tree_view" class="ztree"></ul>
+	<div>
+	<br/>
+	
+	<div class="span6" style="overflow:auto">
+		<ul id="testmenu" class="dropdown-menu" role="menu" aria-labelledby="drop1">
+			<li><a tabindex="-1" href="#">Action</a></li>
+			<li><a tabindex="-1" href="#">Another action</a></li>
+			<li><a tabindex="-1" href="#">Something else here</a></li>
+		</ul>
+		
+	</div>
+	
+	<div id="rMenu" style="position:absolute;">   
+		<ul class="dropdown-menu">   
+			<li><a id="m_add">增加</a></li>   
+			<li><a id="m_del">删除</a></li>   
+			<li><a id="m_check">编辑</a></li>   
+			<li><a id="m_uncheck">查看</a></li>   
+		</ul>   
+	</div>
+	
+	{{> svg}}
+	
+</Template>

@@ -67,3 +67,10 @@ SvseWarnerRuleDao = {
 		return SvseMethodsOnServer.svGetScriptFileofScriptAlert();
 	},
 }
+
+//异步
+Object.defineProperty(SvseWarnerRuleDao,"getWarnerRuleListAsync",{
+	value:function(){
+		return SvseWarnerRule.find({}).fetch();
+	}
+});

@@ -1,9 +1,42 @@
 <Template name="warnerrulelog">
 	<div class="form-horizontal">
-		<span class="label label-info">报警日志</span>
-		<hr/>
-		<span class="label label-info">查询条件</span>
-		<form class="form-horizontal" id="alertlogquerycondition" onsubmit="return false;">
+		<div style="padding-bottom:8px">
+			<span class="label label-info">报警日志</span>
+		</div>
+		<div class="accordion" id="AlertLogAccordion">
+			<div class="accordion-group box sortable">
+				<div class="box-header">
+					<a class="accordion-toggle" data-toggle="collapse" href="#alertlogcollapse">
+						查询条件
+					</a>
+				</div>
+				<div id="alertlogcollapse" class="accordion-body collapse in">
+					<div class="accordion-inner">
+						<div id="alertlogqueryconditionDiv"></div>
+					</div>
+				</div>
+			</div>
+			<div class="accordion-group box sortable">
+				<div class="box-header">
+					<a class="accordion-toggle" data-toggle="collapse" href="#alertloglistcollapse">
+						报警日志列表
+					</a>
+				</div>
+				<div id="alertloglistcollapse" class="accordion-body collapse in">
+					<div class="accordion-inner">
+						<div id="selectwarnerloglistDiv"></div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+			
+	</div>
+
+</Template>
+
+<Template name="alertlogqueryconditionForm">
+	<form class="form-horizontal" id="alertlogquerycondition" onsubmit="return false;">
 			<div class="control-group">
 				<label class="control-label">报警名称:</label>
 				<div class="controls">
@@ -66,11 +99,6 @@
 				</div>
 			</div>
 		</form>
-	</div>
-<div style="padding-bottom:8px">
-	<span class="label label-info">报警日志列表</span>
-</div>
-<div id="selectwarnerloglistDiv"></div>
 </Template>
 
 <Template name="selectwarnerloglist">

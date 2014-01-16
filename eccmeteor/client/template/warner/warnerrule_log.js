@@ -14,6 +14,26 @@ Template.selectwarnerloglist.logPager = function(){
 
 Template.warnerrulelog.rendered = function(){
 	var template = this;
+	$(function(){
+		if(SvseWarnerRuleDao.isEmpty()){
+			LoadingModal.loading();
+			SvseWarnerRuleDao.getWarnerRuleListAsync(function(warnerrule){
+				LoadingModal.loaded();
+				var alertReceivers = alertReceiver();
+				console.log(alertReceivers);
+				var context = {warnerruleoflist:warnerrule,alertReceivers:alertReceivers};
+				RenderTemplate.renderIn("#alertlogqueryconditionDiv","alertlogqueryconditionForm",context);
+			});
+		}else{
+			//console.log(SvseWarnerRule.find().fetch());
+			var warnerrule = SvseWarnerRuleDao.getWarnerRuleListSync();
+			var alertReceivers = alertReceiver();
+			//console.log(warnerrule);
+			//console.log(alertReceivers);
+			var context = {warnerruleoflist:warnerrule,alertReceivers:alertReceivers};
+			RenderTemplate.renderIn("#alertlogqueryconditionDiv","alertlogqueryconditionForm",context);
+		}
+	});
 	$(function() { //初始化日期选择器
 		var endDate = new Date();
 		var startDate = new Date();
@@ -67,25 +87,24 @@ Template.warnerrulelog.rendered = function(){
 	});
 }
 
-//获取报警规则列表
+/* //获取报警规则列表
 Template.warnerrulelog.warnerruleoflist = function(){
-	var rulelist = SvseWarnerRuleDao.getWarnerRuleList();
 	console.log(rulelist);
-	return SvseWarnerRuleDao.getWarnerRuleList();
-}
+	return SvseWarnerRuleDao.getWarnerRuleListSync();
+} */
 
 //获取报警规则的类型
-Template.warnerrulelog.alertTypes = function(){
+Template.alertlogqueryconditionForm.alertTypes = function(){
 	console.log(SvseAlertLogDao.defineAlertTypeData());
 	return SvseAlertLogDao.defineAlertTypeData();
 }
 
 
-//获取报警接收人地址的数组
-Template.warnerrulelog.alertReceivers = function(){
+/* //获取报警接收人地址的数组
+Template.alertlogqueryconditionForm.alertReceivers = function(){
 	//console.log(alertReceiver());
 	return alertReceiver();
-}
+} */
 
 //报警日志的查询事件
 Template.warnerrulelog.events({
@@ -153,7 +172,7 @@ Template.warnerrulelog.events({
 
 //获取报警接收人地址(注意：此处暂时只考虑了值只有一个的情况，如果是多个的话要进一步修改--多个值的情况已经修改完成)
 var alertReceiver = function(){
-	var allalerts = SvseWarnerRuleDao.getWarnerRuleList();
+	var allalerts = SvseWarnerRuleDao.getWarnerRuleListSync();
 	//console.log(allalerts);
 	var alertReceiver = [];
 	var rec = {};

@@ -23,7 +23,8 @@ initSettingNodes = function(status){
 	var setting = [
 			{id:1,pId:0,name:"Alert",action:"alert",type:"alert",icon:"imag/setting/alert.png"},
 			{id:3,pId:0,name:"Report",action:"report",type:"report",icon:"imag/setting/Report.png"},
-			{id:2,pId:0,name:"Setting",action:"setting",type:"setting",icon:"imag/setting/setting.png"},	
+			{id:2,pId:0,name:"Setting",action:"setting",type:"setting",icon:"imag/setting/setting.png"},
+			{id:5,pId:0,name:"TreeView",action:"TreeView",type:"TreeView",icon:"imag/setting/setting.png"},
 			{id:11,pId:1,name:"AlertRule",action:"AlertRule",type:"alert",icon:"imag/setting/alertrule.png"},
 			{id:12,pId:1,name:"AlertLog",action:"AlertLog",type:"alert",icon:"imag/setting/alertlog.png"},
 			{id:13,pId:1,name:"AlertPlan",action:"AlertPlan",type:"alert",icon:"imag/setting/alertplan.png"},

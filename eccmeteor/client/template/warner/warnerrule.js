@@ -115,7 +115,7 @@ Template.warnerrule.rendered = function(){
 // }
 //获取报警列表
 Template.warnerrulelist.rulelist = function(){
-	console.log(SvseWarnerRuleDao.getWarnerRuleList());
+	console.log(SvseWarnerRule.find().fetch());
 	return SvseWarnerRule.find({},page.skip());
 }
 
