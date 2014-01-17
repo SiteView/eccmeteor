@@ -1,7 +1,7 @@
 <Template name="sysLogQuery">
 	<div id="syslogqueryconditionDiv">
 		<div class="row-fluid" style="height:390px;overflow:auto"> 
-		<div class="accordion-group">
+
 		<div class="accordion-group box sortable">
 			<div class="box-header">
 					<a class="accordion-toggle" data-toggle="collapse" href="#sysLogListCollapseOne">查询条件</a>
@@ -9,7 +9,7 @@
 		</div>
 			<div id="sysLogListCollapseOne" class="panel-collapse collapse in">
 				<!--<form id="syslogquerycondition" onsubmit="return false;">-->
-					<div class="form-horizontal" style="float:left">
+					<div class="form-horizontal accordion-inner" style="float:left">
 					<table>
 						<tr>
 							<td>
@@ -296,15 +296,16 @@
 					</div>
 				<!--</form>-->
 			</div>
-		</div>
+
 	</div>
 </div>
 		<div class="accordion-group box sortable">
 			<div class="box-header">
 					<a class="accordion-toggle" data-toggle="collapse" href="#sysLogListCollapseTwo">SysLog</a>
 			</div>
+			<div id="syslogquerylistdiv"></div>
 		</div>
-		<div id="syslogquerylistdiv"></div>
+		
 </Template>
 
 <Template name="sysLogList">	
