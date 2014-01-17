@@ -20,7 +20,7 @@ Template.SysLogsetting.events={
 				console.log(result);
 				console.log("成功A！");
 			 });*/
-			 var Entity = ClientUtils.formArrayToObject($("#EntitySet").serializeArray());
+			var Entity = ClientUtils.formArrayToObject($("#EntitySet").serializeArray());
 			console.log(Entity);
 			var Ent =[];
 			for(var E in Entity){
@@ -172,7 +172,7 @@ Template.SysLogsetting_status.rendered = function () {
 }
 
 Template.SysLogsetting.rendered = function(){
-		var template = this;
+	var template = this;
 		$(function() { //初始化日期选择器
 			var endDate = new Date();
 			$(template.find("#delDatebox")).datetimepicker({
@@ -253,4 +253,30 @@ Template.SysLogsetting.rendered = function(){
 			}
 	});				
 });*/
+/* $(function(){
+		"click #delsyslogbtn".confirm({
+		'message':"确定删除操作？",
+		'action':function(){
+		var id = 'syslog';
+		var endPicker = $('#delDatebox').data('datetimepicker');
+		
+		var endTime = endPicker.getDate();
+		var endDate = ClientUtils.dateToObject(endPicker.getDate());
+		console.log(endDate);
+		console.log("#######################");
+		SvseSysLogDao.DeleteRecordsByIds(id,endDate,function(result){
+		console.log(endPicker);
+		if(!result){
+				console.log("error");
+				return;
+			}
+			
+			console.log(result);
+		  console.log("删除指定时间之前的日志！");
+			});
+			$("#delsyslogbtn").confirm("hide");
+		}
+		
+	 });
+	});*/
 }

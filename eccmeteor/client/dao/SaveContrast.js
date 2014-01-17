@@ -20,14 +20,3 @@ SvseContrastDao = {
 		});
 	}
  }
-	// Object.defineProperty(SvseContrastDao,"getMonitorReportData",{
-	// value:function(id,startDate,endDate,fn){
-		// Meteor.call(SvseMonitorDao.AGENT,"getMonitorReportData",[id,startDate,endDate],function (err,result){
-			// if(err){
-				// fn({status:false,msg:err})
-				// return;
-			// }
-			// fn({status:true,content:result});
-		// });
-	// }
-// })

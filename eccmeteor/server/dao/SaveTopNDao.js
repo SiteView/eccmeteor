@@ -161,3 +161,9 @@ SvseTopNOnServer = {
 	}
 	
 }
+//客户端异步加载
+Object.defineProperty(SvseTopNOnServer,"getTopNresultlistAsync",{
+	value:function(){
+		return SvseTopNresultlist.find().fetch();
+	}
+});

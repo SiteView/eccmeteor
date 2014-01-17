@@ -31,6 +31,7 @@ var NavigationSettingTreeEvents = {
 		SwithcView.view(SETTINGVIEW.USERSETTING);
 	},
 	"topN":function(){
+		NavigationSettingTreeEvents.getTopNresultlist();
 		SwithcView.view(REPORT.TOPN);
 	},
 	"statistical":function(){
@@ -85,6 +86,7 @@ var NavigationSettingTreeEvents = {
        SwithcView.view(REPORT.CONTRAST);
     },
 	"SysLogsetting":function(){
+		//NavigationSettingTreeEvents.getEmailList();
 		SwithcView.view(SETTINGVIEW.SYSLOGSETTING);
 	},
 	
@@ -181,19 +183,21 @@ Object.defineProperty(NavigationSettingTreeEvents,"getMessageList",{
 	}
 });
 
-//根据情况获取所有的报警规则
-Object.defineProperty(NavigationSettingTreeEvents,"getWarnerRuleList",{
+
+//renjie add 
+Object.defineProperty(NavigationSettingTreeEvents,"getTopNresultlist",{
 	value:function(){
-		if(SvseWarnerRuleDao.isEmpty()){
+		if(SvseTopNDao.isEmpty()){
 			LoadingModal.loading();
-			console.log("baojing------------");
-			SvseWarnerRuleDao.getWarnerRuleListAsync(function(warnerrule){
+			SvseTopNDao.getTopNresultlistAsync(function(TopNresultlist){
 				LoadingModal.loaded();
-				console.log(warnerrule);
+				console.log(TopNresultlist);
 			});
 		}else{
-			var warnerrule = SvseWarnerRuleDao.getWarnerRuleListSync();
-			console.log(warnerrule);
+			var TopNresultlist = SvseTopNDao.getTopNresultlistSync();
+			console.log(TopNresultlist);
 		}
 	}
 });
+
+

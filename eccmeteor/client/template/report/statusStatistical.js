@@ -29,7 +29,7 @@ Template.statusStatisticalform.events = {
 			return;
 		}
 		
-		
+		LoadingModal.loading();
 	},
 	
 	//导出报表
@@ -138,7 +138,7 @@ var drawTableAndChart = function(monitorId){
 		RenderTemplate.renderIn("#statusStatisticallistDiv","statusStatisticallist",renderObj);
 		DrawStatusReport.drawStatusBarChart(imageData.chart);
 		DrawStatusReport.drawStatusPie(imageData.pie);
-		
+		LoadingModal.loaded();	 
 		
 	});
 	
@@ -194,6 +194,7 @@ Template.statusStatistical.rendered = function(){
 			},
 			callback:{
 				onClick:function(event,treeId,treeNode){
+				
 					console.log(treeNode.id);	//点击的节点--对应监测器id
 					//console.log(treeNode.name);
 					//console.log("select");
@@ -210,7 +211,7 @@ Template.statusStatistical.rendered = function(){
 					//	SessionManage.setSvseId(id);
 						SessionManage.clearMonitorRuntimeDate();//清空一些监视数据session
 					} */
-					
+						 
 					
 					var arr = $.fn.zTree.getZTreeObj("svse_tree_check_status").getNodesByFilter(function(node){return (node.type === "monitor")});
 					var flag = false;
