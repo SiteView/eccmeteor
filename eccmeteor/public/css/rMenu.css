@@ -44,25 +44,30 @@ div#rMenu ul li{
 	cursor: pointer;
 	list-style: none ;
 	background-color: #DFDFDF;
+	font-size:10px;
 }
 
 div#rMenu {
-	background-color:#555555;
+	background-color:#ffffff;
 	text-align: left;
-	padding:2px;
-	width:100px;
+	padding:0px;
 	position:absolute;
 	display:block;
 }
 div#rMenu ul {
 	margin:1px 0;
-	padding:0 5px;
+	padding:0 3px;
 	cursor: pointer;
 	list-style: none outside none;
 	background-color:#DFDFDF;
 	display:block;
 }
-div#rMenu ul li {
-	margin:0;
-	padding:2px 0;
+div#rMenu ul li a{
+	height:15px;
+}
+div#rMenu .table{
+	margin-bottom:0px;
+}
+div#rMenu table td{
+	font-size:10px;
 }

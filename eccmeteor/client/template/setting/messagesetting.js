@@ -368,6 +368,96 @@ var getMessageNameOfAlertUsing = function(ids){
 	
 }
 
+var alertReceiver = function(){
+	var allalerts = SvseWarnerRuleDao.getWarnerRuleListSync();
+	//console.log(allalerts);
+	var alertReceiver = [];
+	var rec = {};
+	var result = [];
+	for(var i = 0;i < allalerts.length;i++){
+		var recevier = allalerts[i];
+		if(recevier.AlertType == "EmailAlert"){
+			//跟邮件设置相关联的邮件地址
+			if(recevier.EmailAdress){
+				if(recevier.EmailAdress == "" || recevier.EmailAdress=="其他") continue;
+				//console.log(recevier.EmailAdress);
+				var emailAdress = recevier.EmailAdress.split(",");
+				//console.log("-------------------");
+				var address = [];
+				for(var k = 0;k < emailAdress.length;k++){
+					//console.log(emailAdress[k]);
+					var mulemail = SvseEmailDao.getEmailByName(emailAdress[k]);
+					if(!mulemail){
+						console.log("这个邮件地址可能已经不存在了！");
+						continue;
+					}
+					address.push(mulemail.MailList);
+				}
+				//console.log(address);
+				var addressStr = SvseWarnerRuleDao.getValueOfMultipleSelect(address);
+				if(addressStr != ""){
+					alertReceiver.push(addressStr);
+				}
+			}
+			//其他的邮件地址
+			// if(recevier.OtherAdress){
+				// alertReceiver.push(recevier.OtherAdress);
+			// }
+		}else if(recevier.AlertType == "SmsAlert"){
+			//跟短信设置相关联的短信手机号
+			if(recevier.SmsNumber){
+				if(recevier.SmsNumber == "" || recevier.SmsNumber=="其他") continue;
+				//console.log(recevier.SmsNumber);
+				var smsnumber = recevier.SmsNumber.split(",");
+				//console.log(smsnumber);
+				//console.log("-------------------");
+				var numbers = [];
+				for(var j = 0;j < smsnumber.length;j++){
+					//console.log(smsnumber[j]);
+					var mulmessage = SvseMessageDao.getMessageByName(smsnumber[j]);
+					if(!mulmessage){
+						console.log("这个短信接收手机号可能已经不存在了！");
+						continue;
+					}
+					console.log("------");
+					console.log(mulmessage.Phone);
+					numbers.push(mulmessage.Phone);
+				}
+				//console.log(numbers);
+				var numberStr = SvseWarnerRuleDao.getValueOfMultipleSelect(numbers);
+				if(numberStr != ""){
+					alertReceiver.push(numberStr);
+				}
+				
+			}
+			//其他的短信手机地址
+			// if(recevier.OtherNumber){
+				// alertReceiver.push(recevier.OtherNumber);
+			// }
+		}else if(recevier.ScriptServer){
+			if(recevier.ScriptServer == "192.168.1.127(Windows)(_win)"){
+				recevier.ScriptServer = "192.168.1.127";
+			}
+			alertReceiver.push(recevier.ScriptServer);			
+		}else if(recevier.Server){
+			//console.log(recevier.Server);
+			alertReceiver.push(recevier.Server);
+		}
+		
+	}
+	console.log(alertReceiver);
+	//对数组去除重复项
+	for(var j = 0;j < alertReceiver.length;j++){
+		if(!rec[alertReceiver[j]]){   
+          rec[alertReceiver[j]] = true;   
+          result.push(alertReceiver[j]);   
+		}  
+	}
+	//console.log(result);
+	console.log(result.sort());//进行排序
+	return result.sort();
+}
+
 /* //获取任务计划
 var getLoadTaskNames = function(tasktype){
 	console.log("tasktype:"+tasktype);
