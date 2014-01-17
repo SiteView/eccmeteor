@@ -1,80 +1,80 @@
 <Template name="editmessagebasicsetting">
-	<!--编辑短信的基本设置 -->
-	<div  id="editmessagesettingdiv" class="modal hide fade"
-	data-backdrop="true" data-keyboard="true" data-show="false" 
-	data-width="800" data-modalOverflow="true"
-	>
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<label class="label label-info">编辑手机号码设置</label>{{ide "messagesetting"}}</div>
-		<div class="modal-body">
-			
-			<form class="well form-horizontal form-inline" id="editmessagebasicsettingofbasciinfo">
-				<input type="hidden" name="nIndex" value="{{Message.nIndex}}">
-				<fieldset>
-					<span class="label label-info">手机号码信息</span><br /><br />
-					<div class="control-group">
-					  <label class="control-label">名称*:</label>
-					  <div class="controls">
-						<input type="text"  name="Name" readonly="readonly" value="{{Message.Name}}">
-					  </div>
+<!--编辑短信的基本设置 -->
+<div  id="editmessagesettingdiv" class="modal hide fade"
+data-backdrop="true" data-keyboard="true" data-show="false" 
+data-width="800" data-modalOverflow="true"
+>
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<label class="label label-info">编辑手机号码设置</label>{{ide "messagesetting"}}</div>
+	<div class="modal-body">
+		
+		<form class="well form-horizontal form-inline" id="editmessagebasicsettingofbasciinfo">
+			<input type="hidden" name="nIndex" value="{{Message.nIndex}}">
+			<fieldset>
+				<span class="label label-info">手机号码信息</span><br /><br />
+				<div class="control-group">
+				  <label class="control-label">名称*:</label>
+				  <div class="controls">
+					<input type="text"  name="Name" readonly="readonly" value="{{Message.Name}}">
+				  </div>
+				</div>
+				<div class="control-group">
+				  <label class="control-label">*接收手机号码:</label>
+				  <div class="controls">
+					<input type="text"  name="Phone" value="{{Message.Phone}}">
+				  </div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<input type="checkbox" name="Status" value="No" {{#if equal Message.Status "No"}}checked="checked"{{/if}}/> 禁止
 					</div>
-					<div class="control-group">
-					  <label class="control-label">*接收手机号码:</label>
-					  <div class="controls">
-						<input type="text"  name="Phone" value="{{Message.Phone}}">
-					  </div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">模板类型:</label>
+					<div class="controls">
+						<select name="TemplateType" id="editmessageTemplateTypelist">
+							<option value="com" {{#if equal Message.TemplateType "com"}}selected="selected"{{/if}}>com</option>
+							<option value="web" {{#if equal Message.TemplateType "web"}}selected="selected"{{/if}}>web</option>
+						</select>
 					</div>
-					<div class="control-group">
-						<div class="controls">
-							<input type="checkbox" name="Status" value="No" {{#if equal Message.Status "No"}}checked="checked"{{/if}}/> 禁止
-					  	</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">信息模板:</label>
+					<div class="controls">
+						<select id="messagebasicsettingofmessagetemplatelistedit" name="Template">
+						
+						</select>
 					</div>
-					
-					<div class="control-group">
-						<label class="control-label">模板类型:</label>
-						<div class="controls">
-							<select name="TemplateType" id="editmessageTemplateTypelist">
-								<option value="com" {{#if equal Message.TemplateType "com"}}selected="selected"{{/if}}>com</option>
-								<option value="web" {{#if equal Message.TemplateType "web"}}selected="selected"{{/if}}>web</option>
-							</select>
-						</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">任务计划类型:</label>
+					<div class="controls">
+						<select name="TaskType" id="editmessageTaskTypelist">
+							<option value="1" {{#if equal Message.TaskType "1"}}selected {{/if}}>绝对时间任务计划</option>
+							<option value="2" {{#if equal Message.TaskType "2"}}selected {{/if}}>时间段任务计划</option>
+							<option value="3" {{#if equal Message.TaskType "3"}}selected {{/if}}>相对时间任务计划</option>
+						</select>
 					</div>
-					<div class="control-group">
-						<label class="control-label">信息模板:</label>
-						<div class="controls">
-							<select id="messagebasicsettingofmessagetemplatelistedit" name="Template">
-							
-							</select>
-						</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">任务计划:</label>
+					<div class="controls">
+						<select name="Plan" id="editmessagePlanlist">
+						
+						</select>
 					</div>
-					<div class="control-group">
-						<label class="control-label">任务计划类型:</label>
-						<div class="controls">
-							<select name="TaskType" id="editmessageTaskTypelist">
-								<option value="1" {{#if equal Message.TaskType "1"}}selected {{/if}}>绝对时间任务计划</option>
-								<option value="2" {{#if equal Message.TaskType "2"}}selected {{/if}}>时间段任务计划</option>
-								<option value="3" {{#if equal Message.TaskType "3"}}selected {{/if}}>相对时间任务计划</option>
-							</select>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">任务计划:</label>
-						<div class="controls">
-							<select name="Plan" id="editmessagePlanlist">
-							
-							</select>
-						</div>
-					</div>
-					
-				</fieldset>
-			</form>
-			
-		</div>
-		<div class="modal-footer" align="right">
-			<button class="btn btn-primary" id="editmessagebasicsettingofsavebtn">保存</button>
-			<button class="btn" id="editmessagebasicsettingofcancelbtn">取消</button>
-		</div>
+				</div>
+				
+			</fieldset>
+		</form>
+		
 	</div>
+	<div class="modal-footer" align="right">
+		<button class="btn btn-primary" id="editmessagebasicsettingofsavebtn">保存</button>
+		<button class="btn" id="editmessagebasicsettingofcancelbtn">取消</button>
+	</div>
+</div>
 
 </Template>

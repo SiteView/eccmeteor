@@ -42,3 +42,13 @@ margin-top: -1px;
 font-size:10px;
 padding:5px;
 }
+
+.nav1{float:left;position:relative;}
+.nav1 ul{font-size:0;background:#000000;padding:0px;}
+.nav1 ul li{list-style-type:none;padding-bottom:5px;color:#fff;font-size:10px;padding:0 20px;height:34px;line-height:34px;position:relative;}
+.nav1 ul li a{border-bottom:dashed 1px #000000;display:block;margin:0 auto;width:100px;}
+.nav1 ul li.hover_bg{background:#000000;}
+.nav1 .Secon_Dary{background:#000000;position:absolute;right:-140px;top:0;padding-bottom:30px;display:none;}
+.nav1 .Secon_Dary p{padding:0 20px;}
+.nav1 .Secon_Dary a{display:block;height:34px;line-height:34px;color:#fff;border-bottom:dashed 1px #E67A92;}
+.nav1 a{cursor:pointer;}

@@ -1,6 +1,17 @@
 <Template name="TreeView">
+	<div id="showSimpleAndDetailTree">
+		<button id="showSimpleTreebtn">显示缩略</button>
+		<button id="showDetailTreebtn">显示细节</button>
+		<select id="showMonitorStatus">
+			<option value="all" selected>显示全部状态</option>
+			<option value="error">只显示错误</option>
+			<option value="normal">只显示正常</option>
+			<option value="bad">只显示自定义错误</option>
+		</select>
+	</div>
 	<div id="showTreeView" class="row-fluid" style="height:350px">
 		<ul id="svse_tree_view" class="ztree"></ul>
+		<ul id="svse_tree_view_detail" class="ztree" style="display:none"></ul>
 	<div>
 	<br/>
 	
@@ -13,15 +24,58 @@
 		
 	</div>
 	
-	<div id="rMenu" style="position:absolute;">   
-		<ul class="dropdown-menu">   
-			<li><a id="m_add">增加</a></li>   
-			<li><a id="m_del">删除</a></li>   
-			<li><a id="m_check">编辑</a></li>   
-			<li><a id="m_uncheck">查看</a></li>   
-		</ul>   
+	<div id="rMenu" style="position:absolute;display:none;">   
+
 	</div>
 	
 	{{> svg}}
 	
+</Template>
+
+<Template name="rigntMenu">
+	<table class="table table-striped table-bordered table-condensed table1">
+		<thead>
+			<tr>
+				<th>{{name}}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#if equal type "se"}}
+				<tr>
+					<td><a id="m_addchildgroup">增加子组</a></td>
+				</tr>
+				<tr>
+					<td><a id="m_addentity">增加设备</a></td>
+				</tr>
+				<tr>
+					<td><a id="m_delentity">删除设备</a></td>
+				</tr>
+			{{/if}}
+			{{#if equal type "group"}}
+				<tr>
+					<td><a id="m_addentity">增加设备</a></td>
+				</tr>
+				<tr>
+					<td><a id="m_editgroup">编辑组</a></td>
+				</tr>
+				<tr>
+					<td><a id="m_delgroup">删除组</a></td>
+				</tr>
+			{{/if}}
+			{{#if equal type "entity"}}
+				<tr>
+					<td><a id="m_addmonitor">增加监视器</a></td>
+				</tr>
+				<tr>
+					<td><a id="m_editentity">编辑设备</a></td>
+				</tr>
+				<tr>
+					<td>
+						<a id="m_delentity1" class="sort-list-1">删除设备</a>
+					</td>
+				</tr>
+			{{/if}}
+		</tbody>
+		
+	</table> 
 </Template>
