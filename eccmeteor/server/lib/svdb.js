@@ -179,7 +179,7 @@ svGetReportData = function(monitorId,beginDate,endDate,compress){
 	return meteorSvUniv({
 		'dowhat':'QueryReportData',
 		id:monitorId,
-	//	dstrNeed:true,
+		dstrNeed:true,
 		compress:compress,
 		dstrStatusNoNeed:null,
 	//	return_value_filter:"sv_primary,sv_drawimage",

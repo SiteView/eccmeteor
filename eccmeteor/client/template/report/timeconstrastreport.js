@@ -1,7 +1,7 @@
 Template.timeconstrastreport.events = {
 	"click #timeselectbtn":function(e,t){
 		TimeConstrastReportAction.query(e,t,this);
-
+		// LoadingModal.loading();
 	},
 
 	"click #output_timeconstrast_report":function(e,t){
@@ -116,6 +116,7 @@ Object.defineProperty(TimeConstrastReportAction,"treeNodeClick",{
 		}
 		if(flag){
 			TimeConstrastReportAction.drawReport(treeNode.id,t);
+			// LoadingModal.loading();
 			
 		}else{
 			Message.info("请选择监测器");
@@ -168,7 +169,11 @@ Object.defineProperty(TimeConstrastReportAction,"drawReport",{
 		console.log("***");
 		// console.log(timeArr);
 		// console.log(currentDate);
+		//加载数据缓冲
+		LoadingModal.loading();
 		DrawTimeContrastReport.getData(monitorId,timeArr,function(result){
+		
+		LoadingModal.loaded();
 			var records = result;//获取监视器原始数据
 			//原始数据的基本处理 //客户端服务端通用
 			var dataProcess = new TimeContrastReportDataProcess(records,dateType);
@@ -182,6 +187,7 @@ Object.defineProperty(TimeConstrastReportAction,"drawReport",{
 				tableData:tableData
 			}
 			RenderTemplate.renderIn("#timeconstrastDiv","timeconstrast_date",renderObj);
+				// LoadingModal.loaded();
 			DrawTimeContrastReport.draw(imageData,currentDate,dateType);		
 		});
 	}

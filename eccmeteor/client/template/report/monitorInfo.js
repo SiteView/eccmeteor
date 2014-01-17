@@ -5,8 +5,19 @@ Session.setDefault('query', {sv_id:"", QueryObj:"", QueryOpr:"", QueryValue:""})
 /*
 *点击查询按钮开始查询
 */
-Template.monitorInfoReport.events = 
+Template.monitorInfo.events = 
 {
+    "click #testmenu li a" : function(e)
+	{
+		//Session.set("language",e.currentTarget.name);
+		alert(e.currentTarget.innerText);
+	},
+
+	"change #MonitorTemplate":function(evt) 
+    {
+        Session.set("selected_template", evt.currentTarget.value);
+    },
+
 	"click #searchBtn":function(e)
 	{
 		//console.log("dsdsfd");
@@ -38,7 +49,7 @@ Template.monitorInfoReport.events =
 /*
 *查询结果数据列表
 */
-Template.monitorInfoReportlist.monitorInforesultlist = function()
+Template.monitorInfolist.monitorInforesultlist = function()
 {
 	//var obj = new RegExp(queryobj);
 	//var obj = new RegExp("^"+txt+"$"); 
@@ -253,7 +264,36 @@ var drawMonitorTree = function()
 		//}
 	};	
 	
+		
+	function OnRightClick(event, treeId, treeNode) 
+	{
+		console.log(treeNode);
+		if (treeNode.type !== "entity") return;
+		/*
+		if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0)
+		{
+			zTree.cancelSelectedNode();
+			showRMenu("root", event.clientX, event.clientY);
+		}
+		else if (treeNode && !treeNode.noR) 
+		{
+			zTree.selectNode(treeNode);
+			showRMenu("node", event.clientX, event.clientY);
+		}*/
+		$("#testmenu").empty();
+		var monitorids = treeNode.submonitor;
+		for(subindex in monitorids)
+		{
+			var option = "<li><a tabindex='-1' href='#'>"+monitorids[subindex].type+"</a></li>";
+			$("#testmenu").append(option);			
+		}
+		$("#testmenu").css({"top":event.pageY +"px", "left":event.pageX +"px"});
+		//$("#testmenu").css({"top":event.currentTarget.offsetTop +"px", "left":event.currentTarget.offsetLeft +"px","visibility":"visible"});
+		
+		$("#testmenu").dropdown('toggle');
+	}
 	var data = getEntityTree();
+	console.log(data);
 	var setting = {
 		/*check:{
 			enable: false
@@ -270,6 +310,10 @@ var drawMonitorTree = function()
 				pIdKey: "pId",
 				rootPId: "0",
 			}
+		},
+		callback: 
+		{
+			onRightClick: OnRightClick
 		}
 	};
 	
@@ -347,11 +391,77 @@ var drawSvseSettingTree = function()
 	$.fn.zTree.init($("#seach_setting_tree"), setting, data);		
 }
 
-Template.monitorInfoReport.rendered = function()
+Template.monitorInfo.rendered = function()
 {	
 	//绘制监视器树视图
 	drawMonitorTree();
 	
 	//绘制设备树视图
 	drawSvseSettingTree();
+	
+	
+/*
+	var nodes = SvseMonitorTemplate.find().fetch();
+	for(name in nodes){
+		//console.log(name);
+		var option = $("<option value="+nodes[name].property.sv_id+"></option>").html(nodes[name].property.sv_name);
+		$("#MonitorTemplate").append(option);
+	}
+
+	$("#MonitorReturn").empty();
+	var returns = SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("selected_template"));
+	for(name in returns){
+		//console.log(name);
+		var option = $("<option value="+returns[name].sv_name+"></option>").html(returns[name].sv_name);
+		$("#MonitorReturn").append(option);
+	}
+	$("#testmenu").empty();
+	for(name in returns){
+		//console.log(name);
+		var option = "<li><a tabindex='-1' href='#'>"+returns[name].sv_name+"</a></li>";
+		$("#testmenu").append(option);
+	}*/
 }
+
+/*
+*查询结果数据列表
+*/
+Template.monitorInfo.monitortemplates = function()
+{
+	SvseMonitorTemplateDao.getMonitorInfoByIdAsync("1.27.1.1",function(result){
+		var context = result.context;
+		console.log(context);
+		console.log(context.monitorType);
+		var returnItems = context.MonityTemplateReturnItems;
+		for(i in returnItems){
+			console.log(returnItems[i].sv_label);
+		}
+	});
+	// var nodes = SvseMonitorTemplate.find().fetch();
+	// console.log(nodes);
+	// return nodes;		
+}
+
+/*
+*查询结果数据列表
+*/
+// Template.monitorInfo.monitorreturns = function()
+// {
+	
+	// var returns = SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("selected_template"));
+	
+	// return returns;		
+// }
+
+
+// Client
+Meteor.autosubscribe = function () 
+{
+  Meteor.subscribe("selected_template",Session.get("selected_template"));
+}
+
+// Server
+// Meteor.publish("selected_template", function(selected_template) {
+	// var returns = SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("selected_template"));	
+	// return returns;	
+// })

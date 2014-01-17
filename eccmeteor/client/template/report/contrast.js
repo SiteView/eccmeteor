@@ -41,6 +41,7 @@ Object.defineProperty(ContrastAction,"render",{
 		startPicker.setDate(startDate);
 		endPicker.setDate(endDate);		
 	}
+
 });
 
 Object.defineProperty(ContrastAction,"initTree",{
@@ -305,6 +306,7 @@ Object.defineProperty(ContrastAction,"outputReport",{
 *展开树
 */
 Object.defineProperty(ContrastAction,"expandSimpleTreeNode",{
+
 	value:function(zNodes,expandnodeids){
 		var branch = [];
 		if(!expandnodeids.length){
@@ -321,6 +323,7 @@ Object.defineProperty(ContrastAction,"expandSimpleTreeNode",{
 		return zNodes;
 	}
 });
+
 
 //将时间对象转换成字符串
 Object.defineProperty(ContrastAction,"coverTime",{
