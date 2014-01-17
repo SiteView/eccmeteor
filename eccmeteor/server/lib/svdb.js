@@ -29,6 +29,8 @@ var meteorSvUniv = function(dowhat){
 	return fmap;
 }
 var meteorSvForest = function(dowhat){
+	console.log(new Date());
+	console.log(dowhat);
     var robj = process.sv_forest(dowhat, 0);
     if(typeof flag === "string"){
 		Log4js.error(flag);

@@ -27,7 +27,8 @@ SETTINGVIEW = {
 */ 
 	SYSLOGSETTING:"SysLogsetting",	//SysLog设置
 	LICENSE:"License",//软件许可
-	ABOUT:"About"    //产品介绍
+	ABOUT:"About",    //产品介绍
+	TREEVIEW:"TreeView"		//树状视图
 }
 //报警试图
 ALERTVIEW = {

@@ -180,13 +180,13 @@
 			<label class="control-label">信息长度*：<input type="text"  name="length" value="{{length}}">
 			<span style="color:#f00">短信最大长度为70</span></label>
 		</div>
-	
+		{{/with}}
 		<div class="controls" style="padding-left:88px">
 			<button class="btn" id="commessagesettingapplybtn">{{language.messagesettingmodel.applybtn}}</button>
 			<button class="btn" id="commessagesettingrecoverbtn">{{language.messagesettingmodel.recoverbtn}}</button>
 			<button class="btn" id="commessagesettingtestbtn">{{language.messagesettingmodel.testbtn}}</button>
 		</div>
-		{{/with}}
+		
 	</form>
 </Template>
 

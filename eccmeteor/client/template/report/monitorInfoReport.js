@@ -267,6 +267,7 @@ var drawMonitorTree = function()
 		
 	function OnRightClick(event, treeId, treeNode) 
 	{
+		console.log(treeNode);
 		if (treeNode.type !== "entity") return;
 		/*
 		if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0)
@@ -292,6 +293,7 @@ var drawMonitorTree = function()
 		$("#testmenu").dropdown('toggle');
 	}
 	var data = getEntityTree();
+	console.log(data);
 	var setting = {
 		/*check:{
 			enable: false
