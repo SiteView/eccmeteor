@@ -72,6 +72,6 @@ Object.defineProperty(AssetsUtils,"getReportTemplate",{
 			dir = path.join("report",filename);
 			str = Assets.getText(dir)
 		}
-		return Assets.getText(str);
+		return str;
 	}
 });
