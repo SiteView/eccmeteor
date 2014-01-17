@@ -55,7 +55,7 @@ Object.defineProperty(AssetsUtils,"getTestObjects",{
 			dir = path.join("test","test.json");
 			str = Assets.getText(dir)
 		}
-		return EJSON.parse(Assets.getText(str));
+		return EJSON.parse(str);
 	}
 });
 
