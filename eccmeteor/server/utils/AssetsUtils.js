@@ -10,7 +10,7 @@ Object.defineProperty(AssetsUtils,"getLanguages",{
 		var lists = fs.readdirSync(dir);
 		var languages  = [];
 		for(index in lists){
-			var p = path.join("language",lists[index]);
+			var p = "language/"+lists[index];
 			languages.push(EJSON.parse(Assets.getText(p)));
 		}
 		return languages;
@@ -40,7 +40,7 @@ Object.defineProperty(AssetsUtils,"getEntityTemplateOsType",{
 */
 Object.defineProperty(AssetsUtils,"getTestObjects",{
 	value:function(){
-		var dir = path.join('test','test.json');
+		var dir ='test/test.json';
 		return EJSON.parse(Assets.getText(dir));
 	}
 });
@@ -50,7 +50,7 @@ Object.defineProperty(AssetsUtils,"getTestObjects",{
 */
 Object.defineProperty(AssetsUtils,"getReportTemplate",{
 	value:function(filename){
-		var dir = path.join('report',filename);
+		var dir = 'report/'+filename;
 		return Assets.getText(dir);
 	}
 });
