@@ -1,4 +1,7 @@
 var fs = Npm.require('fs');
+var writeFile = Meteor._wrapAsync(fs.writeFile.bind(fs));
+
+
 StatisticsReportFactory = function(reportConfigureId){
 	this.setting = {};
 	this.monitorIds = [];
@@ -112,6 +115,9 @@ StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
 	}
 	*/
 	var monitoringRecords = SvseMonitorDaoOnServer.getMonitorReportDataByfilter(monitorIds,dateExtent[0],dateExtent[1],filter,false);
+	
+	//Log4js.info(monitoringRecords);
+
 	var statisticalRecords = [];
 
 	var perPage = this._options._perPage;
@@ -124,6 +130,9 @@ StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
 
 
 	for(x in monitoringRecords){
+		if(x == "return"){
+			continue;
+		}
 		if(x.indexOf("Return") !== -1 || x.indexOf("return") !== -1){
 			pagerStatisticalRecords.push(monitoringRecords[x]);
 			if(pagerStatisticalRecords.length == perPage){
@@ -146,12 +155,15 @@ StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
 	if(pagerMonitoringRecords.length){
 		totalMonitoringRecords.push(pagerMonitoringRecords);
 	}
-	
-	var uuid = Meteor.uuid();
+
+	var uuid = Utils.getUUID();
+	var saveDirPath = _self.getReportSavePath(uuid);
 
 	var totalPage = totalMonitoringRecords.length + totalStatisticalRecords.length;
 
 	var monitoringTemplate = this._options.NoGraphicReportMnotoringHtmlTemplate;
+	
+	var filename = "";
 
 	for(var i = 0 ; i < totalMonitoringRecords.length ; i++){
 		var baseData = this.buildNoGraphicReportOtherSetting(i,totalPage);
@@ -160,7 +172,8 @@ StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
 			records:totalMonitoringRecords[i]
 		}
 		var monitoring = HtmlTemplate.render(monitoringTemplate,monitoringContext);
-		_self.writeToHtml(monitoring,"/home/ec/testReportWritefile/"+i+".html");
+		filename = i+".html";
+		_self.writeToHtml(monitoring,_self.joinPath(saveDirPath,filename));
 	}
 
 	var statisticalTemplate = this._options.NoGraphicStatisticalHtmlTemplate;
@@ -171,8 +184,10 @@ StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
 			records:totalStatisticalRecords[j]
 		}
 		var statistical = HtmlTemplate.render(statisticalTemplate,statisticalContext);
-		_self.writeToHtml(statistical,"/home/ec/testReportWritefile/"+(i+j)+".html");
+		filename = (i+j)+".html";
+		_self.writeToHtml(statistical,_self.joinPath(saveDirPath,filename));
 	}
+	_self.compressFoldToZip(saveDirPath);
 }
 
 StatisticsReportFactory.prototype.buildNoGraphicReportOtherSetting=function(currentPage,totalPage){
@@ -193,13 +208,28 @@ StatisticsReportFactory.prototype.buildNoGraphicReportOtherSetting=function(curr
 }
 
 StatisticsReportFactory.prototype.writeToHtml = function(htmlContent,fileName){
-	fs.writeFileSync(fileName,new Buffer(htmlContent));
+	writeFile(fileName,new Buffer(htmlContent));
 }
 
 
-StatisticsReportFactory.prototype.getReportSvaePath = function(uuid){
+StatisticsReportFactory.prototype.getReportSavePath = function(uuid){
 	var path = "/home/ec/testReportWritefile";
 	path = EccSystem.joinPath(path,uuid);
 	EccSystem.mkdir(path);
 	return path;
 }
+
+StatisticsReportFactory.prototype.joinPath = function(dirPath,filename){
+	return EccSystem.joinPath(dirPath,filename);
+}
+
+StatisticsReportFactory.prototype.compressFoldToZip = function(saveDirPath){
+	var AdmZip = Meteor.require('adm-zip');
+	var zip = new AdmZip();
+	// add file directly
+	zip.addLocalFolder(saveDirPath);
+	// get everything as a buffer
+	//var willSendthis = zip.toBuffer();
+	// or write everything to disk
+	zip.writeZip(saveDirPath+".zip");//target file name
+}/**/

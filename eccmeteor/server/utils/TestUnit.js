@@ -3,17 +3,20 @@
 */
 TestUnit = function(){};
 Object.defineProperty(TestUnit,"test",{
-	value:function(status){
-		if(status === 1){
-			return true;
-		}
+	value:function(){
 		//拿到需要测试的配置文件信息
+		//[{"name":"StatisticsReportFactoryTest","fn":"test","status":false}]
 		var testObjects = AssetsUtils.getTestObjects();
 		var length = testObjects.length;
+		var flag = false;
 		for(var i = 0; i < length ; i++){
 			var obj = testObjects[i];
-			this.testObject(obj.name,obj.fn);
+			if(typeof obj.status == 'undefined' || obj.status == true){
+				flag = true;
+				this.testObject(obj.name,obj.fn);
+			}
 		}
+		return flag;
 	}
 });
 /*

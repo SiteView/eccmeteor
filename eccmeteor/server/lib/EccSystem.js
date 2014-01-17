@@ -4,6 +4,9 @@
 	Date:2013-11-04 14:43
 	Content:增加获取应用根目录的方法  getRootPath
 */
+var fs = Npm.require("fs");
+var path = Npm.require('path');
+
 EccSystem = function(){};
 Object.defineProperty(EccSystem,"require",{
 	value:function(modulname){
@@ -20,7 +23,6 @@ Object.defineProperty(EccSystem,"getRootPath",{
 		var cwd = process.cwd();
 		var dir =cwd.substr(0,cwd.indexOf(".meteor"));
 		if(filename){
-			var path = EccSystem.require("path");
 			var dir = path.join(EccSystem.getRootPath(), filename);
 		}	
 		return dir;
@@ -31,7 +33,6 @@ Object.defineProperty(EccSystem,"getRootPath",{
 */
 Object.defineProperty(EccSystem,"joinPath",{
 	value:function(){
-		var path = EccSystem.require("path");
 		return path.join.apply(null,arguments);
 	}
 });
@@ -39,8 +40,6 @@ Object.defineProperty(EccSystem,"joinPath",{
 
 Object.defineProperty(EccSystem,"mkdir",{
   value:function(dirpath,dirname){
-    var fs = Npm.require("fs");
-    var path = Npm.require('path');
     //判断是否是第一次调用
     if(typeof dirname === "undefined"){ 
       if(fs.existsSync(dirpath)){
