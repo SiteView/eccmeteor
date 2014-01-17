@@ -2,11 +2,13 @@ var NavigationSettingTreeEvents = {
 	"alert":function(){},
 	"setting":function(){},
 	"AlertRule":function(){
+		NavigationSettingTreeEvents.getWarnerRuleList();
 		NavigationSettingTreeEvents.getEmailList();
 		NavigationSettingTreeEvents.getMessageList();
 		SwithcView.view(ALERTVIEW.WARNERRULE);
 	},
 	"AlertLog":function(){
+		NavigationSettingTreeEvents.getWarnerRuleList();
 		NavigationSettingTreeEvents.getEmailList();
 		NavigationSettingTreeEvents.getMessageList();
 		SwithcView.view(ALERTVIEW.ALERTLOG);
@@ -105,6 +107,9 @@ var NavigationSettingTreeEvents = {
 	"monitorInfo":function(){
        SwithcView.view(REPORT.MONITORINFO);
     },
+	"TreeView":function(){
+		SwithcView.view(SETTINGVIEW.TREEVIEW);
+	}
 }
 
 NavigationSettingTree = {
@@ -144,6 +149,7 @@ Object.defineProperty(NavigationSettingTree,"isOwnSettingNode",{
 	}
 });
 
+//根据情况获取所有的邮件列表
 Object.defineProperty(NavigationSettingTreeEvents,"getEmailList",{
 	value:function(){
 		if(SvseEmailDao.isEmpty()){
@@ -159,18 +165,35 @@ Object.defineProperty(NavigationSettingTreeEvents,"getEmailList",{
 	}
 });
 
+//根据情况获取所有的短信列表
 Object.defineProperty(NavigationSettingTreeEvents,"getMessageList",{
 	value:function(){
 		if(SvseMessageDao.isEmpty()){
 			LoadingModal.loading();
 			SvseMessageDao.getMessageListAsync(function(messagelist){
 				LoadingModal.loaded();
-				console.log(messagelist);
+				//console.log(messagelist);
 			});
 		}else{
 			var messagelist = SvseMessageDao.getMessageListSync();
-			console.log(messagelist);
+			//console.log(messagelist);
 		}
 	}
 });
 
+//根据情况获取所有的报警规则
+Object.defineProperty(NavigationSettingTreeEvents,"getWarnerRuleList",{
+	value:function(){
+		if(SvseWarnerRuleDao.isEmpty()){
+			LoadingModal.loading();
+			console.log("baojing------------");
+			SvseWarnerRuleDao.getWarnerRuleListAsync(function(warnerrule){
+				LoadingModal.loaded();
+				console.log(warnerrule);
+			});
+		}else{
+			var warnerrule = SvseWarnerRuleDao.getWarnerRuleListSync();
+			console.log(warnerrule);
+		}
+	}
+});

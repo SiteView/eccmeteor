@@ -294,7 +294,9 @@ Template.sendingmessagemethods.events({
 Template.sendingmessagemethods.rendered = function(){
 	Meteor.call("svGetSMSWebConfigSetting",function(err,smsweb){
 		//console.log(smsweb);
-		if(!smsweb) return;
+		if(!smsweb){
+			var smsweb = {};
+		}
 		var context = {SmsWeb:smsweb};
 		RenderTemplate.renderIn("#methodsendforwebFormDiv","methodsendforwebForm",context);
 		// $("#methodsendforweb :text[name='User']").val(smsweb["User"]);
@@ -303,7 +305,9 @@ Template.sendingmessagemethods.rendered = function(){
 	});
 	Meteor.call("svGetSMSComConfigSetting",function(err,smscom){
 		//console.log(smscom);
-		if(!smscom) return;
+		if(!smscom){
+			var smscom = {};
+		}
 		var context = {SmsCom:smscom};
 		RenderTemplate.renderIn("#methodsendforcomFormDiv","methodsendforcomForm",context);
 		// $("#comselectport").find("option[value='"+smscom["Port"]+"']:first").attr("selected","selected").prop("selected",true);

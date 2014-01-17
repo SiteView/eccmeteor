@@ -4,10 +4,10 @@ SvseWarnerRuleDao = {
 	"getWarnerRule" : function(id){
 		return SvseWarnerRule.findOne({nIndex:id});
 	},
-	//获取所有报警规则
+	/* //获取所有报警规则
 	"getWarnerRuleList" : function(){
 		return SvseWarnerRule.find({}).fetch();
-	},
+	}, */
 	"setWarnerRuleOfEmail":function(sectionname,section,fn){
 		Meteor.call(SvseWarnerRuleDao.AGENT,"setWarnerRuleOfEmail",[sectionname,section],function(err,result){
 			if(err){
@@ -121,3 +121,35 @@ SvseWarnerRuleDao = {
 		return numberStr;
 	}
 }
+
+	//isEmpty  判断报警规则当前数据为空
+Object.defineProperty(SvseWarnerRuleDao,"isEmpty",{
+	value:function(){
+		//如果当前数据为空，则缓存数据
+		if(SvseWarnerRule.findOne() == null && !Subscribe.isLoadSvseWarnerRule()){
+			Subscribe.loadSvseWarnerRule();
+			return true;
+		}
+		return false;
+	}
+});
+
+//同步获取报警规则
+Object.defineProperty(SvseWarnerRuleDao,"getWarnerRuleListSync",{
+	value:function(){
+		return SvseWarnerRule.find().fetch();
+	}
+});
+
+//异步获取报警规则
+Object.defineProperty(SvseWarnerRuleDao,"getWarnerRuleListAsync",{
+	value:function(fn){
+		Meteor.call(SvseWarnerRuleDao.AGENT,"getWarnerRuleListAsync",function(error,result){
+			if(error){
+				Log4js.info(error);
+			}else{
+				fn(result);
+			}
+		})
+	}
+});
