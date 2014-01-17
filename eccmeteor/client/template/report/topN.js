@@ -152,14 +152,19 @@ Template.topNlist.events({
         },*/
 	"click td .btn":function(e,t){
 		//console.log(t.find(".controls"));
-		
-		var result = SvseTopNDao.getTopNById(e.currentTarget.id);
-				
+		var result = SvseTopNDao.getTopNById(e.currentTarget.id);		
 		console.log(e.currentTarget.id);
 		var content = {result:result};
 		RenderTemplate.showParents("#topNofadddivedit","topNofedit",content);
 		//$("#reporttypePeriodlisted").find("option[value='"+result["Period"]+"']:first").prop("selected",true);
 		console.log(result);		
-
+/*
+console.log(e.currentTarget.id);
+		var result = SvseStatisticalDao.getStatisticalById(e.currentTarget.id);
+		console.log("111111");
+		console.log(result);
+		var content = {result:result};
+		RenderTemplate.showParents("#statisticalofeditdiv","statisticalofedit_form",content);
+*/
 	}
 });
