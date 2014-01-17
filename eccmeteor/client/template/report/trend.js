@@ -9,6 +9,7 @@ Template.trend_status.rendered = function(){
 Template.trend_status.events({
 	"click #search" : function(e,t){
 		TrendAction.query(e,t,this);
+		// LoadingModal.loading();
 	},
 	"click #output_trend_report":function(e,t){
 		TrendAction.outputReport(e,t,this);
@@ -23,6 +24,7 @@ Template.trend_status.events({
 			}else{
 			var monitorId = nodes[0].id;
 			TrendAction.timeclick(e,t,monitorId,this);			
+				// LoadingModal.loading();
 			}
 
 	}
@@ -81,7 +83,9 @@ Object.defineProperty(TrendAction,"timeclick",{
 		var endPickerDate = endPicker.getDate();
 		var startTime = ClientUtils.dateToObject(startPickerDate);
 		var endTime = ClientUtils.dateToObject(endPickerDate);
+		LoadingModal.loading();
 		DrawTrend.drawTrend(monitorId,startTime,endTime,function (result){
+		LoadingModal.loaded();
 		console.log(result);
 		var dataProcess = new ReportDataProcess(result);//原始数据的基本处理 //客户端服务端通用			
 		var tableData = dataProcess.getTableData();
@@ -94,7 +98,9 @@ Object.defineProperty(TrendAction,"timeclick",{
 			tableData:tableData
 		}			
 		RenderTemplate.renderIn("#TrendResultDiv","trend_date",renderObj);
+		// LoadingModal.loaded();
 		DrawTrend.draw(imageData,startPickerDate,endPickerDate);
+		// LoadingModal.loaded();
 		});
 	}
 });
@@ -130,6 +136,7 @@ Object.defineProperty(TrendAction,"initTree",{
 						return;
 					}			
 					TrendAction.drawReport(monitorId);
+					// LoadingModal.loading();
 				},
 				/*
 				*节点展开事件
@@ -184,14 +191,30 @@ Object.defineProperty(TrendAction,"query",{
 	value:function(e,template,context){
 		//获取选中的检测器id	
 		var treeObj = $.fn.zTree.getZTreeObj("svse_tree_check_trend");
-		var monitorId = treeObj.getSelectedNodes();
-		if(!monitorId || monitorId == ""){
+		var nodes = treeObj.getSelectedNodes();
+		if(!nodes || nodes == ""){
 			Message.info("请选择监测器");
 			return;
 		}
-		console.log(monitorId);	
-		//var monitorId ="1.27.3.2" ;
-		TrendAction.drawReport(monitorId,template);
+		console.log(nodes);
+		var monitorId = nodes[0].id;
+		console.log(monitorId);
+		//获取树中所有监测器类型的id
+		var arr = $.fn.zTree.getZTreeObj("svse_tree_check_trend").getNodesByFilter(function(node){return (node.type === "monitor")});
+		var flag = false;
+		for(index in arr){
+			if(monitorId == arr[index].id){
+				flag = true;	
+			}
+		}
+		if(flag){
+			TrendAction.drawReport(monitorId,template);
+		    //LoadingModal.loading();
+		}else{
+			Message.info("请选择监测器");
+			return;
+		}
+
 	}
 });
 
@@ -203,33 +226,32 @@ Object.defineProperty(TrendAction,"drawReport",{
 		var endPickerDate = endPicker.getDate();
 		var startTime = ClientUtils.dateToObject(startPickerDate);
 		var endTime = ClientUtils.dateToObject(endPickerDate);
+		LoadingModal.loading();
 		DrawTrend.drawTrend(monitorId,startTime,endTime,function (result){
-			console.log(result);
+		LoadingModal.loaded();		
 			var records = result;//获取监视器原始数据
 		//	Log4js.info(records);
 			var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用			
 			var tableData = dataProcess.getTableData();
 			var imageData = dataProcess.getImageData();
 			var baseData = dataProcess.getBaseData();
-			
-			//var keysData = dataProcess.getKeysData();
-			// console.log(tableData);
-			// console.log(imageData);
-			// console.log(baseData);
 			var renderObj = {
 				baseDate:baseData,
 				startTime:DrawTrend.buildTime(startTime),
 				endTime:DrawTrend.buildTime(endTime),
 				tableData:tableData
 			}	
-			console.log(baseData);
+			console.log(result);
+			console.log(imageData);
 			console.log("*********");			
 			console.log(tableData);			
-			RenderTemplate.renderIn("#TrendResultDiv","trend_date",renderObj);
 
+			RenderTemplate.renderIn("#TrendResultDiv","trend_date",renderObj);
+			LoadingModal.loaded();
 			//console.log(JSON.stringify(imageData));
 			//console.log(imageData);
 			DrawTrend.draw(imageData,startPickerDate,endPickerDate);
+			// LoadingModal.loaded();
 		});
 	}
 });
