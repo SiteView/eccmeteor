@@ -11,7 +11,14 @@ Object.defineProperty(AssetsUtils,"getLanguages",{
 		var languages  = [];
 		for(index in lists){
 			var p = "language/"+lists[index];
-			languages.push(EJSON.parse(Assets.getText(p)));
+			var language = null;
+			try{
+				language = Assets.getText(p)
+			}catch(e){
+				p = path.join("language",lists[index]);
+				language = Assets.getText(p)
+			}
+			languages.push(EJSON.parse(language));
 		}
 		return languages;
 	}
@@ -41,7 +48,14 @@ Object.defineProperty(AssetsUtils,"getEntityTemplateOsType",{
 Object.defineProperty(AssetsUtils,"getTestObjects",{
 	value:function(){
 		var dir ='test/test.json';
-		return EJSON.parse(Assets.getText(dir));
+		var str = null;
+		try{
+			str = Assets.getText(dir)
+		}catch(e){
+			dir = path.join("test","test.json");
+			str = Assets.getText(dir)
+		}
+		return EJSON.parse(Assets.getText(str));
 	}
 });
 
@@ -51,6 +65,13 @@ Object.defineProperty(AssetsUtils,"getTestObjects",{
 Object.defineProperty(AssetsUtils,"getReportTemplate",{
 	value:function(filename){
 		var dir = 'report/'+filename;
-		return Assets.getText(dir);
+		var str = null;
+		try{
+			str = Assets.getText(dir)
+		}catch(e){
+			dir = path.join("report",filename);
+			str = Assets.getText(dir)
+		}
+		return Assets.getText(str);
 	}
 });
