@@ -5,7 +5,7 @@ Session.setDefault('query', {sv_id:"", QueryObj:"", QueryOpr:"", QueryValue:""})
 /*
 *点击查询按钮开始查询
 */
-Template.monitorInfo.events = 
+Template.monitor_Info.events = 
 {
     "click #testmenu li a" : function(e)
 	{
@@ -49,7 +49,7 @@ Template.monitorInfo.events =
 /*
 *查询结果数据列表
 */
-Template.monitorInfolist.monitorInforesultlist = function()
+Template.monitor_Infolist.monitorInforesult_list = function()
 {
 	//var obj = new RegExp(queryobj);
 	//var obj = new RegExp("^"+txt+"$"); 
@@ -391,7 +391,7 @@ var drawSvseSettingTree = function()
 	$.fn.zTree.init($("#seach_setting_tree"), setting, data);		
 }
 
-Template.monitorInfo.rendered = function()
+Template.monitor_Info.rendered = function()
 {	
 	//绘制监视器树视图
 	drawMonitorTree();
@@ -426,7 +426,7 @@ Template.monitorInfo.rendered = function()
 /*
 *查询结果数据列表
 */
-Template.monitorInfo.monitortemplates = function()
+Template.monitor_Info.monitortemplates = function()
 {
 	SvseMonitorTemplateDao.getMonitorInfoByIdAsync("1.27.1.1",function(result){
 		var context = result.context;
