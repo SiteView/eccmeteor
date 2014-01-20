@@ -1,7 +1,7 @@
 StatisticsReportFactoryTest = function(){};
 Object.defineProperty(StatisticsReportFactoryTest,"getRecords",{
 	value:function(){
-		var factory = new StatisticsReportFactory("333qfB3rDbwPELy7W");
+		var factory = new StatisticsReportFactory("veNr5xkaNN96gahqc");
 		factory.genaritionReport();
 	}
 });

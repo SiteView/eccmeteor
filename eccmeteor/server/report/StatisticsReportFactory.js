@@ -1,6 +1,6 @@
 var fs = Npm.require('fs');
 var writeFile = Meteor._wrapAsync(fs.writeFile.bind(fs));
-
+var nodemailer = Meteor.require("nodemailer");
 
 StatisticsReportFactory = function(reportConfigureId){
 	this.setting = {};
@@ -20,9 +20,6 @@ StatisticsReportFactory.prototype.init = function(reportConfigureId){
 };
 
 StatisticsReportFactory.prototype.getReportConfigure = function(){};
-
-
-StatisticsReportFactory.prototype.getSendEmailConfigure = function(){};
 
 StatisticsReportFactory.prototype.getExtentDate = function(){
 	var dateType = this.setting.Period ;
@@ -55,6 +52,7 @@ StatisticsReportFactory.prototype.getExtentDate = function(){
 				extent =  ReportDateUtils.getCurrentDay();
 			}
 	}
+	console.log(extent)
 	return this.buildTime(extent);
 	
 };
@@ -187,7 +185,8 @@ StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
 		filename = (i+j)+".html";
 		_self.writeToHtml(statistical,_self.joinPath(saveDirPath,filename));
 	}
-	_self.compressFoldToZip(saveDirPath);
+//	_self.compressFoldToZip(saveDirPath);
+//	_self.sendEmail(uuid);
 }
 
 StatisticsReportFactory.prototype.buildNoGraphicReportOtherSetting=function(currentPage,totalPage){
@@ -233,3 +232,50 @@ StatisticsReportFactory.prototype.compressFoldToZip = function(saveDirPath){
 	// or write everything to disk
 	zip.writeZip(saveDirPath+".zip");//target file name
 }/**/
+
+StatisticsReportFactory.prototype.sendEmail = function(uuid){
+	var _self = this;
+	var smtpTransport = _self.getSendEmailConfigure();
+	var email = _self.getSendEmailContent(uuid);
+	smtpTransport.sendMail(email,function(error){
+	    if(error){
+	        console.log("Send Fail");
+	        console.log(error.message);
+	    }else{
+	        console.log("Send Successfully");
+	    }
+	});
+}
+
+StatisticsReportFactory.prototype.getSendEmailConfigure = function(){
+	var smtpTransport = nodemailer.createTransport("SMTP",{
+	    host: "smtp.qq.com",
+	    port: 465,
+	    secureConnection: true,
+	    auth: {
+	        user: "646344359@qq.com",
+	        pass: "huyinghuan123456"
+	    }
+	});
+	return smtpTransport;
+};
+
+StatisticsReportFactory.prototype.getSendEmailContent = function(uuid){
+	var _self = this;
+	var subject = _self.setting.Title.split("\|");
+	var filePath = _self.getReportSavePath(uuid) + ".zip";
+	var mailOptions = {
+	    from: "646344359@qq.com", // sender address
+	    to: "xiacijian@163.com", // list of receivers
+	    subject: subject, // Subject line
+	    text: "统计报告", // plaintext body
+	//    html: "<b>Hello world</b>", // html body
+	    attachments:[
+	        {   // stream as an attachment
+	            fileName: "统计报告.zip",
+	            streamSource: fs.createReadStream(filePath)
+        	}
+	    ]
+	}
+	return mailOptions;
+}
