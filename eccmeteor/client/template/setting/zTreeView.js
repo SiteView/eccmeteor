@@ -34,6 +34,28 @@ Template.TreeView.events({
 		}
 		EntityMouduleDomAction.drawReportLine(e,t,context);
 	},
+	"mouseenter #svse_tree_view_detail img":function(e){
+		//console.log(e.currentTarget);
+    	$(e.currentTarget).popover('show');
+    },
+    "mouseleave #svse_tree_view_detail img":function(e){
+    	$(e.currentTarget).popover('hide');
+    },
+	//点击monitor的状态图标显示信息
+	"click #svse_tree_view_detail a":function(e,t){
+		//console.log(e.currentTarget.id);
+		var aid = e.currentTarget.id;
+		if(!aid){
+			return;
+		}
+		var monitorid = aid.slice(aid.indexOf("_")+1);
+		console.log(monitorid);
+		var context = SvseTree.findOne({sv_id:monitorid});
+		if(!context){
+			return;
+		}
+		EntityMouduleDomAction.drawReportLine(e,t,context);
+	},
 	//显示缩略的监视器树状视图
 	"click #showSimpleTreebtn":function(){
 		$("#svse_tree_view").attr("style","display");
