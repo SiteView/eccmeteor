@@ -22,20 +22,21 @@ Object.defineProperty(StatusStatisticalAction,"render",{
 		var endDate = new Date();
 		var startDate = new Date();
 		startDate.setTime(startDate.getTime() - 1000*60*60*24);
-		$(template.find("#datetimepickerStartDate")).datetimepicker({
+		$(template.find("#statusdatetimepickerStartDate")).datetimepicker({
 			format: 'yyyy-MM-dd hh:mm:ss',
 			language: 'zh-CN',
 			maskInput: false
 		});
-		$(template.find("#datetimepickerEndDate")).datetimepicker({
+		$(template.find("#statusdatetimepickerEndDate")).datetimepicker({
 			format: 'yyyy-MM-dd hh:mm:ss',
 			language: 'zh-CN',
 			endDate : endDate,
 			maskInput: false,
 		});
-		var startPicker = $(template.find("#datetimepickerStartDate")).data('datetimepicker');
-		var endPicker = $(template.find("#datetimepickerEndDate")).data('datetimepicker');
+		var startPicker = $(template.find("#statusdatetimepickerStartDate")).data('datetimepicker');
+		var endPicker = $(template.find("#statusdatetimepickerEndDate")).data('datetimepicker');
 		startPicker.setDate(startDate);
+		console.log("888");
 		endPicker.setDate(endDate);
 		// var monitorId  = template.find("input:hidden").value;
 		// this.draw(ClientUtils.dateToObject(startDate),ClientUtils.dateToObject(endDate),monitorId,template);
@@ -132,7 +133,7 @@ Object.defineProperty(StatusStatisticalAction,"initTree",{
 			$.fn.zTree.init($(template.find("#svse_tree_check_status")), setting,expandNodes);
 			return;
 		}
-		 var tree = $.fn.zTree.init($(template.find("#svse_tree_check_contrast")), setting,expandNodes);
+		 var tree = $.fn.zTree.init($(template.find("#svse_tree_check_status")), setting,expandNodes);
 			console.log("-------");
 			
 		tree.checkNode(selectNodeid,true,true);
