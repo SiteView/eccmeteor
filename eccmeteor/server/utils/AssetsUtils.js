@@ -10,8 +10,15 @@ Object.defineProperty(AssetsUtils,"getLanguages",{
 		var lists = fs.readdirSync(dir);
 		var languages  = [];
 		for(index in lists){
-			var p = path.join("language",lists[index]);
-			languages.push(EJSON.parse(Assets.getText(p)));
+			var p = "language/"+lists[index];
+			var language = null;
+			try{
+				language = Assets.getText(p)
+			}catch(e){
+				p = path.join("language",lists[index]);
+				language = Assets.getText(p)
+			}
+			languages.push(EJSON.parse(language));
 		}
 		return languages;
 	}
@@ -40,8 +47,15 @@ Object.defineProperty(AssetsUtils,"getEntityTemplateOsType",{
 */
 Object.defineProperty(AssetsUtils,"getTestObjects",{
 	value:function(){
-		var dir = path.join('test','test.json');
-		return EJSON.parse(Assets.getText(dir));
+		var dir ='test/test.json';
+		var str = null;
+		try{
+			str = Assets.getText(dir)
+		}catch(e){
+			dir = path.join("test","test.json");
+			str = Assets.getText(dir)
+		}
+		return EJSON.parse(str);
 	}
 });
 
@@ -50,7 +64,14 @@ Object.defineProperty(AssetsUtils,"getTestObjects",{
 */
 Object.defineProperty(AssetsUtils,"getReportTemplate",{
 	value:function(filename){
-		var dir = path.join('report',filename);
-		return Assets.getText(dir);
+		var dir = 'report/'+filename;
+		var str = null;
+		try{
+			str = Assets.getText(dir)
+		}catch(e){
+			dir = path.join("report",filename);
+			str = Assets.getText(dir)
+		}
+		return str;
 	}
 });

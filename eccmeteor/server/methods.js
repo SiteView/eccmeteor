@@ -207,12 +207,4 @@ SvseMethodsOnServer = {
 	"svUpdateTaskIniFileSection":svUpdateTaskIniFileSection,
 
 	"svGetSendEmailSetting":svGetSendEmailSetting,
-
-}
-
-SvseSyncData = {
-	"svGetDefaultTreeData" : svGetDefaultTreeData,
-	"svGetSVSE" : svGetSVSE,
-	"svGetGroup" : svGetGroup,
-	"svGetEntity" : svGetEntity
 }

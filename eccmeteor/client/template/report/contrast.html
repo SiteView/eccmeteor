@@ -1,51 +1,46 @@
 <Template name="contrast">
-<div class="container-fluid">
-	<div class="row-fluid">
-		<div id="div1" class="span3" >
-			<div class="breadcrumb">
-				<span class="label label-info">对比报告</span>
-			</div>
-			<div class="well well-condensed form-horizontal form-inline" style="overflow:auto" id="treeDemo">
-				<ul id="svse_tree_check_contrast" class="ztree" style="height:500px; width: 180px;"></ul>
-			</div>
-			<a href="#2" data-toggle="tab">组名：</a>
-			<div class="control-group" align="right">
-				<div class="controls">
-					<select id="line" class="span5">
-						<option value="p" checked>默认视图</option>
-					</select>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div id="div1" class="span3" >
+				<div class="box-header">
+					<span class="label label-info">对比报告</span>
+				</div>
+				<div class="well well-condensed form-horizontal form-inline" style="overflow:auto" id="treeDemo">
+					<ul id="svse_tree_check_contrast" class="ztree" style="height:500px; width: 180px;"></ul>
+				</div>
+				<a href="#2" data-toggle="tab">组名：</a>
+				<div class="control-group" align="right">
+					<div class="controls">
+						<select id="line" class="span5">
+							<option value="p" checked>默认视图</option>
+						</select>
+					</div>
 				</div>
 			</div>
+			<div id="div3" class="span9">
+						{{> Contrastlist}}
+						{{> rMenu}}
+						{{> helpmessage}} 
+						{{> exportreport}}
+						</div>
 		</div>
-		<div id="div3" class="span9">
-					{{> Contrastlist}}
-					{{> rMenu}}
-					{{> helpmessage}} 
-					{{> exportreport}}
-					</div>
 	</div>
-</div>
 </Template>
 
 <Template name="Contrastlist">
-
-	<ul id="myTab" class="nav nav-tabs">
-		<li class="active">
-		<div class="breadcrumb">
-			<a href="#home1" data-toggle="tab">查询</a>
-		</div>
-		</li>
-	</ul>
-
+	<div class=" box-header">
+		<ul id="myTab" class="nav nav-tabs">
+			<li class="active">
+				<a href="#home1" data-toggle="tab">查询</a>
+			</li>
+		</ul>
+	<div>
 	<div id="mytabcontent" class="tab-content"></div>
 	<div class="tab-pane active" id="home1"></div>
 			<div class="accordion-group">
-				<label class="breadcrumb">查询条件</label>
-					<!--<div class="accordion-heading">
-						<ol class="breadcrumb">
-						  <li><a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseOne">查询条件</a></li>
-						</ol>
-					</div>-->
+					<div class="box-header">
+						<a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseOne">查询条件</a>
+					</div>
 					<div id="contrastListCollapseOne" class="panel-collapse collapse in">
 						<form id="Con" class="well form-horizontal form-inline" onsubmit="return false;">
 							<fieldset>
@@ -123,17 +118,12 @@
 					</div>
 			</div>
 	<div id="ContrastDetailData"></div>
-
 </Template>
 
-<Template name="Contrastlist2">
-
-		
+<Template name="Contrastlist2">		
 			<div class="accordion-group">
-				<div class="accordion-heading">
-					<ol class="breadcrumb">
-					  <li><a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseTwo">运行报表情况表</a></li>
-					</ol>
+				<div class="box-header">
+					<a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseTwo">运行报表情况表</a>					
 				</div>
 				<div id="contrastListCollapseTwo" class="panel-collapse collapse in">
 					<div style="overflow-y: auto; left: 0px;height:100px;">
@@ -170,45 +160,39 @@
 					</div>
 				</div>
 			</div>
-			</div>
-		
-	
+		</div>
 		<div class="accordion-group">
-			<div class="accordion-heading">
-					<ol class="breadcrumb">
-					  <li><a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseThree">图表</a></li>
-					</ol>
-				
+			<div class="box-header">
+				<a class="accordion-toggle" data-toggle="collapse" href="#contrastListCollapseThree">图表</a>
 			</div>
 			<div id="contrastListCollapseThree" class="panel-collapse collapse in">
 			<div style="overflow-y: auto; left: 0px;height:400px;">
 				<div class="accordion-inner" style= height: 50px;>
-				<table class="table table-striped table-condensed table-hover">
-						<thead>
-							<tr></tr>
-							<tr>
-								<th title="名称">名称</th>
-								
-								<th title="最大值">最大值</th>
-								<th title="平均值">平均值</th>
-								<th title="最小值">最小值</th>
-								<th title="最近一次时间">最大值时间</th>
-							</tr>
-						</thead>
-						<tbody id="contrastDetailTableData">
-							{{#each tableData}}
-							<tr>
-								<td>{{MonitorName}}</td>
-								<td>{{max}}</td>
-								<td>{{average}}</td>
-								<td>{{min}}</td>
-								<td>{{when_max}}</td>
-							</tr>
-							{{/each}}
-						
-						</tbody>
-					
-				</table>
+					<table class="table table-striped table-condensed table-hover">
+							<thead>
+								<tr></tr>
+								<tr>
+									<th title="名称">名称</th>
+									
+									<th title="最大值">最大值</th>
+									<th title="平均值">平均值</th>
+									<th title="最小值">最小值</th>
+									<th title="最近一次时间">最大值时间</th>
+								</tr>
+							</thead>
+							<tbody id="contrastDetailTableData">
+								{{#each tableData}}
+								<tr>
+									<td>{{MonitorName}}</td>
+									<td>{{max}}</td>
+									<td>{{average}}</td>
+									<td>{{min}}</td>
+									<td>{{when_max}}</td>
+								</tr>
+								{{/each}}
+							
+							</tbody>
+					</table>
 				</div>
 				<div id="drowContrast"></div>
 			</div>
@@ -216,15 +200,14 @@
 	</div>
 </Template>
 
-<Template name="exportreport">
-	
+<Template name="exportreport">	
 	<div id="exportdiv" class="modal hide fade"	>
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		<div class="label label-info">导出报表</div>
-		<div class="modal-body">
-			<div class="well">
-				<div class="form-inline">
-					<span class="add-on">请选择报告类型：</span>
+			<div class="modal-body">
+				<div class="well">
+					<div class="form-inline">
+						<span class="add-on">请选择报告类型：</span>
 							<select id="Typelist" name="sv_type" title="选择要统计的检测器类型">
 								<option value="PDF">PDF</option>
 								<option value="HTML">HTML</option>
@@ -235,8 +218,8 @@
 								&nbsp;&nbsp;
 								<button class="btn btn-large id="exportreportcancelbtn" class="btn">取消</button>
 							</div>
+					</div>
 				</div>
 			</div>
-		</div>
 	</div>
 </Template>

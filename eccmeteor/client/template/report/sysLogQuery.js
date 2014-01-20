@@ -20,7 +20,7 @@ Template.sysLogQuery.events({
 				// var syslogquerycondition = ClientUtils.formArrayToObject($("#syslogquerycondition").serializeArray());
 				 //var syslogquerycondition = ClientUtils.tableGetSelectedAll("syslogquerycondition");
 				// console.log(syslogquerycondition);
-						 
+					
 				//查询条件（正则表达式）		 
 				var expression = $("#expression").val();
 				console.log(expression);
@@ -135,34 +135,7 @@ Template.sysLogQuery.events({
 					 console.log("以下判断IP地址筛选");
 					 console.log(resultData);
 					//复选框的选中条件查询
-					/*	var syslogquerycondition = ClientUtils.formArrayToObject($("#syslogquerycondition").serializeArray());
-							console.log(syslogquerycondition);
-						var resultData =[];
-						for(var r in syslogquerycondition){
-							console.log(syslogquerycondition[r]);
-							resultData.push(syslogquerycondition[r]);
-						}
-						console.log(resultData.join());
-						
-					var ids = [];
-					for(var i=0;i<ids.length;i++){
-					     if(ids[i].checked == true){
-						 //查询
-						 }
-					else{
 					
-					}
-					
-					}*/
-					/*if (0.isChecked() || 1.isChecked() || 2.isChecked()
-						|| 3.isChecked() || 4.isChecked() || 5.isChecked()
-						|| 6.isChecked() || 7.isChecked() || 8.isChecked()
-						|| 9.isChecked() || 10.isChecked() || 11.isChecked()
-						|| 12.isChecked() || 13.isChecked() || 14.isChecked()
-						|| 15.isChecked() || 16.isChecked() || 17.isChecked()
-						|| 18.isChecked() || 19.isChecked() || 20.isChecked()
-						|| 21.isChecked() || 22.isChecked() || 23.isChecked()) {						
-						}*/
 					var types = SvseSysLogDao.defineparameterTypeData();
 					//绘制表
 					for(var i = 0;i < resultData.length;i++){
@@ -176,9 +149,13 @@ Template.sysLogQuery.events({
 							}
 							
 						}
-						var tbody = "<tr><td>"+data["creat_time"]+"</td><td>"+data["_SourceIp"]+"</td><td>"+data["_Facility"]+"</td>"
-						+"<td>"+data["_Level"]+"</td><td>"+data["_SysLogMsg"]+"</td></tr>";
-						$("#syslogDetailList").append(tbody);
+						LoadingModal.loading();	 
+						// var tbody = "<tr><td>"+data["creat_time"]+"</td><td>"+data["_SourceIp"]+"</td><td>"+data["_Facility"]+"</td>"
+						// +"<td>"+data["_Level"]+"</td><td>"+data["_SysLogMsg"]+"</td></tr>";
+						// $("#syslogDetailList").append(tbody);
+						var context = {QueryData:resultData};
+						RenderTemplate.renderIn("#syslogquerylistdiv","sysLogList",context);
+						LoadingModal.loaded();
 					}
 				});
 			}

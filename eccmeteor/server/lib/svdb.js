@@ -29,6 +29,8 @@ var meteorSvUniv = function(dowhat){
 	return fmap;
 }
 var meteorSvForest = function(dowhat){
+	console.log(new Date());
+	console.log(dowhat);
     var robj = process.sv_forest(dowhat, 0);
     if(typeof flag === "string"){
 		Log4js.error(flag);
@@ -177,7 +179,7 @@ svGetReportData = function(monitorId,beginDate,endDate,compress){
 	return meteorSvUniv({
 		'dowhat':'QueryReportData',
 		id:monitorId,
-	//	dstrNeed:true,
+		dstrNeed:true,
 		compress:compress,
 		dstrStatusNoNeed:null,
 	//	return_value_filter:"sv_primary,sv_drawimage",

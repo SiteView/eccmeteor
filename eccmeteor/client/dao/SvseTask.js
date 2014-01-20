@@ -16,6 +16,7 @@ SvseTaskDao = {
 	},
 	"updatetask":function(address,fn){
 		Meteor.call(SvseTaskDao.AGENT,'updatetask',[address],function(err,result){
+		console.log(address);
 			if(err){
 				fn({status:false,msg:err});
 			}else{

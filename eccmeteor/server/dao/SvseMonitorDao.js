@@ -145,7 +145,7 @@ Object.defineProperty(SvseMonitorDaoOnServer,"isCalculateMonitorPoint",{
 		var license = SvseMethodsOnServer.svGetLicenselist();
 		console.log("license:====================");
 		console.log(license);
-		var entity  = SvseEntityInfo.findOne({"return.id":parentid});
+		var entity  = SvseMethodsOnServer.svGetEntity(parentid);
 		if(entity && entity.property){
 			return entity.property.sv_network === "true" ? false : true;
 		}	
