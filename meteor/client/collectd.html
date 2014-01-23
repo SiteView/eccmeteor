@@ -1,0 +1,24 @@
+<head>
+  <title>collectd</title>
+	<style>
+		/* tell the SVG path to be a thin blue line without any area fill */
+		path {
+			stroke: steelblue;
+			stroke-width: 1;
+			fill: none;
+		}
+	</style>
+</head>
+
+<body>
+	{{>svg}}
+</body>
+
+<template name="hello">
+  {{#each cpus}}
+  	{{recordDate}}:{{type_instance}}:{{value}}<br/>
+  {{/each}}
+</template>
+<template name="svg">
+	<svg id="svg"></svg>
+</template>

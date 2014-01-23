@@ -1,0 +1,1 @@
+Monitor = new Meteor.Collection('monitor');

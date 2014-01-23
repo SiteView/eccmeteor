@@ -1,0 +1,121 @@
+mongodb:
+{
+	"values" : [
+		2240
+	],
+	"dstypes" : [
+		"derive"
+	],
+	"dsnames" : [
+		"value"
+	],
+	"time" : 1390237481.495,
+	"interval" : 30,
+	"host" : "localhost.localdomain",
+	"plugin" : "cpu",
+	"plugin_instance" : "0",
+	"type" : "cpu",
+	"type_instance" : "system",
+	"value" : 2240,
+	"recordDate" : ISODate("2014-01-20T17:04:41.495Z"),
+	"_id" : ObjectId("52dd5766c898abab1c000001")
+}
+
+collectd:
+[
+	{
+		"values":[398],
+		"dstypes":["derive"],
+		"dsnames":["value"],
+		"time":1390222545.657,
+		"interval":30.000,
+		"host":"localhost.localdomain",
+		"plugin":"cpu",
+		"plugin_instance":"0",
+		"type":"cpu",
+		"type_instance":"user"
+	},
+	
+	{
+		"values":[2],
+		"dstypes":["derive"],
+		"dsnames":["value"],
+		"time":1390222545.657,
+		"interval":30.000,
+		"host":"localhost.localdomain",
+		"plugin":"cpu",
+		"plugin_instance":"0",
+		"type":"cpu",
+		"type_instance":"interrupt"
+	},
+
+	{
+		"values":[17],
+		"dstypes":["derive"],
+		"dsnames":["value"],
+		"time":1390222545.657,
+		"interval":30.000,
+		"host":"localhost.localdomain",
+		"plugin":"cpu",
+		"plugin_instance":"0",
+		"type":"cpu",
+		"type_instance":"softirq"
+	},
+
+	{
+		"values":[0],
+		"dstypes":["derive"],
+		"dsnames":["value"],
+		"time":1390222545.657,
+		"interval":30.000,
+		"host":"localhost.localdomain",
+		"plugin":"cpu",
+		"plugin_instance":"0",
+		"type":"cpu",
+		"type_instance":"steal"
+	},{
+		"values":[0,0,0],
+		"dstypes":["gauge","gauge","gauge"],
+		"dsnames":["shortterm","midterm","longterm"],
+		"time":1390222545.657,
+		"interval":30.000,
+		"host":"localhost.localdomain",
+		"plugin":"load",
+		"plugin_instance":"",
+		"type":"load",
+		"type_instance":""
+	},{
+		"values":[0],
+		"dstypes":["derive"],
+		"dsnames":["value"],
+		"time":1390222545.657,
+		"interval":30.000,
+		"host":"localhost.localdomain",
+		"plugin":"cpu",
+		"plugin_instance":"0",
+		"type":"cpu",
+		"type_instance":"nice"
+	},{
+		"values":[902],
+		"dstypes":["derive"],
+		"dsnames":["value"],
+		"time":1390222545.657,
+		"interval":30.000,
+		"host":"localhost.localdomain",
+		"plugin":"cpu",
+		"plugin_instance":"0",
+		"type":"cpu",
+		"type_instance":"system"
+	},{
+		"values":[56213],
+		"dstypes":["derive"],
+		"dsnames":["value"],
+		"time":1390222545.657,
+		"interval":30.000,
+		"host":"localhost.localdomain",
+		"plugin":"cpu",
+		"plugin_instance":"0",
+		"type":"cpu",
+		"type_instance":"idle"
+	}
+]
