@@ -158,12 +158,15 @@ StatisticsReportFactory.prototype.drawReport = function(isGraphic,isSendingEmail
 	var saveDirPath = _self.getReportSavePath(uuid);
 
 	var totalPage = totalMonitoringRecords.length + totalStatisticalRecords.length;
-	
+	if(isGraphic){
+		totalPage = totalPage + totalStatisticalRecords.length;
+	}
 	var currentPage = 0;
-	//currentPage = _self.drawMonitoringTable(totalMonitoringRecords,currentPage,totalPage,saveDirPath);
-	//currentPage = _self.drawStatisticalTable(totalStatisticalRecords,currentPage,totalPage,saveDirPath);
-	_self.drawStatisticalGraphic(totalStatisticalRecords,currentPage,totalPage,saveDirPath,dateExtentData);
-
+	currentPage = _self.drawMonitoringTable(totalMonitoringRecords,currentPage,totalPage,saveDirPath);
+	currentPage = _self.drawStatisticalTable(totalStatisticalRecords,currentPage,totalPage,saveDirPath);
+	if(isGraphic){
+		_self.drawStatisticalGraphic(totalStatisticalRecords,currentPage,totalPage,saveDirPath,dateExtentData);
+	}
 	if(isSendingEmail){
 		_self.sendEmail(saveDirPath,uuid);
 	}
@@ -174,7 +177,7 @@ StatisticsReportFactory.prototype.drawMonitoringTable = function(totalMonitoring
 	var monitoringTemplate = _self._options.NoGraphicReportMnotoringHtmlTemplate;
 	var filename = "";
 	for(var i = 0 ; i < totalMonitoringRecords.length ; i++){
-		var baseData = this.buildNoGraphicReportOtherSetting(currentPage+i,totalPage);
+		var baseData = this.buildReportSetting(currentPage+i,totalPage);
 		var monitoringContext = {
 			baseData:baseData,
 			records:totalMonitoringRecords[i]
@@ -191,7 +194,7 @@ StatisticsReportFactory.prototype.drawStatisticalTable = function(totalStatistic
 	var statisticalTemplate = _self._options.NoGraphicStatisticalHtmlTemplate;
 	var filename = "";
 	for(var j = 0 ; j < totalStatisticalRecords.length ; j++){
-		var baseData = _self.buildNoGraphicReportOtherSetting(currentPage+j,totalPage);
+		var baseData = _self.buildReportSetting(currentPage+j,totalPage);
 		var statisticalContext = {
 			baseData:baseData,
 			records:totalStatisticalRecords[j]
@@ -208,9 +211,11 @@ StatisticsReportFactory.prototype.drawStatisticalGraphic = function(totalStatist
 	var dataProcess = null;
 	var _self = this;
 	for(var i = 0; i<totalStatisticalRecords.length;i++){
+		var baseData = _self.buildReportSetting(currentPage+i,totalPage);
+		
 		dataProcess = new StatisticsReportDataProcess(totalStatisticalRecords[i]);
 		var imagesData = dataProcess.getImageData();
-		var html = DrawStatiscsReport.draw(imagesData,dateExtent);
+		var html = DrawStatiscsReport.draw(imagesData,dateExtent,baseData);
 		var filename = (currentPage+i)+".html";
 		_self.writeToHtml(html,_self.joinPath(saveDirPath,filename));
 	}
@@ -219,7 +224,7 @@ StatisticsReportFactory.prototype.drawStatisticalGraphic = function(totalStatist
 
 
 
-StatisticsReportFactory.prototype.buildNoGraphicReportOtherSetting=function(currentPage,totalPage){
+StatisticsReportFactory.prototype.buildReportSetting=function(currentPage,totalPage){
 	var self = this;
 	var dateExtentDate = self.getExtentDate()
 	var dateExtent = self.buildTime(dateExtentDate);

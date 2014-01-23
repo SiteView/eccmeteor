@@ -43,7 +43,8 @@ StatisticsReportDataProcess.prototype.dealWithImageData =  function(item){
 		max:item.max,
 		min:item.min,
 		average:item.average,
-		lable:item.ReturnName
+		lable:item.ReturnName,
+		monitorName:item.MonitorName
 	})
 }
 

@@ -3,8 +3,18 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
+		<div> 
+			<a href="<%= theFirstPage%>.html">首页</a>	
+			<a href="<%= theBeforePage%>.html">前一页</a>
+			<a href="<%= theAfterPage%>.html">后一页</a>
+			<a href="<%= theLastPage%>.html">末页</a>
+			共 :<%= theTotalPage%>页
+			当前是第:<%= theCurrentPage + 1 %>页
+		</div>
 		<div id="content">
-
+			<h3 align="center"><%=reportTitle%></h3>
+			<h4 align="center"><%=startTime%> ~ <%=endTime%></h4>
+			<lable>统计图表</lable>
 		</div>
 	</body>
 </html>

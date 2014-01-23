@@ -98,6 +98,7 @@ Object.defineProperty(DrawStatiscsReport,"drawEmptyLine",{
 			.attr('transform','rotate('+xAxisRotate+')')
      		.style("text-anchor", xAxisAnchor)
      		.attr("dx",isXAxisAction ? "-20px" : "0");
+		
 		svg.append("g")
 		.attr("transform", "translate("+margin.left+",0)")
 		.attr("class", "axis")
@@ -118,16 +119,17 @@ Object.defineProperty(DrawStatiscsReport,"drawLine",{
 	value:function(window,originalData,dateExtent){
 		var data = originalData.data ; //画图数据数组
 		if(data.length === 0){
-			this.drawEmptyLine(window,originalData,dateExtent);
+			//this.drawEmptyLine(window,originalData,dateExtent);
 			return;
 		}
 		var Xcoordinate =  "time"; //X坐标的属性
 		var Ycoordinate = "data";//Y坐标的属性
-		var label = originalData.lable;
+		var monitorLabel = originalData.monitorName +"[" + originalData.lable +"]";
+		var monitorDataLaLel = "最大值: "+originalData.max +" 平均值: "+originalData.average+" 最小值: "+originalData.min;
 		var width = 600;
 		var height = 300;
 		//判断时间间隔 大于2天
-		var dateformate = (dateExtent[0].getTime() - dateExtent[1].getTime())/1000 > 3600*24*2 
+		var dateformate = (dateExtent[1].getTime() - dateExtent[0].getTime())/1000 > 3600*24*2 
 							? "%m-%d %H:%M"
 							: "%H:%M";
 		var isXAxisAction = dateformate.length > 5 ? true : false;//x轴是否需要做变动？
@@ -238,14 +240,26 @@ Object.defineProperty(DrawStatiscsReport,"drawLine",{
 			.append("text")
 			.attr('font-size',12)
 	        .attr('fill',"#3a87ad")
+	        .style("text-anchor","middle")
+	        .attr("x",width/2)
 	        .attr('transform','translate(0,10)')
-			.text(label);
+			.text(monitorLabel);
+
+		svg.append("g")
+			.append("text")
+			.attr('font-size',12)
+	        .attr('fill',"#3a87ad")
+	        .style("text-anchor","middle")
+	        .attr("x",width/2)
+	        .attr('transform','translate(0,25)')
+			.text(monitorDataLaLel);
+
 	}
 });
 
 Object.defineProperty(DrawStatiscsReport,"draw",{
-	value:function(imageData,dateExtent){
-		var htmlStub = HtmlTemplate.render(this._option.htmlTemplate);
+	value:function(imageData,dateExtent,baseData){
+		var htmlStub = HtmlTemplate.render(this._option.htmlTemplate,baseData);
 		var document = Jsdom.jsdom(htmlStub,null,{
 			features : {
 				FetchExternalResources : ['css'],
@@ -257,7 +271,7 @@ Object.defineProperty(DrawStatiscsReport,"draw",{
 
 		var length = imageData.length;
 		for(var i = 0; i < length; i++){
-			this.drawLine(window,imageData[i],dateExtent);
+			this.drawLine(window,imageData[i],dateExtent,baseData);
 		}
 		return window.document.innerHTML;
 	}
