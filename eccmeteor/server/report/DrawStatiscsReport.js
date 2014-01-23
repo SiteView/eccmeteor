@@ -13,10 +13,12 @@ Object.defineProperty(DrawStatiscsReport,"_option",{
 
 //数据为空时画图
 Object.defineProperty(DrawStatiscsReport,"drawEmptyLine",{
-	value:function(window,originalData,startTime,endTime){
+	value:function(window,originalData,dateExtent){
+		var startTime =  dateExtent[0];
+		var endTime = dateExtent[1];
 		var label = originalData.lable;
-		var width = 800;
-		var height = 450;
+		var width = 600;
+		var height = 300;
 		var dateformate = (endTime.getTime() - startTime.getTime())/1000 > 3600*24*2 
 							? "%m-%d %H:%M"
 							: "%H:%M";
@@ -31,7 +33,7 @@ Object.defineProperty(DrawStatiscsReport,"drawEmptyLine",{
 		var xAxisRotate =   isXAxisAction ? -25 : 0; //x轴 坐标标签旋转角度
 		var xAxisAnchor = "middle";//x轴 坐标标签对齐方式
 		margin.top = this.isXAxisAction ? 70 : 40;
-		var el = window.document.querySelector('#dataviz-container');
+		var el = window.document.querySelector('#content');
 
 		var svg = d3.select(el)
 					.append("div")
@@ -116,7 +118,7 @@ Object.defineProperty(DrawStatiscsReport,"drawLine",{
 	value:function(window,originalData,dateExtent){
 		var data = originalData.data ; //画图数据数组
 		if(data.length === 0){
-			//this.drawEmptyLine(window,originalData,startTime,endTime);
+			this.drawEmptyLine(window,originalData,dateExtent);
 			return;
 		}
 		var Xcoordinate =  "time"; //X坐标的属性
