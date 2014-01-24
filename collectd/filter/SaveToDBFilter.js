@@ -10,7 +10,6 @@ Object.defineProperty(SaveToDb,"doFilter",{
 				return;
 			}
 			console.log("insert");
-			console.log(item);
 		});
 		next();
 	}

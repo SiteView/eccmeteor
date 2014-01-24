@@ -2,5 +2,6 @@
 module.exports = {
 	"load":require('./load'),
 	"cpu":require('./cpu'),
+	"memory":require('./memory'),
 	"other":require('./standard')
 }

@@ -21,7 +21,6 @@ Object.defineProperty(MonitorChunkDataAnalyze,"decomposeDataBlock",{
 //处理每条数据
 Object.defineProperty(MonitorChunkDataAnalyze,"decomposeRecords",{
 	value:function(records){
-		//console.log(records);
 		var _self = this;
 		for(var i = 0 ; i < records.length ; i++){
 			var monitorType = records[i].type;
@@ -29,7 +28,7 @@ Object.defineProperty(MonitorChunkDataAnalyze,"decomposeRecords",{
 			var record = monitor.format(records[i]);//标准化
 			_self.doFilter(record);//加工处理
 		}
-		console.log("=====================================");
+		console.log('=============');
 	}
 });
 
