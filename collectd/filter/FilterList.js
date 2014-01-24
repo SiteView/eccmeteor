@@ -1,10 +1,10 @@
-
 var SaveToDBFilter = require('./SaveToDBFilter');
+var DataTestFilter = require('./DataTestFilter');
 FilterList = function(){};
 
 Object.defineProperty(FilterList,"getFilterList",{
     value:function(){
-        return [SaveToDBFilter];
+        return [DataTestFilter,SaveToDBFilter];
     }
 });
 

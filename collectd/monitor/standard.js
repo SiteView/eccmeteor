@@ -3,9 +3,6 @@ var Standard = function(){};
 
 Object.defineProperty(Standard,"format",{
 	value:function(obj,setting){
-		if(obj.type === "load"){
-			return obj;
-		}
 		var _self = this;
 		var b = new Date();
 		b.setTime(obj.time * 1000);
