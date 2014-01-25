@@ -41,7 +41,7 @@ function initAllDateStartUp(status){
 	initDateAtStartUp["initWarnerRuleAtStartUp"](status);
 	initDateAtStartUp["initAdminAccount"]();
 	initDateAtStartUp["initMessageListAtStartUp"](status);
-	initDateAtStartUp["initStatisticalAtStartUp"](-1);
+	initDateAtStartUp["initStatisticalAtStartUp"]();
 	initDateAtStartUp["initTopNListAtStartUp"](status);
 	initDateAtStartUp["initSettingNodes"]();
 	initDateAtStartUp["initLanguageAtStartUp"]();
