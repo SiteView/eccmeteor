@@ -1,75 +1,75 @@
 <Template name="messagebasicsettingofadd">
-<!--添加短信的基本设置 -->
-<div id="addmessagesettingdiv" class="modal hide fade"
-data-backdrop="true" data-keyboard="true" data-show="false" 
-data-width="800" data-modalOverflow="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<label class="label label-info">添加手机号码设置</label>{{ide "messagesetting"}}</div>
-	<div class="modal-body">
-		<form class="well form-horizontal form-inline" id="messagebasicsettingofbasciinfo">
-			<fieldset>
-				<span class="label label-info">手机号码信息</span><br /><br />
-				<div class="control-group">
-				  <label class="control-label">名称*:</label>
-				  <div class="controls">
-					<input type="text"  name="Name" id="name">
-				  </div>
-				</div>
-				<div class="control-group">
-				  <label class="control-label">*接收手机号码:</label>
-				  <div class="controls">
-					<input type="text"  name="Phone">
-				  </div>
-				</div>
-				<div class="control-group">
-					<div class="controls">
-					<input type="checkbox" name="Status" value="No" /> 禁止
+	<!--添加短信的基本设置 -->
+	<div id="addmessagesettingdiv" class="modal hide fade"
+	data-backdrop="true" data-keyboard="true" data-show="false" 
+	data-width="800" data-modalOverflow="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<label class="label label-info">添加手机号码设置</label>{{ide "messagesetting"}}</div>
+		<div class="modal-body">
+			<form class="well form-horizontal form-inline" id="messagebasicsettingofbasciinfo">
+				<fieldset>
+					<span class="label label-info">手机号码信息</span><br /><br />
+					<div class="control-group">
+					  <label class="control-label">名称*:</label>
+					  <div class="controls">
+						<input type="text"  name="Name" id="name">
+					  </div>
 					</div>
-				</div>
-				
-				<div class="control-group">
-					<label class="control-label">模板类型:</label>
-					<div class="controls">
-						<select name="TemplateType" id="changtemplatetype">
-							<option value="com" selected>com</option>
-							<option value="web">web</option>
-						</select>
+					<div class="control-group">
+					  <label class="control-label">*接收手机号码:</label>
+					  <div class="controls">
+						<input type="text"  name="Phone">
+					  </div>
 					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label">信息模板:</label>
-					<div class="controls">
-						<select id="messagebasicsettingofmessagetemplatelist" name="Template">
-							
-						</select>
+					<div class="control-group">
+						<div class="controls">
+						<input type="checkbox" name="Status" value="No" /> 禁止
+						</div>
 					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label">任务计划类型:</label>
-					<div class="controls">
-						<select name="TaskType" id="smstasktypelist">
-							<option value="1">绝对时间任务计划</option>
-							<option value="2" selected>时间段任务计划</option>
-							<option value="3">相对时间任务计划</option>
-						</select>
+					
+					<div class="control-group">
+						<label class="control-label">模板类型:</label>
+						<div class="controls">
+							<select name="TemplateType" id="changtemplatetype">
+								<option value="com" selected>com</option>
+								<option value="web">web</option>
+							</select>
+						</div>
 					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label">任务计划:</label>
-					<div class="controls">
-						<select id="tasknamelist" name="Plan">
-						</select>
+					<div class="control-group">
+						<label class="control-label">信息模板:</label>
+						<div class="controls">
+							<select id="messagebasicsettingofmessagetemplatelist" name="Template">
+								
+							</select>
+						</div>
 					</div>
-				</div>
-				
-			</fieldset>
-		</form>
+					<div class="control-group">
+						<label class="control-label">任务计划类型:</label>
+						<div class="controls">
+							<select name="TaskType" id="smstasktypelist">
+								<option value="1">绝对时间任务计划</option>
+								<option value="2" selected>时间段任务计划</option>
+								<option value="3">相对时间任务计划</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">任务计划:</label>
+						<div class="controls">
+							<select id="tasknamelist" name="Plan">
+							</select>
+						</div>
+					</div>
+					
+				</fieldset>
+			</form>
+		</div>
+		<div class="modal-footer" align="right">
+			<button class="btn btn-primary" id="messagebasicsettingofsavebtn">保存</button>
+			<button class="btn" id="messagesettingcancelbtn">取消</button>
+		</div>
 	</div>
-	<div class="modal-footer" align="right">
-		<button class="btn btn-primary" id="messagebasicsettingofsavebtn">保存</button>
-		<button class="btn" id="messagesettingcancelbtn">取消</button>
-	</div>
-</div>
 
 </Template>

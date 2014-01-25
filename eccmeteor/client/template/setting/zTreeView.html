@@ -5,8 +5,10 @@
 		<select id="showMonitorStatus">
 			<option value="all" selected>显示全部状态</option>
 			<option value="error">只显示错误</option>
-			<option value="normal">只显示正常</option>
+			<option value="ok">只显示正常</option>
 			<option value="bad">只显示自定义错误</option>
+			<option value="warning">只显示危险</option>
+			<option value="disable">只显示禁止</option>
 		</select>
 	</div>
 	<div id="showTreeView" class="row-fluid" style="height:350px">
@@ -14,15 +16,6 @@
 		<ul id="svse_tree_view_detail" class="ztree" style="display:none"></ul>
 	<div>
 	<br/>
-	
-	<div class="span6" style="overflow:auto">
-		<ul id="testmenu" class="dropdown-menu" role="menu" aria-labelledby="drop1">
-			<li><a tabindex="-1" href="#">Action</a></li>
-			<li><a tabindex="-1" href="#">Another action</a></li>
-			<li><a tabindex="-1" href="#">Something else here</a></li>
-		</ul>
-		
-	</div>
 	
 	<div id="rMenu" style="position:absolute;display:none;">   
 
@@ -33,48 +26,78 @@
 </Template>
 
 <Template name="rigntMenu">
-	<table class="table table-striped table-bordered table-condensed table1">
+	<table class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
 				<th>{{name}}</th>
 			</tr>
 		</thead>
 		<tbody>
+			
 			{{#if equal type "se"}}
-				<tr>
-					<td><a id="m_addchildgroup">增加子组</a></td>
-				</tr>
-				<tr>
-					<td><a id="m_addentity">增加设备</a></td>
-				</tr>
-				<tr>
-					<td><a id="m_delentity">删除设备</a></td>
-				</tr>
+				{{#if isHaveUserPermission id "addSonGroup"}}
+					<tr>
+						<td><a id="addSonGroup">增加子组</a></td>
+					</tr>
+				{{/if}}
+				{{#if isHaveUserPermission id "addEntity"}}
+					<tr>
+						<td><a id="addEntity">增加设备</a></td>
+					</tr>
+				{{/if}}
+				{{#if isHaveUserPermission id "editSe"}}
+					<tr>
+						<td><a id="editEntity">编辑SE</a></td>
+					</tr>
+				{{/if}}
 			{{/if}}
+			
 			{{#if equal type "group"}}
-				<tr>
-					<td><a id="m_addentity">增加设备</a></td>
-				</tr>
-				<tr>
-					<td><a id="m_editgroup">编辑组</a></td>
-				</tr>
-				<tr>
-					<td><a id="m_delgroup">删除组</a></td>
-				</tr>
+				{{#if isHaveUserPermission id "addEntity"}}
+					<tr>
+						<td><a id="addEntity">增加设备</a></td>
+					</tr>
+				{{/if}}
+				{{#if isHaveUserPermission id "editGroup"}}
+					<tr>
+						<td><a id="editGroup">编辑组</a></td>
+					</tr>
+				{{/if}}
+				{{#if isHaveUserPermission id "addSonGroup"}}
+					<tr>
+						<td><a id="addSonGroup">增加子组</a></td>
+					</tr>
+				{{/if}}
+				{{#if isHaveUserPermission id "copyEntity"}}
+					<tr>
+						<td><a id="copyEntity">粘贴设备</a></td>
+					</tr>
+				{{/if}}
+				{{#if isHaveUserPermission id "delGroup"}}
+					<tr>
+						<td><a id="delGroup">删除组</a></td>
+					</tr>
+				{{/if}}
 			{{/if}}
+			
 			{{#if equal type "entity"}}
-				<tr>
-					<td><a id="m_addmonitor">增加监视器</a></td>
-				</tr>
-				<tr>
-					<td><a id="m_editentity">编辑设备</a></td>
-				</tr>
-				<tr>
-					<td>
-						<a id="m_delentity1" class="sort-list-1">删除设备</a>
-					</td>
-				</tr>
+				{{#if isHaveUserPermission id "addMonitor"}}
+					<tr>
+						<td><a id="addMonitor">增加监视器</a></td>
+					</tr>
+				{{/if}}
+				{{#if isHaveUserPermission id "editEntity"}}
+					<tr>
+						<td><a id="editEntity">编辑设备</a></td>
+					</tr>
+				{{/if}}
+				{{#if isHaveUserPermission id "delEntity"}}
+					<tr>
+						<td><a id="delEntity">删除设备</a></td>
+					</tr>
+				{{/if}}
 			{{/if}}
+			
 		</tbody>
 		
 	</table> 

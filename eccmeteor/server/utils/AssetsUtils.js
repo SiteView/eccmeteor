@@ -75,3 +75,9 @@ Object.defineProperty(AssetsUtils,"getReportTemplate",{
 		return str;
 	}
 });
+
+/* Object.defineProperty(AssetsUtils,"getUserAdminPermission",{
+	value:function(){
+		return EJSON.parse(Assets.getText("userPermission.json"));
+	}
+}); */

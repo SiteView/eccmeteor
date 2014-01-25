@@ -82,3 +82,35 @@ Handlebars.registerHelper('arrayLengthHelper',function(array){
 Handlebars.registerHelper('CurrentVersionHelper',function(array){
 	return ClientConfig.Version;
 });
+
+/*
+	判断用户是否有权限
+*/
+Handlebars.registerHelper('isHaveUserPermission',function(id,permission){
+	if(!id || id === ""){
+		return false;
+	}
+	var user = Meteor.user();
+	if(!user){
+		return false;
+	}
+	if(UserUtils.isAdmin()){
+		return true;
+	}
+	id = id.replace(/\./g,"-");
+	var nodeOpratePermissions = user.profile.nodeOpratePermission;
+	//console.log(nodeOpratePermissions[id]);
+	if(!nodeOpratePermissions[id] || nodeOpratePermissions[id] === ""){
+		return false;
+	}
+	if(nodeOpratePermissions[id][permission] && nodeOpratePermissions[id][permission] === true){
+		return true;
+	}
+	// for(n in nodeOpratePermissions[id]){
+		// if(permission == nodeOpratePermissions[id][n]){
+			// console.log(permission);
+			// return true;
+		// }
+	// }
+	return false;
+});

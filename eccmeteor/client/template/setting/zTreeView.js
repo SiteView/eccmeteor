@@ -83,7 +83,7 @@ Object.defineProperty(zTreeView,"drawSvseSimpleTree",{
 	value:function(){
 		var _self = this;
 		var data = zTreeView.getSimpleTreeData();
-		//console.log(data);
+		console.log(data);
 		var setting = {
 			data: {
 				simpleData: {
@@ -108,7 +108,7 @@ Object.defineProperty(zTreeView,"drawSvseSimpleTree",{
 		
 		function zTreeOnRightClick(event, treeId, treeNode) { 
 			console.log(treeNode);
-			
+			console.log(event);
 			if (!treeNode || treeNode == null) {  
 				zTree.cancelSelectedNode();   
 				showRMenu("root", event.clientX, event.clientY);   
@@ -117,9 +117,23 @@ Object.defineProperty(zTreeView,"drawSvseSimpleTree",{
 					zTree.cancelSelectedNode();   
 					showRMenu("root", event.clientX, event.clientY);   
 				} else {   
-					zTree.selectNode(treeNode);   
-					showRMenu("node", event.clientX, event.clientY); 
+					zTree.selectNode(treeNode);  
+					var scrollTop = $(document).scrollTop();
+					var scrollLeft = $(document).scrollLeft();
+					showRMenu("node", event.clientX + scrollLeft, event.clientY + scrollTop); 
 					RenderTemplate.renderIn("#rMenu","rigntMenu",treeNode);
+					/* SvseUserDao.getUserAdminPermission(function(result){
+						var permission = [];
+						for(r in result){
+							if(treeNode.type == r){
+								permission = result[r];
+							}
+						}
+						console.log(permission);
+						var content = {name:treeNode.name,userPermission:permission};
+						RenderTemplate.renderIn("#rMenu","rigntMenu",content);
+					}); */
+					
 				}   
 			}   
 		}  
@@ -165,9 +179,43 @@ Object.defineProperty(zTreeView,"drawSvseDetailTree",{
 					zTree.cancelSelectedNode();   
 					showRMenu("root", event.clientX, event.clientY);   
 				} else {   
-					zTree.selectNode(treeNode);   
-					showRMenu("node", event.clientX, event.clientY); 
+					zTree.selectNode(treeNode);
+					var scrollTop = $(document).scrollTop();
+					var scrollLeft = $(document).scrollLeft();
+					showRMenu("node", event.clientX + scrollLeft, event.clientY + scrollTop);
 					RenderTemplate.renderIn("#rMenu","rigntMenu",treeNode);
+					/* SvseUserDao.getUserAdminPermission(function(result){
+						var permission = [];
+						for(r in result){
+							if(treeNode.type == r){
+								permission = result[r];
+							}
+						}
+						var currentUser = Meteor.users.findOne({username:"as"});
+						console.log(currentUser);
+						var userPermission = currentUser.profile.nodeOpratePermission;
+						var currentUserPer = [];
+						console.log(userPermission);
+						for(id in userPermission){
+							var per = userPermission[id]
+							id = id.replace(/\-/g,".");
+							console.log(id);
+							console.log(per);
+							if(treeNode.id == id){
+								for(p in per){
+									for(m in permission){
+										if(p == permission[m]["name"]){
+											currentUserPer.push(permission[m]);
+										}
+									}
+								}
+							}
+						}
+						
+						console.log(currentUserPer);
+						var content = {name:treeNode.name,userPermission:currentUserPer};
+						RenderTemplate.renderIn("#rMenu","rigntMenu",content);
+					}); */
 				}   
 			}   
 		}  
@@ -184,27 +232,9 @@ function addDiyDom(treeId, treeNode) {
 	var monitors = treeNode.submonitor;
 	var status = $("#showMonitorStatus").val();
 	//console.log(status);
-	if(status == "error"){
+	if(status && status != "all"){
 		for(index in monitors){
-			if(monitors[index].status == "error"){
-				editStr += "<a id='diyBtn1_" +monitors[index].id+ "'>"
-				+"<img title='' src='"+ monitors[index].icon +"' data-toggle='popover' data-placement='top' data-html=true data-content='&nbsp;状态:"+monitors[index].status+"<br />&nbsp;"+monitors[index].dstr+"'data-original-title='&nbsp;"+monitors[index].name+"' />"
-				+"</a>";
-			}
-			
-		}
-	}else if(status == "bad"){
-		for(index in monitors){
-			if(monitors[index].status == "bad"){
-				editStr += "<a id='diyBtn1_" +monitors[index].id+ "'>"
-				+"<img title='' src='"+ monitors[index].icon +"' data-toggle='popover' data-placement='top' data-html=true data-content='&nbsp;状态:"+monitors[index].status+"<br />&nbsp;"+monitors[index].dstr+"'data-original-title='&nbsp;"+monitors[index].name+"' />"
-				+"</a>";
-			}
-			
-		}
-	}else if(status == "normal"){
-		for(index in monitors){
-			if(monitors[index].status == "normal"){
+			if(monitors[index].status == status){
 				editStr += "<a id='diyBtn1_" +monitors[index].id+ "'>"
 				+"<img title='' src='"+ monitors[index].icon +"' data-toggle='popover' data-placement='top' data-html=true data-content='&nbsp;状态:"+monitors[index].status+"<br />&nbsp;"+monitors[index].dstr+"'data-original-title='&nbsp;"+monitors[index].name+"' />"
 				+"</a>";
