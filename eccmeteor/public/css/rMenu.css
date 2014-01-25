@@ -71,3 +71,21 @@ div#rMenu .table{
 div#rMenu table td{
 	font-size:10px;
 }
+
+div#emailWarnerruleRMenu{
+	z-index:1200;
+	background-color:#ffffff;
+	text-align: left;
+	position:absolute;
+	display:block;
+	top:0; 
+	background-color: #CECECE;
+	text-align:left;
+	padding: 0px;
+}
+div#emailWarnerruleRMenu .table{
+	margin-bottom:0px;
+}
+div#emailWarnerruleRMenu table td{
+	font-size:10px;
+}

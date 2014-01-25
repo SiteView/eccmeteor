@@ -86,6 +86,7 @@ Template.warnerruleofemail.events = {
 }
 
 Template.warnerruleofemail.rendered = function(){
+	ModalDrag.draggable("#emailDiv");
 	//监视器选择树
 	$(function(){
 		var data = SvseDao.getDetailTree();
@@ -102,10 +103,31 @@ Template.warnerruleofemail.rendered = function(){
 					pIdKey: "pId",
 					rootPId: "0",
 				}
+			},
+			callback:{
+				onRightClick: WarnerOnRightClick
 			}
 		};
 		$.fn.zTree.init($("#svse_tree_check_addemail"), setting, data);
+		
+		function WarnerOnRightClick(event, treeId, treeNode) { 
+			console.log(treeNode);
+			console.log(event);
+			if (!treeNode || treeNode == null) {   
+				showRMenu("root", event.clientX, event.clientY);   
+			} else if (treeNode && !treeNode.noR) { //noR属性为true表示禁止右键菜单   
+				if (treeNode.newrole && event.target.tagName != "a" && $(event.target).parents("a").length == 0) {     
+					showRMenu("root", event.clientX, event.clientY);   
+				} else {     
+					var scrollTop = $(document).scrollTop();
+					var scrollLeft = $(document).scrollLeft();
+					showRMenu("node", event.clientX + scrollLeft, event.clientY + scrollTop); 
+					RenderTemplate.renderIn("#emailWarnerruleRMenu","warnerrule_rMenu","");
+				}   
+			}   
+		}
 	});
+	
 }
 
 Template.warnerruleofemailform.rendered = function(){
@@ -263,4 +285,41 @@ Template.warnerruleofemailedit.events = {
 			RenderTemplate.hideParents(t);
 		});
 	}
+}
+
+
+
+//显示右键菜单的操作
+function showRMenu(type, x, y) {
+	if(type == "node"){
+		console.log("show rMenu!!");
+		$("#emailWarnerruleRMenu").attr("style","display");
+	}else{
+		//hideRMenu();
+		$("#emailWarnerruleRMenu").attr("style","display:none");
+	}
+    
+    $("#emailWarnerruleRMenu").css({
+        "top" : y + "px",
+        "left" : x + "px",
+        "visibility" : "visible"
+    });
+ 
+    $("body").bind("mousedown", onBodyMouseDown);
+} 
+
+function hideRMenu() {
+    if ($("#emailWarnerruleRMenu"))
+        $("#emailWarnerruleRMenu").css({
+            "visibility" : "hidden"
+        });
+    $("body").unbind("mousedown", onBodyMouseDown);
+}
+
+function onBodyMouseDown(event) {
+    if (!(event.target.id == "#emailWarnerruleRMenu" || $(event.target).parents("#emailWarnerruleRMenu").length > 0)) {
+        $("#emailWarnerruleRMenu").css({
+            "visibility" : "hidden"
+        });
+    }
 }

@@ -153,3 +153,16 @@ Object.defineProperty(SvseWarnerRuleDao,"getWarnerRuleListAsync",{
 		})
 	}
 });
+
+//根据设备id获取监视器数据
+Object.defineProperty(SvseWarnerRuleDao,"getMonitorInfoByEntityid",{
+	value:function(id){
+		var monitors = [];
+		var data = Svse.findOne({sv_id:id});
+		for(i in data){
+			var monitor = SvseTree.findOne({sv_id:data[i]});
+			monitors.push(monitor);
+		}
+		return monitors;
+	}
+});
