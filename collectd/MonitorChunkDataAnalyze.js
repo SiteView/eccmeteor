@@ -11,31 +11,35 @@ Object.defineProperty(MonitorChunkDataAnalyze,"decompose",{
 
 //分解数据块 To Array
 Object.defineProperty(MonitorChunkDataAnalyze,"decomposeDataBlock",{
-	value:function(data){
-		var arr = JSON.parse(data);
+	value:function(chunkData){
+		var data = chunkData.content;
+		var guid = chunkData.guid;
+		var records = JSON.parse(data);
 		var _self = this;
-		_self.decomposeRecords(arr)
+		_self.decomposeRecords(records,guid)
 	}
 });
 
 //处理每条数据
 Object.defineProperty(MonitorChunkDataAnalyze,"decomposeRecords",{
-	value:function(records){
+	value:function(records,guid){
 		var _self = this;
+		var formatRecords = [];
 		for(var i = 0 ; i < records.length ; i++){
 			var monitorType = records[i].type;
 			var monitor = _self.getMonitorStandard(monitorType); //标准化工具
 			var record = monitor.format(records[i]);//标准化
-			_self.doFilter(record);//加工处理
+			formatRecords.push(record);//加工处理
 		}
+		_self.doFilter(formatRecords,guid);//加工处理
 		console.log('=============');
 	}
 });
 
 //中间件 加工处理
 Object.defineProperty(MonitorChunkDataAnalyze,"doFilter",{
-	value:function(record){
-		Filter.do(record);//中间件
+	value:function(records,guid){
+		Filter.do(records,guid);//中间件
 	}
 });
 

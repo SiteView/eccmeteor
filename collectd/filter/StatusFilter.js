@@ -2,9 +2,9 @@
 var StatusFilter = function(){};
 
 Object.defineProperty(StatusFilter,"doFilter",{
-	value:function(record,next){
+	value:function(records,guid,next){
 		var _self = this;
-		record.status = _self.getRecordStatus(record);
+		_self.getRecordStatus(records);
 		next();
 	}
 });
@@ -12,12 +12,17 @@ Object.defineProperty(StatusFilter,"doFilter",{
 
 //数据状态。0 表示 warning 。1 表示 ok 正常
 Object.defineProperty(StatusFilter,"getRecordStatus",{
-	value:function(record){
+	value:function(records){
 		/**
 			根据此监视器信息获取相关 阀值
 			....
 		**/
-		return 1;
+		if(!records.length){
+			return;
+		}
+		records.forEach(function(record){
+			record["status"] = 1
+		});
 	}
 });
 

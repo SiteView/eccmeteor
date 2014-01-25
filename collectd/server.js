@@ -18,7 +18,7 @@ http.createServer(function(request,response){
 	});
 	request.on("end",function(){
 		var str = Buffer.concat(data).toString();
-		MonitorChunkDataAnalyze.decompose(str);
+		MonitorChunkDataAnalyze.decompose({content:str,guid:""});
 		response.end();
 	});
 }).listen(1337);//1337  3000

@@ -11,7 +11,7 @@ yum install cpan
 1. npm install mongoskin
 
 
-### 初步Collectd传输数据标准
+### 初步Collectd传输监视器数据标准
 ```
 {
 	"values" : [  //collectd原始数据字段保留
@@ -32,7 +32,7 @@ yum install cpan
 	"type_instance" : "system", //collectd原始数据字段保留 监视器的具体划分。如使用，空闲等
 }
 ```
-### 初步mongodb存储数据标准
+### 初步mongodb存储监视器数据标准
 ```
 
 在上述Collecd传输数据基础上 增加以下字段：
@@ -57,3 +57,44 @@ derive ： 比率
 counter ：
 absoulute:
 ```
+
+###初步存储公司数据标准
+```
+{
+    companyId：uuid，//唯一标识
+    companyName：公司名称
+    .... 其他公司信息 待补充
+}
+```
+
+### 初步存储公司与设备数据标准
+```
+{
+    companyId：uuid
+    entityIds：[entityId(uuid),....]
+    ...其他信息 待补充
+}
+```
+
+### 初步设备与监视器数据标准
+```
+{
+    entityId：uuid //唯一标识
+    monitorIds:[monitorId(uui9d)],
+    entityName:   //设备名称
+    status： 0|1|2    //设备状态
+    ...其他信息 待补充
+}
+```
+
+### 初步监视器数据标准
+
+```
+{
+	monitorId：uuid ////唯一标识
+	monitorName：... //监视器名称
+	status:0|1|2  //设备状态
+	...其他信息 待补充
+}
+```
+
