@@ -113,3 +113,28 @@ Object.defineProperty(SvseUserDao,"getSingleNodePermission",{
 		return nodeOpratePermissions && nodeOpratePermissions[nid] && nodeOpratePermissions[nid][permission]
 	}
 });
+
+/* //获取管理员的所有权限
+Object.defineProperty(SvseUserDao,"getUserAdminPermission",{
+	value:function(fn){
+		Meteor.call(SvseUserDao.AGENT,"getUserAdminPermission",function(err,result){
+			//console.log("ttttttttttttt");
+			console.log(result);
+			fn(result);
+		});
+	}
+}); */
+
+/* //获取当前登陆的用户的具体信息,并判断当前用户是否为管理员 还是普通用户
+Object.defineProperty(SvseUserDao,"checkCurrentUser",{
+	value:function(fn){
+		var user = Meteor.user();
+		if(!user){
+			return false;
+		}
+		if(UserUtils.isAdmin()){
+			return true;
+		}
+		return false && user;
+	}
+}); */

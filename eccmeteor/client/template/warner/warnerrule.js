@@ -108,6 +108,7 @@ Template.warnerrule.rendered = function(){
 			}
 		});
 	});
+	
 }
 
 // Template.warnerruleofemailform.emaillist = function(){

@@ -107,5 +107,10 @@ UserDaoOnServer = {
 			return [];
 		var nodes = user.profile.settingNodeDisplayPermission;
 		return nodes ? nodes : [];
-	}
+	},
+	
+	/* //获取管理员的所有权限
+	"getUserAdminPermission":function(){
+		return AssetsUtils.getUserAdminPermission();
+	} */
 }

@@ -92,56 +92,56 @@
 </Template>
 
 <Template name="semailtemplatesetting">
-<div id="webmessageTemplateSettingDiv" class="modal hide fade" 
-data-backdrop="true" data-keyboard="true" data-show="false" 
-data-width="550" data-height="300" data-maxHeight="500" data-modalOverflow="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<label class="label label-info">Web短信模板设置</label>
-	</div>
-	<div class="modal-body">
-		<div class="row-fluid">
-			<div class="span3">
-				<div id="webmessagetemplatelist">
-					<label class="label label-info">Web模板列表</label><br/><br/>
-					<label class="control-label">Default</label>
-					<label class="control-label">WebDefine</label>
-					
-				</div>
-			</div>
-			<div class="span6">
-				<label class="label label-info">Web短信模板设置</label>
-				<div class="controls">
-					<label class="control-label">Web发送模板*:</label>
-					<div class="controls">
-						<input type="text" name="websendtemplate" />
-					</div>
-				</div>
-				
-				<div class="controls">
-					<label class="control-label">短信内容:</label>
-					<div class="controls">
-						<textarea name="content" rows="5"></textarea>
-					</div>
-				</div>
-				<div class="controls">
-					<label class="control-label">模板标题*:</label>
-					<div class="controls">
-						<input type="text" name="templatetitle" />
-					</div>
-				</div>
-			</div>
-			<div class="span3">
-				<div class="controls" style="padding-top:38px">
-					<button class="btn" id="addwebmessagetemplatebtn">添加</button><br/><br/>
-					<button class="btn" id="deletewebmessagetemplatebtn">删除</button><br/><br/>
-					<button class="btn" id="updatewebmessagetemplatebtn">更新</button><br/><br/>
-					<button class="btn" id="closewebmessagetemplatebtn">关闭</button><br/><br/>
-					<button class="btn" id="websystemvariablebtn">系统变量说明</button>
-				</div>
-			</div>
+	<div id="webmessageTemplateSettingDiv" class="modal hide fade" 
+	data-backdrop="true" data-keyboard="true" data-show="false" 
+	data-width="550" data-height="300" data-maxHeight="500" data-modalOverflow="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<label class="label label-info">Web短信模板设置</label>
 		</div>
-		{{> showemailexplanationlist}}
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="span3">
+					<div id="webmessagetemplatelist">
+						<label class="label label-info">Web模板列表</label><br/><br/>
+						<label class="control-label">Default</label>
+						<label class="control-label">WebDefine</label>
+						
+					</div>
+				</div>
+				<div class="span6">
+					<label class="label label-info">Web短信模板设置</label>
+					<div class="controls">
+						<label class="control-label">Web发送模板*:</label>
+						<div class="controls">
+							<input type="text" name="websendtemplate" />
+						</div>
+					</div>
+					
+					<div class="controls">
+						<label class="control-label">短信内容:</label>
+						<div class="controls">
+							<textarea name="content" rows="5"></textarea>
+						</div>
+					</div>
+					<div class="controls">
+						<label class="control-label">模板标题*:</label>
+						<div class="controls">
+							<input type="text" name="templatetitle" />
+						</div>
+					</div>
+				</div>
+				<div class="span3">
+					<div class="controls" style="padding-top:38px">
+						<button class="btn" id="addwebmessagetemplatebtn">添加</button><br/><br/>
+						<button class="btn" id="deletewebmessagetemplatebtn">删除</button><br/><br/>
+						<button class="btn" id="updatewebmessagetemplatebtn">更新</button><br/><br/>
+						<button class="btn" id="closewebmessagetemplatebtn">关闭</button><br/><br/>
+						<button class="btn" id="websystemvariablebtn">系统变量说明</button>
+					</div>
+				</div>
+			</div>
+			{{> showemailexplanationlist}}
+		</div>
 	</div>
-</div>
 </Template>

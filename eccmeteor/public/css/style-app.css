@@ -52,3 +52,7 @@ padding:5px;
 .nav1 .Secon_Dary p{padding:0 20px;}
 .nav1 .Secon_Dary a{display:block;height:34px;line-height:34px;color:#fff;border-bottom:dashed 1px #E67A92;}
 .nav1 a{cursor:pointer;}
+
+.alertlogquerycondition label{
+	font-size:12px;
+}
