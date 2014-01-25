@@ -43,7 +43,9 @@
 			console.log("*****");
 			console.log(addressresult);
 			console.log(address.sv_name);
-		 SvseTask.update(address.sv_name,{$set:addressresult},function(err){
+			 var sv_name = address.sv_name;
+			 console.log(sv_name);
+		 SvseTask.update(sv_name,{$set:addressresult},function(err){
 		 console.log("44444444");
 			if(err){
 				 SystemLogger(err,-1);

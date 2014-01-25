@@ -29,45 +29,26 @@ div#tooltip p {
 	font:12px verdana,arial,serif;
 }
 
-div#rMenu {
-	position:absolute; 
-	visibility:hidden; 
-	top:0; 
-	background-color: #CECECE;
-	text-align:left;
-	padding: 2px;
-	}
-div#rMenu ul li{
-	text-align:left;
-	margin: 0;
-	padding: 0 ;
-	cursor: pointer;
-	list-style: none ;
-	background-color: #DFDFDF;
-	font-size:10px;
-}
-
-div#rMenu {
+div#statistical_rMenu {
+	z-index:1200;
 	background-color:#ffffff;
 	text-align: left;
 	padding:0px;
 	position:absolute;
 	display:block;
+	top:0;
+	background-color:#CECECE;
 }
-div#rMenu ul {
-	margin:1px 0;
-	padding:0 3px;
-	cursor: pointer;
-	list-style: none outside none;
-	background-color:#DFDFDF;
-	display:block;
-}
-div#rMenu ul li a{
-	height:15px;
-}
-div#rMenu .table{
+
+div#statistical_rMenu .table{
 	margin-bottom:0px;
 }
-div#rMenu table td{
+div#statistical_rMenu table td{
 	font-size:10px;
+	line-height:12px;
+}
+div#statistical_rMenu table tr{
+	font-size:10px;
+	height:12px;
+	
 }

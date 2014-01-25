@@ -15,6 +15,10 @@ SvseTaskDao = {
 		});
 	},
 	"updatetask":function(address,fn){
+		 var name = address.sv_name;
+		 console.log(name);
+		 console.log(address);
+		SvseTask.update(SvseTask.findOne({sv_name:name}).sv_name,{$set:address});
 		Meteor.call(SvseTaskDao.AGENT,'updatetask',[address],function(err,result){
 		console.log(address);
 			if(err){
