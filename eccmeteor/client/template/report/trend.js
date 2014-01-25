@@ -134,7 +134,33 @@ Object.defineProperty(TrendAction,"initTree",{
 					if(treeNode.type !== "monitor"){
 						Message.warn("请选择监测器！");
 						return;
-					}			
+					}		
+					// var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+					// var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+					// var startPickerDate = startPicker.getDate();
+					// var endPickerDate = endPicker.getDate();
+					// var startTime = ClientUtils.dateToObject(startPickerDate);
+					// var endTime = ClientUtils.dateToObject(endPickerDate);
+					// TrendAction.getData(monitorId,startTime,endTime,function (result){
+							// var dstr = "(dstr)"+monitorId;
+							// console.log(dstr);
+							// console.log(result);
+							// console.log(result["1.27.2.1"]);
+						// console(result["(dstr)1.27.2.1"]);
+						// var dataProcess = new ReportDataProcess(result);
+						// console.log(dataProcess);
+						// var tableData = dataProcess.getTableData();
+						// var imageData = dataProcess.getImageData();
+						// var baseData = dataProcess.getBaseData();
+						// console.log("下面是趋势报告中的数据");
+						// console.log(result);
+						// console.log("imageData 数据");	
+						// console.log(imageData);
+						// console.log("tableData 数据");			
+						// console.log(tableData);
+						// console.log("baseData 数据");
+						// console.log(baseData);
+					// });
 					TrendAction.drawReport(monitorId);
 					// LoadingModal.loading();
 				},
@@ -241,11 +267,11 @@ Object.defineProperty(TrendAction,"drawReport",{
 				endTime:DrawTrend.buildTime(endTime),
 				tableData:tableData
 			}	
-			console.log(result);
-			console.log(imageData);
-			console.log("*********");			
-			console.log(tableData);			
-
+			// console.log(result);
+			// console.log(imageData);
+			// console.log("*********");			
+			// console.log(tableData);			
+			// console.log(baseData);
 			RenderTemplate.renderIn("#TrendResultDiv","trend_date",renderObj);
 			LoadingModal.loaded();
 			//console.log(JSON.stringify(imageData));
@@ -312,5 +338,18 @@ Object.defineProperty(TrendAction,"coverTime",{
 		var minute = (obj.minute < 10 ? "0" + obj.minute : obj.minute);
 		var second = (obj.second < 10 ? "0" + obj.second : obj.second);
 		return "" + year + month + day + hour + minute + second;
+	}
+});
+//获取趋势报报告中的数据
+Object.defineProperty(TrendAction,"getData",{
+	value:function(monitorId,startTime,endTime,fn){
+		Meteor.call(SvseMonitorDao.AGENT,"getMonitorReportDataByfilter",[monitorId,startTime,endTime,"sv_primary,sv_drawimage",true],function(err,result){
+			if(err){
+			console.log("err");
+			return;
+			}else{
+			fn(result);
+			}
+		});
 	}
 });
