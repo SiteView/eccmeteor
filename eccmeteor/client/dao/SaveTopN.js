@@ -112,7 +112,7 @@ SvseTopNDao = {
 	getTemplateTypeById:function(id){
 		return SvseMonitorTemplate.findOne({"return.id" : id}).property.sv_label;
 	},
-	getMonityTemplateParameters:function(id){//根据id获取监视器模板参数
+/*	getMonityTemplateParameters:function(id){//根据id获取监视器模板参数
 		var template = SvseMonitorTemplate.findOne({"return.id" : id});
 		var parameters = [];
 		for(item in template){
@@ -137,7 +137,7 @@ SvseTopNDao = {
 			parameters.push(temp);
 		}
 		return parameters;
-	},
+	},*/
 }
 
 	//isEmpty  判断topN列表当前数据为空

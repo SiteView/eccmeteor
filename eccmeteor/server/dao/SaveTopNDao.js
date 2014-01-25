@@ -133,7 +133,7 @@ SvseTopNOnServer = {
 	},
 	
 	
-	getMonityDynamicPropertyData:function(panrentid,templateMonitoryId){
+	/*getMonityDynamicPropertyData:function(panrentid,templateMonitoryId){
 		var data =  SvseMethodsOnServer.svGetEntityDynamicPropertyData(panrentid,templateMonitoryId);
 		if(!data) 
 			throw new Meteor.Error(500,"SvseTopNDaoOnServer.getMonityDynamicPropertyData Errors");
@@ -158,7 +158,8 @@ SvseTopNOnServer = {
 			});
 		}
 		return array;
-	}
+	},*/
+	
 	
 }
 //客户端异步加载

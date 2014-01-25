@@ -458,27 +458,42 @@ Object.defineProperty(MonitorInfomation,"parseMonityTemplateFrequencyParameters"
 
 //客户端异步获取监视器的信息---by zhuqing
 Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getMonitorInfoByIdAsync",{
-	value:function(monitorIds){
+	value:function(monitorIds,entityidsData){
 		//根据 监视器的id获取该监视器的模板类型
 		var contexts = [];
-		console.log(monitorIds);
-		for(i in monitorIds){
-			var monitor = SvseTree.findOne({sv_id:monitorIds[i]});
-			if(!monitor){
+		for(var i = 0;i < entityidsData.length;i++){
+			console.log(entityidsData[i]);
+			var result = SvseMethodsOnServer.svGetDefaultTreeData(entityidsData[i],false);
+			 if(!result){
 				return null;
+			 }
+			 Log4js.info("666666666666666666");
+			Log4js.info(result);
+			 var monitor = null;
+			 var monitorTemplateIds = [];
+			 
+			 for(m in result){
+				 monitor = result[m];
+				 if(monitor == null){
+					return null;
+				 }
+				var monitorTemplateId =  monitor.sv_monitortype;
+				console.log(monitorTemplateId);
+				// 监视器模板id获取该监视器的模板类型名称
+				var monitorTemplate = SvseMonitorTemplate.findOne({"return.id":monitorTemplateId});	
+				//console.log(monitorTemplate);
+				if(!monitorTemplate){
+					return;
+				}
+				//console.log(monitorTemplate);
+				var context = MonitorInfomation.getMonitorInfoContext(monitorTemplate);
+				context["monitorId"] = monitorIds[m];
+				//console.log(context);
+				contexts.push(context);
+			
 			}
-			var monitorTemplateId =  monitor.sv_monitortype;
-			// 监视器模板id获取该监视器的模板类型名称
-			var monitorTemplate = SvseMonitorTemplate.findOne({"return.id":monitorTemplateId});
-			if(!monitorTemplate){
-				return null;
-			}
-			var context = MonitorInfomation.getMonitorInfoContext(monitorTemplate);
-			context["monitorId"] = monitorIds[i];
-			contexts.push(context);
 		}
-		//result = MonitorInfomation.megerDynamicParameters(context,entityId);
-		return contexts;
-
+		
+		return contexts;	
 	}
 });

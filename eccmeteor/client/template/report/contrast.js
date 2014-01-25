@@ -18,6 +18,8 @@ Template.contrast.events({
 	},
 });
 
+var zTreeViewCon = function(){};
+
 var ContrastAction = function(){};
 
 Object.defineProperty(ContrastAction,"render",{
@@ -66,7 +68,9 @@ Object.defineProperty(ContrastAction,"initTree",{
 				}
 			},
 			callback:{
+				onRightClick: zTreeOnRightClick,
 				onCheck:function(event,treeId,treeNode,e){
+						
 						console.log(treeNode.id+"钩选的节点--对应监测器id");//钩选的节点--对应监测器id
 						var monitorId= treeNode.id;
 					
@@ -80,6 +84,7 @@ Object.defineProperty(ContrastAction,"initTree",{
 							}
 						}
 					},
+					
 				/*
 				*节点展开事件
 				*/
@@ -91,13 +96,14 @@ Object.defineProperty(ContrastAction,"initTree",{
 				*/
 				onCollapse:function(event, treeId, treeNode){	
 					TreeNodeRemenber.forget(treeNode.id); //删除展开节点
-				}
+				}				
 			}
 
 		};
 		if(!$.fn.zTree){
 			return ;
 		}
+		var zTree = $.fn.zTree.init($("#svse_tree_check_contrast"), setting,data);
 			console.log("============");
 		var selectNodeid = Session.get("selectnode");
 			console.log(selectNodeid);
@@ -111,8 +117,58 @@ Object.defineProperty(ContrastAction,"initTree",{
 			
 		tree.checkNode(selectNodeid,true,true);
 			console.log("======");
+			
+				function zTreeOnRightClick(event, treeId, treeNode) { 
+					console.log(treeNode);
+					
+					if (!treeNode || treeNode == null) {  
+						zTree.cancelSelectedNode();   
+						showRMenu("root", event.clientX, event.clientY);   
+					} else if (treeNode && !treeNode.noR) { //noR属性为true表示禁止右键菜单   
+						if (treeNode.newrole && event.target.tagName != "a" && $(event.target).parents("a").length == 0) {   
+							zTree.cancelSelectedNode();   
+							showRMenu("root", event.clientX, event.clientY);   
+						} else {   
+							zTree.selectNode(treeNode);   
+							showRMenu("node", event.clientX, event.clientY); 
+							RenderTemplate.renderIn("#rMenu","rigntMenu",treeNode);
+						}   
+					}   
+				}
 	}
 });
+	function showRMenu(type, x, y) {
+		if(type == "node"){
+			$("#rMenu").attr("style","display");
+		}else{
+			hideRMenu();
+			$("#rMenu").attr("style","display:none");
+		}
+		
+		$("#rMenu").css({
+			"top" : y + "px",
+			"left" : x + "px",
+			"visibility" : "visible"
+		});
+	 
+		$("body").bind("mousedown", onBodyMouseDown);
+	} 
+
+	function hideRMenu() {
+		if ($("#rMenu"))
+			$("#rMenu").css({
+				"visibility" : "hidden"
+			});
+		$("body").unbind("mousedown", onBodyMouseDown);
+	}
+
+	function onBodyMouseDown(event) {
+		if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length > 0)) {
+			$("#rMenu").css({
+				"visibility" : "hidden"
+			});
+		}
+	}
 //初始化日期选择器
 Object.defineProperty(ContrastAction,"initDatePicker",{
 	value:function(template){
@@ -301,6 +357,31 @@ Object.defineProperty(ContrastAction,"outputReport",{
 			
 	}
 });
+/*Object.defineProperty(zTreeView,"getTreeData",{
+	value:function(treelist){
+		var data = [];
+		var ids = [];
+		for(i in treelist){
+			if(treelist[i]["type"] == "entity"){
+				treelist[i]["isParent"] = false;
+				var id = treelist[i]["pId"];
+				ids.push(treelist[i]["id"]);
+				ids.push(id);
+			}
+		}
+		for(i in treelist){
+			if(treelist[i]["type"] == "se"){
+				data.push(treelist[i]);
+			}
+			for(id in ids){
+				if(treelist[i]["id"] == ids[id]){
+					data.push(treelist[i]);
+				}
+			}
+		}
+		return data;
+	}
+});*/
 
 /*
 *展开树
@@ -337,3 +418,4 @@ Object.defineProperty(ContrastAction,"coverTime",{
 		return "" + year + month + day + hour + minute + second;
 	}
 });
+   

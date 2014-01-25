@@ -32,7 +32,6 @@
 		</div>
 	</div>
 {{> topNlist}}
-{{> topNofadd}}
 {{> topN_detail}}
 {{> helpmessage}} 
 <div id="topNofadddiv"></div>
@@ -42,7 +41,12 @@
 <Template name="topNlist"> 
 	<div class="accordion-group box sortable">
 		<div class="box-header">
-			<a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">TopN报告信息列表</a>
+			<a  href="#">TopN报告信息列表</a>
+			<div class="box-icon" style="padding-left:950px";>
+			<a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn btn-minimize btn-round">
+			<i class="icon-chevron-up"></i>
+			</a>
+			</div>
 		</div>
 		<div class="panel-group" id="accordion"></div>
 			<div id="collapseOne" class="panel-collapse collapse in">

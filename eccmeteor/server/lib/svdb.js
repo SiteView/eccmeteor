@@ -85,6 +85,7 @@ svGetDefaultTreeData = function(parentid,onlySon){
 		'parentid' : parentid,
 		'onlySon'  : onlySon
 	}
+	Log4js.info(meteorSvForest(dowhat, 0));
 	return meteorSvForest(dowhat, 0);
 }
 

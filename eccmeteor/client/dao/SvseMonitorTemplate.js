@@ -113,6 +113,7 @@ Object.defineProperty(SvseMonitorTemplateDao,"getEditMonitorInfoAsync",{
 				console.log(error);
 				fn({status:false})
 			}else{
+			console.log(result);
 				fn({status:true,context:result});
 			}
 		});
@@ -129,6 +130,7 @@ Object.defineProperty(SvseMonitorTemplateDao,"getAddMonitorInfoAsync",{
 				console.log(error);
 				fn({status:false})
 			}else{
+				
 				fn({status:true,context:result});
 			}
 		});
@@ -138,12 +140,14 @@ Object.defineProperty(SvseMonitorTemplateDao,"getAddMonitorInfoAsync",{
 //异步
 //监视器 信息获取
 Object.defineProperty(SvseMonitorTemplateDao,"getMonitorInfoByIdAsync",{
-	value:function(monitorIds,fn){
-		Meteor.call(SvseMonitorTemplateDao.AGENT,"getMonitorInfoByIdAsync",[monitorIds],function(error,result){
+	value:function(monitorIds,entityidsData,fn){
+		Meteor.call(SvseMonitorTemplateDao.AGENT,"getMonitorInfoByIdAsync",[monitorIds,entityidsData],function(error,result){
 			if(error){
 				console.log(error);
 				fn({status:false});
 			}else{
+				console.log(result);
+				console.log("..................");
 				fn({status:true,context:result});
 			}
 		});

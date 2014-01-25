@@ -9,6 +9,7 @@ Object.defineProperty(initTreeDataAtStartup,"newTreeStructure",{
 		
 
 		var result = SvseMethodsOnServer.svGetTreeData();
+		Log4js.info(result); 
 		if(!result){
 			Log4js.info("initTreeDataAtStartup failed，svGetTreeData exists errors",-1);
 			return;
