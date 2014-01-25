@@ -40,6 +40,9 @@ Template.MonitorList.events={
         		var context = result.context;
         		if(context == null){
         			Message.warn("监视器已被删除");
+                    SvseMonitorDao.deleteMonitor(monitorId,entityId,function(result){
+                        Log4js.info(result);
+                    });
         		}else{
         			var devicename = SessionManage.getCheckedTreeNode("name");
         			context["devicename"] = devicename;

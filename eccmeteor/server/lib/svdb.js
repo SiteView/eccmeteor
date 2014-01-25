@@ -17,8 +17,8 @@ var checkErrorOnServer = function(robj){
 	return false;
 }
 var meteorSvUniv = function(dowhat){
-	console.log(new Date());
-	console.log(dowhat);
+//	console.log(new Date());
+//	console.log(dowhat);
 	var robj = process.sv_univ(dowhat, 0);	
 	var flag = checkErrorOnServer(robj);
 	if(typeof flag === "string"){
@@ -29,8 +29,8 @@ var meteorSvUniv = function(dowhat){
 	return fmap;
 }
 var meteorSvForest = function(dowhat){
-	console.log(new Date());
-	console.log(dowhat);
+//	console.log(new Date());
+//	console.log(dowhat);
     var robj = process.sv_forest(dowhat, 0);
     if(typeof flag === "string"){
 		Log4js.error(flag);

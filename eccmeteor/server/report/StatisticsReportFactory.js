@@ -1,6 +1,6 @@
 var fs = Npm.require('fs');
 var writeFile = Meteor._wrapAsync(fs.writeFile.bind(fs));
-
+var nodemailer = Meteor.require("nodemailer");
 
 StatisticsReportFactory = function(reportConfigureId){
 	this.setting = {};
@@ -20,9 +20,6 @@ StatisticsReportFactory.prototype.init = function(reportConfigureId){
 };
 
 StatisticsReportFactory.prototype.getReportConfigure = function(){};
-
-
-StatisticsReportFactory.prototype.getSendEmailConfigure = function(){};
 
 StatisticsReportFactory.prototype.getExtentDate = function(){
 	var dateType = this.setting.Period ;
@@ -55,7 +52,7 @@ StatisticsReportFactory.prototype.getExtentDate = function(){
 				extent =  ReportDateUtils.getCurrentDay();
 			}
 	}
-	return this.buildTime(extent);
+	return extent;
 	
 };
 
@@ -95,32 +92,34 @@ StatisticsReportFactory.prototype.getFileType = function(){
 };
 
 StatisticsReportFactory.prototype.genaritionReport = function(){
-	if(this.setting.Graphic == "No"){
-		this.drawNoGraphicReport();
+	var isGraphic = false;
+	var isSendingEmail = false;
+	if(!this.setting.Graphic == "No"){
+		isGraphic = true;
 	}
-}
-
-StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
-	var _self = this; 
-	var monitorIds = _self.setting.GroupRight.replace(/\,$/,"");
-	var filter = null;
-	var dateExtent = _self.getExtentDate();
-	/*
-	每次获取制定个数的监视器数据以提高反应速度
-	var monitorIdArray = monitorIds.split(",");
-	// SvseMonitorDaoOnServer.getMonitorReportDataByfilter();
-	for(var i = 0; i < monitorIdArray.length;i = i+3){
-		var recordsIds = monitorIdArray.slice(i, i+3).join(",");
-
+	/**
+	if(...Emial....){
+		isSendingEmail = true;
 	}
 	*/
+	this.drawReport(isGraphic,isSendingEmail);
+}
+
+StatisticsReportFactory.prototype.drawReport = function(isGraphic,isSendingEmail){
+	var _self = this; 
+	var monitorIds = _self.setting.GroupRight.replace(/\,$/,"");
+	//var filter = null;
+	var filter  = "sv_primary,sv_drawimage";
+	dateExtentData = _self.getExtentDate()
+	var dateExtent = _self.buildTime(dateExtentData);
+	//console.log(dateExtent);
 	var monitoringRecords = SvseMonitorDaoOnServer.getMonitorReportDataByfilter(monitorIds,dateExtent[0],dateExtent[1],filter,false);
 	
 	//Log4js.info(monitoringRecords);
 
 	var statisticalRecords = [];
 
-	var perPage = this._options._perPage;
+	var perPage = _self._options._perPage;
 
 	var pagerMonitoringRecords = [];
 	var totalMonitoringRecords = [];
@@ -128,21 +127,20 @@ StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
 	var pagerStatisticalRecords = [];
 	var totalStatisticalRecords = [];
 
-
 	for(x in monitoringRecords){
 		if(x == "return"){
 			continue;
 		}
 		if(x.indexOf("Return") !== -1 || x.indexOf("return") !== -1){
 			pagerStatisticalRecords.push(monitoringRecords[x]);
-			if(pagerStatisticalRecords.length == perPage){
+			if(pagerStatisticalRecords.length == perPage){ //分页
 				totalStatisticalRecords.push(pagerStatisticalRecords);
 				pagerStatisticalRecords = new Array();
 			}
 			continue;
 		}
 		pagerMonitoringRecords.push(monitoringRecords[x]);
-		if(pagerMonitoringRecords.length == perPage){
+		if(pagerMonitoringRecords.length == perPage){ //分页
 			totalMonitoringRecords.push(pagerMonitoringRecords);
 			pagerMonitoringRecords = new Array();
 		}
@@ -160,13 +158,26 @@ StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
 	var saveDirPath = _self.getReportSavePath(uuid);
 
 	var totalPage = totalMonitoringRecords.length + totalStatisticalRecords.length;
-
-	var monitoringTemplate = this._options.NoGraphicReportMnotoringHtmlTemplate;
-	
+	if(isGraphic){
+		totalPage = totalPage + totalStatisticalRecords.length;
+	}
+	var currentPage = 0;
+	currentPage = _self.drawMonitoringTable(totalMonitoringRecords,currentPage,totalPage,saveDirPath);
+	currentPage = _self.drawStatisticalTable(totalStatisticalRecords,currentPage,totalPage,saveDirPath);
+	if(isGraphic){
+		_self.drawStatisticalGraphic(totalStatisticalRecords,currentPage,totalPage,saveDirPath,dateExtentData);
+	}
+	if(isSendingEmail){
+		_self.sendEmail(saveDirPath,uuid);
+	}
+}
+//监视表格
+StatisticsReportFactory.prototype.drawMonitoringTable = function(totalMonitoringRecords,currentPage,totalPage,saveDirPath){
+	var _self = this;
+	var monitoringTemplate = _self._options.NoGraphicReportMnotoringHtmlTemplate;
 	var filename = "";
-
 	for(var i = 0 ; i < totalMonitoringRecords.length ; i++){
-		var baseData = this.buildNoGraphicReportOtherSetting(i,totalPage);
+		var baseData = this.buildReportSetting(currentPage+i,totalPage);
 		var monitoringContext = {
 			baseData:baseData,
 			records:totalMonitoringRecords[i]
@@ -175,24 +186,48 @@ StatisticsReportFactory.prototype.drawNoGraphicReport = function(){
 		filename = i+".html";
 		_self.writeToHtml(monitoring,_self.joinPath(saveDirPath,filename));
 	}
-
-	var statisticalTemplate = this._options.NoGraphicStatisticalHtmlTemplate;
+	return currentPage+i;
+}
+//统计表格
+StatisticsReportFactory.prototype.drawStatisticalTable = function(totalStatisticalRecords,currentPage,totalPage,saveDirPath){
+	var _self = this;
+	var statisticalTemplate = _self._options.NoGraphicStatisticalHtmlTemplate;
+	var filename = "";
 	for(var j = 0 ; j < totalStatisticalRecords.length ; j++){
-		var baseData = this.buildNoGraphicReportOtherSetting(i+j,totalPage);
+		var baseData = _self.buildReportSetting(currentPage+j,totalPage);
 		var statisticalContext = {
 			baseData:baseData,
 			records:totalStatisticalRecords[j]
 		}
 		var statistical = HtmlTemplate.render(statisticalTemplate,statisticalContext);
-		filename = (i+j)+".html";
+		filename = (currentPage+j)+".html";
 		_self.writeToHtml(statistical,_self.joinPath(saveDirPath,filename));
 	}
-	_self.compressFoldToZip(saveDirPath);
+	return currentPage+j;
 }
 
-StatisticsReportFactory.prototype.buildNoGraphicReportOtherSetting=function(currentPage,totalPage){
+//统计图
+StatisticsReportFactory.prototype.drawStatisticalGraphic = function(totalStatisticalRecords,currentPage,totalPage,saveDirPath,dateExtent){
+	var dataProcess = null;
+	var _self = this;
+	for(var i = 0; i<totalStatisticalRecords.length;i++){
+		var baseData = _self.buildReportSetting(currentPage+i,totalPage);
+		
+		dataProcess = new StatisticsReportDataProcess(totalStatisticalRecords[i]);
+		var imagesData = dataProcess.getImageData();
+		var html = DrawStatiscsReport.draw(imagesData,dateExtent,baseData);
+		var filename = (currentPage+i)+".html";
+		_self.writeToHtml(html,_self.joinPath(saveDirPath,filename));
+	}
+}
+
+
+
+
+StatisticsReportFactory.prototype.buildReportSetting=function(currentPage,totalPage){
 	var self = this;
-	var dateExtent = this.getExtentDate();
+	var dateExtentDate = self.getExtentDate()
+	var dateExtent = self.buildTime(dateExtentDate);
 	var  theLastPage = totalPage-1;
 	return {
 		reportTitle: self.setting.Title.split("\|")[0],
@@ -226,10 +261,54 @@ StatisticsReportFactory.prototype.joinPath = function(dirPath,filename){
 StatisticsReportFactory.prototype.compressFoldToZip = function(saveDirPath){
 	var AdmZip = Meteor.require('adm-zip');
 	var zip = new AdmZip();
-	// add file directly
 	zip.addLocalFolder(saveDirPath);
-	// get everything as a buffer
-	//var willSendthis = zip.toBuffer();
-	// or write everything to disk
-	zip.writeZip(saveDirPath+".zip");//target file name
-}/**/
+	zip.writeZip(saveDirPath+".zip");
+}
+
+StatisticsReportFactory.prototype.sendEmail = function(folderPath,uuid){
+	var _self = this;
+	_self.compressFoldToZip(folderPath);
+	var smtpTransport = _self.getSendEmailConfigure();
+	var email = _self.getSendEmailContent(uuid);
+	smtpTransport.sendMail(email,function(error){
+	    if(error){
+	        console.log("Send Fail");
+	        console.log(error.message);
+	    }else{
+	        console.log("Send Successfully");
+	    }
+	});
+}
+
+StatisticsReportFactory.prototype.getSendEmailConfigure = function(){
+	var smtpTransport = nodemailer.createTransport("SMTP",{
+	    host: "smtp.qq.com",
+	    port: 465,
+	    secureConnection: true,
+	    auth: {
+	        user: "646344359@qq.com",
+	        pass: "huyinghuan123456"
+	    }
+	});
+	return smtpTransport;
+};
+
+StatisticsReportFactory.prototype.getSendEmailContent = function(uuid){
+	var _self = this;
+	var subject = _self.setting.Title.split("\|");
+	var filePath = _self.getReportSavePath(uuid) + ".zip";
+	var mailOptions = {
+	    from: "646344359@qq.com", // sender address
+	    to: "xiacijian@163.com", // list of receivers
+	    subject: subject, // Subject line
+	    text: "统计报告", // plaintext body
+	//    html: "<b>Hello world</b>", // html body
+	    attachments:[
+	        {   // stream as an attachment
+	            fileName: "统计报告.zip",
+	            streamSource: fs.createReadStream(filePath)
+        	}
+	    ]
+	}
+	return mailOptions;
+}

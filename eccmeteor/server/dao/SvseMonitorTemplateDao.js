@@ -137,10 +137,21 @@ Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getQuickAddMonitorsAsync",
 Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getEditMonitorInfoAsync",{
 	value:function(monitorId,entityId){
 		//编辑监视器时根据 监视器的id获取该监视器的模板类型
-		var monitor = SvseTree.findOne({sv_id:monitorId});
-		if(!monitor){
-			return null;
-		}
+        var result = SvseMethodsOnServer.svGetDefaultTreeData(entityId,false);
+        if(!result){
+            return null;
+        }
+        var monitor = null;
+        for(y in result){
+        	monitor = result[y];
+        	if(monitor.sv_id == monitorId){
+        		break;
+        	}
+        }
+        if(monitor == null){
+        	return null;
+        }
+
 		var monitorTemplateId =  monitor.sv_monitortype;
 		// 监视器模板id获取该监视器的模板类型名称
 		var monitorTemplate = SvseMonitorTemplate.findOne({"return.id":monitorTemplateId});
