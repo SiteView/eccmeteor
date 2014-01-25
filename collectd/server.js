@@ -22,3 +22,10 @@ http.createServer(function(request,response){
 		response.end();
 	});
 }).listen(1337);//1337  3000
+
+process.on('uncaughtException',function(err){
+	console.log(err);
+	server.close(function(){
+		process.exit(1);
+	});
+});

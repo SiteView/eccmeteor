@@ -1,3 +1,8 @@
+###运行
+```
+node master.js
+```
+
 ###collect setup
 ####如果是debian ubuntu安装
 sudo apt-get install libcurl3 python-pycurl libcurl3-gnutls libcurl4-gnutls-dev 
