@@ -473,7 +473,7 @@ Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getMonitorInfoByIdAsync",{
 		//根据 监视器的id获取该监视器的模板类型
 		var contexts = [];
 		for(var i = 0;i < entityidsData.length;i++){
-			console.log(entityidsData[i]);
+			//console.log(entityidsData[i]);
 			var result = SvseMethodsOnServer.svGetDefaultTreeData(entityidsData[i],false);
 			 if(!result){
 				return null;
@@ -488,8 +488,9 @@ Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getMonitorInfoByIdAsync",{
 				 if(monitor == null){
 					return null;
 				 }
+				 //console.log(monitor);
 				var monitorTemplateId =  monitor.sv_monitortype;
-				console.log(monitorTemplateId);
+				//console.log(monitorTemplateId);
 				// 监视器模板id获取该监视器的模板类型名称
 				var monitorTemplate = SvseMonitorTemplate.findOne({"return.id":monitorTemplateId});	
 				//console.log(monitorTemplate);
@@ -506,5 +507,58 @@ Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getMonitorInfoByIdAsync",{
 		}
 		
 		return contexts;	
+	}
+});
+
+Object.defineProperty(SvseMonitorTemplateDaoOnServer,"getMonitorDataInfo",{
+	value:function(data){
+		//根据 监视器的id获取该监视器的模板类型
+		var contexts = [];
+		for(i in data){
+			if(data[i]["type"] == "monitor"){
+				//var monitorinfo = data[i];
+				var result = SvseMethodsOnServer.svGetDefaultTreeData(data[i]["pId"],false);
+				 if(!result){
+					return null;
+				 }
+				 Log4js.info("666666666666666666");
+				 Log4js.info(result);
+				 var monitor = null;
+				 var monitorTemplateIds = [];
+				 
+				 for(m in result){
+					 monitor = result[m];
+					 if(monitor == null){
+						return null;
+					 }
+					 
+					//console.log(monitor);
+					var monitorTemplateId =  monitor.sv_monitortype;
+					//console.log(monitorTemplateId);
+					// 监视器模板id获取该监视器的模板类型名称
+					var monitorTemplate = SvseMonitorTemplate.findOne({"return.id":monitorTemplateId});	
+					//console.log(monitorTemplate);
+					if(!monitorTemplate){
+						return;
+					}
+					var context = MonitorInfomation.getMonitorInfoContext(monitorTemplate);
+					context["monitorId"] = monitor["sv_id"];
+					console.log(context["monitorType"]);
+					if(data[i]["id"] === monitor["sv_id"]){
+						console.log("22222222222");
+						console.log(data[i]["name"]);
+						console.log(context["monitorType"]);
+						console.log("55555555555");
+						data[i]["monitorType"] = context["monitorType"];
+					 }
+				
+					console.log("-----------");
+					console.log(data[i]);
+				}
+			}
+			
+		}
+		
+		return data;	
 	}
 });

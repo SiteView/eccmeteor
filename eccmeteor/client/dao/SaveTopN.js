@@ -112,32 +112,32 @@ SvseTopNDao = {
 	getTemplateTypeById:function(id){
 		return SvseMonitorTemplate.findOne({"return.id" : id}).property.sv_label;
 	},
-/*	getMonityTemplateParameters:function(id){//根据id获取监视器模板参数
-		var template = SvseMonitorTemplate.findOne({"return.id" : id});
-		var parameters = [];
-		for(item in template){
-			if(item.indexOf("ParameterItem") == -1 || item.indexOf("AdvanceParameterItem") != -1) continue;
-			var temp = template[item];
-			temp["sv_allownull"] = (temp["sv_allownull"] === 'false' ? false:true);
-			if(temp["sv_type"] !== "combobox"){//非下拉列表类型
+	/*	getMonityTemplateParameters:function(id){//根据id获取监视器模板参数
+			var template = SvseMonitorTemplate.findOne({"return.id" : id});
+			var parameters = [];
+			for(item in template){
+				if(item.indexOf("ParameterItem") == -1 || item.indexOf("AdvanceParameterItem") != -1) continue;
+				var temp = template[item];
+				temp["sv_allownull"] = (temp["sv_allownull"] === 'false' ? false:true);
+				if(temp["sv_type"] !== "combobox"){//非下拉列表类型
+					parameters.push(temp);
+					continue;
+				}
+				//组合下拉列表	
+				var selects = []; 
+				for(label in temp){
+					if(label.indexOf("sv_itemlabel") === -1) continue;
+					var select = {};
+					var sub = "sv_itemvalue"+label.substr(-1);
+					select.key = temp[label];
+					select.value = temp[sub];
+					selects.push(select);
+				}
+				temp["selects"] = selects;
 				parameters.push(temp);
-				continue;
 			}
-			//组合下拉列表	
-			var selects = []; 
-			for(label in temp){
-				if(label.indexOf("sv_itemlabel") === -1) continue;
-				var select = {};
-				var sub = "sv_itemvalue"+label.substr(-1);
-				select.key = temp[label];
-				select.value = temp[sub];
-				selects.push(select);
-			}
-			temp["selects"] = selects;
-			parameters.push(temp);
-		}
-		return parameters;
-	},*/
+			return parameters;
+		},*/
 }
 
 	//isEmpty  判断topN列表当前数据为空
@@ -171,3 +171,18 @@ Object.defineProperty(SvseTopNDao,"getTopNresultlistAsync",{
 		})
 	}
 });
+
+Object.defineProperty(SvseTopNDao,"getMonitorDataInfo",{
+	value:function(data,fn){
+		Meteor.call(SvseMonitorTemplateDao.AGENT,"getMonitorDataInfo",[data],function(error,result){
+			if(error){
+				Log4js.info(error);
+			}else{
+				console.log(result);
+				fn(result);
+			}
+		})
+		
+	}
+});
+

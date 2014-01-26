@@ -1,19 +1,4 @@
 
-//查询结果分页
- /*var logPage = new Pagination("sysLogList",{currentPage:1,perPage:6});
-
-Template.sysLogList.querysyslog = function(){
-	var querysyslog = Session.get("querysyslog");
-	console.log(querysyslog);
-	return querysyslog(logPage.skip());
-}
-
-Template.sysLogList.logPager = function(){
-	var querysyslog = Session.get("querysyslog");
-	var count = querysyslog.length;
-	return logPage.create(count);
-} */
-
 //Syslog的查询事件
 Template.sysLogQuery.events({
 		"click #selectsyslogbtn":function(){
@@ -74,53 +59,54 @@ Template.sysLogQuery.events({
 						table.push(resultData[i]);
 					}
 					//console.log(table);
-					//判断正则表达式
-					/*if(expression){
-						var resultData = [];
-						for(var i = 0;i< table.length;i++){
-							expression = new RegExp("([ftph]+://[a-zA-Z0-9\._-]+)","img");
-							//expression = new RegExp("[\u4e00-\u9fa5\\w]+","img");
-							//expression.test(syslogmsg);
-							var syslogmsg = table[i]["_SysLogMsg"]
-							var flag = syslogmsg.match(expression);
-							if(flag){
-								resultData.push(table[i]);
-								console.log("yes");
-							}
+					
+				//判断正则表达式
+				/*if(expression){
+					var resultData = [];
+					for(var i = 0;i< table.length;i++){
+						expression = new RegExp("([ftph]+://[a-zA-Z0-9\._-]+)","img");
+						//expression = new RegExp("[\u4e00-\u9fa5\\w]+","img");
+						//expression.test(syslogmsg);
+						var syslogmsg = table[i]["_SysLogMsg"]
+						var flag = syslogmsg.match(expression);
+						if(flag){
+							resultData.push(table[i]);
+							console.log("yes");
 						}
 					}
-					console.log(resultData);
-					console.log("以上是正则表达式筛选");*/
-					
-					   /* var expression=table.charAt(0);//开始字符
-					    var syslogmsg=table.length;//查找符串的长度
-					    var curCon;
-					    var isFind=false;//是否找到
-					    var resultIndex=-1//如果是的话的那个索引
-						if(expression){
-						var resultData = [];
-						for(var i=0;i<container.length;i++)
+				}
+				console.log(resultData);
+				console.log("以上是正则表达式筛选");*/
+				
+				   /* var expression=table.charAt(0);//开始字符
+					var syslogmsg=table.length;//查找符串的长度
+					var curCon;
+					var isFind=false;//是否找到
+					var resultIndex=-1//如果是的话的那个索引
+					if(expression){
+					var resultData = [];
+					for(var i=0;i<container.length;i++)
+				  {
+					  curCon=container[i];
+					  for(var j=0;j<curCon.length;j++)
 					  {
-						  curCon=container[i];
-						  for(var j=0;j<curCon.length;j++)
+						  if(curCon.charAt(j)==startChar)//如果匹配起始字符,开始查找
 						  {
-							  if(curCon.charAt(j)==startChar)//如果匹配起始字符,开始查找
-							  {
-									if(curCon.substring(j).substring(0,strLen)==str)//如果从j开始的字符与str匹配，那ok
-									{
-										  isFind=true;
-										  return i;//匹配的那个下标
-									}   
-									else
-									{        
-									  isFind=false;
-									  return i;
-									}
-							  }
+								if(curCon.substring(j).substring(0,strLen)==str)//如果从j开始的字符与str匹配，那ok
+								{
+									  isFind=true;
+									  return i;//匹配的那个下标
+								}   
+								else
+								{        
+								  isFind=false;
+								  return i;
+								}
 						  }
 					  }
-					  return -1;
-					  }*/
+				  }
+				  return -1;
+				  }*/
 					//判断IP地址
 					if(SourceIp){
 						var resultData = [];
@@ -160,25 +146,7 @@ Template.sysLogQuery.events({
 				});
 			}
 		});
-		
 
-// Template.sysLogList.syslogDetailList = function(){
-	// console.log(SvseSyslogDao.getSyslogList());
-	
-	// return SvseSyslogDetailList.find({},page.skip());
-	
-// }
-	//分页列表
-// var page = new Pagination("syslogPagination",{perPage:20});
-
-// Template.sysLogList.svseSyslogDetailList = function(){
-  // return SvseSyslogDetailList.find({},page.skip());
-// }
-  
-// Template.sysLogList.pager = function(){
-  // return page.create(SvseSyslogList.find().count());
-// }
-	
 Template.sysLogQuery.rendered = function(){
 	var template = this;
 	$(function() { //初始化日期选择器
@@ -202,28 +170,6 @@ Template.sysLogQuery.rendered = function(){
 		var endPicker = $(template.find("#syslogdatetimepickerEndDate")).data('datetimepicker');
 		startPicker.setDate(startDate);
 		endPicker.setDate(endDate);	
-				/*$('.sysmultiselect').multiselect({
-					buttonClass : 'btn',
-					buttonWidth : "auto",
-					buttonContainer : '<div class="btn-group" />',
-					maxHeight : 200,
-					//textAlign: left,
-					enableFiltering : true,
-					buttonText : function (options) {
-						if (options.length == 0) {
-							return 'None selected <b class="caret"></b>';
-						} else if (options.length > 3) {
-							return options.length + ' selected  <b class="caret"></b>';
-						} else {
-							var selected = '';
-							options.each(function () {
-								selected += $(this).text() + ', ';
-							});
-							return selected.substr(0, selected.length - 2) + ' <b class="caret"></b>';
-						}
-					}
-				});*/
-				
 			});
 			//页面渲染
 			Meteor.call("svGetSysLogQueryContEntityConfigSetting",function(err,Entity){

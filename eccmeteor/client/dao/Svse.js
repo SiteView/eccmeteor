@@ -483,3 +483,5 @@ Object.defineProperty(SvseDao,"getNodesOwnSelf",{
 		return ownNodes;
 	}
 })
+
+

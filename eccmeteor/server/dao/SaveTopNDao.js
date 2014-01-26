@@ -168,3 +168,4 @@ Object.defineProperty(SvseTopNOnServer,"getTopNresultlistAsync",{
 		return SvseTopNresultlist.find().fetch();
 	}
 });
+

@@ -68,7 +68,7 @@ Object.defineProperty(ContrastAction,"initTree",{
 				}
 			},
 			callback:{
-				//onRightClick: zTreeOnRightClick,
+				onRightClick: ContrastOnRightClick,
 				onCheck:function(event,treeId,treeNode,e){
 						
 						console.log(treeNode.id+"钩选的节点--对应监测器id");//钩选的节点--对应监测器id
@@ -100,23 +100,40 @@ Object.defineProperty(ContrastAction,"initTree",{
 			}
 
 		};
-		if(!$.fn.zTree){
-			return ;
-		}
-		var zTree = $.fn.zTree.init($("#svse_tree_check_contrast"), setting,data);
-			console.log("============");
-		var selectNodeid = Session.get("selectnode");
-			console.log(selectNodeid);
-		var expandNodes = ContrastAction.expandSimpleTreeNode(data,TreeNodeRemenber.get());
-		if(!selectNodeid){
-			$.fn.zTree.init($(template.find("#svse_tree_check_contrast")), setting,expandNodes);
-			return;
-		}
-		 var tree = $.fn.zTree.init($(template.find("#svse_tree_check_contrast")), setting,expandNodes);
-			console.log("-------");
+			if(!$.fn.zTree){
+				return ;
+			}
+			var zTree = $.fn.zTree.init($("#svse_tree_check_contrast"), setting,data);
+				console.log("============");
+			var selectNodeid = Session.get("selectnode");
+				console.log(selectNodeid);
+			var expandNodes = ContrastAction.expandSimpleTreeNode(data,TreeNodeRemenber.get());
+			if(!selectNodeid){
+				$.fn.zTree.init($(template.find("#svse_tree_check_contrast")), setting,expandNodes);
+				return;
+			}
+			 var tree = $.fn.zTree.init($(template.find("#svse_tree_check_contrast")), setting,expandNodes);
+				console.log("-------");
+				
+			tree.checkNode(selectNodeid,true,true);
+				console.log("======");
 			
-		tree.checkNode(selectNodeid,true,true);
-			console.log("======");
+			function ContrastOnRightClick(event, treeId, treeNode) { 
+			console.log(treeNode);
+			console.log(event);
+			if (!treeNode || treeNode == null) {   
+				showRMenu("root", event.clientX, event.clientY);   
+			} else if (treeNode && !treeNode.noR) { //noR属性为true表示禁止右键菜单   
+				if (treeNode.newrole && event.target.tagName != "a" && $(event.target).parents("a").length == 0) {     
+					showRMenu("root", event.clientX, event.clientY);   
+				} else {     
+					var scrollTop = $(document).scrollTop();
+					var scrollLeft = $(document).scrollLeft();
+					showRMenu("node", event.clientX + scrollLeft, event.clientY + scrollTop); 
+					RenderTemplate.renderIn("#ContrastRMenu","Contrast_rMenu","");
+				}   
+			}   
+		}
 	}
 });
 
@@ -180,80 +197,81 @@ Object.defineProperty(ContrastAction,"query",{
 		LoadingModal.loading();
 	}
 });
+
 Object.defineProperty(ContrastAction,"drowContrast",{
-		value:function(monitorId,template){$("#contrastDetailTableData").empty();
-				var targets = [];
-				var startDate;
-				var endDate;
-				var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
-				var contrastlist = ClientUtils.formArrayToObject($("#contrastlist").serializeArray());
-				
-				var arr = $.fn.zTree.getZTreeObj("svse_tree_check_contrast").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
-				
-				for(index in arr){
-					targets.push(arr[index].id);
-				}
-				
-				console.log(targets);
-				
-				contrastlist["GroupRight"] = targets.join();
-				
-				$(":checkbox[name='Status']").each(function(){
-					if(!this.checked) contrastlist["Status"]="Yes";
-				});
+	value:function(monitorId,template){$("#contrastDetailTableData").empty();
+			var targets = [];
+			var startDate;
+			var endDate;
+			var nIndex = new Date().format("yyyyMMddhhmmss") +"x"+ Math.floor(Math.random()*1000);
+			var contrastlist = ClientUtils.formArrayToObject($("#contrastlist").serializeArray());
 			
-				//是否选择选择监测器
-				contrastlist["AlertTarget"] = targets.join();
-				if(!contrastlist["AlertTarget"]){
-					Message.info("请选择选择监测器！",{align:"center",time:3});
+			var arr = $.fn.zTree.getZTreeObj("svse_tree_check_contrast").getNodesByFilter(function(node){return (node.checked && node.type === "monitor")});
 			
-						return;
-					}
-				
-				var monitorId = targets;
-					console.log("获取监测器id:"+targets);
-				//var monitorId = '1.27.1.1';
-				var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
-				var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
-				var beginDate = startPicker.getDate();
-				var endDate = endPicker.getDate();
-				var startTime = ClientUtils.dateToObject(startPicker.getDate());
-				var endTime = ClientUtils.dateToObject(endPicker.getDate());
-					console.log("#############################");
-					console.log(startTime);
-					console.log(startTime["month"]);
-					console.log(endTime);
-					console.log("#######################");
-				Session.set("selectnode",targets);
-				for(var i = 0;i < targets.length;i++){
-					console.log(targets[i]);
-				
-				DrawContrastReport.getDate(monitorId,startTime,endTime,function(result){
-				
-				var records = result.content;//获取监视器原始数据
-		
-				var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
-				
-				var tableData = dataProcess.getTableData();
-				var imageData = dataProcess.getImageData();
-				var baseData = dataProcess.getBaseData();
-				
-					console.log(tableData);
-					console.log(baseData);
-				var renderObj = {
-					baseDate:baseData,
-					startTime:DrawContrastReport.buildTime(startTime),
-					endTime:DrawContrastReport.buildTime(endTime),
-					tableData:tableData
-				}
-				var target = Session.get("selectnode");	
-				RenderTemplate.renderIn("#ContrastDetailData","Contrastlist2",renderObj,false);
-				
-				DrawContrastReport.draw(imageData,beginDate,endDate);
-				LoadingModal.loaded();
-				});
+			for(index in arr){
+				targets.push(arr[index].id);
 			}
+			
+			console.log(targets);
+			
+			contrastlist["GroupRight"] = targets.join();
+			
+			$(":checkbox[name='Status']").each(function(){
+				if(!this.checked) contrastlist["Status"]="Yes";
+			});
+		
+			//是否选择选择监测器
+			contrastlist["AlertTarget"] = targets.join();
+			if(!contrastlist["AlertTarget"]){
+				Message.info("请选择选择监测器！",{align:"center",time:3});
+		
+					return;
+				}
+			
+			var monitorId = targets;
+				console.log("获取监测器id:"+targets);
+			//var monitorId = '1.27.1.1';
+			var startPicker = $('#datetimepickerStartDate').data('datetimepicker');
+			var endPicker = $('#datetimepickerEndDate').data('datetimepicker');
+			var beginDate = startPicker.getDate();
+			var endDate = endPicker.getDate();
+			var startTime = ClientUtils.dateToObject(startPicker.getDate());
+			var endTime = ClientUtils.dateToObject(endPicker.getDate());
+				console.log("#############################");
+				console.log(startTime);
+				console.log(startTime["month"]);
+				console.log(endTime);
+				console.log("#######################");
+			Session.set("selectnode",targets);
+			for(var i = 0;i < targets.length;i++){
+				console.log(targets[i]);
+			
+			DrawContrastReport.getDate(monitorId,startTime,endTime,function(result){
+			
+			var records = result.content;//获取监视器原始数据
+	
+			var dataProcess = new ReportDataProcess(records);//原始数据的基本处理 //客户端服务端通用
+			
+			var tableData = dataProcess.getTableData();
+			var imageData = dataProcess.getImageData();
+			var baseData = dataProcess.getBaseData();
+			
+				console.log(tableData);
+				console.log(baseData);
+			var renderObj = {
+				baseDate:baseData,
+				startTime:DrawContrastReport.buildTime(startTime),
+				endTime:DrawContrastReport.buildTime(endTime),
+				tableData:tableData
+			}
+			var target = Session.get("selectnode");	
+			RenderTemplate.renderIn("#ContrastDetailData","Contrastlist2",renderObj,false);
+			
+			DrawContrastReport.draw(imageData,beginDate,endDate);
+			LoadingModal.loaded();
+			});
 		}
+	}
 });
 	
 Object.defineProperty(ContrastAction,"outputReport",{
@@ -308,31 +326,32 @@ Object.defineProperty(ContrastAction,"outputReport",{
 			
 	}
 });
-/*Object.defineProperty(zTreeView,"getTreeData",{
-	value:function(treelist){
-		var data = [];
-		var ids = [];
-		for(i in treelist){
-			if(treelist[i]["type"] == "entity"){
-				treelist[i]["isParent"] = false;
-				var id = treelist[i]["pId"];
-				ids.push(treelist[i]["id"]);
-				ids.push(id);
-			}
-		}
-		for(i in treelist){
-			if(treelist[i]["type"] == "se"){
-				data.push(treelist[i]);
-			}
-			for(id in ids){
-				if(treelist[i]["id"] == ids[id]){
-					data.push(treelist[i]);
+
+	/*Object.defineProperty(zTreeView,"getTreeData",{
+		value:function(treelist){
+			var data = [];
+			var ids = [];
+			for(i in treelist){
+				if(treelist[i]["type"] == "entity"){
+					treelist[i]["isParent"] = false;
+					var id = treelist[i]["pId"];
+					ids.push(treelist[i]["id"]);
+					ids.push(id);
 				}
 			}
+			for(i in treelist){
+				if(treelist[i]["type"] == "se"){
+					data.push(treelist[i]);
+				}
+				for(id in ids){
+					if(treelist[i]["id"] == ids[id]){
+						data.push(treelist[i]);
+					}
+				}
+			}
+			return data;
 		}
-		return data;
-	}
-});*/
+	});*/
 
 /*
 *展开树
@@ -370,3 +389,37 @@ Object.defineProperty(ContrastAction,"coverTime",{
 	}
 });
    
+//显示右键菜单的操作
+function showRMenu(type, x, y) {
+	if(type == "node"){
+		console.log("show rMenu!!");
+		$("#ContrastRMenu").attr("style","display");
+	}else{
+		//hideRMenu();
+		$("#ContrastRMenu").attr("style","display:none");
+	}
+    
+    $("#ContrastRMenu").css({
+        "top" : y + "px",
+        "left" : x + "px",
+        "visibility" : "visible"
+    });
+ 
+    $("body").bind("mousedown", onBodyMouseDown);
+} 
+
+function hideRMenu() {
+    if ($("#ContrastRMenu"))
+        $("#ContrastRMenu").css({
+            "visibility" : "hidden"
+        });
+    $("body").unbind("mousedown", onBodyMouseDown);
+}
+
+function onBodyMouseDown(event) {
+    if (!(event.target.id == "#ContrastRMenu" || $(event.target).parents("#ContrastRMenu").length > 0)) {
+        $("#ContrastRMenu").css({
+            "visibility" : "hidden"
+        });
+    }
+}

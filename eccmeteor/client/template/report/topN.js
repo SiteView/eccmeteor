@@ -141,23 +141,23 @@ Template.topN.events = {
 }
 Template.topN.rendered = function(){
 	 $(function(){
-				//在点击删除操作时弹出提示框实现进一步提示
-			$("#topNofdel").confirm({
-					'message':"确定删除操作？",
-					'action':function(){
-							var ids = getTopNListSelectAll();
-							SvseTopNDao.checkTopNresultlistSelect(ids);
-							if(ids.length){
-							SvseTopNDao.deleteTopNByIds(ids,function(result){
-									Log4js.info(result);
-							});
-							//console.log("确定");
-							}
-							$("#topNofdel").confirm("hide");
+		//在点击删除操作时弹出提示框实现进一步提示
+		$("#topNofdel").confirm({
+				'message':"确定删除操作？",
+				'action':function(){
+					var ids = getTopNListSelectAll();
+					SvseTopNDao.checkTopNresultlistSelect(ids);
+					if(ids.length){
+					SvseTopNDao.deleteTopNByIds(ids,function(result){
+							Log4js.info(result);
+					});
+					//console.log("确定");
 					}
+					$("#topNofdel").confirm("hide");
+				}
 			});
 		});
-}
+	}
 
 //获取topNlist的集合
 Template.topNlist.topNresultlist = function(){
