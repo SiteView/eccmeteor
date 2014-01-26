@@ -15,17 +15,25 @@ SvseTaskDao = {
 		});
 	},
 	"updatetask":function(address,fn){
-		 var name = address.sv_name;
-		 console.log(name);
-		 console.log(address);
-		SvseTask.update(SvseTask.findOne({sv_name:name}).sv_name,{$set:address});
+		 // var name = address.sv_name;
+		 // console.log(name);
+		 // console.log(address);
+		// SvseTask.update(SvseTask.findOne({sv_name:name}).sv_name,{$set:address});
 		Meteor.call(SvseTaskDao.AGENT,'updatetask',[address],function(err,result){
 		console.log(address);
+		console.log(result);
 			if(err){
-				fn({status:false,msg:err});
+				Log4js.error(err);
+				fn({status:false,msg:err})
 			}else{
-				fn(result);
+				if(result && !result[status]){ // 无权限
+					Log4js.error(err);
+					fn(result);
+				}else{
+					console.log(result);
+					fn({status:true})
 				}
+			}
 		});
 	},
 	"deleteTaskByIds":function(ids,fn){

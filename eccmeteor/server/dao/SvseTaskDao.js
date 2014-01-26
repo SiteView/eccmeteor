@@ -35,17 +35,12 @@
 			Log4js.info(msg,-1);
 			throw new Meteor.Error(500,msg);
 		}
-			console.log("vvvvv");
-		//return SvseTaskDaoOnServer.getReturn(true);
-				console.log("aaaaaaaaa");
-		 var addressresult = result;
 			console.log(result);
 			console.log("*****");
-			console.log(addressresult);
 			console.log(address.sv_name);
-			 var sv_name = address.sv_name;
-			 console.log(sv_name);
-		 SvseTask.update(sv_name,{$set:addressresult},function(err){
+			 var name = address.sv_name;
+			 console.log(name);
+		 SvseTask.update(SvseTask.findOne({sv_name:name}).sv_name,{$set:result},function(err){
 		 console.log("44444444");
 			if(err){
 				 SystemLogger(err,-1);
