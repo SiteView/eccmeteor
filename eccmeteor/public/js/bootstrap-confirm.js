@@ -48,7 +48,7 @@
 		}
 		// 设置modal标题
 		,setModalTitle: function( text ) {
-			$(this.getModal()).find('.modal-header h3').html( text );
+			$(this.getModal()).find('.modal-header h4').html( text );
 		}
 		// 设置modal内容
 		,setModalBody: function( text ) {
@@ -94,7 +94,7 @@
 		action : '', // 链接或者函数[option]
 		title : '系统提示', // modal标题[option]
 		message : '确定要执行该操作吗？', // modal内容[option]
-		template : '<div class="modal hide fade confirm-modal"><div class="modal-header"><h3></h3></div><div class="modal-body"></div><div class="modal-footer"><a href="#" class="btn btn-success confirm-btn">确定</a><a href="#" class="btn confirm-cancelbtn">取消</a></div></div>'
+		template : '<div class="modal hide fade confirm-modal"><div class="modal-header"><h4></h4></div><div class="modal-body"></div><div class="modal-footer"><a href="#" class="btn btn-primary confirm-btn">确定</a><a href="#" class="btn confirm-cancelbtn">取消</a></div></div>'
 	}
 
 

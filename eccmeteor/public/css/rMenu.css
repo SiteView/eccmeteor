@@ -33,7 +33,6 @@ div#rMenu {
 	position:absolute; 
 	visibility:hidden; 
 	top:0; 
-	background-color: #CECECE;
 	text-align:left;
 	padding: 2px;
 }
@@ -43,12 +42,10 @@ div#rMenu ul li{
 	padding: 0 ;
 	cursor: pointer;
 	list-style: none ;
-	background-color: #DFDFDF;
 	font-size:10px;
 }
 
 div#rMenu {
-	background-color:#ffffff;
 	text-align: left;
 	padding:0px;
 	position:absolute;
@@ -57,35 +54,40 @@ div#rMenu {
 div#rMenu ul {
 	margin:1px 0;
 	padding:0 3px;
-	cursor: pointer;
 	list-style: none outside none;
-	background-color:#DFDFDF;
 	display:block;
 }
 div#rMenu ul li a{
 	height:15px;
+	padding-bottom:5px;
 }
-div#rMenu .table{
-	margin-bottom:0px;
-}
-div#rMenu table td{
-	font-size:10px;
-}
+
 
 div#emailWarnerruleRMenu{
 	z-index:1200;
-	background-color:#ffffff;
 	text-align: left;
 	position:absolute;
 	display:block;
 	top:0; 
-	background-color: #CECECE;
 	text-align:left;
 	padding: 0px;
 }
-div#emailWarnerruleRMenu .table{
-	margin-bottom:0px;
+
+div#emailWarnerruleRMenu ul {
+	margin:1px 0;
+	padding:0 3px;
+	list-style: none outside none;
+	display:block;
 }
-div#emailWarnerruleRMenu table td{
+div#emailWarnerruleRMenu ul li{
+	text-align:left;
+	margin: 0;
+	padding: 0 ;
+	cursor: pointer;
+	list-style: none ;
 	font-size:10px;
+}
+div#emailWarnerruleRMenu ul li a{
+	height:15px;
+	padding-bottom:5px;
 }

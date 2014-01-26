@@ -26,79 +26,50 @@
 </Template>
 
 <Template name="rigntMenu">
-	<table class="table table-striped table-bordered table-condensed">
-		<thead>
-			<tr>
-				<th>{{name}}</th>
-			</tr>
-		</thead>
-		<tbody>
-			
-			{{#if equal type "se"}}
-				{{#if isHaveUserPermission id "addSonGroup"}}
-					<tr>
-						<td><a id="addSonGroup">增加子组</a></td>
-					</tr>
-				{{/if}}
-				{{#if isHaveUserPermission id "addEntity"}}
-					<tr>
-						<td><a id="addEntity">增加设备</a></td>
-					</tr>
-				{{/if}}
-				{{#if isHaveUserPermission id "editSe"}}
-					<tr>
-						<td><a id="editEntity">编辑SE</a></td>
-					</tr>
-				{{/if}}
+	<ul class="dropdown-menu">
+		<li><a id="addSonGroup">{{name}}</a></li>
+		<li class="divider"></li>
+		{{#if equal type "se"}}
+			{{#if isHaveUserPermission id "addSonGroup"}}
+				<li><a id="addSonGroup" href="#">增加子组</a></li>
 			{{/if}}
-			
-			{{#if equal type "group"}}
-				{{#if isHaveUserPermission id "addEntity"}}
-					<tr>
-						<td><a id="addEntity">增加设备</a></td>
-					</tr>
-				{{/if}}
-				{{#if isHaveUserPermission id "editGroup"}}
-					<tr>
-						<td><a id="editGroup">编辑组</a></td>
-					</tr>
-				{{/if}}
-				{{#if isHaveUserPermission id "addSonGroup"}}
-					<tr>
-						<td><a id="addSonGroup">增加子组</a></td>
-					</tr>
-				{{/if}}
-				{{#if isHaveUserPermission id "copyEntity"}}
-					<tr>
-						<td><a id="copyEntity">粘贴设备</a></td>
-					</tr>
-				{{/if}}
-				{{#if isHaveUserPermission id "delGroup"}}
-					<tr>
-						<td><a id="delGroup">删除组</a></td>
-					</tr>
-				{{/if}}
+			{{#if isHaveUserPermission id "addEntity"}}
+				<li><a id="addEntity" href="#">增加设备</a></li>
 			{{/if}}
-			
-			{{#if equal type "entity"}}
-				{{#if isHaveUserPermission id "addMonitor"}}
-					<tr>
-						<td><a id="addMonitor">增加监视器</a></td>
-					</tr>
-				{{/if}}
-				{{#if isHaveUserPermission id "editEntity"}}
-					<tr>
-						<td><a id="editEntity">编辑设备</a></td>
-					</tr>
-				{{/if}}
-				{{#if isHaveUserPermission id "delEntity"}}
-					<tr>
-						<td><a id="delEntity">删除设备</a></td>
-					</tr>
-				{{/if}}
+			{{#if isHaveUserPermission id "editSe"}}
+				<li><a id="editEntity" href="#">编辑SE</a></li>
 			{{/if}}
-			
-		</tbody>
+		{{/if}}
 		
-	</table> 
+		{{#if equal type "group"}}
+			{{#if isHaveUserPermission id "addEntity"}}
+				<li><a id="addEntity" href="#">增加设备</a></li>
+			{{/if}}
+			{{#if isHaveUserPermission id "editGroup"}}
+				<li><a id="editGroup" href="#">编辑组</a></li>
+			{{/if}}
+			{{#if isHaveUserPermission id "addSonGroup"}}
+				<li><a id="addSonGroup" href="#">增加子组</a></li>
+			{{/if}}
+			{{#if isHaveUserPermission id "copyEntity"}}
+				<li><a id="copyEntity" href="#">粘贴设备</a></li>
+			{{/if}}
+			{{#if isHaveUserPermission id "delGroup"}}
+				<li><a id="delGroup" href="#">删除组</a></li>
+			{{/if}}
+		{{/if}}
+		
+		{{#if equal type "entity"}}
+			{{#if isHaveUserPermission id "addMonitor"}}
+				<li><a id="addMonitor" href="#">增加监视器</a></li>
+			{{/if}}
+			{{#if isHaveUserPermission id "editEntity"}}
+				<li><a id="editEntity" href="#">编辑设备</a></li>
+			{{/if}}
+			{{#if isHaveUserPermission id "delEntity"}}
+				<li><a id="delEntity" href="#">删除设备</a></li>
+			{{/if}}
+		{{/if}}
+    </ul>
+	
 </Template>

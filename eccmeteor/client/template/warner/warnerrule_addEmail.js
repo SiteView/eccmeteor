@@ -89,7 +89,8 @@ Template.warnerruleofemail.rendered = function(){
 	ModalDrag.draggable("#emailDiv");
 	//监视器选择树
 	$(function(){
-		var data = SvseDao.getDetailTree();
+		var data = SvseDao.getSimpleMonitorTree();
+		console.log(data);
 		var setting = {
 			check:{
 				enable: true,
@@ -113,6 +114,7 @@ Template.warnerruleofemail.rendered = function(){
 		function WarnerOnRightClick(event, treeId, treeNode) { 
 			console.log(treeNode);
 			console.log(event);
+			var resultData = getMonitorDataOfRMenu(data,treeNode);
 			if (!treeNode || treeNode == null) {   
 				showRMenu("root", event.clientX, event.clientY);   
 			} else if (treeNode && !treeNode.noR) { //noR属性为true表示禁止右键菜单   
@@ -122,7 +124,8 @@ Template.warnerruleofemail.rendered = function(){
 					var scrollTop = $(document).scrollTop();
 					var scrollLeft = $(document).scrollLeft();
 					showRMenu("node", event.clientX + scrollLeft, event.clientY + scrollTop); 
-					RenderTemplate.renderIn("#emailWarnerruleRMenu","warnerrule_rMenu","");
+					var content = {monitorData:resultData};
+					RenderTemplate.renderIn("#emailWarnerruleRMenu","warnerrule_rMenu",content);
 				}   
 			}   
 		}
@@ -322,4 +325,57 @@ function onBodyMouseDown(event) {
             "visibility" : "hidden"
         });
     }
+}
+
+//获取树上右键菜单的相关数据
+var getMonitorDataOfRMenu = function(data,treeNode){
+	if(!treeNode || treeNode == null){
+		return;
+	}
+	console.log(treeNode.type);
+	var resultData = [];
+	if(treeNode.type === "se"){
+		for(i in data){
+			if(data[i]["type"] == "monitor"){
+				resultData.push(data[i]["name"]);
+			}
+		}
+	}else if(treeNode.type === "group"){
+		for(i in data){
+			if(data[i]["pId"] === treeNode.id){
+				console.log(data[i]["id"]);
+				for(j in data){
+					if(data[j]["pId"] === data[i]["id"]){
+						resultData.push(data[j]["name"]);
+					}
+				}
+			}
+		}
+	}else if(treeNode.type === "entity"){
+		for(i in data){
+			if(data[i]["pId"] === treeNode.id){
+				resultData.push(data[i]["name"]);
+				
+			}
+		}
+	}else if(treeNode.type === "monitor"){
+		for(i in data){
+			if(data[i]["pId"] === treeNode.pId){
+				resultData.push(data[i]["name"]);
+				
+			}
+		}
+	}
+	//console.log(resultData);
+	//去重
+	var rec = [];
+	var result = [];
+	for(var j = 0;j < resultData.length;j++){
+		if(!rec[resultData[j]]){   
+		  rec[resultData[j]] = true;   
+		  result.push(resultData[j]);   
+		}  
+	}
+	console.log(result);
+	return result;
 }

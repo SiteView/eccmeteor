@@ -128,15 +128,9 @@
 </Template>
 
 <Template name="warnerrule_rMenu">
-	<table class="table table-striped table-bordered table-condensed">
-		<tr>
-			<td>批量选择1</td>
-		</tr>
-		<tr>
-			<td>批量选择2</td>
-		</tr>
-		<tr>
-			<td>批量选择3</td>
-		</tr>
-	</table>
+	<ul class="dropdown-menu">
+		{{#each monitorData}}
+			<li id="{{this}}"><a>{{this}}</a></li>
+		{{/each}}
+	</ul>
 </Template>

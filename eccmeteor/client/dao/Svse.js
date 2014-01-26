@@ -483,3 +483,46 @@ Object.defineProperty(SvseDao,"getNodesOwnSelf",{
 		return ownNodes;
 	}
 })
+
+/*
+//包含监视器的缩略树
+*/
+Object.defineProperty(SvseDao,"getSimpleMonitorTree",{
+	value:function(){ //包含监视器	
+		var nodes = Svse.find().fetch();
+		var branch = [];
+		for(index in nodes){
+			var obj = nodes[index];
+			if(obj["type"] == "group" && obj["subentity"] && (obj["subentity"].length == 0)){
+				continue;
+			}
+			if(!SvseDao.hasDisplayPermission(obj["sv_id"])){
+				continue;
+			}
+			var branchNode = {};
+			var treeNode = SvseTree.findOne({sv_id:obj["sv_id"]});
+			branchNode["id"] = obj["sv_id"];
+			branchNode["pId"] = obj["parentid"];
+			branchNode["type"] = obj["type"];
+			branchNode["name"] = SvseTree.findOne({sv_id:obj["sv_id"]})["sv_name"];
+			branchNode["isParent"] = true;
+			branchNode["icon"] = "imag/status/"+obj["type"]+(treeNode["status"]?treeNode["status"]:"")+".png";
+			if(branchNode["pId"] === "0") branchNode["open"] = true;
+			if(obj["type"] === "entity" && obj["submonitor"] && obj["submonitor"].length){	
+				var submonitor = obj["submonitor"];
+				for(subindex in submonitor){
+					var subobj = {};
+					var monitor = SvseTree.findOne({sv_id:submonitor[subindex]})
+					subobj["id"] = submonitor[subindex];
+					subobj["pId"] = obj["sv_id"];
+					subobj["type"] = "monitor";
+					subobj["name"] = monitor["sv_name"];
+					subobj["icon"] = "imag/status/monitor"+(monitor["status"]?monitor["status"]:"")+".png";
+					branch.push(subobj);
+				}
+			}
+			branch.push(branchNode);
+		}
+		return branch;
+	}
+});

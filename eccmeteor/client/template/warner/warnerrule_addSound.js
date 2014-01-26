@@ -171,3 +171,38 @@ Template.editwarnerruleofsound.events({
 		});
 	},
 });
+
+//显示右键菜单的操作
+function showRMenu(type, x, y) {
+	if(type == "node"){
+		console.log("show rMenu!!");
+		$("#emailWarnerruleRMenu").attr("style","display");
+	}else{
+		//hideRMenu();
+		$("#emailWarnerruleRMenu").attr("style","display:none");
+	}
+    
+    $("#emailWarnerruleRMenu").css({
+        "top" : y + "px",
+        "left" : x + "px",
+        "visibility" : "visible"
+    });
+ 
+    $("body").bind("mousedown", onBodyMouseDown);
+} 
+
+function hideRMenu() {
+    if ($("#emailWarnerruleRMenu"))
+        $("#emailWarnerruleRMenu").css({
+            "visibility" : "hidden"
+        });
+    $("body").unbind("mousedown", onBodyMouseDown);
+}
+
+function onBodyMouseDown(event) {
+    if (!(event.target.id == "#emailWarnerruleRMenu" || $(event.target).parents("#emailWarnerruleRMenu").length > 0)) {
+        $("#emailWarnerruleRMenu").css({
+            "visibility" : "hidden"
+        });
+    }
+}

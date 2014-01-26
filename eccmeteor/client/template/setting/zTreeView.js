@@ -382,29 +382,3 @@ function onBodyMouseDown(event) {
     }
 }
 
-//看能不能组成 entity中加个submonitor属性 对应他的监视器 重整data
-/* Object.defineProperty(zTreeView,"getTreeData",{
-	value:function(treelist){
-		var data = [];
-		var ids = [];
-		for(i in treelist){
-			if(treelist[i]["type"] == "entity"){
-				treelist[i]["isParent"] = false;
-				var id = treelist[i]["pId"];
-				ids.push(treelist[i]["id"]);
-				ids.push(id);
-			}
-		}
-		for(i in treelist){
-			if(treelist[i]["type"] == "se"){
-				data.push(treelist[i]);
-			}
-			for(id in ids){
-				if(treelist[i]["id"] == ids[id]){
-					data.push(treelist[i]);
-				}
-			}
-		}
-		return data;
-	}
-}); */
