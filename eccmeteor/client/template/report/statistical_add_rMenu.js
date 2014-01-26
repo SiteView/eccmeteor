@@ -451,7 +451,7 @@ Meteor.autosubscribe = function ()
 }
 
 // Server
-Meteor.publish("selected_template", function(selected_template) {
-	var returns = SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("selected_template"));	
-	return returns;	
-})
+// Meteor.publish("selected_template", function(selected_template) {
+	// var returns = SvseMonitorTemplateDao.getMonityTemplateReturnItemsById(Session.get("selected_template"));	
+	// return returns;	
+// })
