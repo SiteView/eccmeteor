@@ -1,5 +1,5 @@
 ###运行
-```
+```shell
 node master.js
 ```
 
@@ -73,7 +73,7 @@ absoulute:
 ```
 
 ### 初步存储公司与设备数据标准
-```
+```js
 {
     companyId：uuid
     entityIds：[entityId(uuid),....]
@@ -82,10 +82,10 @@ absoulute:
 ```
 
 ### 初步设备与监视器数据标准
-```
+```js
 {
-    entityId：uuid //唯一标识
-    monitorIds:[monitorId(uui9d)],
+    entityId ： uuid //唯一标识
+    monitors : [monitorType],
     entityName:   //设备名称
     status： 0|1|2    //设备状态
     ...其他信息 待补充
@@ -94,7 +94,7 @@ absoulute:
 
 ### 初步监视器数据标准
 
-```
+```js
 {
 	monitorId：uuid ////唯一标识
 	monitorName：... //监视器名称

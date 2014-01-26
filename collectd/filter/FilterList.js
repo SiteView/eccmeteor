@@ -1,12 +1,13 @@
 var SaveMonitorFilter = require('./SaveMonitorFilter');
 var DataTestFilter = require('./DataTestFilter');
 var StatusFilter = require('./StatusFilter');
-var CompanyAndEnityFlagFilter = require('./CompanyAndEnityFlagFilter');
+var CompanyAndEntityFilter = require('./CompanyAndEntityFilter');
+var EntityAndMonitorFilter = require('./EntityAndMonitorFilter');
 FilterList = function(){};
 
 Object.defineProperty(FilterList,"getFilterList",{
     value:function(){
-        return [StatusFilter,CompanyAndEnityFlagFilter,DataTestFilter,SaveMonitorFilter];
+        return [StatusFilter,CompanyAndEntityFilter,EntityAndMonitorFilter,DataTestFilter,SaveMonitorFilter];
     }
 });
 
