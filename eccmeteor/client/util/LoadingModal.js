@@ -3,6 +3,7 @@
    LoadingModal.load() //隐藏转动球
 */
 LoadingModal = {}
+var flag = null;
 Object.defineProperties(LoadingModal,{
   "selector":{
   	"value":"#LoadingModal",
@@ -10,11 +11,16 @@ Object.defineProperties(LoadingModal,{
   },
   "loading":{
     "value":function(){
-      	console.log("==================================正在加载...==================================");
+      	console.log("================正在加载...====================");
+        flag = true
         var show = function(){
-          $(LoadingModal.selector).modal('show');
+          if(flag){
+            $(LoadingModal.selector).modal('show');   
+          } 
+          flag = false;
         };
-        show();
+      //  show();
+        Meteor.setTimeout(show,1000);
     },
     "writable": false,
     "enumerable": false,
@@ -22,8 +28,12 @@ Object.defineProperties(LoadingModal,{
   },
   "loaded":{
     "value":function(){
-    	console.log("==================================加载完毕...==================================");
-      $(LoadingModal.selector).modal('hide');
+    	console.log("==================加载完毕...================");
+        if(!flag){
+          $(LoadingModal.selector).modal('hide');
+        }else{
+          flag = false;
+        }  
     }
   }
 });
